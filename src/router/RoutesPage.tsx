@@ -46,6 +46,10 @@ import CustomerSales from "../pages/Sales/customer";
 import AddCustomer from "../pages/Sales/addCustomer";
 import QuotesForCustomer from "../pages/Sales/quotesForCustomer";
 import QuotesForCustomerView from "../pages/Sales/quotesForCustomerView";
+import DailyActivityReport from "../pages/DailyActivityReport/DailyActivityProject";
+import AddDailyActivityReport from "../pages/DailyActivityReport/addDailyActivityProject";
+import TaskManagement from "../pages/TaskManagement/TaskManagement";
+import AddTaskManagement from "../pages/TaskManagement/addTaskManagement";
 export default function RoutesPage() {
   return (
     <>
@@ -58,10 +62,15 @@ export default function RoutesPage() {
             <Route path="/rfps" element={<Rfps />}></Route>
             <Route path="/leads" element={<Leads />}></Route>
             <Route path="/quotesForCustomer" element={<QuotesForCustomer />}></Route>
+            <Route path="/DailyActivityReport" element={<DailyActivityReport />}></Route> 
+            <Route path="/TaskManagement" element={<TaskManagement />}></Route>
+            <Route path="/add-TaskManagement" element={<AddTaskManagement />}></Route>
+            <Route path="/add-DailyActivityReport" element={<AddDailyActivityReport />}></Route>
             <Route path="/customer-sales" element={<CustomerSales />}></Route>
             <Route path="/quotesForVendors" element={<QuotesForVendors />}></Route>
             <Route path="/confirmedQuotes" element={<ConfirmedQuotes />}></Route>
             <Route path="/ledger-group" element={<LedgerGroup />}></Route>
+            <Route path="/view-quotesForVendor" element={<QuotesForVendorsView />}></Route>
             <Route path="/sales-ledger" element={<SalesLedger />}></Route>
             <Route path="/add-ledger" element={<AddLedger />}></Route>
             <Route path="/add-customer" element={<AddCustomer />}></Route>

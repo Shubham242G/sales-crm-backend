@@ -88,34 +88,23 @@ function Sidebar() {
         },
       ],
     },
-    // {
-    //   mainlink: "/",
-    //   heading: "Group Booking",
-    //   icon: ledger,
-    //   activeIcon: ledgerw,
-    //   isActive: false,
-    //   isArrow: true,
+    {
+      mainlink: "/DailyActivityReport",
+      heading: "Daily Activity Report",
+      icon: ledger,
+      activeIcon: ledgerw,
+      isActive: false,
+      isArrow: true,
+    },
+    {
+      mainlink: "/TaskManagement",
+      heading: "Task Management",
+      icon: ledger,
+      activeIcon: ledgerw,
+      isActive: false,
+      isArrow: true,
+    },
 
-      
-    // },
-    // {
-    //   mainlink: "/",
-    //   heading: "Task Management",
-    //   icon: ledger,
-    //   activeIcon: ledgerw,
-    //   isActive: false,
-    //   isArrow: true,
-
-    
-    // },
-    // {
-    //   mainlink: "/",
-    //   heading: "Daily Activity Report",
-    //   icon: ledger,
-    //   activeIcon: ledgerw,
-    //   isActive: false,
-    //   isArrow: true,
-    // },
 
    
     
