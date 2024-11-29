@@ -20,6 +20,7 @@ export interface ICategory  {
 export const useCategoryApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addCategory = async (obj: any,) => {
+        console.log(`${BASE_URL}${prefix}/`,"test")
         return axios.post<GeneralApiResponse<ICategory>>(`${BASE_URL}${prefix}/`, obj);
     };
     const updateCategoryById = async ({ id, obj }: { id: string, obj: any }) => {
@@ -27,18 +28,19 @@ export const useCategoryApiHook = () => {
     };
     const deleteCategoryById = async (id: any) => {
         return axios.delete<GeneralApiResponse>(`${BASE_URL}${prefix}/deleteById/${id}`);
-    };
+    };  
     const getCategoryById = async (id: any) => {
         return axios.get<GeneralApiResponse<ICategory>>(`${BASE_URL}${prefix}/getById/${id}`);
     };
    
     const getAllCategory = async (pagination: PaginationState, searchObj: any) => {
-        const query = new URLSearchParams({
-            pageIndex: String(pagination.pageIndex),
-            pageSize: String(pagination.pageSize),
-            ...searchObj,
-        }).toString();
-        return axios.get<GeneralApiResponsePagination<ICategory>>(`${BASE_URL}${prefix}/?${query}`);
+        console.log(`${BASE_URL}${prefix}/`,"test c")
+        // const query = new URLSearchParams({
+        //     pageIndex: String(pagination.pageIndex),
+        //     pageSize: String(pagination.pageSize),
+        //     ...searchObj,
+        // }).toString();
+        return axios.get<GeneralApiResponsePagination<ICategory>>(`${BASE_URL}${prefix}`);
     };
 
     return {

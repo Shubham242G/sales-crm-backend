@@ -1,7 +1,7 @@
 
 ////// live url
-const BASE_URL = `${process.env.VITE_PUBLIC_API_URL}${process.env.VITE_PUBLIC_VERSION}`
-export const API_URL = `${process.env.VITE_PUBLIC_API_URL}`
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_VERSION}`
+export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`
 export const NEXT_APP_BASE_URL = `${process.env.NEXT_PUBLIC_APP_API_URL}`
 // export const NEXT_APP_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`
 
@@ -20,6 +20,7 @@ export default BASE_URL
 
 
 export type GeneralApiResponse<T = unknown> = {
+  name: string;
   filename?: string;
   message: string;
   data: T;

@@ -1,7 +1,16 @@
+import { useCategory } from "@/services/category.service";
 import FileUpload from "@/utils/FileUpload";
 import React, { useState } from "react";
 
 const AddVendorForm = () => {
+  const { data: categoryData } = useCategory();
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  console.log(categoryData, "categoryData")
   const [rooms, setRooms] = useState([
     {
       category: "",
@@ -73,10 +82,20 @@ const AddVendorForm = () => {
 
         {/* Category */}
         <h2 className="text-xl font-semibold mb-4">Category</h2>
-        <input
-          placeholder="Sample Category (e.g., Hotel, Restaurant, Banquet)"
-          className="input mb-6"
-        />
+        <select
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          className="input mb-6 border border-gray-300 rounded-md p-2 w-full"
+        >
+          <option value="" disabled>
+            Select a category
+          </option>
+          {categoryData?.data?.map((category: any) => (
+            <option key={category._id} value={category._id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
 
         {/* Room Details */}
         <h2 className="text-xl font-semibold mb-4">Room Details</h2>

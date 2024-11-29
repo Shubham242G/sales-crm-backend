@@ -104,6 +104,21 @@ function Sidebar() {
       isActive: false,
       isArrow: true,
     },
+    {
+      mainlink: "/Important",
+      heading: "Important",
+      icon: ledger,
+      activeIcon: ledgerw,
+      isActive: false,
+      isArrow: true,
+
+      dropArr: [
+        {
+          dropHead: "Add Category",
+          link: "CategoryList",
+        },
+      ],
+    },
 
 
    
