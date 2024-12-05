@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 
 const AddTaskManagement = () => {
     return (
@@ -16,7 +15,7 @@ const AddTaskManagement = () => {
                                 <option value="">Sales person</option>
                                 <option>Anurag</option>
                                 <option>Vivek</option>
-                                <option>Bhawna</option> 
+                                <option>Bhawna</option>
                                 <option>Tushar</option>
                             </select>
                             {/* <input
@@ -77,7 +76,6 @@ const AddTaskManagement = () => {
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
                         </div>
-
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <div>
@@ -104,7 +102,7 @@ const AddTaskManagement = () => {
                     {/* Vendor List */}
 
                     {/* Additional Instructions */}
-                                
+
 
                     {/* Buttons */}
                     <div className="flex justify-end gap-4">
