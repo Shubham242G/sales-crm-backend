@@ -1,26 +1,99 @@
 import { useCategory } from "@/services/category.service";
+import { useAddVendor } from "@/services/vendor.service";
 import FileUpload from "@/utils/FileUpload";
+import { toastError, toastSuccess } from "@/utils/toast";
 import React, { useState } from "react";
+interface IHotel {
+  hotelId: string | undefined;
+  roomsArr: {
+    category: string | undefined;
+    noOfRooms: number | undefined;
+    size: string | undefined;
+    price: number | undefined;
+    imagesArr: {
+      image: string | undefined;
+    }[];
+  }[];
+}
 
 const AddVendorForm = () => {
+  const { mutateAsync: addVendor } = useAddVendor();
   const { data: categoryData } = useCategory();
   const [selectedCategory, setSelectedCategory] = useState("");
-
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(e.target.value);
   };
 
-  console.log(categoryData, "categoryData")
-  const [rooms, setRooms] = useState([
+  console.log(categoryData, "categoryData");
+  const [hotelArr, setHotelArr] = useState<IHotel[]>([
     {
-      category: "",
-      numberOfRooms: "",
-      size: "",
-      price: "",
-      roomOnlyPrice: "",
-      images: [] as string[],
+      hotelId: "",
+      roomsArr: [
+        {
+          category: "",
+          noOfRooms: 0,
+          price: 0,
+          size: "",
+          imagesArr: [
+            {
+              image: "",
+            },
+          ],
+        },
+      ],
     },
   ]);
+
+  const addHotelsRooms = (hotelIndex: number) => {
+    // Create the new room object to add
+    let roomObj = {
+      category: "",
+      noOfRooms: 0,
+      price: 0,
+      size: "",
+      imagesArr: [
+        {
+          image: "",
+        },
+      ],
+    };
+
+    let tempArr = [...hotelArr];
+    let temprRoomArr = tempArr[hotelIndex].roomsArr;
+    temprRoomArr = [...temprRoomArr, roomObj];
+    tempArr[hotelIndex] = {
+      ...tempArr[hotelIndex],
+      roomsArr: temprRoomArr,
+    };
+    setHotelArr(tempArr);
+  };
+
+  const addMoreHotels = () => {
+    let tempArr = [...hotelArr];
+    let obj = {
+      hotelId: "",
+      roomsArr: [
+        {
+          category: "",
+          noOfRooms: 0,
+          price: 0,
+          size: "",
+          imagesArr: [
+            {
+              image: undefined,
+            },
+          ],
+        },
+      ],
+    };
+    setHotelArr([...tempArr, obj]);
+  };
+
+  const deleteHotels = (hotelIndex: number) => {
+    let tempArr = hotelArr.filter((_, i) => i !== hotelIndex);
+    setHotelArr(tempArr);
+  };
+
   const [banquets, setBanquets] = useState([
     {
       category: "",
@@ -34,26 +107,78 @@ const AddVendorForm = () => {
       images: [] as string[],
     },
   ]);
+
   const [hasBanquet, setHasBanquet] = useState(false);
   const [hasRestaurant, setHasRestaurant] = useState(false);
 
   // Handle image upload for rooms and banquets
   const handleImageUpload = (
-    index: number,
-    files: { mimeType: string; value: string }[],
+    mainIndex: number,
+    roomIndex: number,
+    files: { value: string }[],
     section: string
   ) => {
     if (section === "room") {
-      const newRooms = [...rooms];
-      newRooms[index].images = files.map((file) => file.value);
-      setRooms(newRooms);
+      let tempArr = [...hotelArr];
+      let tempRoomArr = [...tempArr[mainIndex].roomsArr];
+      let tempImageArr = [...tempRoomArr[roomIndex].imagesArr];
+
+      files.forEach((file) => {
+        if (file.value) {
+          tempImageArr.push({ image: file.value });
+        }
+      });
+
+      tempRoomArr[roomIndex] = {
+        ...tempRoomArr[roomIndex],
+        imagesArr: tempImageArr,
+      };
+      console.log(tempRoomArr[roomIndex]);
+      
+      tempArr[mainIndex] = { ...tempArr[mainIndex], roomsArr: tempRoomArr };
+      console.log(tempArr[mainIndex]);
+      setHotelArr(tempArr);
+      console.log(hotelArr);
     } else if (section === "banquet") {
       const newBanquets = [...banquets];
-      newBanquets[index].images = files.map((file) => file.value);
+
+      // For the banquet section, map all the files to the images array
+      newBanquets[mainIndex] = {
+        ...newBanquets[mainIndex],
+        images: files.map((file) => file.value),
+      };
+
       setBanquets(newBanquets);
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const obj = { hotelArr };
+
+      // if (id) {
+      //     updateHotel(
+      //     { id, obj },
+      //     {
+      //       onSuccess: () => {
+      //         toastSuccess("Hotel updated successfully!");
+      //         // navigate("/categoryList");
+      //       },
+      //       onError: (error: any) => {
+      //         console.error("Error updating Hotel:", error.message);
+      //         toastError("Failed to update Hotel.");
+      //       },
+      //     }
+      //   );
+      // } else {
+      const { data: res } = await addVendor(obj);
+      console.log(res, "res");
+      // }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
@@ -96,50 +221,54 @@ const AddVendorForm = () => {
             </option>
           ))}
         </select>
-
-        {/* Room Details */}
-        <h2 className="text-xl font-semibold mb-4">Room Details</h2>
-        {rooms.map((room, index) => (
-          <div key={index} className="mb-6 border p-4 rounded-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Room {index + 1}</h3>
+        <button onClick={addMoreHotels} className="text-blue-500 font-semibold">
+          + Add Hotel
+        </button>
+        {hotelArr &&
+          hotelArr?.map((el, index) => (
+            <div className="">
+              <h2 className="text-xl font-semibold mb-4">Hotel</h2>
               <button
-                onClick={() =>
-                  setRooms([
-                    ...rooms,
-                    {
-                      category: "",
-                      numberOfRooms: "",
-                      size: "",
-                      price: "",
-                      roomOnlyPrice: "",
-                      images: [],
-                    },
-                  ])
-                }
+                onClick={() => deleteHotels(index)}
                 className="text-blue-500 font-semibold"
               >
-                + Add Room
+                Delet Hotel
               </button>
+              {/* Room Details */}
+              <h2 className="text-xl font-semibold mb-4">Room Details</h2>
+              {el.roomsArr.map((room, roomIndex) => (
+                <div key={index} className="mb-6 border p-4 rounded-lg">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold">
+                      Room {roomIndex + 1}
+                    </h3>
+                    <button
+                      onClick={() => addHotelsRooms(index)}
+                      className="text-blue-500 font-semibold"
+                    >
+                      + Add Room
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                    <input placeholder="Category" className="input" />
+                    <input placeholder="Number of Rooms" className="input" />
+                    <input placeholder="Size (LxBxH)" className="input" />
+                    <input placeholder="Price" className="input" />
+                    <input placeholder="Room Only Price" className="input" />
+                  </div>
+                  <div className="mb-4">
+                    <FileUpload
+                      onFileChange={(files) =>
+                        handleImageUpload(index, roomIndex, files, "room")
+                      }
+                      label="Upload Room Images"
+                      accept="image/*"
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-              <input placeholder="Category" className="input" />
-              <input placeholder="Number of Rooms" className="input" />
-              <input placeholder="Size (LxBxH)" className="input" />
-              <input placeholder="Price" className="input" />
-              <input placeholder="Room Only Price" className="input" />
-            </div>
-            <div className="mb-4">
-              <FileUpload
-                onFileChange={(files) =>
-                  handleImageUpload(index, files, "room")
-                }
-                label="Upload Room Images"
-                accept="image/*"
-              />
-            </div>
-          </div>
-        ))}
+          ))}
 
         {/* Do you have Banquet */}
         <div className="mb-6">
@@ -220,7 +349,7 @@ const AddVendorForm = () => {
                 <div className="mb-4">
                   <FileUpload
                     onFileChange={(files) =>
-                      handleImageUpload(index, files, "banquet")
+                      handleImageUpload(index, 0, files, "banquet")
                     }
                     label="Upload Banquet Images"
                     accept="image/*"
@@ -270,7 +399,9 @@ const AddVendorForm = () => {
             </div>
             <div className="mb-4">
               <FileUpload
-                onFileChange={(files) => handleImageUpload(0, files, "banquet")}
+                onFileChange={(files) =>
+                  handleImageUpload(0, 0, files, "banquet")
+                }
                 label="Upload Restaurant Images"
                 accept="image/*"
               />
@@ -293,7 +424,10 @@ const AddVendorForm = () => {
           <button className="w-full bg-white-500 text-orange py-2 rounded-lg font-semibold border 5px">
             Cancel
           </button>
-          <button className="w-full bg-orange-500 text-white py-2 rounded-lg font-semibold">
+          <button
+            onClick={handleSubmit}
+            className="w-full bg-orange-500 text-white py-2 rounded-lg font-semibold"
+          >
             Submit
           </button>
         </div>
