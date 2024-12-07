@@ -117,6 +117,10 @@ function Sidebar() {
           dropHead: "Add Category",
           link: "CategoryList",
         },
+        {
+          dropHead: "Add Hotel",
+          link: "hotel",
+        },
       ],
     },
 

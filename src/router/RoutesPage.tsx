@@ -52,6 +52,7 @@ import TaskManagement from "../pages/TaskManagement/TaskManagement";
 import AddTaskManagement from "../pages/TaskManagement/addTaskManagement";
 import AddCategory from "../pages/Important/category";
 import CategoryList from "../pages/Important/categoryList";
+import HotelAdd from "../pages/Important/hotel";
 export default function RoutesPage() {
   return (
     <>
@@ -64,6 +65,7 @@ export default function RoutesPage() {
             <Route path="/rfps" element={<Rfps />}></Route>
             <Route path="/leads" element={<Leads />}></Route>
             <Route path="/category2" element={<AddCategory />}></Route>
+            <Route path="/hotel" element={<HotelAdd />}></Route>
             <Route path="/category2/:id" element={<AddCategory />}></Route>
             <Route path="/CategoryList" element={<CategoryList />}></Route>
             <Route path="/quotesForCustomer" element={<QuotesForCustomer />}></Route>
