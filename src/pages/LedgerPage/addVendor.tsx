@@ -23,7 +23,6 @@ const AddVendorForm = () => {
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(e.target.value);
   };
-
   console.log(categoryData, "categoryData");
   const [hotelArr, setHotelArr] = useState<IHotel[]>([
     {
@@ -65,6 +64,7 @@ const AddVendorForm = () => {
       ...tempArr[hotelIndex],
       roomsArr: temprRoomArr,
     };
+    console.log(tempArr, "tempArr")
     setHotelArr(tempArr);
   };
 
@@ -80,12 +80,13 @@ const AddVendorForm = () => {
           size: "",
           imagesArr: [
             {
-              image: undefined,
+              image: "",
             },
           ],
         },
       ],
     };
+    console.log(tempArr, "tempArr")
     setHotelArr([...tempArr, obj]);
   };
 
@@ -110,6 +111,7 @@ const AddVendorForm = () => {
 
   const [hasBanquet, setHasBanquet] = useState(false);
   const [hasRestaurant, setHasRestaurant] = useState(false);
+  const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
 
   // Handle image upload for rooms and banquets
   const handleImageUpload = (
@@ -134,7 +136,7 @@ const AddVendorForm = () => {
         imagesArr: tempImageArr,
       };
       console.log(tempRoomArr[roomIndex]);
-      
+
       tempArr[mainIndex] = { ...tempArr[mainIndex], roomsArr: tempRoomArr };
       console.log(tempArr[mainIndex]);
       setHotelArr(tempArr);
