@@ -53,6 +53,9 @@ import AddTaskManagement from "../pages/TaskManagement/addTaskManagement";
 import AddCategory from "../pages/Important/category";
 import CategoryList from "../pages/Important/categoryList";
 import HotelAdd from "../pages/Important/hotel";
+import BanquetAdd from "../pages/Important/banquet";
+import ResturantAdd from "../pages/Important/resturant";
+import HotelList from "../pages/Important/hotelList";
 export default function RoutesPage() {
   return (
     <>
@@ -66,8 +69,12 @@ export default function RoutesPage() {
             <Route path="/leads" element={<Leads />}></Route>
             <Route path="/category2" element={<AddCategory />}></Route>
             <Route path="/hotel" element={<HotelAdd />}></Route>
+            <Route path="/hotel/:id" element={<HotelAdd />}></Route>
+            <Route path="/banquet" element={<BanquetAdd />}></Route>
+            <Route path="/resturant" element={<ResturantAdd />}></Route>
             <Route path="/category2/:id" element={<AddCategory />}></Route>
             <Route path="/CategoryList" element={<CategoryList />}></Route>
+            <Route path="/hotelList" element={<HotelList />}></Route>
             <Route path="/quotesForCustomer" element={<QuotesForCustomer />}></Route>
             <Route path="/DailyActivityReport" element={<DailyActivityReport />}></Route> 
             <Route path="/TaskManagement" element={<TaskManagement />}></Route>

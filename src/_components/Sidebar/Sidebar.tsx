@@ -119,7 +119,15 @@ function Sidebar() {
         },
         {
           dropHead: "Add Hotel",
-          link: "hotel",
+          link: "hotelList",
+        },
+        {
+          dropHead: "Add Banquet",
+          link: "banquet",
+        },
+        {
+          dropHead: "Add Resturant",
+          link: "resturant",
         },
       ],
     },

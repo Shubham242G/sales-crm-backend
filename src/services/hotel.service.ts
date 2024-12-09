@@ -8,6 +8,7 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 
 const prefix = "/hotel";
 export interface IHotel {
+    _id:string,
     name : string,
     vendorId : string,
     noOfRooms : string,

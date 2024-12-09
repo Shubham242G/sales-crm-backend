@@ -11,7 +11,7 @@ const customStyles: any = {
       borderTopLeftRadius: "8px",
       borderTopRightRadius: "8px",
       border: "1px solid #EAECF0",
-      
+
       backgroundColor: "#FFF",
       boxShadow:
         "0px 0px 0px 0px rgba(16, 24, 40, 0.06), 0px 1px 8px 0px rgba(16, 24, 40, 0.10)",
@@ -44,7 +44,7 @@ const customStyles: any = {
       fontWeight: "500",
       // color: '#667085',
       paddingLeft: "10px",
-  
+
       // border: "1px solid #e5e5e5",
       overflow: "unset",
       color: "#fff",
@@ -100,43 +100,21 @@ export const ReactTable = ({
   pageSizeKey?: string;
 }) => {
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  let [searchParams, setSearchParams] = useSearchParams();
-
-  const pagination = usePagination(true, pageIndexKey, pageSizeKey);
-
-  console.log(totalRows,"totalRowstotalRowstotalRowstotalRows")
-  onChangeRowsPerPage = (value:any) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set(pageIndexKey, String(pagination.pageIndex));
-    params.set(pageSizeKey, String(value));
-    navigate(location.pathname + "?" + params.toString());
-
-  }
-  onChangePage = (value:any) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set(pageIndexKey, String(value));
-    params.set(pageSizeKey, String(pagination.pageSize));
-    navigate(location.pathname + "?" + params.toString());
-  }
   return (
     <DataTable
       progressPending={loading}
       customStyles={customStyles}
       columns={columns}
       data={data}
-      paginationPerPage={pagination.pageSize}
+      paginationPerPage={rowsPerPageText}
       pagination
-      paginationDefaultPage={pagination.pageIndex}
+      paginationDefaultPage={page}
       paginationServer={!isServerPropsDisabled}
-      paginationRowsPerPageOptions={[1, 5, 10, 20, 30,40, 50, 100, 200, 500]}
+      paginationRowsPerPageOptions={[1,5, 10, 20, 30, 40, 50, 100, 200, 500]}
       onChangePage={onChangePage}
       onChangeRowsPerPage={onChangeRowsPerPage}
       paginationTotalRows={totalRows}
       responsive
     />
   )
-}
-  ;
+};

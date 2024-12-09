@@ -17,7 +17,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   accept = "image/*", // Default to accept images only
   label = "Upload Image",
 }) => {
-  const [files, setFiles] = useState<FilePreview[]>([]); // Store multiple files with previews
+  const [files, setFiles] = useState<FilePreview[]>([]);
 
   // Convert file to base64
   const getBase64 = (file: File, cb: (result: string) => void) => {
@@ -27,7 +27,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
     reader.onerror = (error) => console.error("Error converting file:", error);
   };
 
-  // Handle multiple file selection
+  // Handle file selection
   const handleFileSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(event.target.files || []);
     const newFiles: FilePreview[] = [];
@@ -40,7 +40,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           onFileChange(
             newFiles.map(({ file, preview }) => ({
               mimeType: file.type,
-              value: `${file.name}@@${preview}`,
+              value: preview, // Pass only the base64 value
             }))
           );
         }
@@ -48,26 +48,19 @@ const FileUpload: React.FC<FileUploadProps> = ({
     });
   };
 
-  // Remove file and its preview
+  // Remove file preview
   const handleRemoveFile = (index: number) => {
     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   return (
     <div className="file-upload-container">
-      {label && (
-        <label className="mb-3 block text-sm font-medium text-black">
-          {label}
-        </label>
-      )}
+      {label && <label className="block mb-3 text-sm font-medium">{label}</label>}
 
       {/* Preview selected files */}
       <div className="flex gap-4 mt-4 flex-wrap">
         {files.map((fileObj, index) => (
-          <div
-            key={index}
-            className="relative w-24 h-24 border rounded overflow-hidden"
-          >
+          <div key={index} className="relative w-24 h-24 border rounded overflow-hidden">
             <img
               src={fileObj.preview}
               alt="Preview"
@@ -83,18 +76,15 @@ const FileUpload: React.FC<FileUploadProps> = ({
         ))}
       </div>
 
-      {/* File upload input */}
+      {/* File input */}
       <div className="relative mt-4">
-        <div className="mid_content w-full h-[100%] bg-white border border-[#e5e5e5] absolute top-0 text-center flex flex-col items-center justify-center">
-          <MdOutlineFileUpload className="text-graytext text-2xl" />
-          <p className="text-graytext text-[0.75rem] mt-1">
-            Maximum upload file size 25 MB, allowed files: JPG, PNG
-            <span className="text-red-500">*</span>
-          </p>
+        <div className="absolute top-0 w-full h-full bg-white border flex items-center justify-center">
+          <MdOutlineFileUpload className="text-gray-400 text-2xl" />
+          <p className="text-gray-400 text-sm mt-1">Upload JPG or PNG (Max 25MB)</p>
         </div>
         <input
           type="file"
-          multiple // Allow multiple file selection
+          multiple
           accept={accept}
           onChange={handleFileSelection}
           className="appearance-none opacity-0 w-full h-[85px] cursor-pointer"
