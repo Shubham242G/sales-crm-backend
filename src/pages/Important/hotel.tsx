@@ -17,8 +17,8 @@ const AddHotel = () => {
   const { mutateAsync: addHotel } = useAddHotel();
   const { mutateAsync: updateHotel } = useUpdateHotelById();
   const { data: hotelDataById, isLoading } = useHotelById(id || "");
-//   const [images, setImages] = useState("");
-const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
+  //   const [images, setImages] = useState("");
+  const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
   useEffect(() => {
     // Prefill form when editing
     if (hotelDataById) {
@@ -31,39 +31,68 @@ const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
     console.log(images, "image");
     setImages(files.map((el) => ({ image: el.value })));
   };
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const obj = { name,imagesArr:images  };
 
-    if (id) {
-        updateHotel(
-        { id, obj },
-        {
-          onSuccess: () => {
-            toastSuccess("Hotel updated successfully!");
-            // navigate("/categoryList");
-          },
-          onError: (error: any) => {
-            console.error("Error updating Hotel:", error.message);
-            toastError("Failed to update Hotel.");
-          },
+    try {
+
+      const obj = { name, imagesArr: images };
+      if (id) {
+
+        const { data: res } = await updateHotel({ id, obj })
+        if (res) {
+          toastSuccess(res.message)
+          navigate("/hotelList")
         }
-      );
-    } else {
-        addHotel(obj, {
-        onSuccess: () => {
-            console.log(obj,"add images")
-          toastSuccess("hotel added successfully!");
-          setName("");
-        //   navigate("/categoryList");
-        },
-        onError: (error: any) => {
-          console.error("Error adding Hotel:", error.message);
-          toastError("Failed to add Hotel.");
-        },
-      });
+
+
+
+
+
+
+      }
+      else {
+        const res: any = await addHotel(obj)
+        if (res) {
+          toastSuccess(res.message)
+          navigate("/hotelList")
+        }
+      }
     }
+    catch (error) {
+      toastError(error)
+
+    }
+
+    // if (id) {
+    //   updateHotel(
+    //     { id, obj },
+    //     {
+    //       onSuccess: () => {
+    //         toastSuccess("Hotel updated successfully!");
+    //         // navigate("/categoryList");
+    //       },
+    //       onError: (error: any) => {
+    //         console.error("Error updating Hotel:", error.message);
+    //         toastError("Failed to update Hotel.");
+    //       },
+    //     }
+    //   );
+    // } else {
+    //   addHotel(obj, {
+    //     onSuccess: () => {
+    //       console.log(obj, "add images")
+    //       toastSuccess("hotel added successfully!");
+    //       setName("");
+    //       //   navigate("/categoryList");
+    //     },
+    //     onError: (error: any) => {
+    //       console.error("Error adding Hotel:", error.message);
+    //       toastError("Failed to add Hotel.");
+    //     },
+    //   });
+    // }
   };
 
   return (
@@ -80,7 +109,7 @@ const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
             <h2 className="text-lg font-semibold mb-4">Hotel</h2>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-              Hotel Name
+                Hotel Name
               </label>
               <input
                 onChange={(e) => setName(e.target.value)}
@@ -114,8 +143,8 @@ const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
               value={
                 images && images.length > 0
                   ? images
-                      .filter((el) => el.image != "")
-                      .map((el) => ({ value: el.image }))
+                    .filter((el) => el.image != "")
+                    .map((el) => ({ value: el.image }))
                   : []
               }
               onFileChange={handleImageUpload}

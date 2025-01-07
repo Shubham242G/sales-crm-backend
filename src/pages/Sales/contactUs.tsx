@@ -5,87 +5,142 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
-import { ICategory, useCategory, usedeleteCategoryById } from "@/services/category.service";
-import { format } from "date-fns";
-import { toastError, toastSuccess } from "@/utils/toast";
-function CategoryList() {
-    const navigate = useNavigate();
-    const { data: categoryData } = useCategory();
-    const { mutateAsync: deleteCategory } = usedeleteCategoryById()
+
+function ContactUs() {
+    const navigate = useNavigate()
     // const [loading, setLoading] = useState(false);
     // const [currentPage, setCurrentPage] = useState(1);
     // const [rowsPerPage, setRowsPerPage] = useState(10);
-    const handleDelete = async (id: string) => {
-
-        try {
-            if (confirm("Are you sure you want to delete this category?")) {
-                const { data: res } = await deleteCategory(id);
-
-                if (res) {
-                    toastSuccess(res.message)
-                    navigate("/categoryList")
-                }
-
-            }
-
-        }
-        catch (error) {
-            toastError(error)
-
-        }
-
-    };
 
     // ledger details modal
-    console.log(categoryData, "categoryData")
     const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
     const handleLedgerDetailsModal = () => {
         setShowLedgerDetailsModal(true);
     };
     const columns = [
         {
-            name: "Category Name",
+            name: "Customer Name",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
                     <h6>{row.name}</h6>
                 </div>
             ),
-            width: "40%",
+            width: "20%",
+        },
+
+
+        {
+            name: "Phone Number",
+            selector: (row: any) => (
+                <div className="flex gap-1">
+                    <FaMobileScreenButton className=" text-[#938d8d]" />
+                    {row.contactno}
+                </div>
+            ),
+            width: "10%",
         },
 
         {
-            name: "Date",
+            name: "Email",
+            selector: (row: any) => row.email,
+            width: "20%",
+        },
+        {
+            name: "Service",
             selector: (row: any) => (
-                <div className="flex gap-1 flex-col">
-                    <h6>{row.createdAt ? format(new Date(row.createdAt), "MMM dd, yyyy") : "-"}</h6>
+                <>
+                    <div className="flex justify-around">
+                        {row.service.map((e: any, index: number) => (
+                            <div
+                                key={index}
+                                className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
+                            >
+                                {e.name}
+                            </div>
+                        ))}
+                    </div>
+                </>
+            ),
+            width: "20%",
+        },
+        {
+            name: "Lead Source",
+            selector: (row: any) => (
+                <div className="flex gap-1">
+                    <FaMobileScreenButton className=" text-[#938d8d]" />
+                    {row.company}
                 </div>
             ),
             width: "20%",
         },
         {
             name: "Action",
-            width: "40%",
-            selector: (row: ICategory) => (
+            width: "10%",
+            selector: () => (
                 <div className="flex items-center gap-3">
-                    <Link
-                        to={`/category2/${row?._id}`}
-                        className="p-[6px] text-black-400 text-lg flex items-center"
+                    <button
+                        type="button"
+                        onClick={handleLedgerDetailsModal}
+                        className=" text-black-500 text-lg p-[6px]"
                     >
                         <FaEye />
-                    </Link>
-                    {/* </button> */}
-                    <button
-                        onClick={() => handleDelete(row._id)}
-                        className="p-[6px] text-black-400 text-lg flex items-center"
+                    </button>
+                    <Link
+                        to="/update-ledger/id=1234"
+                        className=" p-[6px] text-black-400 text-lg"
                     >
                         <RiDeleteBin6Line />
-                    </button>
+                    </Link>
                 </div>
             ),
         },
     ];
 
     // Sample data
+    const data = [
+        {
+            name: "Ajay Kumar",
+            contactno: "9968237063",
+            email: "test@test.com",
+            company: "Google",
+            service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
+        },
+        {
+            name: "Ajay Kumar",
+            contactno: "9968237063",
+            email: "test@test.com",
+            company: "Google",
+            service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }],
+        },
+        {
+            name: "Ajay Kumar",
+            contactno: "9968237063",
+            email: "test@test.com",
+            company: "Google",
+            service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
+        },
+        {
+            name: "Ajay Kumar",
+            contactno: "9968237063",
+            email: "test@test.com",
+            company: "Google",
+            service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }],
+        },
+        {
+            name: "Ajay Kumar",
+            contactno: "9968237063",
+            email: "test@test.com",
+            company: "Google",
+            service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
+        },
+        {
+            name: "Ajay Kumar",
+            contactno: "9968237063",
+            email: "test@test.com",
+            company: "Google",
+            service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }]
+        },
+    ];
 
 
     return (
@@ -107,7 +162,7 @@ function CategoryList() {
                     <div className="search_boxes flex justify-between items-center">
                         {/* Heading on the Left */}
                         <h2 className="text-xl font-semibold text-gray-800">
-                            All Category List
+                            Customer List
                         </h2>
 
                         {/* Search and Buttons on the Right */}
@@ -127,18 +182,16 @@ function CategoryList() {
                             <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                                 <FaFileExport /> Export
                             </button>
-                            <button
-                                onClick={() => navigate("/category2")}
-                                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
-                            >
+
+                            <button onClick={() => navigate("/add-contact")} className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
                                 <FaPlus />
-                                <span>New Category</span>
+                                <span>New Contact </span>
                             </button>
                         </div>
                     </div>
                     {/* React Table */}
                     <ReactTable
-                        data={categoryData?.data}
+                        data={data}
                         columns={columns}
                         loading={false}
                         totalRows={0}
@@ -156,4 +209,4 @@ function CategoryList() {
     );
 }
 
-export default CategoryList;
+export default ContactUs;

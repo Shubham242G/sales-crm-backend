@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  useAddCategory,
-  useCategoryById,
-  useUpdateCategoryById,
-} from "@/services/category.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import MultiFileUpload from "@/utils/multiFileUpload";
 import { useAddHotel, useHotelById, useUpdateHotelById } from "@/services/hotel.service";
 import { useAddBanquet, useBanquetById, useUpdateBanquetById } from "@/services/banquet.service";
-import { useAddResturant, useUpdateResturantById } from "@/services/resturant.service";
+import { useAddResturant, useUpdateResturantById, useResturantById } from "@/services/resturant.service";
 import { floor } from "lodash";
 
-const AddHotel = () => {
+const AddResturant = () => {
   const [banquetName, setBanquetName] = useState("");
   const [floor, setFloor] = useState("");
   const navigate = useNavigate();
@@ -20,54 +15,82 @@ const AddHotel = () => {
   console.log(id, "id");
   const { mutateAsync: addResturant } = useAddResturant();
   const { mutateAsync: updateResturant } = useUpdateResturantById();
-  const { data: banquetDataById, isLoading } = useBanquetById(id || "");
-//   const [images, setImages] = useState("");
-const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
+  const { data: resturantDataById, isLoading } = useResturantById(id || "");
+  //   const [images, setImages] = useState("");
+  const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
   useEffect(() => {
     // Prefill form when editing
-    if (banquetDataById) {
-      console.log(banquetDataById, "getById/");
-      setBanquetName(banquetDataById?.data?.banquetName || "");
+    if (resturantDataById) {
+      console.log(resturantDataById, "getById/");
+      setFloor(resturantDataById?.data?.floor || "");
     }
-  }, [banquetDataById]);
+  }, [resturantDataById]);
   const handleImageUpload = (files: { value: string }[]) => {
     console.log(files, "filessss");
     console.log(images, "image");
     setImages(files.map((el) => ({ image: el.value })));
   };
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const obj = { floor,imagesArr:images  };
+    try {
+      const obj = { floor, imagesArr: images };
 
-    if (id) {
-        updateResturant(
-        { id, obj },
-        {
-          onSuccess: () => {
-            toastSuccess("Resturant updated successfully!");
-            // navigate("/categoryList");
-          },
-          onError: (error: any) => {
-            console.error("Error updating Resturant:", error.message);
-            toastError("Failed to update Resturant.");
-          },
+
+      if (id) {
+
+        const { data: res } = await updateResturant({ id, obj })
+        if (res) {
+          toastSuccess(res.message)
+          navigate("/ResturantList")
         }
-      );
-    } else {
-        addResturant(obj, {
-        onSuccess: () => {
-            console.log(obj,"add images")
-          toastSuccess("Resturant added successfully!");
-          setBanquetName("");
-        //   navigate("/categoryList");
-        },
-        onError: (error: any) => {
-          console.error("Error adding Resturant:", error.message);
-          toastError("Failed to add Resturant.");
-        },
-      });
+      }
+      else {
+        const { data: res } = await addResturant(obj)
+        if (res) {
+          toastSuccess(res.message)
+          navigate("/ResturantList")
+        }
+      }
+
+
     }
+    catch (error) {
+      toastError(error)
+
+
+    }
+
+
+
+    // if (id) {
+    //     updateResturant(
+    //     { id, obj },
+    //     {
+    //       onSuccess: () => {
+    //         toastSuccess("Resturant updated successfully!");
+    //         // navigate("/categoryList");
+    //       },
+    //       onError: (error: any) => {
+    //         console.error("Error updating Resturant:", error.message);
+    //         toastError("Failed to update Resturant.");
+    //       },
+    //     }
+    //   );
+    // } else {
+    //     addResturant(obj, {
+    //     onSuccess: () => {
+    //         console.log(obj,"add images")
+    //       toastSuccess("Resturant added successfully!");
+    //       setBanquetName("");
+    //     //   navigate("/categoryList");
+    //     },
+    //     onError: (error: any) => {
+    //       console.error("Error adding Resturant:", error.message);
+    //       toastError("Failed to add Resturant.");
+    //     },
+    //   });
+    // }
   };
 
   return (
@@ -84,7 +107,7 @@ const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
             <h2 className="text-lg font-semibold mb-4">Resturant</h2>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-              Floor
+                Floor
               </label>
               <input
                 onChange={(e) => setFloor(e.target.value)}
@@ -118,8 +141,8 @@ const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
               value={
                 images && images.length > 0
                   ? images
-                      .filter((el) => el.image != "")
-                      .map((el) => ({ value: el.image }))
+                    .filter((el) => el.image != "")
+                    .map((el) => ({ value: el.image }))
                   : []
               }
               onFileChange={handleImageUpload}
@@ -134,4 +157,4 @@ const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
   );
 };
 
-export default AddHotel;
+export default AddResturant;

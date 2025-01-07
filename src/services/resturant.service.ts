@@ -8,10 +8,11 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 
 const prefix = "/resturant";
 export interface IResturant {
-    foodOptions : string,
-    noOfOccupancy : string,
-    floor : string,
-    swimmingPool : string,
+    _id: string,
+    foodOptions: string,
+    noOfOccupancy: string,
+    floor: string,
+    swimmingPool: string,
     imagesArr: {
         image: string
     }[]

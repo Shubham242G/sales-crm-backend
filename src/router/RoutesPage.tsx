@@ -56,6 +56,10 @@ import HotelAdd from "../pages/Important/hotel";
 import BanquetAdd from "../pages/Important/banquet";
 import ResturantAdd from "../pages/Important/resturant";
 import HotelList from "../pages/Important/hotelList";
+import BanquetList from "../pages/Important/banquetList";
+import ResturantList from "../pages/Important/resturantList";
+import AddContact from "@/pages/Sales/addContact";
+import ContactUs from "@/pages/Sales/contactUs";
 export default function RoutesPage() {
   return (
     <>
@@ -71,16 +75,21 @@ export default function RoutesPage() {
             <Route path="/hotel" element={<HotelAdd />}></Route>
             <Route path="/hotel/:id" element={<HotelAdd />}></Route>
             <Route path="/banquet" element={<BanquetAdd />}></Route>
+            <Route path="/banquet/:id" element={<BanquetAdd />}></Route>
+            <Route path="/BanquetList" element={<BanquetList />}></Route>
             <Route path="/resturant" element={<ResturantAdd />}></Route>
+            <Route path="/resturant/:id" element={<ResturantAdd />}></Route>
+            <Route path="/ResturantList" element={<ResturantList />}></Route>
             <Route path="/category2/:id" element={<AddCategory />}></Route>
             <Route path="/CategoryList" element={<CategoryList />}></Route>
-            <Route path="/hotelList" element={<HotelList />}></Route>
+            <Route path="/HotelList" element={<HotelList />}></Route>
             <Route path="/quotesForCustomer" element={<QuotesForCustomer />}></Route>
-            <Route path="/DailyActivityReport" element={<DailyActivityReport />}></Route> 
+            <Route path="/DailyActivityReport" element={<DailyActivityReport />}></Route>
             <Route path="/TaskManagement" element={<TaskManagement />}></Route>
             <Route path="/add-TaskManagement" element={<AddTaskManagement />}></Route>
             <Route path="/add-DailyActivityReport" element={<AddDailyActivityReport />}></Route>
             <Route path="/customer-sales" element={<CustomerSales />}></Route>
+            <Route path="/contact-us" element={<ContactUs />}></Route>
             <Route path="/quotesForVendors" element={<QuotesForVendors />}></Route>
             <Route path="/confirmedQuotes" element={<ConfirmedQuotes />}></Route>
             <Route path="/ledger-group" element={<LedgerGroup />}></Route>
@@ -88,6 +97,7 @@ export default function RoutesPage() {
             <Route path="/sales-ledger" element={<SalesLedger />}></Route>
             <Route path="/add-ledger" element={<AddLedger />}></Route>
             <Route path="/add-customer" element={<AddCustomer />}></Route>
+            <Route path="/add-contact" element={<AddContact />}></Route>
             <Route path="/add-vendor" element={<AddVendorForm />}></Route>
             <Route path="/add-rfps" element={<AddRfpsForm />}></Route>
             <Route path="/add-leads" element={<AddLeadsForm />}></Route>

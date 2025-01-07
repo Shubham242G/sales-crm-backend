@@ -86,6 +86,12 @@ function Sidebar() {
           dropHead: "Customer Outstanding",
           link: "confirmedQuotes",
         },
+        {
+          dropHead: "Contact Us",
+          link: "Contact-us",
+        },
+
+
       ],
     },
     {
@@ -119,26 +125,26 @@ function Sidebar() {
         },
         {
           dropHead: "Add Hotel",
-          link: "hotelList",
+          link: "HotelList",
         },
         {
           dropHead: "Add Banquet",
-          link: "banquet",
+          link: "BanquetList",
         },
         {
           dropHead: "Add Resturant",
-          link: "resturant",
+          link: "ResturantList",
         },
       ],
     },
 
 
-   
-    
 
-   
-      
-    
+
+
+
+
+
   ]);
 
   const [showdrop, setShowDrop] = useState<number | null>(null);
@@ -176,9 +182,8 @@ function Sidebar() {
                     </h6>
                   </div>
                   <MdChevronRight
-                    className={`transition-transform ${
-                      showdrop === index ? "rotate-90" : ""
-                    }`}
+                    className={`transition-transform ${showdrop === index ? "rotate-90" : ""
+                      }`}
                   />
                 </button>
               ) : (

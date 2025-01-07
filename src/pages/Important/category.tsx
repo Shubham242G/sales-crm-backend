@@ -8,52 +8,43 @@ const AddCategory = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     console.log(id, "id");
-    const { mutate: addCategory } = useAddCategory();
-    const { mutate: updateCategory } = useUpdateCategoryById();
-    const { data: categoryData, isLoading } = useCategoryById(id || "");        
+    const { mutateAsync: addCategory } = useAddCategory();
+    const { mutateAsync: updateCategory } = useUpdateCategoryById();
+    const { data: categoryData, isLoading } = useCategoryById(id || "");
 
     useEffect(() => {
         // Prefill form when editing
         if (categoryData) {
-            console.log(categoryData,"getById/")
+            console.log(categoryData, "getById/")
             setName(categoryData?.data?.name || "");
         }
     }, [categoryData]);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        try {
+            const obj = { name };
 
-        const obj = { name };
+            if (id) {
 
-        if (id) {
-            
-            updateCategory(
-                { id, obj },
-                {
-                    onSuccess: () => {
-                        toastSuccess("Category updated successfully!");
-                        navigate("/categoryList");
-                    },
-                    onError: (error: any) => {
-                        console.error("Error updating category:", error.message);
-                        toastError("Failed to update category.");
-                    },
-                }
-            );
-        } else {
-
-            addCategory(obj, {
-                onSuccess: () => {
-                    toastSuccess("Category added successfully!");
-                    setName("");
+                const { data: res } = await updateCategory({ id, obj });
+                if (res?.message) {
+                    toastSuccess(res.message);
                     navigate("/categoryList");
-                },
-                onError: (error: any) => {
-                    console.error("Error adding category:", error.message);
-                    toastError("Failed to add category.");
-                },
-            });
+                }
+            } else {
+                console.log("check")
+
+                const { data: res } = await addCategory(obj);
+                if (res?.message) {
+                    toastSuccess(res.message);
+                    navigate("/categoryList");
+                }
+            }
+        } catch (error) {
+            toastError(error);
         }
+
     };
 
     return (

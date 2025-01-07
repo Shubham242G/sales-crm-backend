@@ -6,13 +6,14 @@ import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination } from "./ur
 import axios from "../libs/hooks/axios";
 
 const prefix = "/category";
-export interface ICategory  {
-    name: string,
+export interface ICategory {
     _id: string;
+    name: string,
+  
     createdAt: Date;
     updateAt: Date;
-    label:string;
-    value:string;
+    label: string;
+    value: string;
 }
 
 
@@ -20,7 +21,6 @@ export interface ICategory  {
 export const useCategoryApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addCategory = async (obj: any,) => {
-        console.log(`${BASE_URL}${prefix}/`,"test")
         return axios.post<GeneralApiResponse<ICategory>>(`${BASE_URL}${prefix}/`, obj);
     };
     const updateCategoryById = async ({ id, obj }: { id: string, obj: any }) => {
@@ -28,13 +28,13 @@ export const useCategoryApiHook = () => {
     };
     const deleteCategoryById = async (id: any) => {
         return axios.delete<GeneralApiResponse>(`${BASE_URL}${prefix}/deleteById/${id}`);
-    };  
+    };
     const getCategoryById = async (id: any) => {
         return axios.get<GeneralApiResponse<ICategory>>(`${BASE_URL}${prefix}/getById/${id}`);
     };
-   
+
     const getAllCategory = async (pagination: PaginationState, searchObj: any) => {
-        console.log(`${BASE_URL}${prefix}/`,"test c")
+        console.log(`${BASE_URL}${prefix}/`, "test c")
         // const query = new URLSearchParams({
         //     pageIndex: String(pagination.pageIndex),
         //     pageSize: String(pagination.pageSize),
@@ -91,7 +91,7 @@ export const useCategory = (searchObj: Record<string, any> = {}, getPaginationFr
 
 export const usedeleteCategoryById = () => {
     const api = useCategoryApiHook()
-    
+
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: api.deleteCategoryById,
@@ -104,7 +104,7 @@ export const usedeleteCategoryById = () => {
 
 export const useUpdateCategoryById = () => {
     const api = useCategoryApiHook()
-    
+
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: api.updateCategoryById,

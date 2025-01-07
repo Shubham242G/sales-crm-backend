@@ -20,15 +20,11 @@ export default BASE_URL
 
 
 export type GeneralApiResponse<T = unknown> = {
-  name: string;
-  filename?: string;
   message: string;
   data: T;
 };
 
 export type GeneralApiResponsePagination<T = unknown> = {
-  isLoading: boolean | undefined;
-  map: any;
   message: string;
   data: T[];
   total: number;

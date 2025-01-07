@@ -2,20 +2,18 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
-import { ICategory, useCategory, usedeleteCategoryById } from "@/services/category.service";
+import { IBanquet, useBanquet, usedeleteBanquetById } from "@/services/banquet.service";
+
 import { format } from "date-fns";
 import { toastError, toastSuccess } from "@/utils/toast";
-import { usedeleteHotelById, useHotel } from "@/services/hotel.service";
-import { pageIndex, pageSize } from "@/common/constant.common";
-function HotelList() {
+function BanquetList() {
     const navigate = useNavigate();
     const [pageIndex, setPageIndex] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [query, setQuery] = useState("");
-
     const searchObj = useMemo(() => {
         let obj: any = {};
 
@@ -33,22 +31,23 @@ function HotelList() {
     const handlePageChange = (newPage: any) => {
         setPageIndex(newPage);
     };
-    const { data: hotelData } = useHotel(searchObj);
-    const { mutateAsync: deleteHotel } = usedeleteHotelById()
+    const { data: banquetData } = useBanquet(searchObj);
+    console.log(banquetData, "check banquetData")
+    const { mutateAsync: deleteBanquet } = usedeleteBanquetById()
     // const [loading, setLoading] = useState(false);
     // const [currentPage, setCurrentPage] = useState(1);
     // const [rowsPerPage, setRowsPerPage] = useState(10);
     const handleDelete = async (id: string) => {
 
         try {
-
-            if (confirm("Are you sure you want to delete this Hotel?")) {
-                const { data: res } = await deleteHotel(id)
+            if (confirm("Are you sure you want to delete this banquet?")) {
+                const { data: res } = await deleteBanquet(id);
 
                 if (res) {
                     toastSuccess(res.message)
-                    navigate("/hotel")
+                    navigate("/BanquetList")
                 }
+
             }
 
         }
@@ -56,32 +55,21 @@ function HotelList() {
             toastError(error)
 
         }
-        // if (confirm("Are you sure you want to delete this Hotel?")) {
-        //     deleteHotel(id, {
-        //         onSuccess: () => {
-        //             toastSuccess("Hotel deleted successfully!");
-        //             // refetch(); // Refresh the data
-        //         },
-        //         onError: (error: any) => {
-        //             console.error("Error deleting Hotel:", error.message);
-        //             toastError("Failed to delete Hotel.");
-        //         },
-        //     });
-        // }
+
     };
 
     // ledger details modal
-    console.log(hotelData?.data, "hotelData")
+    console.log(banquetData, "banquetData")
     const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
     const handleLedgerDetailsModal = () => {
         setShowLedgerDetailsModal(true);
     };
     const columns = [
         {
-            name: "Hotel Name",
+            name: "Banquet Name",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
-                    <h6>{row.name}</h6>
+                    <h6>{row.banquetName}</h6>
                 </div>
             ),
             width: "40%",
@@ -98,11 +86,11 @@ function HotelList() {
         },
         {
             name: "Action",
-            width: "40%",
-            selector: (row: ICategory) => (
+            width: "60%",
+            selector: (row: IBanquet) => (
                 <div className="flex items-center gap-3">
                     <Link
-                        to={`/hotel/${row?._id}`}
+                        to={`/banquet/${row?._id}`}
                         className="p-[6px] text-black-400 text-lg flex items-center"
                     >
                         <FaEye />
@@ -141,7 +129,7 @@ function HotelList() {
                     <div className="search_boxes flex justify-between items-center">
                         {/* Heading on the Left */}
                         <h2 className="text-xl font-semibold text-gray-800">
-                            All Hotel List
+                            All Banquet List
                         </h2>
 
                         {/* Search and Buttons on the Right */}
@@ -162,25 +150,26 @@ function HotelList() {
                                 <FaFileExport /> Export
                             </button>
                             <button
-                                onClick={() => navigate("/hotel")}
+                                onClick={() => navigate("/banquet")}
                                 className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
                             >
                                 <FaPlus />
-                                <span>New Hotel</span>
+                                <span>New Banquet</span>
                             </button>
                         </div>
                     </div>
                     {/* React Table */}
                     <ReactTable
-                        data={hotelData?.data}
+                        data={banquetData?.data}
                         columns={columns}
                         loading={false}
-                        totalRows={hotelData?.total}
+                        totalRows={banquetData?.total}
                         onChangeRowsPerPage={handlePerRowsChange}
                         onChangePage={handlePageChange}
                         page={pageIndex}
                         rowsPerPageText={pageSize}
                         isServerPropsDisabled={false}
+
                     />
                 </div>
             </div>
@@ -188,4 +177,4 @@ function HotelList() {
     );
 }
 
-export default HotelList;
+export default BanquetList;

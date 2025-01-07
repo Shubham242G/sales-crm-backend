@@ -18,8 +18,8 @@ const AddHotel = () => {
   const { mutateAsync: addBanquet } = useAddBanquet();
   const { mutateAsync: updateBanquet } = useUpdateBanquetById();
   const { data: banquetDataById, isLoading } = useBanquetById(id || "");
-//   const [images, setImages] = useState("");
-const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
+  //   const [images, setImages] = useState("");
+  const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
   useEffect(() => {
     // Prefill form when editing
     if (banquetDataById) {
@@ -32,39 +32,64 @@ const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
     console.log(images, "image");
     setImages(files.map((el) => ({ image: el.value })));
   };
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const obj = { banquetName,imagesArr:images  };
+    const obj = { banquetName, imagesArr: images };
 
-    if (id) {
-        updateBanquet(
-        { id, obj },
-        {
-          onSuccess: () => {
-            toastSuccess("Banquet updated successfully!");
-            // navigate("/categoryList");
-          },
-          onError: (error: any) => {
-            console.error("Error updating Banquet:", error.message);
-            toastError("Failed to update Banquet.");
-          },
+    try {
+      const obj = { banquetName, imagesArr: images };
+
+      if (id) {
+
+        const { data: res } = await updateBanquet({ id, obj });
+        if (res?.message) {
+          toastSuccess(res.message);
+          navigate("/BanquetList")
+
         }
-      );
-    } else {
-        addBanquet(obj, {
-        onSuccess: () => {
-            console.log(obj,"add images")
-          toastSuccess("Banquet added successfully!");
-          setBanquetName("");
-        //   navigate("/categoryList");
-        },
-        onError: (error: any) => {
-          console.error("Error adding Banquet:", error.message);
-          toastError("Failed to add Banquet.");
-        },
-      });
+      } else {
+
+        const { data: res } = await addBanquet(obj);
+        if (res?.message) {
+          toastSuccess(res.message);
+          navigate("/BanquetList")
+
+        }
+      }
+    } catch (error) {
+      toastError(error);
     }
+
+    // if (id) {
+    //   const res: any = await updateBanquet({ id, obj });
+    //     updateBanquet(
+    //     { id, obj },
+    //     {
+    //       onSuccess: () => {
+    //         toastSuccess("Banquet updated successfully!");
+    //         // navigate("/categoryList");
+    //       },
+    //       onError: (error: any) => {
+    //         console.error("Error updating Banquet:", error.message);
+    //         toastError("Failed to update Banquet.");
+    //       },
+    //     }
+    //   );
+    // } else {
+    //     addBanquet(obj, {
+    //     onSuccess: () => {
+    //         console.log(obj,"add images")
+    //       toastSuccess("Banquet added successfully!");
+    //       setBanquetName("");
+    //     //   navigate("/categoryList");
+    //     },
+    //     onError: (error: any) => {
+    //       console.error("Error adding Banquet:", error.message);
+    //       toastError("Failed to add Banquet.");
+    //     },
+    //   });
+    // }
   };
 
   return (
@@ -81,7 +106,7 @@ const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
             <h2 className="text-lg font-semibold mb-4">Banquet</h2>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-              Banquet Name
+                Banquet Name
               </label>
               <input
                 onChange={(e) => setBanquetName(e.target.value)}
@@ -115,8 +140,8 @@ const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
               value={
                 images && images.length > 0
                   ? images
-                      .filter((el) => el.image != "")
-                      .map((el) => ({ value: el.image }))
+                    .filter((el) => el.image != "")
+                    .map((el) => ({ value: el.image }))
                   : []
               }
               onFileChange={handleImageUpload}
