@@ -87,8 +87,13 @@ function Sidebar() {
           link: "confirmedQuotes",
         },
         {
+          dropHead: "Add Contact",
+          link: "add-contact",
+        },
+
+        {
           dropHead: "Contact Us",
-          link: "Contact-us",
+          link: "contact-us",
         },
 
 

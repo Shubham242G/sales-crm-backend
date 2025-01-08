@@ -162,7 +162,7 @@ function ContactUs() {
                     <div className="search_boxes flex justify-between items-center">
                         {/* Heading on the Left */}
                         <h2 className="text-xl font-semibold text-gray-800">
-                            Customer List
+                            Contact List
                         </h2>
 
                         {/* Search and Buttons on the Right */}

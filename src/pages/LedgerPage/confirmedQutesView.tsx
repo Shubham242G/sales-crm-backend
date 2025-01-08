@@ -91,7 +91,7 @@ function ConfirmedQuotesView() {
 
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
-            Event Start Time
+              Event Start Time
             </p>
             :
             <p className="text-xl font-medium text-[#888888]">
@@ -100,7 +100,7 @@ function ConfirmedQuotesView() {
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
-            Event End Time
+              Event End Time
             </p>
             :
             <p className="text-xl font-medium text-[#888888]">
@@ -109,61 +109,61 @@ function ConfirmedQuotesView() {
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
-            BTR
+              BTR
             </p>
             :
             <p className="text-xl font-medium text-[#888888]">
-            Some text
+              Some text
             </p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
-            Venue
+              Venue
             </p>
             :
             <p className="text-xl font-medium text-[#888888]">
-            Some text
+              Some text
             </p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
-            Setup
+              Setup
             </p>
             :
             <p className="text-xl font-medium text-[#888888]">
-            Some text
+              Some text
             </p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
-            A/V Vendor Name
+              A/V Vendor Name
             </p>
             :
             <p className="text-xl font-medium text-[#888888]">
-            Some text
+              Some text
             </p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
-            Linear Order
+              Linear Order
             </p>
             :
             <p className="text-xl font-medium text-[#888888]">
-            Some text
+              Some text
             </p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
-            Exp Number of Seating
+              Exp Number of Seating
             </p>
             :
             <p className="text-xl font-medium text-[#888888]">
-            Some text
+              Some text
             </p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
-            Starters Event Time
+              Starters Event Time
             </p>
             :
             <p className="text-xl font-medium text-[#888888]">
@@ -172,7 +172,7 @@ function ConfirmedQuotesView() {
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
-            Starters Placements
+              Starters Placements
             </p>
             :
             <p className="text-xl font-medium text-[#888888]">
@@ -187,17 +187,17 @@ function ConfirmedQuotesView() {
         </section>
 
         <section>
-        <h4 className="text-lg font-medium text-[#1a1a1a]">Audio / Visuals</h4>
+          <h4 className="text-lg font-medium text-[#1a1a1a]">Audio / Visuals</h4>
           <DataTable data={["Text here", "Text here"]} />
         </section>
 
         <section>
-        <h4 className="text-lg font-medium text-[#1a1a1a]">Event Flow</h4>
+          <h4 className="text-lg font-medium text-[#1a1a1a]">Event Flow</h4>
           <DataTable data={["Text here", "Text here"]} />
         </section>
 
         <section>
-        <h4 className="text-lg font-medium text-[#1a1a1a]">Checklist</h4>
+          <h4 className="text-lg font-medium text-[#1a1a1a]">Checklist</h4>
           <DataTable
             data={[
               "Call A/V coordinator 3 hours before event time",
@@ -233,7 +233,8 @@ function ConfirmedQuotesView() {
 //   );
 // }
 
-function DataTable( {data} ) {
+
+function DataTable({ data }: { data: any }) {
   return (
     <table className="w-full text-left mt-3">
       <thead className="bg-[#0B2F46] rounded-t-md flex flex-row justify-between w-full">
@@ -250,7 +251,7 @@ function DataTable( {data} ) {
         </tr>
       </thead>
       <tbody>
-        {data.map((item : any, index : any) => (
+        {data.map((item: any, index: any) => (
           <tr
             key={index}
             className="w-full border border-[#D1D1D1] flex flex-row justify-between"
