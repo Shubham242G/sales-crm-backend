@@ -40,8 +40,8 @@ function Sidebar() {
           link: "rfps",
         },
         {
-          dropHead: "Quotes for Vendors",
-          link: "quotesForVendors",
+          dropHead: "Quotes from Vendors",
+          link: "quotesFromVendors",
         },
         {
           dropHead: "Confirmed Quotes",
@@ -49,6 +49,7 @@ function Sidebar() {
         },
       ],
     },
+
     {
       mainlink: "/",
       heading: "Sales",
@@ -71,8 +72,12 @@ function Sidebar() {
           link: "quotesForCustomer",
         },
         {
-          dropHead: "Enquiry",
-          link: "confirmedQuotes",
+          dropHead: "Enquiry List",
+          link: "enquiryList",
+        },
+        {
+          dropHead: "Add Enquiry",
+          link: "addEnquiry",
         },
         {
           dropHead: "Confirmed Quotes",
@@ -96,6 +101,26 @@ function Sidebar() {
           link: "contact-us",
         },
 
+
+      ],
+    },
+    {
+      mainlink: "/",
+      heading: "Contact",
+      icon: ledger,
+      activeIcon: ledgerw,
+      isActive: false,
+      isArrow: true,
+
+      dropArr: [
+        {
+          dropHead: "Contact List",
+          link: "contact",
+        },
+        {
+          dropHead: "Add Contact",
+          link: "add-contact",
+        },
 
       ],
     },

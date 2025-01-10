@@ -60,6 +60,10 @@ import BanquetList from "../pages/Important/banquetList";
 import ResturantList from "../pages/Important/resturantList";
 import AddContact from "@/pages/Sales/addContact";
 import ContactUs from "@/pages/Sales/contactUs";
+import EnquiryLIst from "@/pages/Sales/enquiryList";
+import AddEnquiry from "@/pages/Sales/addEnquiry";
+
+
 export default function RoutesPage() {
   return (
     <>
@@ -89,15 +93,20 @@ export default function RoutesPage() {
             <Route path="/add-TaskManagement" element={<AddTaskManagement />}></Route>
             <Route path="/add-DailyActivityReport" element={<AddDailyActivityReport />}></Route>
             <Route path="/customer-sales" element={<CustomerSales />}></Route>
-            <Route path="/contact-us" element={<ContactUs />}></Route>
-            <Route path="/quotesForVendors" element={<QuotesForVendors />}></Route>
+            <Route path="/contact" element={<ContactUs />}></Route>
+
+
+            <Route path="/enquiryList" element={<EnquiryLIst />}></Route>
+            <Route path="/addEnquiry" element={<AddEnquiry />}></Route>
+            <Route path="/quotesFromVendors" element={<QuotesForVendors />}></Route>
             <Route path="/confirmedQuotes" element={<ConfirmedQuotes />}></Route>
             <Route path="/ledger-group" element={<LedgerGroup />}></Route>
-            <Route path="/view-quotesForVendor" element={<QuotesForVendorsView />}></Route>
+            <Route path="/view-quotesFromVendor" element={<QuotesForVendorsView />}></Route>
             <Route path="/sales-ledger" element={<SalesLedger />}></Route>
             <Route path="/add-ledger" element={<AddLedger />}></Route>
             <Route path="/add-customer" element={<AddCustomer />}></Route>
             <Route path="/add-contact" element={<AddContact />}></Route>
+            <Route path="/add-contact/:id" element={<AddContact />}></Route>
             <Route path="/add-vendor" element={<AddVendorForm />}></Route>
             <Route path="/add-rfps" element={<AddRfpsForm />}></Route>
             <Route path="/add-leads" element={<AddLeadsForm />}></Route>

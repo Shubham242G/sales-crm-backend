@@ -5,92 +5,84 @@ import { useAddContact, useContactById, useUpdateContactById } from "@/services/
 import { toastError, toastSuccess } from '@/utils/toast';
 
 
-const AddContact = () => {
+const AddEnquiry = () => {
     const [formData, setFormData] = useState({
-
-        //new fields 
-
-        name: '',
+        // Basic Details
+        displayName: '',
+        companyName: '',
+        salutation: '',
+        firstName: '',
+        lastName: '',
         phone: '',
-        email: '',
-        typeOfContact: '',
+        currencyCode: '',
+        notes: '',
+        website: '',
+        status: '',
+        openingBalance: '',
+        openingBalanceExchangeRate: '',
+        branchId: '',
+        branchName: '',
+        bankAccountPayment: '',
+        portalEnabled: false,
+        creditLimit: '',
+        customerSubType: '',
+        department: '',
+        designation: '',
+        priceList: '',
+        paymentTerms: '',
+        paymentTermsLabel: '',
 
-        // // Basic Details
-        // displayName: '',
-        // companyName: '',
-        // salutation: '',
-        // firstName: '',
-        // lastName: '',
-        // phone: '',
-        // currencyCode: '',
-        // notes: '',
-        // website: '',
-        // status: '',
-        // openingBalance: '',
-        // openingBalanceExchangeRate: '',
-        // branchId: '',
-        // branchName: '',
-        // bankAccountPayment: '',
-        // portalEnabled: false,
-        // creditLimit: '',
-        // customerSubType: '',
-        // department: '',
-        // designation: '',
-        // priceList: '',
-        // paymentTerms: '',
-        // paymentTermsLabel: '',
+        // Contact Information
+        emailId: '',
+        mobilePhone: '',
+        skypeIdentity: '',
+        facebook: '',
+        twitter: '',
 
-        // // Contact Information
-        // emailId: '',
-        // mobilePhone: '',
-        // skypeIdentity: '',
-        // facebook: '',
-        // twitter: '',
+        // GST Details
+        gstTreatment: '',
+        gstin: '',
+        taxable: false,
+        taxId: '',
+        taxName: '',
+        taxPercentage: '',
+        exemptionReason: '',
 
-        // // GST Details
-        // gstTreatment: '',
-        // gstin: '',
-        // taxable: false,
-        // taxId: '',
-        // taxName: '',
-        // taxPercentage: '',
-        // exemptionReason: '',
+        // Billing Address
+        billingAttention: '',
+        billingAddress: '',
+        billingStreet2: '',
+        billingCity: '',
+        billingState: '',
+        billingCountry: '',
+        billingCounty: '',
+        billingCode: '',
+        billingPhone: '',
+        billingFax: '',
 
-        // // Billing Address
-        // billingAttention: '',
-        // billingAddress: '',
-        // billingStreet2: '',
-        // billingCity: '',
-        // billingState: '',
-        // billingCountry: '',
-        // billingCounty: '',
-        // billingCode: '',
-        // billingPhone: '',
-        // billingFax: '',
+        // Shipping Address
+        shippingAttention: '',
+        shippingAddress: '',
+        shippingStreet2: '',
+        shippingCity: '',
+        shippingState: '',
+        shippingCountry: '',
+        shippingCounty: '',
+        shippingCode: '',
+        shippingPhone: '',
+        shippingFax: '',
 
-        // // Shipping Address
-        // shippingAttention: '',
-        // shippingAddress: '',
-        // shippingStreet2: '',
-        // shippingCity: '',
-        // shippingState: '',
-        // shippingCountry: '',
-        // shippingCounty: '',
-        // shippingCode: '',
-        // shippingPhone: '',
-        // shippingFax: '',
-
-        // // Additional Details
-        // placeOfContact: '',
-        // placeOfContactWithStateCode: '',
-        // contactAddressId: '',
-        // source: '',
-        // ownerName: '',
-        // primaryContactId: '',
-        // contactId: '',
-        // contactName: '',
-        // contactType: '',
-        // lastSyncTime: ''
+        // Additional Details
+        placeOfContact: '',
+        placeOfContactWithStateCode: '',
+        contactAddressId: '',
+        source: '',
+        ownerName: '',
+        primaryContactId: '',
+        contactId: '',
+        contactName: '',
+        contactType: '',
+        lastSyncTime: ''
     });
     const { id } = useParams();
 
@@ -104,14 +96,14 @@ const AddContact = () => {
         // Prefill form when editing
         if (contactDataById) {
             console.log(contactDataById, "getById/");
-            setFormData(contactDataById?.data || "");
+            // setFormData(contactDataById?.data || "");
         }
     }, [contactDataById]);
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            if (!formData.name) {
-                toastError("Name is required");
+            if (!formData.displayName) {
+                toastError("Display Name is required");
                 return;
             }
 
@@ -127,7 +119,7 @@ const AddContact = () => {
                 const { data: res } = await updateContact({ id, obj });
                 if (res?.message) {
                     toastSuccess(res.message);
-                    navigate("/contact")
+                    navigate("/contact-us")
 
                 }
             } else {
@@ -135,7 +127,7 @@ const AddContact = () => {
                 const { data: res } = await addContact(obj);
                 if (res?.message) {
                     toastSuccess(res.message);
-                    navigate("/contact")
+                    navigate("/contact-us")
 
                 }
             }
@@ -162,57 +154,11 @@ const AddContact = () => {
     return (
         <div className="min-h-screen bg-gray-100 p-8">
             <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-8">
-                <h1 className="text-2xl font-bold mb-6">Add Contact</h1>
+                <h1 className="text-2xl font-bold mb-6">Add Enquiry</h1>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
-
-                    {/* new fields */}
-                    <section>
-                        <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div>
-                                <label>Name</label>
-                                <input
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                    className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-                                    required
-                                    type="text"
-                                />
-                            </div>
-                            <div>
-                                <label>Phone</label>
-                                <input
-                                    name="phone"
-                                    value={formData.phone}
-                                    onChange={handleInputChange}
-                                    className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-                                />
-                            </div>
-                            <div>
-                                <label>Email</label>
-                                <input
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-                                />
-                            </div>
-                            <div>
-                                <label>Type of Contact</label>
-                                <select className='input mb-2'>
-                                    <option value="">Select contact type</option>
-
-                                    <option value="client">Client contact</option>
-                                    <option value="vendor">Vendor contact</option>
-                                </select>
-                            </div>
-                        </div>
-                    </section>
-
                     {/* Basic Information */}
-                    {/* <section>
+                    <section>
                         <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -426,10 +372,10 @@ const AddContact = () => {
                                 />
                             </div>
                         </div>
-                    </section> */}
+                    </section>
 
                     {/* Contact Information */}
-                    {/* <section>
+                    <section>
                         <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -480,10 +426,10 @@ const AddContact = () => {
                                 />
                             </div>
                         </div>
-                    </section> */}
+                    </section>
 
                     {/* Billing Address */}
-                    {/* <section>
+                    <section>
                         <h2 className="text-lg font-semibold mb-4">Billing Address</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -577,11 +523,11 @@ const AddContact = () => {
                                 />
                             </div>
                         </div>
-                    </section> */}
+                    </section>
 
 
                     {/* GST Details */}
-                    {/* <section>
+                    <section>
                         <h2 className="text-lg font-semibold mb-4">GST Details</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -649,10 +595,10 @@ const AddContact = () => {
                                 />
                             </div>
                         </div>
-                    </section> */}
+                    </section>
 
                     {/* Shipping Address */}
-                    {/* <section>
+                    <section>
                         <h2 className="text-lg font-semibold mb-4">Shipping Address</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -746,10 +692,10 @@ const AddContact = () => {
                                 />
                             </div>
                         </div>
-                    </section> */}
+                    </section>
 
                     {/* Additional Details */}
-                    {/* <section>
+                    <section>
                         <h2 className="text-lg font-semibold mb-4">Additional Details</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -844,7 +790,7 @@ const AddContact = () => {
                                 />
                             </div>
                         </div>
-                    </section> */}
+                    </section>
 
                     {/* Submit Buttons */}
                     <div className="flex justify-end gap-4">
@@ -858,7 +804,7 @@ const AddContact = () => {
                             type="submit"
                             className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
                         >
-                            Save Contact
+                            Save Enquiry
                         </button>
                     </div>
                 </form>
@@ -867,7 +813,7 @@ const AddContact = () => {
     );
 };
 
-export default AddContact;
+export default AddEnquiry;
 
 
 

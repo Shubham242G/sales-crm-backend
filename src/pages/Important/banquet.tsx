@@ -7,7 +7,6 @@ import {
 } from "@/services/category.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import MultiFileUpload from "@/utils/multiFileUpload";
-import { useAddHotel, useHotelById, useUpdateHotelById } from "@/services/hotel.service";
 import { useAddBanquet, useBanquetById, useUpdateBanquetById } from "@/services/banquet.service";
 
 const AddHotel = () => {

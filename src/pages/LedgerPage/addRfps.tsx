@@ -4,7 +4,7 @@ const AddRfpsForm = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-2xl font-bold mb-6">Add RFPs</h1>
+        <h1 className="text-2xl font-bold mb-6">Add RPFs</h1>
         <form>
           {/* Service Type and Event Date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">

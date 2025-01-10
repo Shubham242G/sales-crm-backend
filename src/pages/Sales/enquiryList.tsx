@@ -3,14 +3,14 @@ import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { SiConvertio } from "react-icons/si";
 import { FaFilter, FaFileExport, FaPlus, FaFileImport } from "react-icons/fa";
-import { addContactsExel, getExel, useContact, usedeleteContactById, useConvert } from "@/services/contactUs.service";
+import { addEnquiryExel, getExel, useEnquiry, usedeleteEnquiryById } from "@/services/enquiry.service";
 import { toastSuccess, toastError } from "@/utils/toast";
+
 import Modal from 'react-select';
 import { generateFilePath } from "@/services/urls.service";
 
-function ContactUs() {
+function EnquiryLIst() {
     const navigate = useNavigate();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isUploading, setIsUploading] = useState(false);
@@ -25,10 +25,10 @@ function ContactUs() {
         pageSize
     }), [pageIndex, pageSize, query]);
 
-    const { data: ContactData } = useContact(searchObj);
+    const { data: ContactData } = useEnquiry(searchObj);
     console.log(ContactData, "check ContactData")
-    const { mutateAsync: deleteContact } = usedeleteContactById();
-    const { mutateAsync: convertEnquiry } = useConvert();
+    const { mutateAsync: deleteContact } = usedeleteEnquiryById();
+    
 
     // Handle triggering file input click
     const handleImportClick = () => {
@@ -45,7 +45,7 @@ function ContactUs() {
             const formData = new FormData();
             formData.append("file", file);
 
-            const response = await addContactsExel(formData);
+            const response = await addEnquiryExel(formData);
 
             console.log(response, "check response")
             toastSuccess("Contacts imported successfully!");
@@ -98,22 +98,8 @@ function ContactUs() {
         }
     };
 
-    const handleConvertEnquery = async (id: any) => {
 
-        try {
-            const { data: res } = await convertEnquiry(id)
-            if (res) {
-                toastSuccess(res.message)
-
-            }
-
-        }
-        catch (error) {
-            toastError(error)
-        }
-
-
-    }
+   
 
     const columns = [
         {
@@ -170,26 +156,7 @@ function ContactUs() {
                 </div>
             ),
         },
-        {
-            name: "Convert to Enquiry",
-            width: "10%",
-            selector: (row: any) => (
-                <div className="flex items-center gap-3">
-                    <Link
-                        to={`/add-contact/${row?._id}`}
-                        className="p-[6px] text-black-400 text-lg flex items-center"
-                    >
-
-                    </Link>
-                    <button
-                        className="p-[6px] text-black-400 text-lg"
-                        onClick={() => handleConvertEnquery(row._id)}
-                    >
-                        <SiConvertio />
-                    </button>
-                </div>
-            ),
-        },
+       
     ];
 
     return (
@@ -197,7 +164,7 @@ function ContactUs() {
             <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
                 <div className="search_boxes flex justify-between items-center">
                     <h2 className="text-xl font-semibold text-gray-800">
-                        Contact List
+                        Enquiry List
                     </h2>
 
                     <div className="flex items-center justify-start gap-2">
@@ -239,11 +206,11 @@ function ContactUs() {
                         </button>
 
                         <button
-                            onClick={() => navigate("/add-contact")}
+                            onClick={() => navigate("/addEnquiry")}
                             className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
                         >
                             <FaPlus />
-                            <span>New Contact</span>
+                            <span>New Enquiry</span>
                         </button>
                     </div>
                 </div>
@@ -264,4 +231,4 @@ function ContactUs() {
     );
 }
 
-export default ContactUs;
+export default EnquiryLIst;

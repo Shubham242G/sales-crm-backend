@@ -84,13 +84,12 @@ function CustomerLedger() {
       name: "Status",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col p-2 rounded-md text-white ${
-            row.status === "Pending"
-              ? "bg-yellow-200 text-yellow-500"
-              : row.status === "Reviewed"
+          className={`flex gap-1 flex-col p-2 rounded-md text-white ${row.status === "Pending"
+            ? "bg-yellow-200 text-yellow-500"
+            : row.status === "Reviewed"
               ? "bg-green-300 text-green-600"
               : "bg-red-200 text-red-600"
-          }`}
+            }`}
         >
           <h6>{row.status}</h6>
         </div>
@@ -104,7 +103,7 @@ function CustomerLedger() {
       selector: () => (
         <div className="flex items-center gap-3">
           <Link
-            to="/view-quotesForVendor"
+            to="/view-quotesFromVendor"
             className="  p-[6px] text-black-400 text-lg"
           >
             <FaEye />
@@ -228,7 +227,7 @@ function CustomerLedger() {
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
-              All Quotes for Vendor List
+              Quotes from  Vendor
             </h2>
 
             {/* Search and Buttons on the Right */}
@@ -260,13 +259,13 @@ function CustomerLedger() {
             columns={columns}
             loading={false}
             totalRows={0}
-            // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+          // loading={loading}
+          // totalRows={data.length}
+          // onChangePage={handlePageChange}
+          // onChangeRowsPerPage={handleRowsPerPageChange}
+          // pagination
+          // paginationPerPage={rowsPerPage}
+          // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>
