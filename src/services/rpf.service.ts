@@ -8,18 +8,17 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 
 
-const prefix = "/enquiry";
-export interface IEnqiry {
+const prefix = "/rpf";
+export interface IRPF {
     // Basic Details
     _id: string; // Unique identifier
-    name: string;
-    phone: string;
-    email: string;
-    typeOfContact: string;
-    contactId: string;
-    subject: string;
-    details: string;
-    priority: string;
+    rpfId: string;
+    serviceType: string,
+    eventDate: string,
+    eventDetails: string,
+    deadlineOfProposal: string,
+    vendorList: string,
+    additionalInstructions: string,
     // displayName: string;
     // companyName: string;
     // salutation: string;
@@ -99,102 +98,102 @@ export interface IEnqiry {
 
 
 
-export const useEnquiryApiHook = () => {
+export const useRpfApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
-    const addEnquiry = async (obj: any) => {
+    const addRpf = async (obj: any) => {
 
-        return axios.post<GeneralApiResponse<IEnqiry>>(`${BASE_URL}${prefix}/`, obj);
+        return axios.post<GeneralApiResponse<IRPF>>(`${BASE_URL}${prefix}/`, obj);
     };
-    const updateEnquiryById = async ({ id, obj }: { id: string; obj: any }) => {
+    const updateRpfById = async ({ id, obj }: { id: string; obj: any }) => {
         return axios.patch<GeneralApiResponse>(`${BASE_URL}${prefix}/updateById/${id}`, obj);
     };
-    const deleteEnquiryById = async (id: any) => {
+    const deleteRpfById = async (id: any) => {
         return axios.delete<GeneralApiResponse>(`${BASE_URL}${prefix}/deleteById/${id}`);
     };
-    const getEnquiryById = async (id: any) => {
-        return axios.get<GeneralApiResponse<IEnqiry>>(`${BASE_URL}${prefix}/getById/${id}`);
+    const getRpfById = async (id: any) => {
+        return axios.get<GeneralApiResponse<IRPF>>(`${BASE_URL}${prefix}/getById/${id}`);
     };
 
 
 
-    const getAllEnquiry = async (pagination: PaginationState, searchObj: any) => {
+    const getAllRpf = async (pagination: PaginationState, searchObj: any) => {
         const query = new URLSearchParams({
             pageIndex: String(pagination.pageIndex),
             pageSize: String(pagination.pageSize),
             ...searchObj,
         }).toString();
-        return axios.get<GeneralApiResponsePagination<IEnqiry>>(`${BASE_URL}${prefix}?${query}`);
+        return axios.get<GeneralApiResponsePagination<IRPF>>(`${BASE_URL}${prefix}?${query}`);
     };
 
     return {
-        getAllEnquiry,
-        updateEnquiryById,
-        deleteEnquiryById,
-        getEnquiryById,
-        addEnquiry,
+        getAllRpf,
+        updateRpfById,
+        deleteRpfById,
+        getRpfById,
+        addRpf,
 
     };
 };
 
-export const useAddEnquiry = () => {
+export const useAddRpf = () => {
     const queryClient = useQueryClient();
-    const api = useEnquiryApiHook();
+    const api = useRpfApiHook();
     return useMutation({
-        mutationFn: api.addEnquiry,
+        mutationFn: api.addRpf,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["Enquiry"] });
+            queryClient.invalidateQueries({ queryKey: ["Rpf"] });
         },
     });
 };
 
-export const useEnquiryById = (id: string) => {
-    const api = useEnquiryApiHook();
+export const useRpfById = (id: string) => {
+    const api = useRpfApiHook();
 
     return useQuery({
-        queryKey: ["enquiry_id", id],
-        queryFn: () => api.getEnquiryById(id).then((res) => res.data),
+        queryKey: ["rpf_id", id],
+        queryFn: () => api.getRpfById(id).then((res) => res.data),
         enabled: !!id,
     });
 };
 
-export const useEnquiry = (searchObj: Record<string, any> = {}, getPaginationFromParams = true) => {
+export const useRpf = (searchObj: Record<string, any> = {}, getPaginationFromParams = true) => {
     const pagination = usePagination(getPaginationFromParams);
 
-    const api = useEnquiryApiHook();
+    const api = useRpfApiHook();
 
 
     return useQuery({
-        queryKey: ["Enquiry", pagination, searchObj],
-        queryFn: () => api.getAllEnquiry(pagination, searchObj).then((res) => res?.data),
+        queryKey: ["Rpf", pagination, searchObj],
+        queryFn: () => api.getAllRpf(pagination, searchObj).then((res) => res?.data),
         initialData: {
             data: [],
             total: 0,
             message: "",
-        } as unknown as GeneralApiResponsePagination<IEnqiry>,
+        } as unknown as GeneralApiResponsePagination<IRPF>,
     });
 };
 
-export const usedeleteEnquiryById = () => {
-    const api = useEnquiryApiHook();
+export const usedeleteRpfById = () => {
+    const api = useRpfApiHook();
 
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: api.deleteEnquiryById,
+        mutationFn: api.deleteRpfById,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["Enquiry"] });
+            queryClient.invalidateQueries({ queryKey: ["Rpf"] });
             // toastSuccess(res);
         },
     });
 };
 
-export const useUpdateEnquiryById = () => {
-    const api = useEnquiryApiHook();
+export const useUpdateRpfById = () => {
+    const api = useRpfApiHook();
 
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: api.updateEnquiryById,
+        mutationFn: api.updateRpfById,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["enquiry"] });
+            queryClient.invalidateQueries({ queryKey: ["rpf"] });
         },
     });
 };
@@ -204,7 +203,7 @@ export const getExel = async () => {
 };
 
 
-export const addEnquiryExel = async (obj: any,) => {
+export const addRpfExel = async (obj: any,) => {
 
     return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadEnquiries`, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
 };

@@ -2,9 +2,13 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
+
+
+import { useRpf, usedeleteRpfById, useAddRpf, useUpdateRpfById } from "@/services/rpf.service";
+import { toastError, toastSuccess } from "@/utils/toast";
 
 function CustomerLedger() {
   const navigate = useNavigate();
@@ -17,6 +21,86 @@ function CustomerLedger() {
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
+
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [query, setQuery] = useState("");
+
+  const searchObj = useMemo(() => ({
+    ...(query && { query }),
+    pageIndex: pageIndex - 1,
+    pageSize
+  }), [pageIndex, pageSize, query]);
+
+  const { data: RpfData } = useRpf(searchObj);
+  console.log(RpfData, "check RpfData")
+  const { mutateAsync: deleteRpf } = usedeleteRpfById();
+
+
+
+  // Handle file selection and upload
+  // const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (!file) return;
+
+  //   try {
+  //     setIsUploading(true);
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+
+  //     const response = await addEnquiryExel(formData);
+
+  //     console.log(response, "check response")
+  //     toastSuccess("Enquries imported successfully!");
+
+  //     // Optionally refresh the data
+  //     // You might want to add a refetch function from your useContact hook
+
+  //   } catch (error) {
+  //     toastError("Failed to import enquiries. Please try again.");
+  //     console.error("Import Error:", error);
+  //   } finally {
+  //     setIsUploading(false);
+  //     // Clear the file input
+  //     if (fileInputRef.current) {
+  //       fileInputRef.current.value = '';
+  //     }
+  //   }
+  // };
+
+  // Handle Export Contacts
+  // const handleExportEnquiries = async () => {
+  //   try {
+  //     const { data: response } = await getExel();
+  //     console.log(response, "check response")
+  //     const url = generateFilePath("/" + response.filename);
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.setAttribute("download", "enquiries.xlsx");
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     link.remove();
+  //     toastSuccess("Enquries exported successfully!");
+  //   } catch (error) {
+  //     toastError("Failed to export enquiries. Please try again.");
+  //     console.error("Export Error:", error);
+  //   }
+  // };
+
+  const handleDelete = async (id: string) => {
+    try {
+      if (window.confirm("Are you sure you want to delete this enquiry?")) {
+        const { data: res } = await deleteRpf(id);
+        if (res) {
+          toastSuccess(res.message);
+          // Optionally refresh the data
+        }
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  };
+
   const columns = [
     {
       name: "RPFs Id",
@@ -45,37 +129,36 @@ function CustomerLedger() {
       ),
       width: "15%",
     },
-    {
-      name: "Status",
-      selector: (row: any) => (
-        <div
-          className={`flex gap-1 flex-col p-2 rounded-md text-white ${
-            row.status === "Pending"
-              ? "bg-yellow-200 text-yellow-500"
-              : row.status === "Reviewed"
-              ? "bg-green-300 text-green-600"
-              : "bg-red-200 text-red-600"
-          }`}
-        >
-          <h6>{row.status}</h6>
-        </div>
-      ),
-      width: "20%",
-    },
+    // {
+    //   name: "Status",
+    //   selector: (row: any) => (
+    //     <div
+    //       className={`flex gap-1 flex-col p-2 rounded-md text-white ${row.status === "Pending"
+    //         ? "bg-yellow-200 text-yellow-500"
+    //         : row.status === "Reviewed"
+    //           ? "bg-green-300 text-green-600"
+    //           : "bg-red-200 text-red-600"
+    //         }`}
+    //     >
+    //       <h6>{row.status}</h6>
+    //     </div>
+    //   ),
+    //   width: "20%",
+    // },
 
     {
       name: "Service",
       selector: (row: any) => (
         <>
           <div className="flex justify-around">
-            {row.service.map((e: any, index: number) => (
+            {row.serviceType}           {/* {row.serviceType.map((e: any, index: number) => (
               <div
                 key={index}
                 className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
               >
                 {e.name}
               </div>
-            ))}
+            ))} */}
           </div>
         </>
       ),
@@ -230,17 +313,18 @@ function CustomerLedger() {
           </div>
           {/* React Table */}
           <ReactTable
-            data={data}
+            data={RpfData.data}
             columns={columns}
             loading={false}
-            totalRows={0}
+
+
             // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+            totalRows={RpfData?.total}
+          // onChangePage={handlePageChange}
+          // onChangeRowsPerPage={handleRowsPerPageChange}
+          // pagination
+          // paginationPerPage={rowsPerPage}
+          // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

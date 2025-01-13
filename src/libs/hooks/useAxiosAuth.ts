@@ -1,35 +1,35 @@
 "use client";
-import { useSession } from "next-auth/react";
 import { useEffect, useCallback } from "react";
 import { axiosAuth } from "./axios";
 import { useRefreshToken } from "./useRefreshToken";
+import { getAuth } from "@/utils/auth";
 const useAxiosAuth = () => {
-  const { data: session, update }: any = useSession();
+  const data: any = getAuth();
   const refreshToken = useRefreshToken();
   const setupInterceptors = useCallback(() => {
-    if (session?.user?.accessToken) {
+    if (data?.user?.accessToken) {
       const requestIntercept = axiosAuth.interceptors.request.use(
         async (config: any) => {
           if (!config.headers["authorization"]) {
-            config.headers["authorization"] = `Bearer ${session?.user?.accessToken}`;
+            config.headers["authorization"] = `Bearer ${data?.token}`;
           }
           // Check if the token is about to expire in less than 5 minutes
-          const tokenExpiresIn = session?.user?.accessTokenExpires;
+          const tokenExpiresIn = data?.refreshToken;
           if (tokenExpiresIn && Date.now() > tokenExpiresIn - 5 * 60 * 1000) {
             console.log("Token is about to expire. Refreshing...");
             // Wait for the refresh token to complete before proceeding
-            await refreshToken();
-            // Update the session with the new token if necessary
-            update({
-              ...session,
-              user: {
-                ...session.user,
-                accessToken: session.user.accessToken,
-                accessTokenExpires: session.user.accessTokenExpires,
-              },
-            });
+            // await refreshToken();
+            // Update the data with the new token if necessary
+            // update({
+            //   ...data,
+            //   user: {
+            //     ...data.user,
+            //     accessToken: data.user.accessToken,
+            //     accessTokenExpires: data.user.accessTokenExpires,
+            //   },
+            // });
             // Set the updated token in the headers
-            config.headers["authorization"] = `Bearer ${session?.user?.accessToken}`;
+            config.headers["authorization"] = `Bearer ${data?.user?.accessToken}`;
           }
           return config;
         },
@@ -44,16 +44,16 @@ const useAxiosAuth = () => {
             // Wait for the refresh token to complete before retrying the request
             await refreshToken();
             // Update the session after the refresh token
-            update({
-              ...session,
-              user: {
-                ...session.user,
-                accessToken: session.user.accessToken,
-                accessTokenExpires: session.user.accessTokenExpires,
-              },
-            });
+            // update({
+            //   ...session,
+            //   user: {
+            //     ...session.user,
+            //     accessToken: session.user.accessToken,
+            //     accessTokenExpires: session.user.accessTokenExpires,
+            //   },
+            // });
             // Set the updated token in the headers for the retried request
-            prevRequest.headers["Authorization"] = `Bearer ${session?.user.accessToken}`;
+            // prevRequest.headers["Authorization"] = `Bearer ${session?.user.accessToken}`;
             return axiosAuth(prevRequest);
           }
           return Promise.reject(error);
@@ -64,7 +64,7 @@ const useAxiosAuth = () => {
         axiosAuth.interceptors.response.eject(responseIntercept);
       };
     }
-  }, [session?.user?.accessToken, refreshToken, update]);
+  }, [data?.token, data.refreshToken]);
   useEffect(() => {
     setupInterceptors();
   }, [setupInterceptors]);

@@ -25,10 +25,10 @@ function EnquiryLIst() {
         pageSize
     }), [pageIndex, pageSize, query]);
 
-    const { data: ContactData } = useEnquiry(searchObj);
-    console.log(ContactData, "check ContactData")
-    const { mutateAsync: deleteContact } = usedeleteEnquiryById();
-    
+    const { data: EnquiryData } = useEnquiry(searchObj);
+    console.log(EnquiryData, "check EnquiryData")
+    const { mutateAsync: deleteEnquiry } = usedeleteEnquiryById();
+
 
     // Handle triggering file input click
     const handleImportClick = () => {
@@ -48,13 +48,13 @@ function EnquiryLIst() {
             const response = await addEnquiryExel(formData);
 
             console.log(response, "check response")
-            toastSuccess("Contacts imported successfully!");
+            toastSuccess("Enquries imported successfully!");
 
             // Optionally refresh the data
             // You might want to add a refetch function from your useContact hook
 
         } catch (error) {
-            toastError("Failed to import contacts. Please try again.");
+            toastError("Failed to import enquiries. Please try again.");
             console.error("Import Error:", error);
         } finally {
             setIsUploading(false);
@@ -66,28 +66,28 @@ function EnquiryLIst() {
     };
 
     // Handle Export Contacts
-    const handleExportContacts = async () => {
+    const handleExportEnquiries = async () => {
         try {
             const { data: response } = await getExel();
             console.log(response, "check response")
             const url = generateFilePath("/" + response.filename);
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", "contacts.xlsx");
+            link.setAttribute("download", "enquiries.xlsx");
             document.body.appendChild(link);
             link.click();
             link.remove();
-            toastSuccess("Contacts exported successfully!");
+            toastSuccess("Enquries exported successfully!");
         } catch (error) {
-            toastError("Failed to export contacts. Please try again.");
+            toastError("Failed to export enquiries. Please try again.");
             console.error("Export Error:", error);
         }
     };
 
     const handleDelete = async (id: string) => {
         try {
-            if (window.confirm("Are you sure you want to delete this contact?")) {
-                const { data: res } = await deleteContact(id);
+            if (window.confirm("Are you sure you want to delete this enquiry?")) {
+                const { data: res } = await deleteEnquiry(id);
                 if (res) {
                     toastSuccess(res.message);
                     // Optionally refresh the data
@@ -99,7 +99,7 @@ function EnquiryLIst() {
     };
 
 
-   
+
 
     const columns = [
         {
@@ -142,7 +142,7 @@ function EnquiryLIst() {
             selector: (row: any) => (
                 <div className="flex items-center gap-3">
                     <Link
-                        to={`/add-contact/${row?._id}`}
+                        to={`/addEnquiry/${row?._id}`}
                         className="p-[6px] text-black-400 text-lg flex items-center"
                     >
                         <FaEye />
@@ -156,7 +156,7 @@ function EnquiryLIst() {
                 </div>
             ),
         },
-       
+
     ];
 
     return (
@@ -183,7 +183,7 @@ function EnquiryLIst() {
 
                         <button
                             className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
-                            onClick={handleExportContacts}
+                            onClick={handleExportEnquiries}
                         >
                             <FaFileExport /> Export
                         </button>
@@ -216,10 +216,10 @@ function EnquiryLIst() {
                 </div>
 
                 <ReactTable
-                    data={ContactData?.data}
+                    data={EnquiryData?.data}
                     columns={columns}
                     loading={false}
-                    totalRows={ContactData?.total}
+                    totalRows={EnquiryData?.total}
                     onChangeRowsPerPage={setPageSize}
                     onChangePage={setPageIndex}
                     page={pageIndex}

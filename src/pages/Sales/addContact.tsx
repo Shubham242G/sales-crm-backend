@@ -201,11 +201,11 @@ const AddContact = () => {
                             </div>
                             <div>
                                 <label>Type of Contact</label>
-                                <select className='input mb-2'>
+                                <select className='input mb-2' value={formData.typeOfContact} onChange={(e) => handleSelectChange('typeOfContact', e.target.value)}>
                                     <option value="">Select contact type</option>
 
-                                    <option value="client">Client contact</option>
-                                    <option value="vendor">Vendor contact</option>
+                                    <option value="client contact">Client contact</option>
+                                    <option value="vendor contact">Vendor contact</option>
                                 </select>
                             </div>
                         </div>

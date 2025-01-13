@@ -1,133 +1,135 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import { useAddContact, useContactById, useUpdateContactById } from "@/services/contactUs.service";
+import { useAddEnquiry, useEnquiryById, useUpdateEnquiryById } from "@/services/enquiry.service";
 import { toastError, toastSuccess } from '@/utils/toast';
 
 
 const AddEnquiry = () => {
     const [formData, setFormData] = useState({
-        // Basic Details
-        displayName: '',
-        companyName: '',
-        salutation: '',
-        firstName: '',
-        lastName: '',
-        phone: '',
-        currencyCode: '',
-        notes: '',
-        website: '',
-        status: '',
-        openingBalance: '',
-        openingBalanceExchangeRate: '',
-        branchId: '',
-        branchName: '',
-        bankAccountPayment: '',
-        portalEnabled: false,
-        creditLimit: '',
-        customerSubType: '',
-        department: '',
-        designation: '',
-        priceList: '',
-        paymentTerms: '',
-        paymentTermsLabel: '',
 
-        // Contact Information
-        emailId: '',
-        mobilePhone: '',
-        skypeIdentity: '',
-        facebook: '',
-        twitter: '',
+        name: "",
+        phone: "",
+        email: "",
+        typeOfContact: "",
+        contactId: "",
+        subject: "",
+        details: "",
+        priority: "",
 
-        // GST Details
-        gstTreatment: '',
-        gstin: '',
-        taxable: false,
-        taxId: '',
-        taxName: '',
-        taxPercentage: '',
-        exemptionReason: '',
+        // // Basic Details
+        // displayName: '',
+        // companyName: '',
+        // salutation: '',
+        // firstName: '',
+        // lastName: '',
+        // phone: '',
+        // currencyCode: '',
+        // notes: '',
+        // website: '',
+        // status: '',
+        // openingBalance: '',
+        // openingBalanceExchangeRate: '',
+        // branchId: '',
+        // branchName: '',
+        // bankAccountPayment: '',
+        // portalEnabled: false,
+        // creditLimit: '',
+        // customerSubType: '',
+        // department: '',
+        // designation: '',
+        // priceList: '',
+        // paymentTerms: '',
+        // paymentTermsLabel: '',
 
-        // Billing Address
-        billingAttention: '',
-        billingAddress: '',
-        billingStreet2: '',
-        billingCity: '',
-        billingState: '',
-        billingCountry: '',
-        billingCounty: '',
-        billingCode: '',
-        billingPhone: '',
-        billingFax: '',
+        // // Contact Information
+        // emailId: '',
+        // mobilePhone: '',
+        // skypeIdentity: '',
+        // facebook: '',
+        // twitter: '',
 
-        // Shipping Address
-        shippingAttention: '',
-        shippingAddress: '',
-        shippingStreet2: '',
-        shippingCity: '',
-        shippingState: '',
-        shippingCountry: '',
-        shippingCounty: '',
-        shippingCode: '',
-        shippingPhone: '',
-        shippingFax: '',
+        // // GST Details
+        // gstTreatment: '',
+        // gstin: '',
+        // taxable: false,
+        // taxId: '',
+        // taxName: '',
+        // taxPercentage: '',
+        // exemptionReason: '',
 
-        // Additional Details
-        placeOfContact: '',
-        placeOfContactWithStateCode: '',
-        contactAddressId: '',
-        source: '',
-        ownerName: '',
-        primaryContactId: '',
-        contactId: '',
-        contactName: '',
-        contactType: '',
-        lastSyncTime: ''
+        // // Billing Address
+        // billingAttention: '',
+        // billingAddress: '',
+        // billingStreet2: '',
+        // billingCity: '',
+        // billingState: '',
+        // billingCountry: '',
+        // billingCounty: '',
+        // billingCode: '',
+        // billingPhone: '',
+        // billingFax: '',
+
+        // // Shipping Address
+        // shippingAttention: '',
+        // shippingAddress: '',
+        // shippingStreet2: '',
+        // shippingCity: '',
+        // shippingState: '',
+        // shippingCountry: '',
+        // shippingCounty: '',
+        // shippingCode: '',
+        // shippingPhone: '',
+        // shippingFax: '',
+
+        // // Additional Details
+        // placeOfContact: '',
+        // placeOfContactWithStateCode: '',
+        // contactAddressId: '',
+        // source: '',
+        // ownerName: '',
+        // primaryContactId: '',
+        // contactId: '',
+        // contactName: '',
+        // contactType: '',
+        // lastSyncTime: ''
     });
     const { id } = useParams();
 
     const navigate = useNavigate();
-    const { mutateAsync: addContact } = useAddContact();
-    const { mutateAsync: updateContact } = useUpdateContactById();
-    const { data: contactDataById, isLoading } = useContactById(id || "");
+    const { mutateAsync: addEnquiry } = useAddEnquiry();
+    const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
+    const { data: enquiryDataById, isLoading } = useEnquiryById(id || "");
 
 
     useEffect(() => {
         // Prefill form when editing
-        if (contactDataById) {
-            console.log(contactDataById, "getById/");
-            // setFormData(contactDataById?.data || "");
+        if (enquiryDataById) {
+            console.log(enquiryDataById, "getById/");
+            setFormData(enquiryDataById?.data || "");
         }
-    }, [contactDataById]);
+    }, [enquiryDataById]);
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            if (!formData.displayName) {
-                toastError("Display Name is required");
-                return;
-            }
 
-            if (!formData.phone) {
-                toastError("Phone Number is required");
-                return;
-            }
 
             const obj = formData;
 
             if (id) {
 
-                const { data: res } = await updateContact({ id, obj });
+                const { data: res } = await updateEnquiry({ id, obj });
                 if (res?.message) {
                     toastSuccess(res.message);
-                    navigate("/contact-us")
+                    navigate("/enquiryList")
 
                 }
             } else {
 
-                const { data: res } = await addContact(obj);
+                const { data: res } = await addEnquiry(obj);
                 if (res?.message) {
                     toastSuccess(res.message);
-                    navigate("/contact-us")
+                    navigate("/enquiryList")
 
                 }
             }
@@ -154,11 +156,96 @@ const AddEnquiry = () => {
     return (
         <div className="min-h-screen bg-gray-100 p-8">
             <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-8">
-                <h1 className="text-2xl font-bold mb-6">Add Enquiry</h1>
+                <h1 className="text-2xl font-bold mb-6">Edit Enquiry</h1>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
-                    {/* Basic Information */}
+
+                    {/* new fields */}
                     <section>
+                        <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label>Name</label>
+                                <input
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                                    required
+                                    type="text"
+                                />
+                            </div>
+                            <div>
+                                <label>Phone</label>
+                                <input
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                                />
+                            </div>
+                            <div>
+                                <label>Email</label>
+                                <input
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                                />
+                            </div>
+                            <div>
+                                <label>Type of Contact</label>
+                                <select className='input mb-2' value={formData.typeOfContact} onChange={(e) => handleSelectChange('typeOfContact', e.target.value)}>
+                                    <option value="">Select contact type</option>
+
+                                    <option value="client">Client contact</option>
+                                    <option value="vendor">Vendor contact</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label>ContactId</label>
+                            <input
+                                name="contactId"
+                                value={formData.contactId}
+                                onChange={handleInputChange}
+                                className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                            />
+                        </div>
+                        <div>
+                            <label>Subject</label>
+                            <input
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleInputChange}
+                                className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                            />
+                        </div>
+
+                        <div>
+                            <label>Prioriy</label>
+                            <input
+                                name="prioriy"
+                                value={formData.priority}
+                                onChange={handleInputChange}
+                                className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                            />
+                        </div>
+
+                        <div>
+                            <label>Details</label>
+                            <input
+                                name="details"
+                                value={formData.details}
+                                onChange={handleInputChange}
+                                className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                            />
+
+                        </div>
+                    </section>
+                    {/* Basic Information */}
+                    {/* <section>
                         <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -372,10 +459,10 @@ const AddEnquiry = () => {
                                 />
                             </div>
                         </div>
-                    </section>
+                    </section> */}
 
                     {/* Contact Information */}
-                    <section>
+                    {/* <section>
                         <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -426,10 +513,10 @@ const AddEnquiry = () => {
                                 />
                             </div>
                         </div>
-                    </section>
+                    </section> */}
 
                     {/* Billing Address */}
-                    <section>
+                    {/* <section>
                         <h2 className="text-lg font-semibold mb-4">Billing Address</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -523,11 +610,11 @@ const AddEnquiry = () => {
                                 />
                             </div>
                         </div>
-                    </section>
+                    </section> */}
 
 
                     {/* GST Details */}
-                    <section>
+                    {/* <section>
                         <h2 className="text-lg font-semibold mb-4">GST Details</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -595,10 +682,10 @@ const AddEnquiry = () => {
                                 />
                             </div>
                         </div>
-                    </section>
+                    </section> */}
 
                     {/* Shipping Address */}
-                    <section>
+                    {/* <section>
                         <h2 className="text-lg font-semibold mb-4">Shipping Address</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -692,10 +779,10 @@ const AddEnquiry = () => {
                                 />
                             </div>
                         </div>
-                    </section>
+                    </section> */}
 
                     {/* Additional Details */}
-                    <section>
+                    {/* <section>
                         <h2 className="text-lg font-semibold mb-4">Additional Details</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
@@ -790,7 +877,7 @@ const AddEnquiry = () => {
                                 />
                             </div>
                         </div>
-                    </section>
+                    </section> */}
 
                     {/* Submit Buttons */}
                     <div className="flex justify-end gap-4">

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { refreshTokenApi } from "@/services/user.service";
-import { signIn, useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
+import { getAuth, storeAuthData } from "@/utils/auth";
+import { refreshTokenApi } from "@/services/user.service";
 
 interface DecodedToken {
   exp: number; // Token expiry timestamp in seconds
@@ -12,7 +12,7 @@ let isRefreshing = false;
 let refreshPromise: Promise<void> | null = null;
 
 export const useRefreshToken = () => {
-  const { data: session, status }: any = useSession();
+  const data: any = getAuth();
   const [isTokenRefreshing, setIsTokenRefreshing] = useState(false);
 
   const refreshToken = useCallback(async () => {
@@ -27,34 +27,34 @@ export const useRefreshToken = () => {
 
     refreshPromise = new Promise<void>(async (resolve, reject) => {
       try {
-        if (session?.user?.refreshToken) {
+        if (data?.refreshToken) {
           const res = await refreshTokenApi({
-            refresh: session.user.refreshToken,
-            email: session.user.email,
+            refresh: data.token,
+            email: data.user.email,
           });
 
           if (res.data?.token) {
             // Silent sign-in to refresh tokens
-            await signIn("credentials", {
-              email: session.user.email,
-              accessToken: res.data.token,
-              refreshToken: res.data.refreshToken,
-              redirect: false, // Prevent page redirect
-            });
+            let decodedToken: any = await jwtDecode(res.data.token);
 
+            let authToken = {
+              ...res.data,
+              token: res.data.token,
+              role: decodedToken.role,
+              userId: decodedToken.userId,
+              user: decodedToken.user,
+            };
+            await storeAuthData(authToken);
             // Update session manually after refreshing tokens
-            session.user.accessToken = res.data.token;
-            session.user.refreshToken = res.data.refreshToken;
+            ;
 
             resolve(); // Resolve the promise when done
           } else {
-            signIn(); // Trigger sign-in if no token is returned
             reject(new Error("Failed to refresh token"));
           }
         }
       } catch (error) {
         console.error("Error refreshing token:", error);
-        signIn(); // Trigger sign-in if refresh fails
         reject(error);
       } finally {
         // Reset the global flags after the request is done
@@ -64,13 +64,13 @@ export const useRefreshToken = () => {
     });
 
     return refreshPromise;
-  }, [session?.user?.refreshToken, session?.user?.email]);
+  }, [data?.refreshToken, data?.user?.email]);
 
   useEffect(() => {
     // Function to check token expiry
     const checkTokenExpiry = () => {
-      if (session?.user?.accessToken) {
-        const decodedToken: DecodedToken = jwtDecode(session.user.accessToken);
+      if (data?.token) {
+        const decodedToken: DecodedToken = jwtDecode(data?.token);
         const currentTime = Math.floor(Date.now() / 1000);
 
         // Only refresh if the token is about to expire (e.g., less than 5 minutes left)
@@ -81,7 +81,7 @@ export const useRefreshToken = () => {
     };
 
     // Set an interval to check token expiry every 5 minutes only if authenticated
-    if (status === "authenticated" && session?.user?.accessToken) {
+    if (status === "authenticated" && data?.token) {
       checkTokenExpiry(); // Initial check
 
       // Check every 5 minutes
@@ -89,7 +89,7 @@ export const useRefreshToken = () => {
 
       return () => clearInterval(interval); // Cleanup the interval
     }
-  }, [status, session?.user?.accessToken, refreshToken]);
+  }, [status, data?.token, refreshToken]);
 
   return refreshToken;
 };

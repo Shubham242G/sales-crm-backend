@@ -60,11 +60,11 @@ function Sidebar() {
 
       dropArr: [
         {
-          dropHead: "Add Leads",
+          dropHead: "Leads",
           link: "leads",
         },
         {
-          dropHead: "Customer",
+          dropHead: "Customers",
           link: "customer-sales",
         },
         {
@@ -72,13 +72,10 @@ function Sidebar() {
           link: "quotesForCustomer",
         },
         {
-          dropHead: "Enquiry List",
+          dropHead: "Enquiry",
           link: "enquiryList",
         },
-        {
-          dropHead: "Add Enquiry",
-          link: "addEnquiry",
-        },
+
         {
           dropHead: "Confirmed Quotes",
           link: "confirmedQuotes",
@@ -91,15 +88,9 @@ function Sidebar() {
           dropHead: "Customer Outstanding",
           link: "confirmedQuotes",
         },
-        {
-          dropHead: "Add Contact",
-          link: "add-contact",
-        },
 
-        {
-          dropHead: "Contact Us",
-          link: "contact-us",
-        },
+
+
 
 
       ],
@@ -114,13 +105,10 @@ function Sidebar() {
 
       dropArr: [
         {
-          dropHead: "Contact List",
+          dropHead: "Contact",
           link: "contact",
         },
-        {
-          dropHead: "Add Contact",
-          link: "add-contact",
-        },
+
 
       ],
     },
