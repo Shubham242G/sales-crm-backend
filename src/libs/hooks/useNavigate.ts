@@ -1,27 +1,15 @@
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 
-export const useNavigate = () => {
- if(typeof window !== "undefined"){
-   
-   const router = useRouter();
-   
-   const navigate = (str: string | undefined) => {
-    if(!str){
-      return
-    }
-     router.push(str);
-    };
-    return navigate;
-  }
-};
+// export const useNavigate = () => {
+//   const navigate = useNavigate();
+//   return navigate;
+// };
 
 export const useNavigateReplace = () => {
-  if(typeof window !== "undefined"){
-    const router = useRouter();
-    
-    const navigate = (str: string) => {
-      router.replace(str);
-    };
-    return navigate;
-  }
+  const navigate = useNavigate();
+  const navigateReplace = (str: string) => {
+    navigate(str, { replace: true });
+  };
+  return navigateReplace;
 };
+

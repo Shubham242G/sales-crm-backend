@@ -1,11 +1,111 @@
+import { toastError, toastSuccess } from "@/utils/toast";
 import React from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAddLead, useLeadById, useUpdateLeadById } from "@/services/lead.service";
+import { set } from "lodash";
 
 const AddNewLead = () => {
+
+  const [formData, setFormData] = useState({
+
+    //new fields 
+
+    contactType: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    company: '',
+    panNumber: '',
+    gstNumber: '',
+
+
+
+
+  });
+
+
+
+
+  const { id } = useParams();
+
+  const navigate = useNavigate();
+  const { mutateAsync: addContact } = useAddLead();
+  const { mutateAsync: updateContact } = useUpdateLeadById();
+  const { data: leadDataById, isLoading } = useLeadById(id || "");
+
+
+  useEffect(() => {
+    // Prefill form when editing
+    if (leadDataById) {
+      console.log(leadDataById, "getById/");
+      setFormData(leadDataById?.data || "");
+
+    }
+  }, [leadDataById]);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (!formData.firstName) {
+        toastError("First Name is required");
+        return;
+      }
+
+      if (!formData.lastName) {
+        toastError("Last Name is required");
+        return;
+      }
+
+      if (!formData.phone) {
+        toastError("Phone Number is required");
+        return;
+      }
+
+      const obj = formData;
+
+      if (id) {
+
+        const { data: res } = await updateContact({ id, obj });
+        if (res?.message) {
+          toastSuccess(res.message);
+          navigate("/leads")
+
+        }
+      } else {
+
+        const { data: res } = await addContact(obj);
+        if (res?.message) {
+          toastSuccess(res.message);
+          navigate("/leads")
+
+        }
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+    }));
+  };
+
+  const handleSelectChange = (name: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">Add New Lead</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             {/* Contact Type */}
@@ -15,12 +115,13 @@ const AddNewLead = () => {
               </label>
               <select
                 className="w-full border border-gray-300 rounded-md p-2"
-                defaultValue=""
+                name={"contactType"}
+                onChange={(e) => setFormData({ ...formData, contactType: e.target.value })}
               >
                 <option value="">Select contact type</option>
-                <option>None</option>
-                <option>Client contact</option>
-                <option>Vendor contact</option>
+                <option value="none">None</option>
+                <option value="client">Client contact</option>
+                <option value="vendor">Vendor contact</option>
               </select>
             </div>
 
@@ -31,6 +132,8 @@ const AddNewLead = () => {
               </label>
               <input
                 type="text"
+                name={"firstName"}
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 placeholder="Enter first name"
                 className="w-full border border-gray-300 rounded-md p-2"
               />
@@ -42,6 +145,8 @@ const AddNewLead = () => {
                 Last Name
               </label>
               <input
+                name={"lastName"}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 type="text"
                 placeholder="Enter last name"
                 className="w-full border border-gray-300 rounded-md p-2"
@@ -54,6 +159,8 @@ const AddNewLead = () => {
                 Company Name
               </label>
               <input
+                name={"company"}
+                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                 type="text"
                 placeholder="Enter company name"
                 className="w-full border border-gray-300 rounded-md p-2"
@@ -66,6 +173,9 @@ const AddNewLead = () => {
                 PAN Number
               </label>
               <input
+
+                name={"panNumber"}
+                onChange={(e) => setFormData({ ...formData, panNumber: e.target.value })}
                 type="text"
                 placeholder="Enter PAN number"
                 className="w-full border border-gray-300 rounded-md p-2"
@@ -78,6 +188,9 @@ const AddNewLead = () => {
                 GST Number
               </label>
               <input
+
+                name={"gstNumber"}
+                onChange={(e) => setFormData({ ...formData, gstNumber: e.target.value })}
                 type="text"
                 placeholder="Enter GST number"
                 className="w-full border border-gray-300 rounded-md p-2"
@@ -91,6 +204,8 @@ const AddNewLead = () => {
               </label>
               <input
                 type="email"
+                name={"email"}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="Enter email address"
                 className="w-full border border-gray-300 rounded-md p-2"
               />
@@ -102,6 +217,8 @@ const AddNewLead = () => {
                 Mobile Number
               </label>
               <input
+                name={"phone"}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 type="text"
                 placeholder="Enter mobile number"
                 className="w-full border border-gray-300 rounded-md p-2"

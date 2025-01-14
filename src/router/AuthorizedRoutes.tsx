@@ -89,6 +89,8 @@ export default function AuthorizedRoutes() {
                         <Route path="/CategoryList" element={<CategoryList />}></Route>
                         <Route path="/HotelList" element={<HotelList />}></Route>
                         <Route path="/quotesForCustomer" element={<QuotesForCustomer />}></Route>
+                        <Route path="/quotesForCustomerView" element={<QuotesForCustomerView />}></Route>
+                        <Route path="/quotesForCustomerView/:id" element={<QuotesForCustomer />}></Route>
                         <Route path="/DailyActivityReport" element={<DailyActivityReport />}></Route>
                         <Route path="/TaskManagement" element={<TaskManagement />}></Route>
                         <Route path="/add-TaskManagement" element={<AddTaskManagement />}></Route>

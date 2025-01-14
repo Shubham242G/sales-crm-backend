@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
             const decodedToken = await getAuth();
 
-            console.log(decodedToken, "decodedToken");
+
             if (decodedToken?.token) {
                 setToken(decodedToken.token);
                 setIsAuthorized(true);

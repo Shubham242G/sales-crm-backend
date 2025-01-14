@@ -1,12 +1,14 @@
 import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 
+
 function QuotesForCustomer() {
+  const navigate = useNavigate()
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -84,13 +86,12 @@ function QuotesForCustomer() {
       name: "Status",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col p-2 rounded-md text-white ${
-            row.status === "Pending"
-              ? "bg-yellow-200 text-yellow-500"
-              : row.status === "Reviewed"
+          className={`flex gap-1 flex-col p-2 rounded-md text-white ${row.status === "Pending"
+            ? "bg-yellow-200 text-yellow-500"
+            : row.status === "Reviewed"
               ? "bg-green-300 text-green-600"
               : "bg-red-200 text-red-600"
-          }`}
+            }`}
         >
           <h6>{row.status}</h6>
         </div>
@@ -248,6 +249,11 @@ function QuotesForCustomer() {
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
+
+              <button onClick={() => navigate("/quotesForCustomerView")} className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
+                <FaPlus />
+                <span>New Quotes</span>
+              </button>
               {/* <button className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
                 <FaPlus />
                 <span>New RFPs</span>
@@ -260,13 +266,13 @@ function QuotesForCustomer() {
             columns={columns}
             loading={false}
             totalRows={0}
-            // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+          // loading={loading}
+          // totalRows={data.length}
+          // onChangePage={handlePageChange}
+          // onChangeRowsPerPage={handleRowsPerPageChange}
+          // pagination
+          // paginationPerPage={rowsPerPage}
+          // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

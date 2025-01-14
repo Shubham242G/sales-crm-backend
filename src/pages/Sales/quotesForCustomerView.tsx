@@ -1,6 +1,91 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "@/assets/mainlogo/logo.png";
+import { useNavigate, useParams } from "react-router-dom";
 function QuotesForCustomerView() {
+
+
+  const [formData, setFormData] = useState({
+
+
+
+
+    contactName: "",
+    contactOwner: "",
+    companyName: "",
+    email: "",
+    phoneNumber: "",
+    panNumber: "",
+    placeOfSupply: "",
+    state: "",
+    city: "",
+    Area: "",
+    Address: "",
+    bankName: "",
+    bankAccountNumber: "",
+    bankIFSCCode: "",
+    salutation: "",
+    contactPersonName: "",
+    contactPersonEmail: "",
+    contactPersonPhoneNumber: "",
+
+
+
+
+
+  });
+
+
+  const { id } = useParams();
+
+  const navigate = useNavigate();
+  // const { mutateAsync: AddCustomer } = useAddCustomer();
+  // const { mutateAsync: updateCustomer } = useUpdateCustomerById();
+  // const { data: customerDataById, isLoading } = useCustomerById(id || "");
+
+
+  // useEffect(() => {
+  //   // Prefill form when editing
+  //   if (customerDataById) {
+  //     console.log(customerDataById, "getById/");
+  //     setFormData(customerDataById?.data || "");
+
+  //   }
+  // }, [customerDataById]);
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+
+  //     const obj = formData;
+
+  //     if (id) {
+
+  //       const { data: res } = await updateCustomer({ id, obj });
+  //       if (res?.message) {
+  //         toastSuccess(res.message);
+  //         navigate("/customer-sale")
+
+  //       }
+  //     } else {
+
+  //       const { data: res } = await AddCustomer(obj);
+  //       console.log(res, "res");
+  //       if (res?.message) {
+  //         toastSuccess(res.message);
+  //         navigate("/customer-sales")
+
+  //       }
+  //     }
+  //   } catch (error) {
+  //     toastError(error);
+  //   }
+  // };
+
+
+
+
+
+
+
   return (
     <div className="bg-gray-100 min-h-screen w-full ">
       <header className="text-left mb-8 relative bg-[#0B2F46] p-8 rounded-t-md">

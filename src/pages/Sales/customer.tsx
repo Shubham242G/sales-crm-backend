@@ -2,33 +2,71 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
+import { useCustomer, usedeleteCustomerById, useAddCustomer, useUpdateCustomerById } from "@/services/customer.service";
+import { toastError, toastSuccess } from "@/utils/toast";
 
 function CustomerSales() {
   const navigate = useNavigate()
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [rowsPerPage, setRowsPerPage] = useState(10);
- 
+
   // ledger details modal
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
+
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [query, setQuery] = useState("");
+  const searchObj = useMemo(() => ({
+    ...(query && { query }),
+    pageIndex: pageIndex - 1,
+    pageSize
+  }), [pageIndex, pageSize, query]);
+
+  const { data: CustomerData } = useCustomer(searchObj);
+  console.log(CustomerData, "check customerData")
+  const { mutateAsync: deleteCustomer } = usedeleteCustomerById();
+
+
+
+
+
+
+
+
+  const handleDelete = async (id: string) => {
+    try {
+      if (window.confirm("Are you sure you want to delete this contact?")) {
+        const { data: res } = await deleteCustomer(id);
+        if (res) {
+          toastSuccess(res.message);
+          // Optionally refresh the data
+        }
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  };
+
+
   const columns = [
     {
       name: "Customer Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.name}</h6> 
+          <h6>{row.name}</h6>
         </div>
       ),
       width: "20%",
     },
 
-  
+
     {
       name: "Phone Number",
       selector: (row: any) => (
@@ -45,25 +83,25 @@ function CustomerSales() {
       selector: (row: any) => row.email,
       width: "20%",
     },
+    // {
+    //   name: "Service",
+    //   selector: (row: any) => (
+    //     <>
+    //       <div className="flex justify-around">
+    //         {row.service.map((e: any, index: number) => (
+    //           <div
+    //             key={index}
+    //             className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
+    //           >
+    //             {e.name}
+    //           </div>
+    //         ))}
+    //       </div>
+    //     </>
+    //   ),
+    //   width: "20%",
+    // },
     {
-      name: "Service",
-      selector: (row: any) => (
-        <>
-          <div className="flex justify-around">
-            {row.service.map((e: any, index: number) => (
-              <div
-                key={index}
-                className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
-              >
-                {e.name}
-              </div>
-            ))}
-          </div>
-        </>
-      ),
-      width: "20%",
-    },
-      {
       name: "Lead Source",
       selector: (row: any) => (
         <div className="flex gap-1">
@@ -88,6 +126,7 @@ function CustomerSales() {
           <Link
             to="/update-ledger/id=1234"
             className=" p-[6px] text-black-400 text-lg"
+
           >
             <RiDeleteBin6Line />
           </Link>
@@ -103,42 +142,42 @@ function CustomerSales() {
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-      service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
+      service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
     },
     {
       name: "Ajay Kumar",
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-      service: [{ name: "hotel" }, { name: "Event" },{ name: "Banquet" }],
+      service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }],
     },
     {
       name: "Ajay Kumar",
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-      service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
+      service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
     },
     {
       name: "Ajay Kumar",
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-      service: [{ name: "hotel" }, { name: "Event" },{ name: "Banquet" }],
+      service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }],
     },
     {
       name: "Ajay Kumar",
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-      service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
+      service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
     },
     {
       name: "Ajay Kumar",
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-      service: [{ name: "hotel" }, { name: "Event" },{ name: "Banquet" }]
+      service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }]
     },
   ];
 
@@ -182,8 +221,8 @@ function CustomerSales() {
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
-          
-              <button onClick={()=> navigate("/add-customer")} className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
+
+              <button onClick={() => navigate("/add-customer")} className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
                 <FaPlus />
                 <span>New Customer</span>
               </button>
@@ -191,17 +230,17 @@ function CustomerSales() {
           </div>
           {/* React Table */}
           <ReactTable
-            data={data}
+            data={CustomerData?.data}
             columns={columns}
             loading={false}
-            totalRows={0} 
-            // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+            totalRows={CustomerData?.total}
+          // loading={loading}
+          // totalRows={data.length}
+          // onChangePage={handlePageChange}
+          // onChangeRowsPerPage={handleRowsPerPageChange}
+          // pagination
+          // paginationPerPage={rowsPerPage}
+          // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

@@ -2,27 +2,69 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
+import { IoSearchOutline } from "react-icons/io5";
+import { useLeadById, useAddLead, useUpdateLeadById, usedeleteLeadById, useLead } from "@/services/lead.service";
+import { toastError, toastSuccess } from "@/utils/toast";
 
 function Leads() {
   const navigate = useNavigate()
+
+
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [rowsPerPage, setRowsPerPage] = useState(10);
- 
+
   // ledger details modal
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
+
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [query, setQuery] = useState("");
+  const searchObj = useMemo(() => ({
+    ...(query && { query }),
+    pageIndex: pageIndex - 1,
+    pageSize
+  }), [pageIndex, pageSize, query]);
+
+  const { data: LeadData } = useLead(searchObj);
+  console.log(LeadData, "check leadData")
+  const { mutateAsync: deleteLead } = usedeleteLeadById();
+
+
+
+
+
+
+
+
+  const handleDelete = async (id: string) => {
+    try {
+      if (window.confirm("Are you sure you want to delete this contact?")) {
+        const { data: res } = await deleteLead(id);
+        if (res) {
+          toastSuccess(res.message);
+          // Optionally refresh the data
+        }
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  };
+
+
+
   const columns = [
     {
       name: "Contact Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.name}</h6> 
+          <h6>{row.firstName + " " + row.lastName}</h6>
         </div>
       ),
       width: "20%",
@@ -43,7 +85,7 @@ function Leads() {
       selector: (row: any) => (
         <div className="flex gap-1">
           <FaMobileScreenButton className=" text-[#938d8d]" />
-          {row.contactno}
+          {row.phone}
         </div>
       ),
       width: "10%",
@@ -91,45 +133,45 @@ function Leads() {
   const data = [
     {
       name: "Ajay Kumar",
-      ownerName : "Vandana Sharma",
+      ownerName: "Vandana Sharma",
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-    //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
+      //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
     },
     {
       name: "Ajay Kumar",
-      ownerName : "Vandana Sharma",
+      ownerName: "Vandana Sharma",
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-    //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
+      //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
     },
     {
       name: "Ajay Kumar",
-      ownerName : "Vandana Sharma",
+      ownerName: "Vandana Sharma",
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-    //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
+      //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
     },
     {
       name: "Ajay Kumar",
-      ownerName : "Vandana Sharma",
+      ownerName: "Vandana Sharma",
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-    //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
+      //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
     },
     {
       name: "Ajay Kumar",
-      ownerName : "Vandana Sharma",
+      ownerName: "Vandana Sharma",
       contactno: "9968237063",
       email: "test@test.com",
       company: "Google",
-    //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
+      //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
     },
-   
+
   ];
 
 
@@ -158,22 +200,23 @@ function Leads() {
             {/* Search and Buttons on the Right */}
             <div className="flex items-center justify-start gap-2">
               {/* Search Box */}
-              <div className="w-full">
+              <div className="w-full flex items-center ">
                 <input
                   type="search"
-                  className="rounded-sm w-full border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                  placeholder="Search..."
+                  className="rounded-md w-[250px] border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  placeholder="Search by contact name"
                 />
+                <div className="relative right-8"><IoSearchOutline /></div>
               </div>
               {/* Buttons */}
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button>
-              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
-              </button>
-          
-              <button onClick={()=> navigate("/add-leads")} className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
+              </button> */}
+
+              <button onClick={() => navigate("/add-leads")} className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
                 <FaPlus />
                 <span>New Lead</span>
               </button>
@@ -181,17 +224,17 @@ function Leads() {
           </div>
           {/* React Table */}
           <ReactTable
-            data={data}
+            data={LeadData?.data}
             columns={columns}
             loading={false}
-            totalRows={0} 
-            // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+            totalRows={LeadData?.total}
+          // loading={loading}
+          // totalRows={data.length}
+          // onChangePage={handlePageChange}
+          // onChangeRowsPerPage={handleRowsPerPageChange}
+          // pagination
+          // paginationPerPage={rowsPerPage}
+          // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

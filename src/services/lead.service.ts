@@ -8,15 +8,20 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 
 
-const prefix = "/contactUs";
-export interface IContact {
+const prefix = "/lead";
+export interface ILead {
     // Basic Details
-    _id: string; // Unique identifier
-    name: string;
-    phone: string;
-    email: string;
-    typeOfContact: string;
-    // displayName: string;
+
+
+    contactType: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    company: '',
+    panNumber: '',
+    gstNumber: '',
+
     // companyName: string;
     // salutation: string;
     // firstName: string;
@@ -62,7 +67,7 @@ export interface IContact {
     // billingStreet2: string;
     // billingCity: string;
     // billingState: string;
-    // billingCountry: string
+    // billingCountry: string;
     // billingCounty: string;
     // billingCode: string;
     // billingPhone: string;
@@ -95,127 +100,112 @@ export interface IContact {
 
 
 
-export const usecontactApiHook = () => {
+export const useleadApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
-    const addContact = async (obj: any) => {
+    const addLead = async (obj: any) => {
 
-        return axios.post<GeneralApiResponse<IContact>>(`${BASE_URL}${prefix}/`, obj);
+        return axios.post<GeneralApiResponse<ILead>>(`${BASE_URL}${prefix}/`, obj);
     };
-    const updateContactById = async ({ id, obj }: { id: string; obj: any }) => {
+    const updateLeadById = async ({ id, obj }: { id: string; obj: any }) => {
         return axios.patch<GeneralApiResponse>(`${BASE_URL}${prefix}/updateById/${id}`, obj);
     };
-    const deleteContactById = async (id: any) => {
+    const deleteLeadById = async (id: any) => {
         return axios.delete<GeneralApiResponse>(`${BASE_URL}${prefix}/deleteById/${id}`);
     };
     const getContactById = async (id: any) => {
-        return axios.get<GeneralApiResponse<IContact>>(`${BASE_URL}${prefix}/getById/${id}`);
+        return axios.get<GeneralApiResponse<ILead>>(`${BASE_URL}${prefix}/getById/${id}`);
     };
 
-    const getAllContact = async (pagination: PaginationState, searchObj: any) => {
+    const getAllLead = async (pagination: PaginationState, searchObj: any) => {
         const query = new URLSearchParams({
             pageIndex: String(pagination.pageIndex),
             pageSize: String(pagination.pageSize),
             ...searchObj,
         }).toString();
-        return axios.get<GeneralApiResponsePagination<IContact>>(`${BASE_URL}${prefix}/?${query}`);
+        return axios.get<GeneralApiResponsePagination<ILead>>(`${BASE_URL}${prefix}/?${query}`);
     };
 
     const convertEnquiry = async (id: any) => {
-        return axios.post<GeneralApiResponse<IContact>>(`${BASE_URL}${prefix}/convert/${id}`);
+        return axios.post<GeneralApiResponse<ILead>>(`${BASE_URL}${prefix}/convert/${id}`);
     }
 
     return {
-        getAllContact,
-        updateContactById,
-        deleteContactById,
+        getAllLead,
+        updateLeadById,
+        deleteLeadById,
         getContactById,
-        addContact,
-        convertEnquiry
+        addLead,
+
     };
 };
 
-export const useAddContact = () => {
+export const useAddLead = () => {
     const queryClient = useQueryClient();
-    const api = usecontactApiHook();
+    const api = useleadApiHook();
     return useMutation({
-        mutationFn: api.addContact,
+        mutationFn: api.addLead,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["Contact"] });
+            queryClient.invalidateQueries({ queryKey: ["Lead"] });
         },
     });
 };
 
-export const useContactById = (id: string) => {
-    const api = usecontactApiHook();
+export const useLeadById = (id: string) => {
+    const api = useleadApiHook();
 
     return useQuery({
-        queryKey: ["contact_id", id],
+        queryKey: ["lead_id", id],
         queryFn: () => api.getContactById(id).then((res) => res.data),
         enabled: !!id,
     });
 };
 
-export const useContact = (searchObj: Record<string, any> = {}, getPaginationFromParams = true) => {
+export const useLead = (searchObj: Record<string, any> = {}, getPaginationFromParams = true) => {
     const pagination = usePagination(getPaginationFromParams);
 
-    const api = usecontactApiHook();
+    const api = useleadApiHook();
 
 
     return useQuery({
-        queryKey: ["contact", pagination, searchObj],
-        queryFn: () => api.getAllContact(pagination, searchObj).then((res) => res?.data),
+        queryKey: ["lead", pagination, searchObj],
+        queryFn: () => api.getAllLead(pagination, searchObj).then((res: any) => res?.data),
         initialData: {
             data: [],
             total: 0,
             message: "",
-        } as unknown as GeneralApiResponsePagination<IContact>,
+        } as unknown as GeneralApiResponsePagination<ILead>,
     });
 };
 
-export const usedeleteContactById = () => {
-    const api = usecontactApiHook();
+export const usedeleteLeadById = () => {
+    const api = useleadApiHook();
 
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: api.deleteContactById,
+        mutationFn: api.deleteLeadById,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["contact"] });
+            queryClient.invalidateQueries({ queryKey: ["lead"] });
             // toastSuccess(res);
         },
     });
 };
 
-export const useUpdateContactById = () => {
-    const api = usecontactApiHook();
+export const useUpdateLeadById = () => {
+    const api = useleadApiHook();
 
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: api.updateContactById,
+        mutationFn: api.updateLeadById,
         onSuccess: (res) => {
             queryClient.invalidateQueries({ queryKey: ["contact"] });
         },
     });
 };
 
-export const getExel = async () => {
-    return axios.get(`${BASE_URL}${prefix}/getExel`);
-};
 
 
-export const addContactsExel = async (obj: any,) => {
 
-    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadContacts`, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
-};
 
-export const useConvert = () => {
-    const api = usecontactApiHook();
-    const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: api.convertEnquiry,
-        onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["contact"] });
-        },
-    });
-};
+
 
