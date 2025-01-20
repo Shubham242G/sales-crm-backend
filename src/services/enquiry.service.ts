@@ -11,15 +11,67 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 const prefix = "/enquiry";
 export interface IEnqiry {
     // Basic Details
-    _id: string; // Unique identifier
+    _id:string;
     name: string;
     phone: string;
     email: string;
+    companyName: string
     typeOfContact: string;
+    levelOfEnquiry:string;
+    enquiryType:string;
+    hotelPreferences:string;
+    checkIn:Date;
+    checkOut:Date;
+    city:string;
+    numberOfRooms:string;
+    categoryOfHotel:string;
     contactId: string;
     subject: string;
     details: string;
     priority: string;
+    occupancy:string
+    banquet:{
+        date:Date;
+        session:string;
+        seatingStyle:string;
+        avSetup:string;
+        menuType:string;
+        noOfPax:string;
+        seatingRequired:string;
+    }[];
+    room:{
+        date:Date;
+        noOfRooms:string;
+        roomCategory:string;
+        occupancy:string;
+        mealPlan:[];   
+    }[];
+    eventSetup:{
+        functiontype:string;
+        eventDates:{
+            eventStartDate:Date;
+            eventEndDate:Date; 
+        }[]
+        eventSetupRequired:string;
+    };
+    airTicket:{
+        tripType:string;
+        numberOfPassenger:string;
+        fromCity:string;
+        toCity:string;
+        departureDate:Date;
+        returnDate:Date;
+
+    };
+    cab:{
+        date:Date;
+        noOfVehicle:string;
+        typeOfVehicle:string;
+        cabTripType:string;
+        mealPlan:[];
+    }[];
+    billingAddress:string;
+
     // displayName: string;
     // companyName: string;
     // salutation: string;

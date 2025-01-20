@@ -145,7 +145,7 @@ export const useAddLead = () => {
     return useMutation({
         mutationFn: api.addLead,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["Lead"] });
+            queryClient.invalidateQueries({ queryKey: ["lead"] });
         },
     });
 };
@@ -197,7 +197,7 @@ export const useUpdateLeadById = () => {
     return useMutation({
         mutationFn: api.updateLeadById,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["contact"] });
+            queryClient.invalidateQueries({ queryKey: ["lead"] });
         },
     });
 };

@@ -7,7 +7,6 @@ import { AuthProvider } from "@/context/AuthProvider";
 
 function App() {
   return (
-    <AuthProvider>
       <>
         <Toaster />
         <SidebarProvider>
@@ -16,7 +15,6 @@ function App() {
         </SidebarProvider>
 
       </>
-    </AuthProvider>
 
   );
 }

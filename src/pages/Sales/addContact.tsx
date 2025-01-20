@@ -127,21 +127,23 @@ const AddContact = () => {
                 const { data: res } = await updateContact({ id, obj });
                 if (res?.message) {
                     toastSuccess(res.message);
-                    navigate("/contact")
-
+                    navigate("/leads")
+                    console.log("formDataaaaaaa",formData)
                 }
             } else {
 
                 const { data: res } = await addContact(obj);
                 if (res?.message) {
                     toastSuccess(res.message);
-                    navigate("/contact")
+                    navigate("/leads")
 
                 }
             }
         } catch (error) {
             toastError(error);
         }
+
+        
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

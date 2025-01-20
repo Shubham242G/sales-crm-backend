@@ -8,7 +8,7 @@ export default function RootRouter() {
   const { isAuthorized, isLoading } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>; // Replace with a loading spinner or other UI
+    return <div><AuthorizedRoutes /></div>; // Replace with a loading spinner or other UI
   }
 
   return (

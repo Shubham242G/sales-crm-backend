@@ -2,7 +2,7 @@ import { toastError, toastSuccess } from "@/utils/toast";
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAddLead, useLeadById, useUpdateLeadById } from "@/services/lead.service";
+import { useAddLead, useLead, useLeadById, useUpdateLeadById } from "@/services/lead.service";
 import { set } from "lodash";
 
 const AddNewLead = () => {
@@ -31,7 +31,7 @@ const AddNewLead = () => {
   const { id } = useParams();
 
   const navigate = useNavigate();
-  const { mutateAsync: addContact } = useAddLead();
+  const { mutateAsync: addLead } = useAddLead();
   const { mutateAsync: updateContact } = useUpdateLeadById();
   const { data: leadDataById, isLoading } = useLeadById(id || "");
 
@@ -74,8 +74,9 @@ const AddNewLead = () => {
         }
       } else {
 
-        const { data: res } = await addContact(obj);
+        const { data: res } = await addLead(obj);
         if (res?.message) {
+          setFormData(obj)
           toastSuccess(res.message);
           navigate("/leads")
 
@@ -84,6 +85,7 @@ const AddNewLead = () => {
     } catch (error) {
       toastError(error);
     }
+    console.log("FormDataaaa:-->" ,formData)
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
