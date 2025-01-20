@@ -13,7 +13,8 @@ export default function RootRouter() {
 
   return (
     <>
-      {isAuthorized ? <AuthorizedRoutes /> : <UnauthorizedRoutes />}
+      {/* {isAuthorized ? <AuthorizedRoutes /> : <UnauthorizedRoutes />} */}
+      {<AuthorizedRoutes />}
     </>
   );
 }
