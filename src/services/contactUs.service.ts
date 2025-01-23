@@ -11,11 +11,12 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 const prefix = "/contactUs";
 export interface IContact {
     // Basic Details
-    _id: string; // Unique identifier
-    name: string;
-    phone: string;
-    email: string;
-    typeOfContact: string;
+    firstName: '',
+        lastName:'',
+        phone: '',
+        email: '',
+        salutation:"",
+
     // displayName: string;
     // companyName: string;
     // salutation: string;
@@ -119,6 +120,7 @@ export const usecontactApiHook = () => {
         }).toString();
         return axios.get<GeneralApiResponsePagination<IContact>>(`${BASE_URL}${prefix}/?${query}`);
     };
+    
 
     const convertEnquiry = async (id: any) => {
         return axios.post<GeneralApiResponse<IContact>>(`${BASE_URL}${prefix}/convert/${id}`);

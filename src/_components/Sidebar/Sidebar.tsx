@@ -47,6 +47,11 @@ function Sidebar() {
           dropHead: "Confirmed Quotes",
           link: "confirmedQuotes",
         },
+        {
+          dropHead: "Contact",
+          link: "contact",
+        },
+
       ],
     },
 
@@ -88,30 +93,34 @@ function Sidebar() {
           dropHead: "Customer Outstanding",
           link: "confirmedQuotes",
         },
-
-
-
-
-
-      ],
-    },
-    {
-      mainlink: "/",
-      heading: "Contact",
-      icon: ledger,
-      activeIcon: ledgerw,
-      isActive: false,
-      isArrow: true,
-
-      dropArr: [
         {
-          dropHead: "Contact",
-          link: "contact",
+          dropHead: "Sales Contacts",
+          link: "sales-contact-view",
         },
 
 
+
+
+
       ],
     },
+    // {
+    //   mainlink: "/",
+    //   heading: "Contact",
+    //   icon: ledger,
+    //   activeIcon: ledgerw,
+    //   isActive: false,
+    //   isArrow: true,
+
+    //   dropArr: [
+    //     {
+    //       dropHead: "Contact",
+    //       link: "contact",
+    //     },
+
+
+    //   ],
+    // },
     {
       mainlink: "/DailyActivityReport",
       heading: "Daily Activity Report",

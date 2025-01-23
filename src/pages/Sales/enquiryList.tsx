@@ -3,12 +3,17 @@ import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaFilter, FaFileExport, FaPlus, FaFileImport } from "react-icons/fa";
-import { addEnquiryExel, getExel, useEnquiry, usedeleteEnquiryById } from "@/services/enquiry.service";
+import { FaFilter, FaFileExport, FaPlus, FaFileImport,FaToggleOn } from "react-icons/fa";
+import { addEnquiryExel, getExel, useEnquiry, usedeleteEnquiryById, useUpdateEnquiryById, useEnquiryById } from "@/services/enquiry.service";
 import { toastSuccess, toastError } from "@/utils/toast";
 
-import Modal from 'react-select';
+
+
+
 import { generateFilePath } from "@/services/urls.service";
+import moment from "moment";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {Switch} from '@mui/material';
 
 function EnquiryLIst() {
     const navigate = useNavigate();
@@ -28,6 +33,7 @@ function EnquiryLIst() {
     const { data: EnquiryData } = useEnquiry(searchObj);
     console.log(EnquiryData, "check EnquiryData")
     const { mutateAsync: deleteEnquiry } = usedeleteEnquiryById();
+    const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
 
 
     // Handle triggering file input click
@@ -98,6 +104,19 @@ function EnquiryLIst() {
         }
     };
 
+    const handleUpdate = async (id: string, data: any) => {
+        try {
+            if (window.confirm("Are you sure you want to update this enquiry?")) {
+                const { data: res } = await updateEnquiry( { id, ...data });
+                if (res) {
+                    toastSuccess(res.message);
+                    // Optionally refresh the data
+                }
+            }
+        } catch (error) {
+            toastError(error);
+        }
+    };
 
 
 
@@ -106,35 +125,76 @@ function EnquiryLIst() {
             name: "Customer Name",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
-                    <h6>{row.displayName}</h6>
-                </div>
-            ),
-            width: "20%",
-        },
-        {
-            name: "Phone Number",
-            selector: (row: any) => (
-                <div className="flex gap-1">
-                    <FaMobileScreenButton className="text-[#938d8d]" />
-                    {row.phone}
+                    <h6>{row.nameObj}</h6>
                 </div>
             ),
             width: "10%",
         },
         {
-            name: "Email",
-            selector: (row: any) => row.email,
-            width: "20%",
-        },
-        {
-            name: "Lead Source",
+            name: "Enquiry Type",
             selector: (row: any) => (
-                <div className="flex gap-1">
-                    <FaMobileScreenButton className="text-[#938d8d]" />
-                    {row.companyName}
+                <div className="flex gap-1 flex-col">
+                    <h6>{row.enquiryType}</h6>
                 </div>
             ),
-            width: "20%",
+            width: "10%",
+        },
+        {
+            name: "Loaction",
+            selector: (row: any) => (
+                <div className="flex gap-1 flex-col">
+                    <h6>{row.city}</h6>
+                </div>
+            ),
+            width: "10%",
+        },
+        {
+            name: "Level of Enquiry",
+            selector: (row: any) => (
+              <div
+                className={`flex gap-1 flex-col p-2 rounded-md  ${row.levelOfEnquiry === "moderate" ? "bg-yellow-200 text-white-100" : row.levelOfEnquiry === "Not Urgent"
+                    ? "bg-green-300 text-white-600"
+                    : row.levelOfEnquiry === "urgent"
+                    && "bg-red-300 text-red-600" 
+                  }`}
+              >
+                <h6>{row.levelOfEnquiry}</h6>
+              </div>
+            ),
+            width: "15%",
+          },
+          {
+            name: "Check-In",
+            selector: (row: any) => (
+                <div className="flex gap-1 flex-col">
+                    <h6>{moment(row.checkIn).format("YYYY-MM-DD")}</h6>
+                </div>
+            ),
+            width: "10%",
+        },
+        {
+            name: "Check-Out",
+            selector: (row: any) => (
+                <div className="flex gap-1 flex-col">
+                    <h6>{moment(row.checkOut).format("YYYY-MM-DD")}</h6>
+                </div>
+            ),
+            width: "10%",
+        },
+        {
+            name: "Number of Rooms",
+            selector: (row: any) => row.noOfRooms,
+            width: "5%",
+        },
+        {
+            name: "Status",
+            selector: (row: any) => (
+                <div className="flex gap-1">
+                  <Switch  defaultChecked />
+                  
+                </div>
+            ),
+            width: "10%",
         },
         {
             name: "Action",
@@ -144,6 +204,7 @@ function EnquiryLIst() {
                     <Link
                         to={`/addEnquiry/${row?._id}`}
                         className="p-[6px] text-black-400 text-lg flex items-center"
+                        onClick={() => handleUpdate(row._id, row.data)}
                     >
                         <FaEye />
                     </Link>

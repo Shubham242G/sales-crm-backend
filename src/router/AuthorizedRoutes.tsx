@@ -58,10 +58,11 @@ import ResturantAdd from "../pages/Important/resturant";
 import HotelList from "../pages/Important/hotelList";
 import BanquetList from "../pages/Important/banquetList";
 import ResturantList from "../pages/Important/resturantList";
-import AddContact from "@/pages/Sales/addContact";
-import ContactUs from "@/pages/Sales/contactUs";
+import AddSalesContact from "@/pages/Sales/addSalesContact";
+import SalesContactView from "@/pages/Sales/salesContactView";
 import EnquiryLIst from "@/pages/Sales/enquiryList";
 import AddEnquiry from "@/pages/Sales/addEnquiry";
+
 
 
 export default function AuthorizedRoutes() {
@@ -96,7 +97,6 @@ export default function AuthorizedRoutes() {
                         <Route path="/add-TaskManagement" element={<AddTaskManagement />}></Route>
                         <Route path="/add-DailyActivityReport" element={<AddDailyActivityReport />}></Route>
                         <Route path="/customer-sales" element={<CustomerSales />}></Route>
-                        <Route path="/contact" element={<ContactUs />}></Route>
 
 
                         <Route path="/enquiryList" element={<EnquiryLIst />}></Route>
@@ -109,8 +109,9 @@ export default function AuthorizedRoutes() {
                         <Route path="/sales-ledger" element={<SalesLedger />}></Route>
                         <Route path="/add-ledger" element={<AddLedger />}></Route>
                         <Route path="/add-customer" element={<AddCustomer />}></Route>
-                        <Route path="/add-contact" element={<AddContact />}></Route>
-                        <Route path="/add-contact/:id" element={<AddContact />}></Route>
+                        <Route path="/add-sales-contact" element={<AddSalesContact />}></Route>
+                        <Route path="/add-sales-contact/:id" element={<AddSalesContact />}></Route>
+                        <Route path="/sales-contact-view/" element={<SalesContactView />}></Route>
                         <Route path="/add-vendor" element={<AddVendorForm />}></Route>
                         <Route path="/add-rfps" element={<AddRfpsForm />}></Route>
                         <Route path="/add-leads" element={<AddLeadsForm />}></Route>

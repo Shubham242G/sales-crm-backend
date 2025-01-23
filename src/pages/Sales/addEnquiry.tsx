@@ -1,933 +1,29 @@
-// import React, { useState, useEffect } from 'react';
-// import { useNavigate, useParams } from "react-router-dom";
-// import { useAddEnquiry, useEnquiryById, useUpdateEnquiryById } from "@/services/enquiry.service";
-// import { toastError, toastSuccess } from '@/utils/toast';
 
 
-// const AddEnquiry = () => {
-//     const [formData, setFormData] = useState({
-
-//         name: "",
-//         phone: "",
-//         email: "",
-//         typeOfContact: "",
-//         contactId: "",
-//         subject: "",
-//         details: "",
-//         priority: "",
-
-//         // // Basic Details
-//         // displayName: '',
-//         // companyName: '',
-//         // salutation: '',
-//         // firstName: '',
-//         // lastName: '',
-//         // phone: '',
-//         // currencyCode: '',
-//         // notes: '',
-//         // website: '',
-//         // status: '',
-//         // openingBalance: '',
-//         // openingBalanceExchangeRate: '',
-//         // branchId: '',
-//         // branchName: '',
-//         // bankAccountPayment: '',
-//         // portalEnabled: false,
-//         // creditLimit: '',
-//         // customerSubType: '',
-//         // department: '',
-//         // designation: '',
-//         // priceList: '',
-//         // paymentTerms: '',
-//         // paymentTermsLabel: '',
-
-//         // // Contact Information
-//         // emailId: '',
-//         // mobilePhone: '',
-//         // skypeIdentity: '',
-//         // facebook: '',
-//         // twitter: '',
-
-//         // // GST Details
-//         // gstTreatment: '',
-//         // gstin: '',
-//         // taxable: false,
-//         // taxId: '',
-//         // taxName: '',
-//         // taxPercentage: '',
-//         // exemptionReason: '',
-
-//         // // Billing Address
-//         // billingAttention: '',
-//         // billingAddress: '',
-//         // billingStreet2: '',
-//         // billingCity: '',
-//         // billingState: '',
-//         // billingCountry: '',
-//         // billingCounty: '',
-//         // billingCode: '',
-//         // billingPhone: '',
-//         // billingFax: '',
-
-//         // // Shipping Address
-//         // shippingAttention: '',
-//         // shippingAddress: '',
-//         // shippingStreet2: '',
-//         // shippingCity: '',
-//         // shippingState: '',
-//         // shippingCountry: '',
-//         // shippingCounty: '',
-//         // shippingCode: '',
-//         // shippingPhone: '',
-//         // shippingFax: '',
-
-//         // // Additional Details
-//         // placeOfContact: '',
-//         // placeOfContactWithStateCode: '',
-//         // contactAddressId: '',
-//         // source: '',
-//         // ownerName: '',
-//         // primaryContactId: '',
-//         // contactId: '',
-//         // contactName: '',
-//         // contactType: '',
-//         // lastSyncTime: ''
-//     });
-//     const { id } = useParams();
-
-//     const navigate = useNavigate();
-//     const { mutateAsync: addEnquiry } = useAddEnquiry();
-//     const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
-//     const { data: enquiryDataById, isLoading } = useEnquiryById(id || "");
-
-
-//     useEffect(() => {
-//         // Prefill form when editing
-//         if (enquiryDataById) {
-//             console.log(enquiryDataById, "getById/");
-//             setFormData(enquiryDataById?.data || "");
-//         }
-//     }, [enquiryDataById]);
-//     const handleSubmit = async (e: React.FormEvent) => {
-//         e.preventDefault();
-//         try {
-
-
-//             const obj = formData;
-
-//             if (id) {
-
-//                 const { data: res } = await updateEnquiry({ id, obj });
-//                 if (res?.message) {
-//                     toastSuccess(res.message);
-//                     navigate("/enquiryList")
-
-//                 }
-//             } else {
-
-//                 const { data: res } = await addEnquiry(obj);
-//                 if (res?.message) {
-//                     toastSuccess(res.message);
-//                     navigate("/enquiryList")
-
-//                 }
-//             }
-//         } catch (error) {
-//             toastError(error);
-//         }
-//     };
-
-//     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-//         const { name, value, type } = e.target;
-//         setFormData(prev => ({
-//             ...prev,
-//             [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
-//         }));
-//     };
-
-//     const handleSelectChange = (name: string, value: any) => {
-//         setFormData(prev => ({
-//             ...prev,
-//             [name]: value
-//         }));
-//     };
-
-//     return (
-//         <div className="min-h-screen bg-gray-100 p-8">
-//             <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-8">
-//                 <h1 className="text-2xl font-bold mb-6">Edit Enquiry</h1>
-
-//                 <form onSubmit={handleSubmit} className="space-y-8">
-
-//                     {/* new fields */}
-//                     <section>
-//                         <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
-//                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                             <div>
-//                                 <label>Name</label>
-//                                 <input
-//                                     name="name"
-//                                     value={formData.name}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                     required
-//                                     type="text"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Phone</label>
-//                                 <input
-//                                     name="phone"
-//                                     value={formData.phone}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Email</label>
-//                                 <input
-//                                     name="email"
-//                                     value={formData.email}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Type of Contact</label>
-//                                 <select className='input mb-2' value={formData.typeOfContact} onChange={(e) => handleSelectChange('typeOfContact', e.target.value)}>
-//                                     <option value="">Select contact type</option>
-
-//                                     <option value="client">Client contact</option>
-//                                     <option value="vendor">Vendor contact</option>
-//                                 </select>
-//                             </div>
-//                         </div>
-
-//                         <div>
-//                             <label>ContactId</label>
-//                             <input
-//                                 name="contactId"
-//                                 value={formData.contactId}
-//                                 onChange={handleInputChange}
-//                                 className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                             />
-//                         </div>
-//                         <div>
-//                             <label>Subject</label>
-//                             <input
-//                                 name="subject"
-//                                 value={formData.subject}
-//                                 onChange={handleInputChange}
-//                                 className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                             />
-//                         </div>
-
-//                         <div>
-//                             <label>Prioriy</label>
-//                             <input
-//                                 name="prioriy"
-//                                 value={formData.priority}
-//                                 onChange={handleInputChange}
-//                                 className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                             />
-//                         </div>
-
-//                         <div>
-//                             <label>Details</label>
-//                             <input
-//                                 name="details"
-//                                 value={formData.details}
-//                                 onChange={handleInputChange}
-//                                 className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                             />
-
-//                         </div>
-//                     </section>
-//                     {/* Basic Information */}
-//                     {/* <section>
-//                         <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
-//                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                             <div>
-//                                 <label>Display Name*</label>
-//                                 <input
-//                                     name="displayName"
-//                                     value={formData.displayName}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                     required
-//                                     type="text"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Company Name</label>
-//                                 <input
-//                                     name="companyName"
-//                                     value={formData.companyName}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Salutation</label>
-//                                 <input
-//                                     name="salutation"
-//                                     value={formData.salutation}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>First Name</label>
-//                                 <input
-//                                     name="firstName"
-//                                     value={formData.firstName}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Last Name</label>
-//                                 <input
-//                                     name="lastName"
-//                                     value={formData.lastName}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Phone</label>
-//                                 <input
-//                                     name="phone"
-//                                     value={formData.phone}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Currency Code</label>
-//                                 <input
-//                                     name="currencyCode"
-//                                     value={formData.currencyCode}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Notes</label>
-//                                 <input
-//                                     name="notes"
-//                                     value={formData.notes}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Website</label>
-//                                 <input
-//                                     name="website"
-//                                     value={formData.website}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Status</label>
-//                                 <input
-//                                     name="status"
-//                                     value={formData.status}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Opening Balance</label>
-//                                 <input
-//                                     name="openingBalance"
-//                                     value={formData.openingBalance}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Opening Balance Exchange Rate</label>
-//                                 <input
-//                                     name="openingBalanceExchangeRate"
-//                                     value={formData.openingBalanceExchangeRate}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Branch ID</label>
-//                                 <input
-//                                     name="branchId"
-//                                     value={formData.branchId}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Branch Name</label>
-//                                 <input
-//                                     name="branchName"
-//                                     value={formData.branchName}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Bank Account Payment</label>
-//                                 <input
-//                                     name="bankAccountPayment"
-//                                     value={formData.bankAccountPayment}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Portal Enabled</label>
-//                                 <input
-//                                     type="checkbox"
-//                                     name="portalEnabled"
-//                                     checked={formData.portalEnabled}
-//                                     onChange={handleInputChange}
-//                                     className="mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Credit Limit</label>
-//                                 <input
-//                                     name="creditLimit"
-//                                     value={formData.creditLimit}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Customer Sub Type</label>
-//                                 <input
-//                                     name="customerSubType"
-//                                     value={formData.customerSubType}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Department</label>
-//                                 <input
-//                                     name="department"
-//                                     value={formData.department}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Designation</label>
-//                                 <input
-//                                     name="designation"
-//                                     value={formData.designation}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Price List</label>
-//                                 <input
-//                                     name="priceList"
-//                                     value={formData.priceList}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Payment Terms</label>
-//                                 <input
-//                                     name="paymentTerms"
-//                                     value={formData.paymentTerms}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Payment Terms Label</label>
-//                                 <input
-//                                     name="paymentTermsLabel"
-//                                     value={formData.paymentTermsLabel}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                         </div>
-//                     </section> */}
-
-//                     {/* Contact Information */}
-//                     {/* <section>
-//                         <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
-//                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                             <div>
-//                                 <label>Email ID</label>
-//                                 <input
-//                                     type="email"
-//                                     name="emailId"
-//                                     value={formData.emailId}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Mobile Phone</label>
-//                                 <input
-//                                     type="tel"
-//                                     name="mobilePhone"
-//                                     value={formData.mobilePhone}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Skype Identity</label>
-//                                 <input
-//                                     name="skypeIdentity"
-//                                     value={formData.skypeIdentity}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Facebook</label>
-//                                 <input
-//                                     name="facebook"
-//                                     value={formData.facebook}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Twitter</label>
-//                                 <input
-//                                     name="twitter"
-//                                     value={formData.twitter}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                         </div>
-//                     </section> */}
-
-//                     {/* Billing Address */}
-//                     {/* <section>
-//                         <h2 className="text-lg font-semibold mb-4">Billing Address</h2>
-//                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                             <div>
-//                                 <label>Attention</label>
-//                                 <input
-//                                     name="billingAttention"
-//                                     value={formData.billingAttention}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Address</label>
-//                                 <input
-//                                     name="billingAddress"
-//                                     value={formData.billingAddress}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Street 2</label>
-//                                 <input
-//                                     name="billingStreet2"
-//                                     value={formData.billingStreet2}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>City</label>
-//                                 <input
-//                                     name="billingCity"
-//                                     value={formData.billingCity}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>State</label>
-//                                 <input
-//                                     name="billingState"
-//                                     value={formData.billingState}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Country</label>
-//                                 <input
-//                                     name="billingCountry"
-//                                     value={formData.billingCountry}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>County</label>
-//                                 <input
-//                                     name="billingCounty"
-//                                     value={formData.billingCounty}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Postal Code</label>
-//                                 <input
-//                                     name="billingCode"
-//                                     value={formData.billingCode}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Phone</label>
-//                                 <input
-//                                     name="billingPhone"
-//                                     value={formData.billingPhone}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Fax</label>
-//                                 <input
-//                                     name="billingFax"
-//                                     value={formData.billingFax}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                         </div>
-//                     </section> */}
-
-
-//                     {/* GST Details */}
-//                     {/* <section>
-//                         <h2 className="text-lg font-semibold mb-4">GST Details</h2>
-//                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                             <div>
-//                                 <label>GST Treatment</label>
-//                                 <input
-//                                     name="gstTreatment"
-//                                     value={formData.gstTreatment}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>GSTIN</label>
-//                                 <input
-//                                     name="gstin"
-//                                     value={formData.gstin}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Taxable</label>
-//                                 <input
-//                                     type="checkbox"
-//                                     name="taxable"
-//                                     checked={formData.taxable}
-//                                     onChange={handleInputChange}
-//                                     className="mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Tax ID</label>
-//                                 <input
-//                                     name="taxId"
-//                                     value={formData.taxId}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Tax Name</label>
-//                                 <input
-//                                     name="taxName"
-//                                     value={formData.taxName}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Tax Percentage</label>
-//                                 <input
-//                                     name="taxPercentage"
-//                                     value={formData.taxPercentage}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Exemption Reason</label>
-//                                 <input
-//                                     name="exemptionReason"
-//                                     value={formData.exemptionReason}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                         </div>
-//                     </section> */}
-
-//                     {/* Shipping Address */}
-//                     {/* <section>
-//                         <h2 className="text-lg font-semibold mb-4">Shipping Address</h2>
-//                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                             <div>
-//                                 <label>Attention</label>
-//                                 <input
-//                                     name="shippingAttention"
-//                                     value={formData.shippingAttention}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Address</label>
-//                                 <input
-//                                     name="shippingAddress"
-//                                     value={formData.shippingAddress}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Street 2</label>
-//                                 <input
-//                                     name="shippingStreet2"
-//                                     value={formData.shippingStreet2}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>City</label>
-//                                 <input
-//                                     name="shippingCity"
-//                                     value={formData.shippingCity}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>State</label>
-//                                 <input
-//                                     name="shippingState"
-//                                     value={formData.shippingState}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Country</label>
-//                                 <input
-//                                     name="shippingCountry"
-//                                     value={formData.shippingCountry}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>County</label>
-//                                 <input
-//                                     name="shippingCounty"
-//                                     value={formData.shippingCounty}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Postal Code</label>
-//                                 <input
-//                                     name="shippingCode"
-//                                     value={formData.shippingCode}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Phone</label>
-//                                 <input
-//                                     name="shippingPhone"
-//                                     value={formData.shippingPhone}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Fax</label>
-//                                 <input
-//                                     name="shippingFax"
-//                                     value={formData.shippingFax}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                         </div>
-//                     </section> */}
-
-//                     {/* Additional Details */}
-//                     {/* <section>
-//                         <h2 className="text-lg font-semibold mb-4">Additional Details</h2>
-//                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                             <div>
-//                                 <label>Place of Contact</label>
-//                                 <input
-//                                     name="placeOfContact"
-//                                     value={formData.placeOfContact}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Place of Contact with State Code</label>
-//                                 <input
-//                                     name="placeOfContactWithStateCode"
-//                                     value={formData.placeOfContactWithStateCode}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Contact Address ID</label>
-//                                 <input
-//                                     name="contactAddressId"
-//                                     value={formData.contactAddressId}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Source</label>
-//                                 <input
-//                                     name="source"
-//                                     value={formData.source}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Owner Name</label>
-//                                 <input
-//                                     name="ownerName"
-//                                     value={formData.ownerName}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Primary Contact ID</label>
-//                                 <input
-//                                     name="primaryContactId"
-//                                     value={formData.primaryContactId}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Contact ID</label>
-//                                 <input
-//                                     name="contactId"
-//                                     value={formData.contactId}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Contact Name</label>
-//                                 <input
-//                                     name="contactName"
-//                                     value={formData.contactName}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Contact Type</label>
-//                                 <input
-//                                     name="contactType"
-//                                     value={formData.contactType}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                             <div>
-//                                 <label>Last Sync Time</label>
-//                                 <input
-//                                     type="datetime-local"
-//                                     name="lastSyncTime"
-//                                     value={formData.lastSyncTime}
-//                                     onChange={handleInputChange}
-//                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
-//                                 />
-//                             </div>
-//                         </div>
-//                     </section> */}
-
-//                     {/* Submit Buttons */}
-//                     <div className="flex justify-end gap-4">
-//                         <button
-//                             type="button"
-//                             className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-//                         >
-//                             Cancel
-//                         </button>
-//                         <button
-//                             type="submit"
-//                             className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
-//                         >
-//                             Save Enquiry
-//                         </button>
-//                     </div>
-//                 </form>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default AddEnquiry;
-
-
-// Define TypeScript Interfaces for State Management
-
-interface UserDetails {
-    clientName: string;
-    companyName: string;
-    phoneNumber: string;
-    email: string;
-    enquiryType: string;
-    levelOfEnquiry: string;
-    hotelPreferences: string;
-    city: string;
-    area: string;
-    numberOfRooms: string;
-    checkIn: string;
-    checkOut: string;
-    categoryOfHotel: string[];
-    rateRequiredForOccupancy: string[];
-    billingAddress: string;
-}
+// interface UserDetail {
+//     clientName: string;
+//     companyName: string;
+//     phoneNumber: string;
+//     email: string;
+//     enquiryType: string;
+//     levelOfEnquiry: string;
+//     hotelPreferences: string;
+//     city: string;
+//     area: string;
+//     numberOfRooms: string;
+//     checkIn: string;
+//     checkOut: string;
+//     categoryOfHotel: string[];
+//     rateRequiredForOccupancy: string[];
+//     billingAddress: string;
+// }
 
 interface Room {
     date: string;
-    numberOfRooms: string;
-    category: string;
+    roomCategory: string;
     occupancy: string;
     mealPlan: string[];
+    noOfRooms: string;
 }
 
 interface Banquet {
@@ -944,26 +40,27 @@ interface Cab {
     date: string;
     fromCity: string;
     toCity: string;
-    numberOfVehicles: string;
+    noOfVehicles: string;
     vehicleType: string;
     tripType: string;
     mealPlan: string[];
-}
-
-interface EventSetup {
-    functionType: string,
-    setupRequired: string,
-    eventName: string;
-    eventDates: EventDates[]
-    eventStartDate: string;
-    eventEndDate: string;
-
 }
 
 interface EventDates {
     startDate: '',
     endDate: '',
 }
+
+interface EventSetup {
+    functionType: string,
+    setupRequired: string,
+    eventDates: { startDate: string, endDate: string }[],
+    eventStartDate: string;
+    eventEndDate: string;
+
+}
+
+
 
 interface AirTickets {
     tripType: string,
@@ -974,38 +71,60 @@ interface AirTickets {
     returnDate: string,
 }
 
-import { useAddEnquiry } from '@/services/enquiry.service';
+import { toastError, toastSuccess } from '@/utils/toast';
 import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAddEnquiry, useEnquiryById, useUpdateEnquiryById} from '@/services/enquiry.service';
+import moment from 'moment';
+import { useContact, useContactById } from "@/services/contactUs.service";
+import { set } from 'lodash';
+import Select from 'react-select'
+import { pageIndex } from '@/common/constant.common';
+import { ReactSelectFormat } from '@/services/urls.service';
+
+
 
 
 const AddEnquiryForm = () => {
     // State for User Details
-    const [userDetails, setUserDetails] = useState<UserDetails>({
-        clientName: '',
-        companyName: '',
-        phoneNumber: '',
-        email: '',
-        enquiryType: '',
-        levelOfEnquiry: '',
-        hotelPreferences: '',
-        city: '',
-        area: '',
-        numberOfRooms: '',
-        checkIn: '',
-        checkOut: '',
-        categoryOfHotel: [],
-        rateRequiredForOccupancy: [],
-        billingAddress: ""
-    });
+    const [nameObj, setNameObj] = useState<ReactSelectFormat | null>(null);
+    const [companyName, setCompanyName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [enquiryType, setEnquiryType] = useState('');
+    const [levelOfEnquiry, setLevelOfEnquiry] = useState('');
+    const [hotelPreferences, setHotelPreferences] = useState('');
+    const [city, setCity] = useState('');
+    const [area, setArea] = useState('');
+    const [noOfRooms, setNoOfRooms] = useState('');
+    const [checkIn, setCheckIn] = useState('');
+    const [checkOut, setCheckOut] = useState('');
+    const [categoryOfHotel, setCategoryOfHotel] = useState([]);
+    const [occupancy, setOccupancy] = useState([]);
+    const [billingAddress, setBillingAddress] = useState('');
+
 
     // State for Tables
     const [room, setRoom] = useState<Room[]>([]);
     const [banquet, setBanquet] = useState<Banquet[]>([]);
     const [cab, setCab] = useState<Cab[]>([]);
     const [isOutOfStation, setIsOutOfStation] = useState(false);
+    const [selectName, setSelectName] = useState('');
 
+    const { mutateAsync: addEnquiry } = useAddEnquiry();
+    const { mutateAsync: updateEnquiryById } = useUpdateEnquiryById();
     
+    const { data: contact } = useContact({ pageIndex: 0 });
 
+    const { data: contactById } = useContactById(nameObj?.value || '');
+
+    useEffect(() => {
+        if (contactById?.data) {
+            setPhone(contactById?.data?.phone);
+            setEmail(contactById?.data?.email);
+        }
+    }, [contactById?.data])
     // Meal Plan Options
     const mealPlanOptions = ['Breakfast Only', 'Half Board', 'Full Board', 'All Inclusive'];
 
@@ -1013,7 +132,6 @@ const AddEnquiryForm = () => {
     const [eventSetup, setEventSetup] = useState<EventSetup>({
         functionType: '',
         setupRequired: '',
-        eventName: '',
         eventDates: [{
             startDate: '',
             endDate: ''
@@ -1021,6 +139,7 @@ const AddEnquiryForm = () => {
         eventStartDate: '',
         eventEndDate: '',
     });
+
 
     // State for Air Tickets
     const [airTickets, setAirTickets] = useState<AirTickets>({
@@ -1031,22 +150,53 @@ const AddEnquiryForm = () => {
         departureDate: '',
         returnDate: ''
     });
+
+    const { id } = useParams();
+    const { data: enquiryDataById, isLoading } = useEnquiryById(id || "");
     // Generate Rows for Room, Banquet, and Cab Tables Based on Check-In and Check-Out Dates
     useEffect(() => {
-        if (userDetails.checkIn && userDetails.checkOut) {
-            const start = new Date(userDetails.checkIn);
-            const end = new Date(userDetails.checkOut);
+        if (checkIn && checkOut) {
+            const start = new Date(checkIn);
+            const end = new Date(checkOut);
             const dates = [];
-
-            for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
-                dates.push({ date: new Date(d).toISOString().split('T')[0] });
+    
+            // Create dates between checkIn and checkOut
+            let currentDate = start;
+            while (currentDate <= end) {
+                dates.push({ date: currentDate.toISOString().split('T')[0] });
+                currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
             }
-
-            setRoom(dates.map(date => ({ date: date.date, numberOfRooms: '', category: '', occupancy: '', mealPlan: [] })));
-            setBanquet(dates.map(date => ({ date: date.date, session: '', seatingStyle: '', avSetup: '', menuType: '', minPax: '', seatingRequired: '' })));
-            setCab(dates.map(date => ({ date: date.date, fromCity: '', toCity: '', numberOfVehicles: '', vehicleType: '', tripType: '', mealPlan: [] })));
+    
+            // Update room, banquet, and cab states
+            setRoom(dates.map(date => ({
+                date: date.date,
+                roomCategory: '',
+                noOfRooms: '',
+                category: '',
+                occupancy: '',
+                mealPlan: []
+            })));
+            setBanquet(dates.map(date => ({
+                date: date.date,
+                session: '',
+                seatingStyle: '',
+                avSetup: '',
+                menuType: '',
+                minPax: '',
+                seatingRequired: ''
+            })));
+            setCab(dates.map(date => ({
+                date: date.date,
+                fromCity: '',
+                toCity: '',
+                noOfVehicles: '',
+                vehicleType: '',
+                tripType: '',
+                mealPlan: []
+            })));
         }
-    }, [userDetails.checkIn, userDetails.checkOut]);
+    }, [checkIn, checkOut]); // Make sure you're using correct state variables here (e.g., checkIn, checkOut)
+    
 
     // Add Meal Plan to Input and Remove from Dropdown
 
@@ -1077,14 +227,11 @@ const AddEnquiryForm = () => {
 
     // Add a Row to the Cab Table
     const addCabRow = () => {
-        setCab(prev => [...prev, { date: '', fromCity: '', toCity: '', numberOfVehicles: '', vehicleType: '', tripType: '', mealPlan: [] }]);
+        setCab(prev => [...prev, { date: '', fromCity: '', toCity: '', noOfVehicles: '', vehicleType: '', tripType: '', mealPlan: [] }]);
     };
 
     // Handle Input Changes
-    const handleInputChange = (e: any) => {
-        const { name, value } = e.target;
-        setUserDetails(prev => ({ ...prev, [name]: value }));
-    };
+
 
     // Handle Checkbox for Cab Type
     const handleCabTypeChange = () => {
@@ -1139,21 +286,159 @@ const AddEnquiryForm = () => {
         }));
     };
 
-    // Submit Handler
-    const handleSubmit = () => {
-        console.log({
-            userDetails,
-            room,
-            banquet,
-            cab,
-            eventSetup,
-            airTickets,
-        });
+
+    const navigate = useNavigate();
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        switch (name) {
+            case 'companyName':
+                setCompanyName(value);
+                break;
+            case 'phoneNumber':
+                setPhone(value);
+                break;
+            case 'email':
+                setEmail(value);
+                break;
+            case 'city':
+                setCity(value);
+                break;
+            case 'area':
+                setArea(value);
+                break;
+            case 'noOfRooms':
+                setNoOfRooms(value);
+                break;
+            case 'enquiryType':
+                setEnquiryType(value);
+                break;
+            case 'checkIn':
+                setCheckIn(value);
+                break;
+            case 'checkOut':
+                setCheckOut(value);
+                break;
+            case 'levelOfEnquiry':
+                setLevelOfEnquiry(value);
+                break;
+            default:
+                break;
+        }
     };
 
+
+
+
+
+
+
+
+
+    useEffect(() => {
+        // Prefill form when editing
+        if (enquiryDataById && enquiryDataById?.data) {
+            console.log(enquiryDataById.data.eventSetup, "getById/");
+            setAirTickets(enquiryDataById?.data?.airTickets)
+            setEventSetup(enquiryDataById?.data?.eventSetup)
+            // setBanquet(enquiryDataById?.data?.banquet)
+            setRoom(enquiryDataById?.data?.room)
+            // setCab(enquiryDataById?.data?.cab)
+            setBillingAddress(enquiryDataById?.data?.billingAddress)
+            setCompanyName(enquiryDataById?.data?.companyName)
+            setPhone(enquiryDataById?.data?.phone)
+            setEmail(enquiryDataById?.data?.email)
+            setCity(enquiryDataById?.data?.city)
+            setArea(enquiryDataById?.data?.area)
+            // setNoOfRooms(enquiryDataById?.data?.noOfRooms)
+            setEnquiryType(enquiryDataById?.data?.enquiryType)
+            setCheckIn(enquiryDataById?.data?.checkIn)
+            setCheckOut(enquiryDataById?.data?.checkOut)
+            setLevelOfEnquiry(enquiryDataById?.data?.levelOfEnquiry)
+            // setCab(enquiryDataById?.data?.cab)
+            //  setUser(enquiryDataById?.data)
+
+
+
+        }
+    });
+
+
+    console.log(eventSetup, "check event setup changes")
+    // Submit Handler
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+
+
+
+        try {
+
+            let obj = {
+                name: name,
+                phone: phone,
+                email: email,
+                companyName: companyName,
+                levelOfEnquiry: levelOfEnquiry,
+                enquiryType: enquiryType,
+                hotelPreferences: hotelPreferences,
+                checkIn: checkIn,
+                checkOut: checkOut,
+                city: city,
+                noOfRooms: noOfRooms,
+                categoryOfHotel: categoryOfHotel,
+                priority: levelOfEnquiry,
+                occupancy: occupancy,
+                banquet: banquet,
+                room: room,
+                eventSetup: eventSetup,
+                airTickets: airTickets,
+                cab: cab,
+                billingAddress: billingAddress,
+            }
+
+
+            console.log(obj, "<----obj");
+
+
+            if (id) {
+
+
+
+                const { data: res } = await updateEnquiryById({ id, obj });
+
+
+
+                if (res?.message) {
+
+
+
+                    toastSuccess(res.message);
+
+
+                }
+            } else {
+
+                const { data: res } = await addEnquiry(obj);
+                if (res?.message) {
+
+                    toastSuccess(res.message);
+                    navigate("/enquiryList")
+
+                }
+                
+            }
+
+        } catch (error) {
+            toastError(error)
+        }
+    };
+
+    const nameOptions = contact?.data && contact?.data.map((item: any) => ({ value: item._id, label: item.name }))
+
+
+
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
-            <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
+        <div className="min-h-screen w-full bg-gray-100 p-8">
+            <div className=" mx-auto bg-white shadow-lg rounded-lg p-8">
                 <h1 className="text-2xl font-bold mb-6">Enquiry</h1>
                 <form onSubmit={handleSubmit}>
                     {/* Grid Layout for Form Fields */}
@@ -1164,41 +449,32 @@ const AddEnquiryForm = () => {
                                 Client Name
                             </label>
 
-                            <input
-                                type="text"
-                                name="clientName"
-                                value={userDetails.clientName}
-                                onChange={handleInputChange}
-                                placeholder="Client Name"
-                                className="w-full border border-gray-300 rounded-md p-2"
-                            />
-                        </div>
+                            <Select
 
+                                options={nameOptions} value={nameObj} onChange={(e) => setNameObj(e)} />
+                        </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Company Name
                             </label>
-
                             <input
                                 type="text"
                                 name="companyName"
-                                value={userDetails.companyName}
+                                value={companyName}
                                 onChange={handleInputChange}
                                 placeholder="Company Name"
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
                         </div>
 
-
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Phone Number
                             </label>
-
                             <input
                                 type="number"
                                 name="phoneNumber"
-                                value={userDetails.phoneNumber}
+                                value={phone}
                                 onChange={handleInputChange}
                                 placeholder="Phone Number"
                                 className="w-full border border-gray-300 rounded-md p-2"
@@ -1209,13 +485,12 @@ const AddEnquiryForm = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Email
                             </label>
-
                             <input
                                 type="email"
                                 name="email"
-                                value={userDetails.email}
+                                value={email}
                                 onChange={handleInputChange}
-                                placeholder="Email"
+                                placeholder="email"
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
                         </div>
@@ -1224,11 +499,10 @@ const AddEnquiryForm = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 City
                             </label>
-
                             <input
                                 type="text"
                                 name="city"
-                                value={userDetails.city}
+                                value={city}
                                 onChange={handleInputChange}
                                 placeholder="City"
                                 className="w-full border border-gray-300 rounded-md p-2"
@@ -1237,13 +511,12 @@ const AddEnquiryForm = () => {
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                City
+                                Area
                             </label>
-
                             <input
                                 type="text"
                                 name="area"
-                                value={userDetails.area}
+                                value={area}
                                 onChange={handleInputChange}
                                 placeholder="Area"
                                 className="w-full border border-gray-300 rounded-md p-2"
@@ -1254,11 +527,10 @@ const AddEnquiryForm = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Number of Rooms
                             </label>
-
                             <input
                                 type="number"
-                                name="numberOfRooms"
-                                value={userDetails.numberOfRooms}
+                                name="noOfRooms"
+                                value={noOfRooms}
                                 onChange={handleInputChange}
                                 placeholder="Number of Rooms"
                                 className="border border-gray-300 p-3 rounded-md focus:ring focus:ring-blue-200"
@@ -1269,10 +541,9 @@ const AddEnquiryForm = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Enquiry Type
                             </label>
-
                             <select
                                 name="enquiryType"
-                                value={userDetails.enquiryType}
+                                value={enquiryType}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 rounded-md p-2"
                             >
@@ -1287,11 +558,10 @@ const AddEnquiryForm = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Check In
                             </label>
-
                             <input
                                 type="date"
                                 name="checkIn"
-                                value={userDetails.checkIn}
+                                value={checkIn}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
@@ -1304,7 +574,7 @@ const AddEnquiryForm = () => {
                             <input
                                 type="date"
                                 name="checkOut"
-                                value={userDetails.checkOut}
+                                value={checkOut}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
@@ -1312,11 +582,11 @@ const AddEnquiryForm = () => {
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Check Out
+                                Level of Enquiry
                             </label>
                             <select
                                 name="levelOfEnquiry"
-                                value={userDetails.levelOfEnquiry}
+                                value={levelOfEnquiry}
                                 onChange={handleInputChange}
                                 className="border border-gray-300 p-3 rounded-md focus:ring focus:ring-blue-200"
                             >
@@ -1327,10 +597,11 @@ const AddEnquiryForm = () => {
                             </select>
                         </div>
 
+
                     </div>
 
                     {/* Room Table */}
-                    {(userDetails.enquiryType === 'room' || userDetails.enquiryType === 'both') && (
+                    {(enquiryType === 'room' || enquiryType === 'both') && (
                         <div className="mt-8">
                             <h2 className="font-bold text-lg mb-4">Room Table</h2>
                             <table className="table-auto w-full border-collapse border border-gray-300">
@@ -1344,24 +615,24 @@ const AddEnquiryForm = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {room.map((row, index) => (
+                                    {room && room?.length > 0 && room.map((row, index) => (
                                         <tr key={index} className="even:bg-gray-50">
                                             <td className="border border-gray-300 px-4 py-2">{row.date}</td>
                                             <td className="border border-gray-300 px-4 py-2">
                                                 <input
                                                     type="number"
-                                                    value={row.numberOfRooms}
+                                                    value={row?.noOfRooms}
                                                     onChange={(e) =>
-                                                        handleTableChange(room, setRoom, index, 'numberOfRooms', e.target.value)
+                                                        handleTableChange(room, setRoom, index, 'noOfRooms', e.target.value)
                                                     }
                                                     className="border border-gray-300 p-2 rounded-md w-full"
                                                 />
                                             </td>
                                             <td className="border border-gray-300 px-4 py-2">
                                                 <select
-                                                    value={row.category}
+                                                    value={row?.roomCategory}
                                                     onChange={(e) =>
-                                                        handleTableChange(room, setRoom, index, 'category', e.target.value)
+                                                        handleTableChange(room, setRoom, index, 'roomCategory', e.target.value)
                                                     }
                                                     className="border border-gray-300 p-2 rounded-md w-full"
                                                 >
@@ -1373,7 +644,7 @@ const AddEnquiryForm = () => {
                                             </td>
                                             <td className="border border-gray-300 px-4 py-2">
                                                 <select
-                                                    value={row.occupancy}
+                                                    value={row?.occupancy}
                                                     onChange={(e) =>
                                                         handleTableChange(room, setRoom, index, 'occupancy', e.target.value)
                                                     }
@@ -1390,6 +661,7 @@ const AddEnquiryForm = () => {
                                                     onChange={(e) =>
                                                         handleMealPlanChange(room, setRoom, index, e.target.value)
                                                     }
+                                                    value={row?.mealPlan}
                                                     className="border border-gray-300 p-2 rounded-md w-full"
                                                 >
                                                     <option value="">Select Meal Plan</option>
@@ -1399,7 +671,7 @@ const AddEnquiryForm = () => {
                                                     )}
                                                 </select>
                                                 <div className="mt-2">
-                                                    {row.mealPlan.map((plan) => (
+                                                    {row && row?.mealPlan?.length > 0 && row.mealPlan.map((plan) => (
                                                         <span
                                                             key={plan}
                                                             className="inline-block bg-gray-200 px-3 py-1 text-sm rounded-full mr-2"
@@ -1423,7 +695,7 @@ const AddEnquiryForm = () => {
                     )}
 
                     {/* Banquet Table */}
-                    {(userDetails.enquiryType === 'banquet' || userDetails.enquiryType === 'both') && (
+                    {(enquiryType === 'banquet' || enquiryType === 'both') && (
                         <div className="mt-8">
                             <h2 className="font-bold text-lg mb-4">Banquet Table</h2>
                             <table className="table-auto w-full border-collapse border border-gray-300">
@@ -1445,7 +717,7 @@ const AddEnquiryForm = () => {
                                             <td className="border border-gray-300 px-4 py-2">
                                                 <input
                                                     type="text"
-                                                    value={row.session}
+                                                    value={row?.session}
                                                     onChange={(e) =>
                                                         handleTableChange(banquet, setBanquet, index, 'session', e.target.value)
                                                     }
@@ -1455,7 +727,7 @@ const AddEnquiryForm = () => {
                                             <td className="border border-gray-300 px-4 py-2">
                                                 <input
                                                     type="text"
-                                                    value={row.seatingStyle}
+                                                    value={row?.seatingStyle}
                                                     onChange={(e) =>
                                                         handleTableChange(banquet, setBanquet, index, 'seatingStyle', e.target.value)
                                                     }
@@ -1465,7 +737,7 @@ const AddEnquiryForm = () => {
                                             <td className="border border-gray-300 px-4 py-2">
                                                 <input
                                                     type="text"
-                                                    value={row.avSetup}
+                                                    value={row?.avSetup}
                                                     onChange={(e) =>
                                                         handleTableChange(banquet, setBanquet, index, 'avSetup', e.target.value)
                                                     }
@@ -1475,7 +747,7 @@ const AddEnquiryForm = () => {
                                             <td className="border border-gray-300 px-4 py-2">
                                                 <input
                                                     type="text"
-                                                    value={row.menuType}
+                                                    value={row?.menuType}
                                                     onChange={(e) =>
                                                         handleTableChange(banquet, setBanquet, index, 'menuType', e.target.value)
                                                     }
@@ -1485,7 +757,7 @@ const AddEnquiryForm = () => {
                                             <td className="border border-gray-300 px-4 py-2">
                                                 <input
                                                     type="number"
-                                                    value={row.minPax}
+                                                    value={row?.minPax}
                                                     onChange={(e) =>
                                                         handleTableChange(banquet, setBanquet, index, 'minPax', e.target.value)
                                                     }
@@ -1495,7 +767,7 @@ const AddEnquiryForm = () => {
                                             <td className="border border-gray-300 px-4 py-2">
                                                 <input
                                                     type="text"
-                                                    value={row.seatingRequired}
+                                                    value={row?.seatingRequired}
                                                     onChange={(e) =>
                                                         handleTableChange(banquet, setBanquet, index, 'seatingRequired', e.target.value)
                                                     }
@@ -1520,7 +792,8 @@ const AddEnquiryForm = () => {
                                 Function Type
                             </label>
                             <select
-                                value={eventSetup.functionType}
+                                name={"functionType"}
+                                value={eventSetup?.functionType}
                                 onChange={(e) => setEventSetup({ ...eventSetup, functionType: e.target.value })}
                                 className="border border-gray-300 p-2 rounded-md w-full"
                             >
@@ -1536,7 +809,7 @@ const AddEnquiryForm = () => {
                                 Setup Required
                             </label>
                             <select
-                                value={eventSetup.setupRequired}
+                                value={eventSetup?.setupRequired}
                                 onChange={(e) => handleEventDetailChange('setupRequired', e.target.value)}
                                 className="border border-gray-300 p-2 rounded-md w-full"
                             >
@@ -1547,14 +820,14 @@ const AddEnquiryForm = () => {
                         </div>
 
 
-                        {eventSetup.eventDates.map((date, index) => (
+                        {eventSetup && eventSetup.eventDates && eventSetup?.eventDates?.length > 0 && eventSetup.eventDates.map((date, index) => (
                             <div key={index} className="grid grid-cols-2 gap-4 mt-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Event Start Date
                                 </label>
                                 <input
                                     type="date"
-                                    value={date.startDate}
+                                    value={date?.startDate}
                                     onChange={(e) => handleDateChange(index, 'startDate', e.target.value)}
                                     className="border border-gray-300 p-2 rounded-md w-full"
                                 />
@@ -1564,7 +837,7 @@ const AddEnquiryForm = () => {
                                 </label>
                                 <input
                                     type="date"
-                                    value={date.endDate}
+                                    value={date?.endDate}
                                     onChange={(e) => handleDateChange(index, 'endDate', e.target.value)}
                                     className="border border-gray-300 p-2 rounded-md w-full"
                                 />
@@ -1589,7 +862,7 @@ const AddEnquiryForm = () => {
                                     Trip type
                                 </label>
                                 <select
-                                    value={airTickets.tripType}
+                                    value={airTickets?.tripType}
                                     onChange={(e) => handleAirTicketChange('tripType', e.target.value)}
                                     className="border border-gray-300 p-2 rounded-md w-full"
                                 >
@@ -1605,9 +878,10 @@ const AddEnquiryForm = () => {
                                 </label>
                                 <input
                                     type="number"
+
                                     placeholder="Select passengers"
-                                    value={airTickets.numberOfPassengers}
-                                    onChange={(e) => handleAirTicketChange('passengers', e.target.value)}
+                                    value={airTickets?.numberOfPassengers}
+                                    onChange={(e) => handleAirTicketChange('numberOfPassengers', e.target.value)}
                                     className="border border-gray-300 p-2 rounded-md w-full"
                                 />
                             </div>
@@ -1619,7 +893,7 @@ const AddEnquiryForm = () => {
                                 <input
                                     type="text"
                                     placeholder="From City"
-                                    value={airTickets.fromCity}
+                                    value={airTickets?.fromCity}
                                     onChange={(e) => handleAirTicketChange('fromCity', e.target.value)}
                                     className="border border-gray-300 p-2 rounded-md w-full"
                                 />
@@ -1632,7 +906,7 @@ const AddEnquiryForm = () => {
                                 <input
                                     type="text"
                                     placeholder="To City"
-                                    value={airTickets.toCity}
+                                    value={airTickets?.toCity}
                                     onChange={(e) => handleAirTicketChange('toCity', e.target.value)}
                                     className="border border-gray-300 p-2 rounded-md w-full"
                                 />
@@ -1645,7 +919,7 @@ const AddEnquiryForm = () => {
                                 <input
                                     type="date"
                                     placeholder="Select departure date"
-                                    value={airTickets.departureDate}
+                                    value={moment(airTickets?.departureDate).format('YYYY-MM-DD')}
                                     onChange={(e) => handleAirTicketChange('departureDate', e.target.value)}
                                     className="border border-gray-300 p-2 rounded-md w-full"
                                 />
@@ -1653,12 +927,12 @@ const AddEnquiryForm = () => {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Departure date
+                                    Return date
                                 </label>
                                 <input
                                     type="date"
                                     placeholder="Select return date"
-                                    value={airTickets.returnDate}
+                                    value={moment(airTickets?.returnDate).format('YYYY-MM-DD')}
                                     onChange={(e) => handleAirTicketChange('returnDate', e.target.value)}
                                     className="border border-gray-300 p-2 rounded-md w-full"
                                 />
@@ -1707,7 +981,7 @@ const AddEnquiryForm = () => {
                                         <td className="border px-4 py-2">
                                             <input
                                                 type="date"
-                                                value={row.date}
+                                                value={row?.date}
                                                 onChange={(e) =>
                                                     handleTableChange(cab, setCab, index, 'date', e.target.value)
                                                 }
@@ -1718,9 +992,9 @@ const AddEnquiryForm = () => {
                                             <td className="border px-4 py-2">
                                                 <input
                                                     type="number"
-                                                    value={row.numberOfVehicles}
+                                                    value={row?.noOfVehicles}
                                                     onChange={(e) =>
-                                                        handleTableChange(cab, setCab, index, 'numberOfVehicles', e.target.value)
+                                                        handleTableChange(cab, setCab, index, 'noOfVehicles', e.target.value)
                                                     }
                                                     className="border p-1 w-full rounded"
                                                 />
@@ -1731,7 +1005,7 @@ const AddEnquiryForm = () => {
                                                 <td className="border px-4 py-2">
                                                     <input
                                                         type="text"
-                                                        value={row.fromCity}
+                                                        value={row?.fromCity}
                                                         onChange={(e) =>
                                                             handleTableChange(cab, setCab, index, 'fromCity', e.target.value)
                                                         }
@@ -1741,7 +1015,7 @@ const AddEnquiryForm = () => {
                                                 <td className="border px-4 py-2">
                                                     <input
                                                         type="text"
-                                                        value={row.toCity}
+                                                        value={row?.toCity}
                                                         onChange={(e) =>
                                                             handleTableChange(cab, setCab, index, 'toCity', e.target.value)
                                                         }
@@ -1753,7 +1027,7 @@ const AddEnquiryForm = () => {
                                         <td className="border px-4 py-2">
                                             <input
                                                 type="text"
-                                                value={row.vehicleType}
+                                                value={row?.vehicleType}
                                                 onChange={(e) =>
                                                     handleTableChange(cab, setCab, index, 'vehicleType', e.target.value)
                                                 }
@@ -1762,7 +1036,7 @@ const AddEnquiryForm = () => {
                                         </td>
                                         <td className="border px-4 py-2">
                                             <select
-                                                value={row.tripType}
+                                                value={row?.tripType}
                                                 onChange={(e) =>
                                                     handleTableChange(cab, setCab, index, 'tripType', e.target.value)
                                                 }
@@ -1814,7 +1088,7 @@ const AddEnquiryForm = () => {
                             <input
                                 type="text"
                                 name="billingAddress"
-                                value={userDetails.billingAddress}
+                                value={billingAddress}
                                 onChange={handleInputChange}
                                 placeholder="Billing Address"
                                 className="border border-gray-300 p-2 rounded-md w-full"
@@ -1822,7 +1096,7 @@ const AddEnquiryForm = () => {
                         </div>
 
                         <button
-                            onClick={handleSubmit}
+                            type='submit'
                             className="bg-green-500 text-white px-6 py-2 mt-6 rounded hover:bg-green-600"
                         >
                             Submit

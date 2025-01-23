@@ -11,27 +11,23 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 const prefix = "/enquiry";
 export interface IEnqiry {
     // Basic Details
-    _id:string;
     name: string;
     phone: string;
     email: string;
     companyName: string
-    typeOfContact: string;
     levelOfEnquiry:string;
     enquiryType:string;
     hotelPreferences:string;
-    checkIn:Date;
-    checkOut:Date;
+    checkIn:string;
+    checkOut:string;
     city:string;
+    area:string;
     numberOfRooms:string;
     categoryOfHotel:string;
-    contactId: string;
-    subject: string;
-    details: string;
     priority: string;
     occupancy:string
     banquet:{
-        date:Date;
+        date:string;
         session:string;
         seatingStyle:string;
         avSetup:string;
@@ -40,31 +36,38 @@ export interface IEnqiry {
         seatingRequired:string;
     }[];
     room:{
-        date:Date;
+        date:string;
         noOfRooms:string;
         roomCategory:string;
         occupancy:string;
         mealPlan:[];   
     }[];
     eventSetup:{
-        functiontype:string;
+        functionType:string;
+        setupRequired:string;
         eventDates:{
-            eventStartDate:Date;
-            eventEndDate:Date; 
-        }[]
-        eventSetupRequired:string;
+            startDate:string;
+            endDate:string; 
+        }[];
+       
+        eventStartDate:string;
+        eventEndDate: string;
     };
-    airTicket:{
+    airTickets:{
         tripType:string;
-        numberOfPassenger:string;
+        numberOfPassengers:string;
         fromCity:string;
         toCity:string;
-        departureDate:Date;
-        returnDate:Date;
+        departureDate:string;
+        returnDate:string;
 
     };
     cab:{
-        date:Date;
+        date:string;
+        fromCity:string;
+        toCity:string;
+        vehicleType:string;
+        tripType:string;
         noOfVehicle:string;
         typeOfVehicle:string;
         cabTripType:string;
@@ -155,7 +158,7 @@ export const useEnquiryApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addEnquiry = async (obj: any) => {
 
-        return axios.post<GeneralApiResponse<IEnqiry>>(`${BASE_URL}${prefix}/`, obj);
+        return axios.post<GeneralApiResponse<IEnqiry>>(`${BASE_URL}${prefix}`, obj);
     };
     const updateEnquiryById = async ({ id, obj }: { id: string; obj: any }) => {
         return axios.patch<GeneralApiResponse>(`${BASE_URL}${prefix}/updateById/${id}`, obj);

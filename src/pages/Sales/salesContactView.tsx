@@ -10,7 +10,7 @@ import { toastSuccess, toastError } from "@/utils/toast";
 import Modal from 'react-select';
 import { generateFilePath } from "@/services/urls.service";
 
-function ContactUs() {
+function SalesContactView() {
     const navigate = useNavigate();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isUploading, setIsUploading] = useState(false);
@@ -34,6 +34,8 @@ function ContactUs() {
     const handleImportClick = () => {
         fileInputRef.current?.click();
     };
+
+    
 
     // Handle file selection and upload
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,16 +119,26 @@ function ContactUs() {
 
     const columns = [
         {
-            name: "Customer Name",
+            name: "first Name",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
-                    <h6>{row.displayName}</h6>
+                    <h6>{row.salutation}.{row.firstName}</h6>
+                </div>
+            ),
+            width: "20%",
+        },
+        {
+            name: "Last Name",
+            selector: (row: any) => (
+                <div className="flex gap-1 flex-col">
+                    <h6>{row.lastName}</h6>
                 </div>
             ),
             width: "20%",
         },
         {
             name: "Phone Number",
+
             selector: (row: any) => (
                 <div className="flex gap-1">
                     <FaMobileScreenButton className="text-[#938d8d]" />
@@ -140,23 +152,23 @@ function ContactUs() {
             selector: (row: any) => row.email,
             width: "20%",
         },
-        {
-            name: "Lead Source",
-            selector: (row: any) => (
-                <div className="flex gap-1">
-                    <FaMobileScreenButton className="text-[#938d8d]" />
-                    {row.companyName}
-                </div>
-            ),
-            width: "20%",
-        },
+        // {
+        //     name: "Lead Source",
+        //     selector: (row: any) => (
+        //         <div className="flex gap-1">
+        //             <FaMobileScreenButton className="text-[#938d8d]" />
+        //             {row.companyName}
+        //         </div>
+        //     ),
+        //     width: "20%",
+        // },
         {
             name: "Action",
             width: "10%",
             selector: (row: any) => (
                 <div className="flex items-center gap-3">
                     <Link
-                        to={`/add-contact/${row?._id}`}
+                        to={`/add-sales-contact/${row?._id}`}
                         className="p-[6px] text-black-400 text-lg flex items-center"
                     >
                         <FaEye />
@@ -176,7 +188,7 @@ function ContactUs() {
             selector: (row: any) => (
                 <div className="flex items-center gap-3">
                     <Link
-                        to={`/add-contact/${row?._id}`}
+                        to={`/add-sales-contact/${row?._id}`}
                         className="p-[6px] text-black-400 text-lg flex items-center"
                     >
 
@@ -197,7 +209,7 @@ function ContactUs() {
             <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
                 <div className="search_boxes flex justify-between items-center">
                     <h2 className="text-xl font-semibold text-gray-800">
-                        Contact List
+                        Sales Contact List
                     </h2>
 
                     <div className="flex items-center justify-start gap-2">
@@ -239,7 +251,7 @@ function ContactUs() {
                         </button>
 
                         <button
-                            onClick={() => navigate("/add-contact")}
+                            onClick={() => navigate("/add-sales-contact")}
                             className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
                         >
                             <FaPlus />
@@ -264,4 +276,4 @@ function ContactUs() {
     );
 }
 
-export default ContactUs;
+export default SalesContactView;

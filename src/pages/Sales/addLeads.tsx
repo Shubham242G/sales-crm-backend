@@ -32,7 +32,7 @@ const AddNewLead = () => {
 
   const navigate = useNavigate();
   const { mutateAsync: addLead } = useAddLead();
-  const { mutateAsync: updateContact } = useUpdateLeadById();
+  const { mutateAsync: updateLead } = useUpdateLeadById();
   const { data: leadDataById, isLoading } = useLeadById(id || "");
 
 
@@ -66,10 +66,11 @@ const AddNewLead = () => {
 
       if (id) {
 
-        const { data: res } = await updateContact({ id, obj });
+        const { data: res } = await updateLead({ id, obj });
         if (res?.message) {
           toastSuccess(res.message);
-          navigate("/leads")
+          navigate("/leads");
+      
 
         }
       } else {

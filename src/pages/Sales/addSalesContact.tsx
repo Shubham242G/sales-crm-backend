@@ -3,17 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { useAddContact, useContactById, useUpdateContactById } from "@/services/contactUs.service";
 import { toastError, toastSuccess } from '@/utils/toast';
+import Select from 'react-select'
 
 
-const AddContact = () => {
+const AddSalesContact = () => {
     const [formData, setFormData] = useState({
 
         //new fields 
 
-        name: '',
+        firstName: '',
+        lastName:'',
         phone: '',
         email: '',
-        typeOfContact: '',
+        salutation:"",
 
         // // Basic Details
         // displayName: '',
@@ -99,6 +101,12 @@ const AddContact = () => {
     const { mutateAsync: updateContact } = useUpdateContactById();
     const { data: contactDataById, isLoading } = useContactById(id || "");
 
+    const salutationOptions = [
+        { value: "Mr", label: "Mr" },
+        { value: "Ms", label: "Ms" },
+        { value: "Mrs", label: "Mrs" },
+    ];
+
 
     useEffect(() => {
         // Prefill form when editing
@@ -110,11 +118,14 @@ const AddContact = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            if (!formData.name) {
-                toastError("Name is required");
+            if (!formData.firstName) {
+                toastError("First name is required");
                 return;
             }
-
+            if (!formData.lastName) {
+                toastError("Last name is required");
+                return;
+            }
             if (!formData.phone) {
                 toastError("Phone Number is required");
                 return;
@@ -127,7 +138,7 @@ const AddContact = () => {
                 const { data: res } = await updateContact({ id, obj });
                 if (res?.message) {
                     toastSuccess(res.message);
-                    navigate("/leads")
+                    navigate("/sales-contact-view")
                     console.log("formDataaaaaaa",formData)
                 }
             } else {
@@ -135,7 +146,7 @@ const AddContact = () => {
                 const { data: res } = await addContact(obj);
                 if (res?.message) {
                     toastSuccess(res.message);
-                    navigate("/leads")
+                    navigate("/add-sales-contact")
 
                 }
             }
@@ -146,25 +157,27 @@ const AddContact = () => {
         
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value, type } = e.target;
+    const handleInputChange = (e: any) => {
+        const { firstName, lastName, value, type } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+            [firstName]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+            [lastName]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
         }));
     };
 
-    const handleSelectChange = (name: string, value: any) => {
+    const handleSelectChange = (firstName: string, lastName: string, name: string, value: any) => {
         setFormData(prev => ({
             ...prev,
-            [name]: value
+            [firstName]: value,
+            [lastName]: value,
         }));
     };
 
     return (
         <div className="min-h-screen bg-gray-100 p-8">
             <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-8">
-                <h1 className="text-2xl font-bold mb-6">Add Contact</h1>
+                <h1 className="text-2xl font-bold mb-6">Add Sales Contact</h1>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
 
@@ -172,11 +185,33 @@ const AddContact = () => {
                     <section>
                         <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                                
+                                
+                               <select onChange={(val)=> handleSelectChange("salutation","salutation","salutation",val.target.value)} value={formData.salutation} className="border border-gray-300 rounded-md mt-6 px-4 py-2 w-20 mt-1">
+                               {salutationOptions.map((option) => (
+                                   <option key={option.value} value={option.value}>
+                                       {option.label}
+                                   </option>
+                               ))}
+                               </select>
+                            </div>
                             <div>
-                                <label>Name</label>
+                                <label>Frist Name</label>
                                 <input
-                                    name="name"
-                                    value={formData.name}
+                                    name="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleInputChange}
+                                    className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                                    required
+                                    type="text"
+                                />
+                            </div>
+                            <div>
+                                <label>Last Name</label>
+                                <input
+                                    name="lastName" 
+                                    value={formData.lastName}
                                     onChange={handleInputChange}
                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
                                     required
@@ -200,15 +235,6 @@ const AddContact = () => {
                                     onChange={handleInputChange}
                                     className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
                                 />
-                            </div>
-                            <div>
-                                <label>Type of Contact</label>
-                                <select className='input mb-2' value={formData.typeOfContact} onChange={(e) => handleSelectChange('typeOfContact', e.target.value)}>
-                                    <option value="">Select contact type</option>
-
-                                    <option value="client contact">Client contact</option>
-                                    <option value="vendor contact">Vendor contact</option>
-                                </select>
                             </div>
                         </div>
                     </section>
@@ -869,7 +895,7 @@ const AddContact = () => {
     );
 };
 
-export default AddContact;
+export default AddSalesContact;
 
 
 

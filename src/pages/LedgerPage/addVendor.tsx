@@ -278,14 +278,6 @@ const AddVendorForm = () => {
                 />
               </div>
               <div key={index} className="mb-6 border p-4 rounded-lg">
-                <div className="flex items-center justify-end mb-4">
-                  <button
-                    onClick={() => addHotelsRooms(index)}
-                    className="text-blue-500 font-semibold"
-                  >
-                    + Add Room
-                  </button>
-                </div>
                 {el.roomsArr.map((room, roomIndex) => (
                   <>
                     <div className="flex items-center justify-start mb-4">
@@ -311,6 +303,14 @@ const AddVendorForm = () => {
                     </div>
                   </>
                 ))}
+                <div className="flex items-center justify-end mb-4">
+                  <button
+                    onClick={() => addHotelsRooms(index)}
+                    className="text-blue-500 font-semibold"
+                  >
+                    + Add Room
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -341,27 +341,6 @@ const AddVendorForm = () => {
               <div key={index} className="mb-6 border p-4 rounded-lg">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold">Banquet {index + 1}</h3>
-                  <button
-                    onClick={() =>
-                      setBanquets([
-                        ...banquets,
-                        {
-                          category: "",
-                          name: "",
-                          size: "",
-                          setup: "",
-                          vegPrice: "",
-                          nonVegPrice: "",
-                          floor: "",
-                          pfaSize: "",
-                          images: [],
-                        },
-                      ])
-                    }
-                    className="text-blue-500 font-semibold"
-                  >
-                    + Add Banquet
-                  </button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                   
@@ -395,6 +374,29 @@ const AddVendorForm = () => {
                     label="Upload Banquet Images"
                     accept="image/*"
                   />
+                  <div className="flex items-center justify-end mt-3">
+                    <button
+                      onClick={() =>
+                        setBanquets([
+                          ...banquets,
+                          {
+                            category: "",
+                            name: "",
+                            size: "",
+                            setup: "",
+                            vegPrice: "",
+                            nonVegPrice: "",
+                            floor: "",
+                            pfaSize: "",
+                            images: [],
+                          },
+                        ])
+                      }
+                      className="text-blue-500 font-semibold"
+                    >
+                    + Add Banquet
+                  </button>
+                  </div>
                 </div>
               </div>
             ))}
