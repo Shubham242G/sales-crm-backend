@@ -11,7 +11,6 @@ const AddNewLead = () => {
 
     //new fields 
 
-    contactType: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -111,22 +110,6 @@ const AddNewLead = () => {
         <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {/* Contact Type */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Contact Type
-              </label>
-              <select
-                className="w-full border border-gray-300 rounded-md p-2"
-                name={"contactType"}
-                onChange={(e) => setFormData({ ...formData, contactType: e.target.value })}
-              >
-                <option value="">Select contact type</option>
-                <option value="none">None</option>
-                <option value="client">Client contact</option>
-                <option value="vendor">Vendor contact</option>
-              </select>
-            </div>
 
             {/* First Name */}
             <div>

@@ -11,7 +11,9 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 const prefix = "/enquiry";
 export interface IEnqiry {
     // Basic Details
-    name: string;
+    // nameObj: string;
+    firstName: string;
+    lastName: string;
     phone: string;
     email: string;
     companyName: string

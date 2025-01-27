@@ -125,10 +125,10 @@ function EnquiryLIst() {
             name: "Customer Name",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
-                    <h6>{row.nameObj}</h6>
+                    <h6>{row ? console.log(row, "check row")  : row.nameObj.label}</h6>
                 </div>
             ),
-            width: "10%",
+            width: "15%",
         },
         {
             name: "Enquiry Type",
@@ -137,7 +137,7 @@ function EnquiryLIst() {
                     <h6>{row.enquiryType}</h6>
                 </div>
             ),
-            width: "10%",
+            width: "15%",
         },
         {
             name: "Loaction",
@@ -146,7 +146,7 @@ function EnquiryLIst() {
                     <h6>{row.city}</h6>
                 </div>
             ),
-            width: "10%",
+            width: "15%",
         },
         {
             name: "Level of Enquiry",

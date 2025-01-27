@@ -89,6 +89,7 @@ import { ReactSelectFormat } from '@/services/urls.service';
 const AddEnquiryForm = () => {
     // State for User Details
     const [nameObj, setNameObj] = useState<ReactSelectFormat | null>(null);
+    
     const [companyName, setCompanyName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -110,7 +111,7 @@ const AddEnquiryForm = () => {
     const [banquet, setBanquet] = useState<Banquet[]>([]);
     const [cab, setCab] = useState<Cab[]>([]);
     const [isOutOfStation, setIsOutOfStation] = useState(false);
-    const [selectName, setSelectName] = useState('');
+    // const [selectName, setSelectName] = useState('');
 
     const { mutateAsync: addEnquiry } = useAddEnquiry();
     const { mutateAsync: updateEnquiryById } = useUpdateEnquiryById();
@@ -123,6 +124,7 @@ const AddEnquiryForm = () => {
         if (contactById?.data) {
             setPhone(contactById?.data?.phone);
             setEmail(contactById?.data?.email);
+            console.log(nameObj, "<----nameObj");
         }
     }, [contactById?.data])
     // Meal Plan Options
@@ -256,7 +258,7 @@ const AddEnquiryForm = () => {
     };
 
     const handleAirTicketChange = (field: any, value: string) => {
-        setAirTickets({ ...airTickets, [field]: value });
+        setAirTickets((prev)=>({...prev, [field]: value}) );
     };
 
     const addEventDate = () => {
@@ -321,6 +323,9 @@ const AddEnquiryForm = () => {
             case 'levelOfEnquiry':
                 setLevelOfEnquiry(value);
                 break;
+            case 'billingAddress':
+                setBillingAddress(value);
+                break;
             default:
                 break;
         }
@@ -354,13 +359,14 @@ const AddEnquiryForm = () => {
             setCheckIn(enquiryDataById?.data?.checkIn)
             setCheckOut(enquiryDataById?.data?.checkOut)
             setLevelOfEnquiry(enquiryDataById?.data?.levelOfEnquiry)
+            
             // setCab(enquiryDataById?.data?.cab)
             //  setUser(enquiryDataById?.data)
 
 
 
         }
-    });
+    },[enquiryDataById]);
 
 
     console.log(eventSetup, "check event setup changes")
@@ -373,11 +379,11 @@ const AddEnquiryForm = () => {
         try {
 
             let obj = {
-                name: name,
+                name: nameObj?.label,
                 phone: phone,
                 email: email,
                 companyName: companyName,
-                levelOfEnquiry: levelOfEnquiry,
+                levelOfEnquiry,
                 enquiryType: enquiryType,
                 hotelPreferences: hotelPreferences,
                 checkIn: checkIn,
@@ -385,7 +391,6 @@ const AddEnquiryForm = () => {
                 city: city,
                 noOfRooms: noOfRooms,
                 categoryOfHotel: categoryOfHotel,
-                priority: levelOfEnquiry,
                 occupancy: occupancy,
                 banquet: banquet,
                 room: room,
@@ -461,7 +466,7 @@ const AddEnquiryForm = () => {
                                 type="text"
                                 name="companyName"
                                 value={companyName}
-                                onChange={handleInputChange}
+                                onChange={(e)=>setCompanyName(e.target.value)}
                                 placeholder="Company Name"
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
@@ -475,7 +480,7 @@ const AddEnquiryForm = () => {
                                 type="number"
                                 name="phoneNumber"
                                 value={phone}
-                                onChange={handleInputChange}
+                                onChange={(e) => setPhone(e.target.value)}
                                 placeholder="Phone Number"
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
@@ -489,7 +494,7 @@ const AddEnquiryForm = () => {
                                 type="email"
                                 name="email"
                                 value={email}
-                                onChange={handleInputChange}
+                                onChange={(e)=>setEmail(e.target.value)}
                                 placeholder="email"
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
@@ -503,7 +508,7 @@ const AddEnquiryForm = () => {
                                 type="text"
                                 name="city"
                                 value={city}
-                                onChange={handleInputChange}
+                                onChange={(e)=>setCity(e.target.value)}
                                 placeholder="City"
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
@@ -517,7 +522,7 @@ const AddEnquiryForm = () => {
                                 type="text"
                                 name="area"
                                 value={area}
-                                onChange={handleInputChange}
+                                onChange={(e)=>setArea(e.target.value)}
                                 placeholder="Area"
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
@@ -531,7 +536,7 @@ const AddEnquiryForm = () => {
                                 type="number"
                                 name="noOfRooms"
                                 value={noOfRooms}
-                                onChange={handleInputChange}
+                                onChange={(e)=>setNoOfRooms(e.target.value)}
                                 placeholder="Number of Rooms"
                                 className="border border-gray-300 p-3 rounded-md focus:ring focus:ring-blue-200"
                             />
@@ -544,7 +549,7 @@ const AddEnquiryForm = () => {
                             <select
                                 name="enquiryType"
                                 value={enquiryType}
-                                onChange={handleInputChange}
+                                onChange={(e)=>setEnquiryType(e.target.value)}
                                 className="w-full border border-gray-300 rounded-md p-2"
                             >
                                 <option value="">Select Enquiry Type</option>
@@ -562,7 +567,7 @@ const AddEnquiryForm = () => {
                                 type="date"
                                 name="checkIn"
                                 value={checkIn}
-                                onChange={handleInputChange}
+                                onChange={(e)=>setCheckIn(e.target.value)}
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
                         </div>
@@ -575,19 +580,19 @@ const AddEnquiryForm = () => {
                                 type="date"
                                 name="checkOut"
                                 value={checkOut}
-                                onChange={handleInputChange}
+                                onChange={(e)=>setCheckOut(e.target.value)}
                                 className="w-full border border-gray-300 rounded-md p-2"
                             />
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Level of Enquiry
+                                Level of Enquiry {levelOfEnquiry}
                             </label>
                             <select
                                 name="levelOfEnquiry"
                                 value={levelOfEnquiry}
-                                onChange={handleInputChange}
+                                onChange={(e)=>setLevelOfEnquiry(e.target.value)}
                                 className="border border-gray-300 p-3 rounded-md focus:ring focus:ring-blue-200"
                             >
                                 <option value="">Select Enquiry Type</option>
@@ -1089,7 +1094,7 @@ const AddEnquiryForm = () => {
                                 type="text"
                                 name="billingAddress"
                                 value={billingAddress}
-                                onChange={handleInputChange}
+                                onChange={(e)=>setBillingAddress(e.target.value)}
                                 placeholder="Billing Address"
                                 className="border border-gray-300 p-2 rounded-md w-full"
                             />
@@ -1098,6 +1103,7 @@ const AddEnquiryForm = () => {
                         <button
                             type='submit'
                             className="bg-green-500 text-white px-6 py-2 mt-6 rounded hover:bg-green-600"
+                            
                         >
                             Submit
                         </button>

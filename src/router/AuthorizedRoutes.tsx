@@ -62,6 +62,7 @@ import AddSalesContact from "@/pages/Sales/addSalesContact";
 import SalesContactView from "@/pages/Sales/salesContactView";
 import EnquiryLIst from "@/pages/Sales/enquiryList";
 import AddEnquiry from "@/pages/Sales/addEnquiry";
+import AddPurchaseContact from "@/pages/LedgerPage/addPurchaseContacts";
 
 
 
@@ -97,6 +98,7 @@ export default function AuthorizedRoutes() {
                         <Route path="/add-TaskManagement" element={<AddTaskManagement />}></Route>
                         <Route path="/add-DailyActivityReport" element={<AddDailyActivityReport />}></Route>
                         <Route path="/customer-sales" element={<CustomerSales />}></Route>
+                        
 
 
                         <Route path="/enquiryList" element={<EnquiryLIst />}></Route>
@@ -110,6 +112,10 @@ export default function AuthorizedRoutes() {
                         <Route path="/add-ledger" element={<AddLedger />}></Route>
                         <Route path="/add-customer" element={<AddCustomer />}></Route>
                         <Route path="/add-sales-contact" element={<AddSalesContact />}></Route>
+                        <Route path="/add-purchase-contact" element={<AddPurchaseContact />}></Route>
+                        <Route path="/add-purchase-contact/:id" element={<AddPurchaseContact />}></Route>
+                        <Route path="/purchase-contact-view/" element={<SalesContactView />}></Route>
+
                         <Route path="/add-sales-contact/:id" element={<AddSalesContact />}></Route>
                         <Route path="/sales-contact-view/" element={<SalesContactView />}></Route>
                         <Route path="/add-vendor" element={<AddVendorForm />}></Route>

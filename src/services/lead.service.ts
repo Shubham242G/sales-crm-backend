@@ -13,7 +13,6 @@ export interface ILead {
     // Basic Details
 
 
-    contactType: '',
     firstName: '',
     lastName: '',
     email: '',
