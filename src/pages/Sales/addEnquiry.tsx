@@ -77,7 +77,7 @@ import toast from 'react-hot-toast';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAddEnquiry, useEnquiryById, useUpdateEnquiryById} from '@/services/enquiry.service';
 import moment from 'moment';
-import { useContact, useContactById } from "@/services/contactUs.service";
+import { useSalesContact, useSalesContactById } from "@/services/salesContact.service";
 import { set } from 'lodash';
 import Select from 'react-select'
 import { pageIndex } from '@/common/constant.common';
@@ -116,9 +116,9 @@ const AddEnquiryForm = () => {
     const { mutateAsync: addEnquiry } = useAddEnquiry();
     const { mutateAsync: updateEnquiryById } = useUpdateEnquiryById();
     
-    const { data: contact } = useContact({ pageIndex: 0 });
+    const { data: contact } = useSalesContact({ pageIndex: 0 });
 
-    const { data: contactById } = useContactById(nameObj?.value || '');
+    const { data: contactById } = useSalesContactById(nameObj?.value || '');
 
     useEffect(() => {
         if (contactById?.data) {
