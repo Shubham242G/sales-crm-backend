@@ -24,7 +24,7 @@ export interface IEnqiry {
     checkOut:string;
     city:string;
     area:string;
-    numberOfRooms:string;
+    noOfRooms:string;
     categoryOfHotel:string;
     priority: string;
     occupancy:string
@@ -34,7 +34,7 @@ export interface IEnqiry {
         seatingStyle:string;
         avSetup:string;
         menuType:string;
-        noOfPax:string;
+        minPax:string;
         seatingRequired:string;
     }[];
     room:{
@@ -70,9 +70,8 @@ export interface IEnqiry {
         toCity:string;
         vehicleType:string;
         tripType:string;
-        noOfVehicle:string;
+        noOfVehicles:string;
         typeOfVehicle:string;
-        cabTripType:string;
         mealPlan:[];
     }[];
     billingAddress:string;
