@@ -7,9 +7,21 @@ import BASE_URL, {
 } from "./urls.service";
 import axios from "../libs/hooks/axios";
 import { CHARGE_TYPE } from "@/common/constant.common";
+import { toastError, toastSuccess } from "@/utils/toast";
+import { AxiosError } from "axios";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 
 const prefix = "/customer";
+
+export interface IContactPerson {
+    salutation: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    workPhone: string;
+    communicationChannels: string[];
+  }
+
 export interface ICustomer {
   // Basic Details
   _id: string;
@@ -53,13 +65,15 @@ export interface ICustomer {
   shippingPhoneNumber?: string;
   shippingPinCode?: string;
   shippingFaxNumber?: string;
-  contactPersonsSalutation?: string;
-  contactPersonsFirstName?: string;
-  contactPersonsLastName?: string;
-  contactPersonsEmail?: string;
-  contactPersonsWorkPhone?: string;
-  contactPersonsMobile?: string;
-  contactPersonsCommunicationChannels?: string[];
+  contactPersons: IContactPerson[];
+  documentArray: string[];
+//   contactPersonsSalutation?: string;
+//   contactPersonsFirstName?: string;
+//   contactPersonsLastName?: string;
+//   contactPersonsEmail?: string;
+//   contactPersonsWorkPhone?: string;
+//   contactPersonsMobile?: string;
+//   contactPersonsCommunicationChannels?: string[];
 }
 
 export const usecustomerApiHook = () => {
@@ -124,7 +138,11 @@ export const useAddCustomer = () => {
     mutationFn: api.addCustomer,
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ["Customer"] });
+    //   toastSuccess(res.data.message);
     },
+    onError: (error: AxiosError<GeneralApiResponse>) => {
+        toastError(error.response?.data?.message || "Failed to create customer");
+      }
   });
 };
 

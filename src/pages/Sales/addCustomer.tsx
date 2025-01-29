@@ -6,6 +6,8 @@ import {
 import { toastError, toastSuccess } from "@/utils/toast";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useRef } from "react";
+import { generateFilePath } from "@/services/urls.service";
 
 interface ICustomerForm {
   customerType: string;
@@ -46,6 +48,7 @@ interface ICustomerForm {
   shippingPhoneNumber: string;
   shippingPinCode: string;
   shippingFaxNumber: string;
+  documentArray: string[];
   // contactPersonsSalutation: string;
   // contactPersonsFirstName: string;
   // contactPersonsLastName: string;
@@ -107,6 +110,7 @@ const AddCustomer = () => {
     shippingPhoneNumber: "",
     shippingPinCode: "",
     shippingFaxNumber: "",
+    documentArray: [],
     // contactPersonsSalutation: "",
     // contactPersonsFirstName: "",
     // contactPersonsLastName: "",
@@ -176,14 +180,21 @@ const AddCustomer = () => {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { mutateAsync: AddCustomer } = useAddCustomer();
+  const { mutateAsync: addCustomer } = useAddCustomer();
   const { mutateAsync: updateCustomer } = useUpdateCustomerById();
   const { data: customerDataById } = useCustomerById(id || "");
+
+  //for file upload
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadFiles, setUploadFiles] = useState<string[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Update your useEffect to use optional chaining
   useEffect(() => {
     if (customerDataById) {
       const apiData = customerDataById.data;
+      console.log(apiData, "check for api data");
       setFormData((prev) => ({
         ...prev,
         email: apiData?.email || "",
@@ -230,22 +241,198 @@ const AddCustomer = () => {
     }
   }, [customerDataById]);
 
+  //for file select
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const newFiles = Array.from(files);
+
+      // Validate file size and total count
+      const validFiles = newFiles.filter((file) => {
+        if (file.size > 10 * 1024 * 1024) {
+          // 10MB in bytes
+          toastError(`File ${file.name} is larger than 10MB`);
+          return false;
+        }
+        return true;
+      });
+
+      if (selectedFiles.length + validFiles.length > 10) {
+        toastError("You can only upload a maximum of 10 files");
+        return;
+      }
+
+      setSelectedFiles((prev) => [...prev, ...validFiles]);
+    }
+  };
+
+  //for uploading files
+  const handleFileUpload = async () => {
+    if (selectedFiles.length === 0) {
+      toastError("Please select files to upload");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      selectedFiles.forEach((file, index) => {
+        formData.append(`file${index}`, file);
+      });
+
+      // Replace this URL with your actual upload endpoint
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        toastSuccess("Files uploaded successfully");
+        setSelectedFiles([]);
+      } else {
+        throw new Error("Upload failed");
+      }
+    } catch (error) {
+      toastError("Error uploading files");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  //to remove a file from selection
+  const handleRemoveFile = (index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const validateEmail = (email: string) => {
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     setIsEmailValid(isValid);
   };
 
+  const handleImageUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setImageState: React.Dispatch<React.SetStateAction<string[]>>
+  ) => {
+
+
+    const files = e.target.files;
+    if (files) {
+      const fileReaders: Promise<string>[] = Array.from(files).map((file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            if (reader.result) resolve(reader.result as string);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      });
+
+      Promise.all(fileReaders)
+        .then((base64Images) => {
+          setImageState((prevImages) => [...prevImages, ...base64Images]);
+        })
+        .catch((error) => {
+          console.error("Error reading files:", error);
+        });
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (!isEmailValid) {
-        toastError("Please enter a valid email address");
-        return;
+      // Email validation
+      // if (!isEmailValid) {
+      //   toastError("Please enter a valid email address");
+      //   return;
+      // }
+
+      // Required fields validation
+      const requiredFields = {
+        customerType: "Customer type",
+        displayName: "Display name",
+        email: "Email",
+        companyName: "Company name",
+        addressStreet1: "Address",
+        city: "City",
+        state: "State",
+        countryRegion: "Country/Region",
+        pinCode: "PIN code",
+      };
+
+      // for (const [field, label] of Object.entries(requiredFields)) {
+      //   if (!formData[field as keyof ICustomerForm]) {
+      //     toastError(`${label} is required`);
+      //     return;
+      //   }
+      // }
+
+      // Phone number validation
+      // const phoneRegex = /^\d{10}$/;
+      // if (formData.workPhone && !phoneRegex.test(formData.workPhone.replace(/[-\s]/g, ''))) {
+      //   toastError("Please enter a valid work phone number");
+      //   return;
+      // }
+      // if (formData.mobile && !phoneRegex.test(formData.mobile.replace(/[-\s]/g, ''))) {
+      //   toastError("Please enter a valid mobile number");
+      //   return;
+      // }
+
+      // // PAN number validation (Indian PAN format)
+      // const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+      // if (formData.panNumber && !panRegex.test(formData.panNumber)) {
+      //   toastError("Please enter a valid PAN number");
+      //   return;
+      // }
+
+      // PIN code validation
+      // const pinCodeRegex = /^\d{6}$/;
+      // if (formData.pinCode && !pinCodeRegex.test(formData.pinCode)) {
+      //   toastError("Please enter a valid 6-digit PIN code");
+      //   return;
+      // }
+
+      // Contact persons validation
+      // if (contactPersons.length > 0) {
+      //   for (let i = 0; i < contactPersons.length; i++) {
+      //     const person = contactPersons[i];
+      //     if (person.firstName && !person.lastName) {
+      //       toastError(`Please enter last name for contact person ${i + 1}`);
+      //       return;
+      //     }
+      //     if (person.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email)) {
+      //       toastError(`Please enter a valid email for contact person ${i + 1}`);
+      //       return;
+      //     }
+      //     if (person.workPhone && !phoneRegex.test(person.workPhone.replace(/[-\s]/g, ''))) {
+      //       toastError(`Please enter a valid work phone for contact person ${i + 1}`);
+      //       return;
+      //     }
+      //   }
+      // }
+
+      // Prepare data for submission
+      const submissionData = {
+        ...formData,
+        contactPersons: contactPersons,
+        documentArray: uploadFiles,
+      };
+
+      // Handle create/update based on whether we have an ID
+      if (id) {
+        await updateCustomer({
+          id,
+          obj: submissionData,
+        });
+        toastSuccess("Customer updated successfully");
+        navigate("/customer-sales");
+      } else {
+        await addCustomer(submissionData);
+        toastSuccess("Customer added successfully");
+        navigate("/customer-sales");
       }
-      const obj = formData;
-      // Your existing submission logic
     } catch (error) {
-      toastError(error as string);
+      toastError(error);
     }
   };
 
@@ -517,6 +704,7 @@ const AddCustomer = () => {
                       {["Other Details", "Address", "Contact Persons"].map(
                         (tab) => (
                           <button
+                            type="button"
                             key={tab}
                             onClick={() => setActiveTab(tab as any)}
                             className={`pb-4 px-1 border-b-2 font-medium text-sm ${
@@ -851,8 +1039,18 @@ const AddCustomer = () => {
                               Documents:
                             </span>
                             <div className="flex-1">
+                              <input
+                                type="file"
+                                multiple
+                                ref={fileInputRef}
+                                onChange={handleFileSelect}
+                                className="hidden"
+                                accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
+                              />
                               <button
                                 type="button"
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={uploading}
                                 className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-8"
                               >
                                 <svg
@@ -867,14 +1065,95 @@ const AddCustomer = () => {
                                     clipRule="evenodd"
                                   />
                                 </svg>
-                                <span>Upload Document</span>
+                                <span>
+                                  {uploading
+                                    ? "Uploading..."
+                                    : "Upload Document"}
+                                </span>
                               </button>
                               <p className="text-sm text-gray-500 mt-1">
                                 You can upload a maximum of 10 files, 10MB each.
                               </p>
+
+                              {/* Display selected files */}
+                              {selectedFiles.length > 0 && (
+                                <div className="mt-4">
+                                  <h4 className="text-sm font-medium text-gray-700 mb-2">
+                                    Selected Files:
+                                  </h4>
+                                  <div className="space-y-2">
+                                    {selectedFiles.map((file, index) => (
+                                      <div
+                                        key={index}
+                                        className="flex items-center justify-between bg-gray-50 p-2 rounded"
+                                      >
+                                        <span className="text-sm text-gray-600">
+                                          {file.name}
+                                        </span>
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            handleRemoveFile(index)
+                                          }
+                                          className="text-red-500 hover:text-red-700"
+                                        >
+                                          <svg
+                                            className="w-4 h-4"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                          >
+                                            <path
+                                              fillRule="evenodd"
+                                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                              clipRule="evenodd"
+                                            />
+                                          </svg>
+                                        </button>
+                                      </div>
+                                    ))}
+                                    <button
+                                      type="button"
+                                      onClick={handleFileUpload}
+                                      disabled={uploading}
+                                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300"
+                                    >
+                                      {uploading
+                                        ? "Uploading..."
+                                        : "Upload Selected Files"}
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
+                        <div>
+              <div style={{ display: "flex", flexWrap: "wrap" }}>
+                {formData && formData.documentArray.length > 0 &&formData.documentArray.map((image, index) => (
+                  <img
+                    key={index}
+                     style={{
+                    height: 100,
+                    width: 100,
+                    objectFit: "cover",
+                    border: "1px solid #ddd",
+                    borderRadius: "5px",
+                    marginTop: "10px",
+                  }}
+                    src={image?.includes("base64") ? image : generateFilePath(image)}
+                    alt={`Image Preview ${index + 1}`}
+
+                  />
+                ))}
+              </div>
+              <input
+                type="file"
+                accept="image/csv/*"
+                multiple
+                onChange={(e) => handleImageUpload(e, setUploadFiles)}
+                style={{ marginTop: "10px", display: "block" }}
+              />
+            </div>
                       </div>
                     )}
 
@@ -949,7 +1228,7 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Street 1"
-                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full ml-16 border border-gray-300 rounded-md p-8 text-sm"
                               />
                             </div>
                             <div className="flex items-center gap-6 mt-4">
@@ -963,7 +1242,7 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Street 2"
-                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full ml-36 border border-gray-300 rounded-md p-8 text-sm"
                               />
                             </div>
                           </div>
@@ -1014,7 +1293,7 @@ const AddCustomer = () => {
                           {/* Pin Code */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="text-base font-medium text-gray-700 w-20">
                                 Pin Code:
                               </span>
                               <input
@@ -1153,7 +1432,7 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Street 2"
-                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full ml-24 border border-gray-300 rounded-md p-8 text-sm"
                               />
                             </div>
                           </div>

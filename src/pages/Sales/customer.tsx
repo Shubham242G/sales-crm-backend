@@ -5,11 +5,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
-import { useCustomer, usedeleteCustomerById, useAddCustomer, useUpdateCustomerById } from "@/services/customer.service";
+import {
+  useCustomer,
+  usedeleteCustomerById,
+  useAddCustomer,
+  useUpdateCustomerById,
+} from "@/services/customer.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 
 function CustomerSales() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -23,22 +28,19 @@ function CustomerSales() {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
-  const searchObj = useMemo(() => ({
-    ...(query && { query }),
-    pageIndex: pageIndex - 1,
-    pageSize
-  }), [pageIndex, pageSize, query]);
+  const searchObj = useMemo(
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
 
   const { data: CustomerData } = useCustomer(searchObj);
-  console.log(CustomerData, "check customerData")
+  console.log(CustomerData, "check customerData");
   const { mutateAsync: deleteCustomer } = usedeleteCustomerById();
-
-
-
-
-
-
-
+  const { mutateAsync: updateCustomer } = useUpdateCustomerById();
 
   const handleDelete = async (id: string) => {
     try {
@@ -54,34 +56,64 @@ function CustomerSales() {
     }
   };
 
+  const handleUpdate = async (id: string, data: any) => {
+    try {
+      const { data: res } = await updateCustomer({ id, ...data });
+      if (res) {
+        toastSuccess(res.message);
+        // Optionally refresh the data
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  };
 
   const columns = [
+    {
+      name: "Customer Type",
+      selector: (row: any) => (
+        <div className="flex gap-1 flex-col">
+          <h6>{row.customerType}</h6>
+        </div>
+      ),
+      width: "16%",
+    },
+
     {
       name: "Customer Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.name}</h6>
+          <h6>{row.companyName}</h6>
         </div>
       ),
-      width: "20%",
+      width: "16%",
     },
 
+    {
+      name: "Display Name",
+      selector: (row: any) => (
+        <div className="flex gap-1 flex-col">
+          <h6>{row.displayName}</h6>
+        </div>
+      ),
+      width: "16%",
+    },
 
     {
       name: "Phone Number",
       selector: (row: any) => (
         <div className="flex gap-1">
           <FaMobileScreenButton className=" text-[#938d8d]" />
-          {row.contactno}
+          {row.phoneNumber}
         </div>
       ),
-      width: "10%",
+      width: "16%",
     },
 
     {
       name: "Email",
       selector: (row: any) => row.email,
-      width: "20%",
+      width: "16%",
     },
     // {
     //   name: "Service",
@@ -101,86 +133,94 @@ function CustomerSales() {
     //   ),
     //   width: "20%",
     // },
-    {
-      name: "Lead Source",
-      selector: (row: any) => (
-        <div className="flex gap-1">
-          <FaMobileScreenButton className=" text-[#938d8d]" />
-          {row.company}
-        </div>
-      ),
-      width: "20%",
-    },
+    // {
+    //   name: "Lead Source",
+    //   selector: (row: any) => (
+    //     <div className="flex gap-1">
+    //       <FaMobileScreenButton className=" text-[#938d8d]" />
+    //       {row.company}
+    //     </div>
+    //   ),
+    //   width: "20%",
+    // },
     {
       name: "Action",
       width: "10%",
-      selector: () => (
+      selector: (row: any) => (
+        <div className="flex items-center gap-3">
+          <Link
+            to={`/add-customer/${row?._id}`}
+            className="p-[6px] text-black-400 text-lg flex items-center"
+            onClick={() => handleUpdate(row._id, row.data)}
+          >
+            <FaEye />
+          </Link>
+        </div>
+      ),
+    },
+    {
+      name: "Delete",
+      width: "10%",
+      selector: (row: any) => (
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={handleLedgerDetailsModal}
-            className=" text-black-500 text-lg p-[6px]"
-          >
-            <FaEye />
-          </button>
-          <Link
-            to="/update-ledger/id=1234"
-            className=" p-[6px] text-black-400 text-lg"
-
+            onClick={() => handleDelete(row._id)}
+            className="p-[6px] text-black-400 text-lg"
+            title="Delete Customer"
           >
             <RiDeleteBin6Line />
-          </Link>
+          </button>
         </div>
       ),
     },
   ];
 
   // Sample data
-  const data = [
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
-    },
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }],
-    },
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
-    },
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }],
-    },
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
-    },
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }]
-    },
-  ];
-
+  // const data = [
+  //   {
+  //     name: "Ajay Kumar",
+  //     contactno: "9968237063",
+  //     email: "test@test.com",
+  //     company: "Google",
+  //     service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
+  //   },
+  //   {
+  //     name: "Ajay Kumar",
+  //     contactno: "9968237063",
+  //     email: "test@test.com",
+  //     company: "Google",
+  //     service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }],
+  //   },
+  //   {
+  //     name: "Ajay Kumar",
+  //     contactno: "9968237063",
+  //     email: "test@test.com",
+  //     company: "Google",
+  //     service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
+  //   },
+  //   {
+  //     name: "Ajay Kumar",
+  //     contactno: "9968237063",
+  //     email: "test@test.com",
+  //     company: "Google",
+  //     service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }],
+  //   },
+  //   {
+  //     name: "Ajay Kumar",
+  //     contactno: "9968237063",
+  //     email: "test@test.com",
+  //     company: "Google",
+  //     service: [{ name: "hotel" }, { name: "banquet" }, { name: "Event" }],
+  //   },
+  //   {
+  //     name: "Ajay Kumar",
+  //     contactno: "9968237063",
+  //     email: "test@test.com",
+  //     company: "Google",
+  //     service: [{ name: "hotel" }, { name: "Event" }, { name: "Banquet" }],
+  //   },
+  // ];
 
   return (
     <>
@@ -222,7 +262,10 @@ function CustomerSales() {
                 <FaFileExport /> Export
               </button>
 
-              <button onClick={() => navigate("/add-customer")} className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
+              <button
+                onClick={() => navigate("/add-customer")}
+                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+              >
                 <FaPlus />
                 <span>New Customer</span>
               </button>
@@ -234,13 +277,13 @@ function CustomerSales() {
             columns={columns}
             loading={false}
             totalRows={CustomerData?.total}
-          // loading={loading}
-          // totalRows={data.length}
-          // onChangePage={handlePageChange}
-          // onChangeRowsPerPage={handleRowsPerPageChange}
-          // pagination
-          // paginationPerPage={rowsPerPage}
-          // paginationRowsPerPageOptions={[5, 10, 20]}
+            // loading={loading}
+            // totalRows={data.length}
+            // onChangePage={handlePageChange}
+            // onChangeRowsPerPage={handleRowsPerPageChange}
+            // pagination
+            // paginationPerPage={rowsPerPage}
+            // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

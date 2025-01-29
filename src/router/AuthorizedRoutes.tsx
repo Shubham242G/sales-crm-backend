@@ -111,6 +111,7 @@ export default function AuthorizedRoutes() {
                         <Route path="/sales-ledger" element={<SalesLedger />}></Route>
                         <Route path="/add-ledger" element={<AddLedger />}></Route>
                         <Route path="/add-customer" element={<AddCustomer />}></Route>
+                        <Route path="/add-customer/:id" element={<AddCustomer />}></Route>
                         <Route path="/add-sales-contact" element={<AddSalesContact />}></Route>
                         <Route path="/add-purchase-contact" element={<AddPurchaseContact />}></Route>
                         <Route path="/add-purchase-contact/:id" element={<AddPurchaseContact />}></Route>
