@@ -76,7 +76,7 @@ import {
   useUpdateEnquiryById,
 } from "@/services/enquiry.service";
 import moment from "moment";
-import { useContact, useContactById } from "@/services/contactUs.service";
+// import { useContact, useContactById } from "@/services/contactUs.service";
 import { set } from "lodash";
 import Select from "react-select";
 import { pageIndex } from "@/common/constant.common";
@@ -112,17 +112,17 @@ const AddEnquiryForm = () => {
   const { mutateAsync: addEnquiry } = useAddEnquiry();
   const { mutateAsync: updateEnquiryById } = useUpdateEnquiryById();
 
-  const { data: contact } = useContact({ pageIndex: 0 });
+  // const { data: contact } = useContact({ pageIndex: 0 });
 
-  const { data: contactById } = useContactById(nameObj?.value || "");
+  // const { data: contactById } = useContactById(nameObj?.value || "");
 
-  useEffect(() => {
-    if (contactById?.data) {
-      setPhone(contactById?.data?.phone);
-      setEmail(contactById?.data?.email);
-      console.log(nameObj, "<----nameObj");
-    }
-  }, [contactById?.data]);
+  // useEffect(() => {
+  //   if (contactById?.data) {
+  //     setPhone(contactById?.data?.phone);
+  //     setEmail(contactById?.data?.email);
+  //     console.log(nameObj, "<----nameObj");
+  //   }
+  // }, [contactById?.data]);
   // Meal Plan Options
   const mealPlanOptions = [
     "Breakfast Only",
@@ -592,12 +592,16 @@ const AddEnquiryForm = () => {
     }
   };
 
-  const nameOptions =
-    contact?.data &&
-    contact?.data.map((item: any) => ({ value: item._id, label: item.name }));
+  // const nameOptions =
+  //   contact?.data &&
+  //   contact?.data.map((item: any) => ({ value: item._id, label: item.name }));
 
-  console.log(cab, "cab check ");
-  console.log(banquet, "banquet check");
+  // console.log(cab, "cab check ");
+  // console.log(banquet, "banquet check");
+
+  //for resolving error for now
+  const nameOptions = [{value: "", label: ""}]
+
   return (
     <div className="min-h-screen w-full bg-gray-100 p-8">
       <div className=" mx-auto bg-white shadow-lg rounded-lg p-8">
