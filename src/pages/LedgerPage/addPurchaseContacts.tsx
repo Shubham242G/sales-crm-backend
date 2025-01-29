@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import { useAddContact, useContactById, useUpdateContactById } from "@/services/contactUs.service";
+import { useAddpurchaseContact, usepurchaseContactById, useUpdatepurchaseContactById } from "@/services/purchaseContact.service";
 import { toastError, toastSuccess } from '@/utils/toast';
 import Select from 'react-select'
 
@@ -20,9 +20,9 @@ const AddPurchaseContact = () => {
     const { id } = useParams();
 
     const navigate = useNavigate();
-    const { mutateAsync: addContact } = useAddContact();
-    const { mutateAsync: updateContact } = useUpdateContactById();
-    const { data: contactDataById, isLoading } = useContactById(id || "");
+    const { mutateAsync: addPurchaseContact } = useAddpurchaseContact();
+    const { mutateAsync: updatePurchaseContact } = useUpdatepurchaseContactById();
+    const { data: purchaseContactDataById, isLoading } = usepurchaseContactById(id || "");
 
     const salutationOptions = [
         { value: "Mr", label: "Mr" },
@@ -33,11 +33,11 @@ const AddPurchaseContact = () => {
 
     useEffect(() => {
         // Prefill form when editing
-        if (contactDataById) {
-            console.log(contactDataById, "getById/");
-            setFormData(contactDataById?.data || "");
+        if (purchaseContactDataById) {
+            console.log(purchaseContactDataById, "getById/");
+            setFormData(purchaseContactDataById?.data || "");
         }
-    }, [contactDataById]);
+    }, [purchaseContactDataById]);
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -58,18 +58,18 @@ const AddPurchaseContact = () => {
 
             if (id) {
 
-                const { data: res } = await updateContact({ id, obj });
+                const { data: res } = await updatePurchaseContact({ id, obj });
                 if (res?.message) {
                     toastSuccess(res.message);
-                    navigate("/sales-contact-view")
+                    navigate("/purchase-contact-view")
                     console.log("formDataaaaaaa",formData)
                 }
             } else {
 
-                const { data: res } = await addContact(obj);
+                const { data: res } = await addPurchaseContact(obj);
                 if (res?.message) {
                     toastSuccess(res.message);
-                    navigate("/add-sales-contact")
+                    navigate("/purchase-contact-view")
 
                 }
             }
@@ -80,14 +80,15 @@ const AddPurchaseContact = () => {
         
     };
 
-    const handleInputChange = (e: any) => {
-        const { firstName, lastName, value, type } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [firstName]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
-            [lastName]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
         }));
     };
+    
 
     const handleSelectChange = (firstName: string, lastName: string, name: string, value: any) => {
         setFormData(prev => ({

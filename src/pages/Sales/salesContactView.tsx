@@ -5,7 +5,7 @@ import { useState, useMemo, useRef } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { SiConvertio } from "react-icons/si";
 import { FaFilter, FaFileExport, FaPlus, FaFileImport } from "react-icons/fa";
-import { addContactsExel, getExel, useContact, usedeleteContactById, useConvert } from "@/services/contactUs.service";
+import { addSalesContactsExel, getExel, useSalesContact, usedeleteSalesContactById, useConvert } from "@/services/salesContact.service";
 import { toastSuccess, toastError } from "@/utils/toast";
 import Modal from 'react-select';
 import { generateFilePath } from "@/services/urls.service";
@@ -25,9 +25,9 @@ function SalesContactView() {
         pageSize
     }), [pageIndex, pageSize, query]);
 
-    const { data: ContactData } = useContact(searchObj);
-    console.log(ContactData, "check ContactData")
-    const { mutateAsync: deleteContact } = usedeleteContactById();
+    const { data: SalesContactData } = useSalesContact(searchObj);
+    console.log(SalesContactData, "check ContactData")
+    const { mutateAsync: deleteContact } = usedeleteSalesContactById();
     const { mutateAsync: convertEnquiry } = useConvert();
 
     // Handle triggering file input click
@@ -47,7 +47,7 @@ function SalesContactView() {
             const formData = new FormData();
             formData.append("file", file);
 
-            const response = await addContactsExel(formData);
+            const response = await addSalesContactsExel(formData);
 
             console.log(response, "check response")
             toastSuccess("Contacts imported successfully!");
@@ -79,7 +79,7 @@ function SalesContactView() {
             document.body.appendChild(link);
             link.click();
             link.remove();
-            toastSuccess("Contacts exported successfully!");
+            toastSuccess("Sales Contacts exported successfully!");
         } catch (error) {
             toastError("Failed to export contacts. Please try again.");
             console.error("Export Error:", error);
@@ -255,16 +255,16 @@ function SalesContactView() {
                             className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
                         >
                             <FaPlus />
-                            <span>New Contact</span>
+                            <span>New Sales Contact</span>
                         </button>
                     </div>
                 </div>
 
                 <ReactTable
-                    data={ContactData?.data}
+                    data={SalesContactData?.data}
                     columns={columns}
                     loading={false}
-                    totalRows={ContactData?.total}
+                    totalRows={SalesContactData?.total}
                     onChangeRowsPerPage={setPageSize}
                     onChangePage={setPageIndex}
                     page={pageIndex}

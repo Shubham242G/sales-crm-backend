@@ -18,8 +18,6 @@ export interface ILead {
     email: '',
     phone: '',
     company: '',
-    panNumber: '',
-    gstNumber: '',
 
     // companyName: string;
     // salutation: string;

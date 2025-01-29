@@ -16,8 +16,6 @@ const AddNewLead = () => {
     email: '',
     phone: '',
     company: '',
-    panNumber: '',
-    gstNumber: '',
 
 
 
@@ -153,35 +151,6 @@ const AddNewLead = () => {
               />
             </div>
 
-            {/* PAN Number */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                PAN Number
-              </label>
-              <input
-
-                name={"panNumber"}
-                onChange={(e) => setFormData({ ...formData, panNumber: e.target.value })}
-                type="text"
-                placeholder="Enter PAN number"
-                className="w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-
-            {/* GST Number */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                GST Number
-              </label>
-              <input
-
-                name={"gstNumber"}
-                onChange={(e) => setFormData({ ...formData, gstNumber: e.target.value })}
-                type="text"
-                placeholder="Enter GST number"
-                className="w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
 
             {/* Email Address */}
             <div>
