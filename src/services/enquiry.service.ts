@@ -20,14 +20,17 @@ export interface IEnqiry {
     levelOfEnquiry:string;
     enquiryType:string;
     hotelPreferences:string;
+    hotelName: string;
+    othersPreference: string;
+    approxPassengers: string;
     checkIn:string;
     checkOut:string;
     city:string;
     area:string;
     noOfRooms:string;
-    categoryOfHotel:string;
+    categoryOfHotel:string[];
     priority: string;
-    occupancy:string
+    occupancy:string[];
     banquet:{
         date:string;
         session:string;

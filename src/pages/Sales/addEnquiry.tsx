@@ -92,14 +92,31 @@ const AddEnquiryForm = () => {
   const [email, setEmail] = useState("");
   const [enquiryType, setEnquiryType] = useState("");
   const [levelOfEnquiry, setLevelOfEnquiry] = useState("");
-  const [hotelPreferences, setHotelPreferences] = useState("");
+  const [othersPreference, setOthersPreference] = useState("");
+  const [hotelName, setHotelName] = useState("");
+  const [categoryOfHotel, setCategoryOfHotel] = useState<string[]>([]);
+  const hotelCategoryOptions = [
+    { value: "budget", label: "Budget" },
+    { value: "midrange", label: "Mid-Range" },
+    { value: "luxury", label: "Luxury" },
+    { value: "boutique", label: "Boutique" },
+    { value: "business", label: "Business" },
+    { value: "resort", label: "Resort" },
+  ];
+  const [occupancy, setOccupancy] = useState<string[]>([]);
+  const occupancyOptions = [
+    { value: "single occupancy", label: "Single Occupancy" },
+    { value: "double occupancy", label: "Double Occupancy" },
+  ]
+  const [approxPassengers, setApproxPassengers] = useState("");
+  // const [hotelPreferences, setHotelPreferences] = useState("");
   const [city, setCity] = useState("");
   const [area, setArea] = useState("");
   const [noOfRooms, setNoOfRooms] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
-  const [categoryOfHotel, setCategoryOfHotel] = useState([]);
-  const [occupancy, setOccupancy] = useState([]);
+  // const [categoryOfHotel, setCategoryOfHotel] = useState([]);
+  // const [occupancy, setOccupancy] = useState([]);
   const [billingAddress, setBillingAddress] = useState("");
 
   // State for Tables
@@ -432,8 +449,16 @@ const AddEnquiryForm = () => {
       setBillingAddress(enquiryDataById?.data?.billingAddress);
       setCompanyName(enquiryDataById?.data?.companyName);
 
-      console.log("room category", enquiryDataById?.data?.room[0].roomCategory);
+      console.log(
+        "room category",
+        enquiryDataById?.data?.room[0]?.roomCategory
+      );
       setPhone(enquiryDataById?.data?.phone);
+      setHotelName(enquiryDataById?.data?.hotelName);
+      setApproxPassengers(enquiryDataById?.data?.approxPassengers);
+      setOthersPreference(enquiryDataById?.data?.othersPreference);
+      setCategoryOfHotel(enquiryDataById?.data?.categoryOfHotel);
+      setOccupancy(enquiryDataById?.data?.occupancy);
       setEmail(enquiryDataById?.data?.email);
       setCity(enquiryDataById?.data?.city);
       setArea(enquiryDataById?.data?.area);
@@ -470,7 +495,10 @@ const AddEnquiryForm = () => {
         companyName: companyName,
         levelOfEnquiry,
         enquiryType: enquiryType,
-        hotelPreferences: hotelPreferences,
+        othersPreference: othersPreference,
+        hotelName: hotelName,
+        approxPassengers: approxPassengers,
+        // hotelPreferences: hotelPreferences,
         checkIn: checkIn,
         checkOut: checkOut,
         city: city,
@@ -503,7 +531,7 @@ const AddEnquiryForm = () => {
         companyName: obj.companyName,
         levelOfEnquiry: obj.levelOfEnquiry,
         enquiryType: obj.enquiryType,
-        hotelPreferences: obj.hotelPreferences,
+        // hotelPreferences: obj.hotelPreferences,
         checkIn: obj.checkIn,
         checkOut: obj.checkOut,
         city: obj.city,
@@ -518,7 +546,7 @@ const AddEnquiryForm = () => {
       obj.room.forEach((room, index) => {
         console.log(`Room ${index + 1}:`, {
           date: room.date,
-          roomCategory: room.roomCategory,
+          roomCategory: room?.roomCategory,
           noOfRooms: room.noOfRooms,
           occupancy: room.occupancy,
           mealPlan: room.mealPlan,
@@ -600,7 +628,9 @@ const AddEnquiryForm = () => {
   // console.log(banquet, "banquet check");
 
   //for resolving error for now
-  const nameOptions = [{value: "", label: ""}]
+  const nameOptions = [{ value: "", label: "" }];
+
+  console.log(othersPreference, "check other preferences");
 
   return (
     <div className="min-h-screen w-full bg-gray-100 p-8">
@@ -752,7 +782,7 @@ const AddEnquiryForm = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Level of Enquiry 
+                Level of Enquiry
               </label>
               <select
                 name="levelOfEnquiry"
@@ -766,12 +796,82 @@ const AddEnquiryForm = () => {
                 <option value="not urgent">Not Urgent</option>
               </select>
             </div>
+            {/* Hotel Preference */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Hotel Preference
+              </label>
+              <select
+                value={othersPreference}
+                onChange={(e) => setOthersPreference(e.target.value)}
+                className="w-full border border-gray-300 rounded-md p-2 mb-2"
+              >
+                <option value="">Select a Preference</option>
+                <option value="preference1">Preference 1</option>
+                <option value="preference2">Preference 2</option>
+                <option value="other">Other</option>
+              </select>
+              {othersPreference === "other" && (
+                <input
+                type="text"
+                placeholder="Enter Hotel Name"
+                value={hotelName}
+                onChange={(e) => setHotelName(e.target.value)}
+                className="w-full border border-gray-300 rounded-md p-2 mt-2"
+              />
+              )}
+              
+            </div>
+            {/* Hotel Category */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Hotel Category
+              </label>
+              <Select
+                isMulti
+                options={hotelCategoryOptions}
+                value={hotelCategoryOptions.filter((option) =>
+                  categoryOfHotel.includes(option.value)
+                )}
+                onChange={(selected) => {
+                  const values = selected
+                    ? selected.map((opt) => opt.value)
+                    : [];
+                  setCategoryOfHotel(values);
+                }}
+                className="basic-multi-select"
+                classNamePrefix="select"
+                placeholder="Select Categories..."
+              />
+            </div>
+            {/* Rate Required for (Occupancy) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+              Rate Required for (Occupancy)
+              </label>
+              <Select
+                isMulti
+                options={occupancyOptions}
+                value={occupancyOptions.filter((option) =>
+                  occupancy.includes(option.value)
+                )}
+                onChange={(selected) => {
+                  const values = selected
+                    ? selected.map((opt) => opt.value)
+                    : [];
+                  setOccupancy(values);
+                }}
+                className="basic-multi-select"
+                classNamePrefix="select"
+                placeholder="Select Occupancy..."
+              />
+            </div>
           </div>
 
           {/* Room Table */}
           {(enquiryType === "room" || enquiryType === "both") && (
             <div className="mt-8">
-              <h2 className="font-bold text-lg mb-4">Room Table</h2>
+              <h2 className="font-bold text-lg mb-4">Room</h2>
               <table className="table-auto w-full border-collapse border border-gray-300">
                 <thead className="bg-gray-100">
                   <tr>
@@ -796,7 +896,7 @@ const AddEnquiryForm = () => {
                     room.map((row, index) => (
                       <tr key={index} className="even:bg-gray-50">
                         <td className="border border-gray-300 px-4 py-2">
-                          {row.date}
+                          {row?.date}
                         </td>
                         <td className="border border-gray-300 px-4 py-2">
                           <input
@@ -816,7 +916,7 @@ const AddEnquiryForm = () => {
                         </td>
                         <td className="border border-gray-300 px-4 py-2">
                           <select
-                            value={row.roomCategory}
+                            value={row?.roomCategory}
                             onChange={(e) =>
                               handleTableChange(
                                 room,
@@ -902,13 +1002,26 @@ const AddEnquiryForm = () => {
                     ))}
                 </tbody>
               </table>
+              {/* Button for "Same for All Days" */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (banquet?.length > 0) {
+                    const firstRow = banquet[0];
+                    setBanquet(banquet.map(() => ({ ...firstRow })));
+                  }
+                }}
+                className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
+              >
+                Same for All Days
+              </button>
             </div>
           )}
 
           {/* Banquet Table */}
           {(enquiryType === "banquet" || enquiryType === "both") && (
             <div className="mt-8">
-              <h2 className="font-bold text-lg mb-4">Banquet Table</h2>
+              <h2 className="font-bold text-lg mb-4">Banquet</h2>
               <table className="table-auto w-full border-collapse border border-gray-300">
                 <thead className="bg-gray-100">
                   <tr>
@@ -1039,6 +1152,18 @@ const AddEnquiryForm = () => {
                   ))}
                 </tbody>
               </table>
+              <button
+                type="button"
+                onClick={() => {
+                  if (banquet?.length > 0) {
+                    const firstRow = banquet[0];
+                    setBanquet(banquet.map(() => ({ ...firstRow })));
+                  }
+                }}
+                className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
+              >
+                Same for All Days
+              </button>
             </div>
           )}
 
@@ -1221,44 +1346,55 @@ const AddEnquiryForm = () => {
           {/* Cab Table */}
 
           <div className="mt-8">
-            <h2 className="font-bold text-lg">Cab Table</h2>
-            <div className="flex items-center gap-4 mt-2">
-              <label className="flex items-center gap-2">
+            <h2 className="font-bold text-lg">Cab</h2>
+            <div className="flex items-center justify-between gap-4 mt-2">
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2">Trip Type:</label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={!isOutOfStation}
+                    onChange={handleCabTypeChange}
+                  />
+                  Local
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={isOutOfStation}
+                    onChange={handleCabTypeChange}
+                  />
+                  Out of Station
+                </label>
+              </div>
+
+              {/* Approx Passengers */}
+              <div className="flex flex-col gap-2 mr-20">
+                <label className="flex items-center gap-2">
+                  Approx Number of Passengers:
+                </label>
                 <input
-                  type="checkbox"
-                  checked={!isOutOfStation}
-                  onChange={handleCabTypeChange}
+                  type="number"
+                  value={approxPassengers}
+                  onChange={(e) => setApproxPassengers(e.target.value)}
+                  className="border p-1 w-86 rounded"
                 />
-                Local
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={isOutOfStation}
-                  onChange={handleCabTypeChange}
-                />
-                Out of Station
-              </label>
+              </div>
             </div>
-            <button
-              onClick={addCabRow}
-              className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600"
-            >
-              Add a Date
-            </button>
+
+            
+
             <table className="table-auto w-full border mt-4">
               <thead>
                 <tr>
                   <th className="border px-4 py-2">Date</th>
-
-                  <th className="border px-4 py-2">No. of Vehicles</th>
-
                   {isOutOfStation && (
                     <th className="border px-4 py-2">From City</th>
                   )}
                   {isOutOfStation && (
                     <th className="border px-4 py-2">To City</th>
                   )}
+                  <th className="border px-4 py-2">No. of Vehicles</th>
                   <th className="border px-4 py-2">Type of Vehicle</th>
                   <th className="border px-4 py-2">Trip Type</th>
                   <th className="border px-4 py-2">Meal Plan</th>
@@ -1283,7 +1419,6 @@ const AddEnquiryForm = () => {
                         className="border p-1 w-full rounded"
                       />
                     </td>
-
                     <td className="border px-4 py-2">
                       <input
                         type="number"
@@ -1300,7 +1435,6 @@ const AddEnquiryForm = () => {
                         className="border p-1 w-full rounded"
                       />
                     </td>
-
                     {isOutOfStation && (
                       <>
                         <td className="border px-4 py-2">
@@ -1420,20 +1554,34 @@ const AddEnquiryForm = () => {
                 ))}
               </tbody>
             </table>
+            <button
+              type="button"
+              onClick={addCabRow}
+              className="bg-orange-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600"
+            >
+              Add a Date
+            </button>
           </div>
 
           {/* Billing Address and Submit Button */}
           <div className="mt-8">
-            <h2 className="font-bold text-lg">Billing Details</h2>
+            <h2 className="font-bold text-lg">Billing Address</h2>
             <div className="grid grid-cols-2 gap-4 mt-4">
-              <input
+              {/* <input
                 type="text"
                 name="billingAddress"
                 value={billingAddress}
                 onChange={(e) => setBillingAddress(e.target.value)}
-                placeholder="Billing Address"
+                placeholder="Enter Billing Address"
                 className="border border-gray-300 p-2 rounded-md w-full"
-              />
+              /> */}
+              <textarea
+                name="billingAddress"
+                value={billingAddress}
+                onChange={(e) => setBillingAddress(e.target.value)}
+                placeholder="Enter Billing Address"
+                className="border border-gray-300 p-2 rounded-md w-full"
+              ></textarea>
             </div>
 
             <button

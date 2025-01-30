@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import { generateFilePath } from "@/services/urls.service";
+import { Autocomplete, TextField } from "@mui/material";
 
 interface ICustomerForm {
   customerType: string;
@@ -215,7 +216,7 @@ const AddCustomer = () => {
         );
       }
 
-      console.log("customer salutation: ", apiData.salutation)
+      console.log("customer salutation: ", apiData.salutation);
       setFormData((prev) => ({
         ...prev,
         email: apiData?.email || "",
@@ -482,6 +483,226 @@ const AddCustomer = () => {
       )
     );
   };
+
+  const gstOptions = [
+    {
+      value: "registered_regular",
+      label: "Registered Business - Business that is registered under GST",
+    },
+    {
+      value: "registered_composite",
+      label:
+        "Registered Business - Composition (Business that is registered under the Composition Scheme in GST)",
+    },
+    {
+      value: "unregistered",
+      label:
+        "Unregistered Business - Business that is not registered under GST",
+    },
+    {
+      value: "consumer",
+      label: "Consumer - A consumer that is a regular customer",
+    },
+    {
+      value: "overseas",
+      label:
+        "Overseas - A person with whom you do import or export of supplies outside India",
+    },
+    {
+      value: "deemed_export",
+      label:
+        "Deemed Export - Supply of goods to an Export Oriented Unit or against Advanced Authorization/Export Promotion Capital Goods",
+    },
+    {
+      value: "special_economic_zone",
+      label:
+        "Tax Deductors - Departments of the State/Central government, governmental agencies or local authorities",
+    },
+    {
+      value: "special_economic_zone_developer",
+      label:
+        "SEZ Developer - A person/organization who owns at least 26% of the equity in creating business units in a Special Economic Zone (SEZ)",
+    },
+  ];
+
+  const stateOptions = [
+    { value: "[AN] - Andaman and Nicobar Islands", label: "[AN] - Andaman and Nicobar Islands" },
+    { value: "[AP] - Andhra Pradesh", label: "[AP] - Andhra Pradesh" },
+    { value: "[AR] - Arunachal Pradesh", label: "[AR] - Arunachal Pradesh" },
+    { value: "[AS] - Assam", label: "[AS] - Assam" },
+    { value: "[BR] - Bihar", label: "[BR] - Bihar" },
+    { value: "[CH] - Chandigarh", label: "[CH] - Chandigarh" },
+    { value: "[CG] - Chhattisgarh", label: "[CG] - Chhattisgarh" },
+    { value: "[DH] - Dadra and Nagar Haveli and Daman and Diu", label: "[DH] - Dadra and Nagar Haveli and Daman and Diu" },
+    { value: "[DL] - Delhi", label: "[DL] - Delhi" },
+    { value: "[GA] - Goa", label: "[GA] - Goa" },
+    { value: "[GJ] - Gujarat", label: "[GJ] - Gujarat" },
+    { value: "[HR] - Haryana", label: "[HR] - Haryana" },
+    { value: "[HP] - Himachal Pradesh", label: "[HP] - Himachal Pradesh" },
+    { value: "[JK] - Jammu and Kashmir", label: "[JK] - Jammu and Kashmir" },
+    { value: "[JH] - Jharkhand", label: "[JH] - Jharkhand" },
+    { value: "[KA] - Karnataka", label: "[KA] - Karnataka" },
+    { value: "[KL] - Kerala", label: "[KL] - Kerala" },
+    { value: "[LA] - Ladakh", label: "[LA] - Ladakh" },
+    { value: "[LD] - Lakshadweep", label: "[LD] - Lakshadweep" },
+    { value: "[MP] - Madhya Pradesh", label: "[MP] - Madhya Pradesh" },
+    { value: "[MH] - Maharashtra", label: "[MH] - Maharashtra" },
+    { value: "[MN] - Manipur", label: "[MN] - Manipur" },
+    { value: "[ML] - Meghalaya", label: "[ML] - Meghalaya" },
+    { value: "[MZ] - Mizoram", label: "[MZ] - Mizoram" },
+    { value: "[NL] - Nagaland", label: "[NL] - Nagaland" },
+    { value: "[OD] - Odisha", label: "[OD] - Odisha" },
+    { value: "[PY] - Puducherry", label: "[PY] - Puducherry" },
+    { value: "[PB] - Punjab", label: "[PB] - Punjab" },
+    { value: "[RJ] - Rajasthan", label: "[RJ] - Rajasthan" },
+    { value: "[SK] - Sikkim", label: "[SK] - Sikkim" },
+    { value: "[TN] - Tamil Nadu", label: "[TN] - Tamil Nadu" },
+    { value: "[TS] - Telangana", label: "[TS] - Telangana" },
+    { value: "[TR] - Tripura", label: "[TR] - Tripura" },
+    { value: "[UP] - Uttar Pradesh", label: "[UP] - Uttar Pradesh" },
+    { value: "[UK] - Uttarakhand", label: "[UK] - Uttarakhand" },
+    { value: "[WB] - West Bengal", label: "[WB] - West Bengal" },
+  ];
+
+ const currencyOptions = [
+    { value: "INR - Indian Rupee", label: "INR - Indian Rupee" },
+    { value: "USD - United States Dollar", label: "USD - United States Dollar" },
+    { value: "EUR - Euro", label: "EUR - Euro" },
+    { value: "JPY - Japanese Yen", label: "JPY - Japanese Yen" },
+    { value: "GBP - British Pound Sterling", label: "GBP - British Pound Sterling" },
+    { value: "AUD - Australian Dollar", label: "AUD - Australian Dollar" },
+    { value: "CAD - Canadian Dollar", label: "CAD - Canadian Dollar" },
+    { value: "CHF - Swiss Franc", label: "CHF - Swiss Franc" },
+    { value: "CNY - Chinese Yuan", label: "CNY - Chinese Yuan" },
+    { value: "HKD - Hong Kong Dollar", label: "HKD - Hong Kong Dollar" },
+    { value: "NZD - New Zealand Dollar", label: "NZD - New Zealand Dollar" },
+    { value: "SGD - Singapore Dollar", label: "SGD - Singapore Dollar" },
+    { value: "KRW - South Korean Won", label: "KRW - South Korean Won" },
+    { value: "THB - Thai Baht", label: "THB - Thai Baht" },
+    { value: "ZAR - South African Rand", label: "ZAR - South African Rand" },
+    { value: "BRL - Brazilian Real", label: "BRL - Brazilian Real" },
+    { value: "MXN - Mexican Peso", label: "MXN - Mexican Peso" },
+    { value: "MYR - Malaysian Ringgit", label: "MYR - Malaysian Ringgit" },
+    { value: "IDR - Indonesian Rupiah", label: "IDR - Indonesian Rupiah" },
+    { value: "SAR - Saudi Riyal", label: "SAR - Saudi Riyal" },
+  ];
+  
+ const paymentTermsOptions = [
+    { value: "Advance Paid", label: "Advance Paid" },
+    { value: "CC Auth Provided", label: "CC Auth Provided" },
+    { value: "Due on Receipt", label: "Due on Receipt" },
+    { value: "Bill To Company Extras Direct", label: "Bill To Company Extras Direct" },
+    { value: "Entire Bill To Company", label: "Entire Bill To Company" },
+    { value: "30 Days", label: "30 Days" },
+    { value: "45 Days", label: "45 Days" },
+    { value: "Direct From Guest", label: "Direct From Guest" },
+    { value: "Due End Of The Month", label: "Due End Of The Month" },
+    { value: "Due End Of Next Month", label: "Due End Of Next Month" },
+  ];
+
+ const priceListOptions = [
+    { value: "HEALTHCARE VEDARK [10% Markdown]", label: "HEALTHCARE VEDARK [10% Markdown]" },
+    { value: "Basic SEO Package", label: "Basic SEO Package" },
+    { value: "Social Media Management", label: "Social Media Management" },
+    { value: "Pay-Per-Click (PPC) Campaign Setup", label: "Pay-Per-Click (PPC) Campaign Setup" },
+    { value: "Content Writing", label: "Content Writing" },
+    { value: "Website Audit", label: "Website Audit" },
+  ];
+
+ const languageOptions = [
+    { value: "EN - English", label: "EN - English - Hello" },
+    { value: "ES - Spanish", label: "ES - Spanish - Hola" },
+    { value: "ZH - Chinese (Mandarin)", label: "ZH - Chinese (Mandarin) - 你好 (Nǐ hǎo)" },
+    { value: "HI - Hindi", label: "HI - Hindi - नमस्ते (Namaste)" },
+    { value: "AR - Arabic", label: "AR - Arabic - مرحبا (Marhaban)" },
+    { value: "BN - Bengali", label: "BN - Bengali - হ্যালো (Hyālō)" },
+    { value: "PT - Portuguese", label: "PT - Portuguese - Olá" },
+    { value: "RU - Russian", label: "RU - Russian - Привет (Privet)" },
+    { value: "JA - Japanese", label: "JA - Japanese - こんにちは (Konnichiwa)" },
+    { value: "DE - German", label: "DE - German - Hallo" },
+    { value: "KO - Korean", label: "KO - Korean - 안녕하세요 (Annyeonghaseyo)" },
+    { value: "FR - French", label: "FR - French - Bonjour" },
+    { value: "IT - Italian", label: "IT - Italian - Ciao" },
+    { value: "TR - Turkish", label: "TR - Turkish - Merhaba" },
+    { value: "VI - Vietnamese", label: "VI - Vietnamese - Xin chào" },
+    { value: "PL - Polish", label: "PL - Polish - Witaj" },
+    { value: "PA - Punjabi", label: "PA - Punjabi - ਸਤ ਸ੍ਰੀ ਅਕਾਲ (Sat Sri Akal)" },
+    { value: "UR - Urdu", label: "UR - Urdu - سلام (Salaam)" },
+    { value: "FA - Persian (Farsi)", label: "FA - Persian (Farsi) - سلام (Salaam)" },
+    { value: "HE - Hebrew", label: "HE - Hebrew - שלום (Shalom)" },
+    { value: "MS - Malay", label: "MS - Malay - Halo" },
+    { value: "TH - Thai", label: "TH - Thai - สวัสดี (Sawasdee)" },
+    { value: "SW - Swahili", label: "SW - Swahili - Hujambo" },
+    { value: "TA - Tamil", label: "TA - Tamil - வணக்கம் (Vanakkam)" },
+    { value: "TE - Telugu", label: "TE - Telugu - హలో (Halo)" },
+    { value: "EL - Greek", label: "EL - Greek - Γειά σας (Yia sas)" },
+    { value: "ML - Malayalam", label: "ML - Malayalam - ഹലോ (Halo)" },
+    { value: "CS - Czech", label: "CS - Czech - Ahoj" },
+    { value: "SK - Slovak", label: "SK - Slovak - Ahoj" },
+    { value: "HU - Hungarian", label: "HU - Hungarian - Helló" },
+    { value: "SR - Serbian", label: "SR - Serbian - Zdravo" },
+    { value: "RO - Romanian", label: "RO - Romanian - Bună ziua" },
+    { value: "DA - Danish", label: "DA - Danish - Hej" }
+  ];
+  
+  const countryOptions = [
+    { value: "US - United States", label: "US - United States" },
+    { value: "CA - Canada", label: "CA - Canada" },
+    { value: "GB - United Kingdom", label: "GB - United Kingdom" },
+    { value: "AU - Australia", label: "AU - Australia" },
+    { value: "IN - India", label: "IN - India" },
+    { value: "CN - China", label: "CN - China" },
+    { value: "JP - Japan", label: "JP - Japan" },
+    { value: "DE - Germany", label: "DE - Germany" },
+    { value: "FR - France", label: "FR - France" },
+    { value: "IT - Italy", label: "IT - Italy" },
+    { value: "ES - Spain", label: "ES - Spain" },
+    { value: "BR - Brazil", label: "BR - Brazil" },
+    { value: "MX - Mexico", label: "MX - Mexico" },
+    { value: "ZA - South Africa", label: "ZA - South Africa" },
+    { value: "RU - Russia", label: "RU - Russia" },
+    { value: "KR - South Korea", label: "KR - South Korea" },
+    { value: "AR - Argentina", label: "AR - Argentina" },
+    { value: "NG - Nigeria", label: "NG - Nigeria" },
+    { value: "EG - Egypt", label: "EG - Egypt" },
+    { value: "SE - Sweden", label: "SE - Sweden" },
+    { value: "NO - Norway", label: "NO - Norway" },
+    { value: "FI - Finland", label: "FI - Finland" },
+    { value: "PL - Poland", label: "PL - Poland" },
+    { value: "GR - Greece", label: "GR - Greece" },
+    { value: "TR - Turkey", label: "TR - Turkey" },
+    { value: "PH - Philippines", label: "PH - Philippines" },
+    { value: "TH - Thailand", label: "TH - Thailand" },
+    { value: "SG - Singapore", label: "SG - Singapore" },
+    { value: "HK - Hong Kong", label: "HK - Hong Kong" },
+    { value: "MY - Malaysia", label: "MY - Malaysia" },
+    { value: "KR - South Korea", label: "KR - South Korea" },
+    { value: "CH - Switzerland", label: "CH - Switzerland" },
+    { value: "BE - Belgium", label: "BE - Belgium" },
+    { value: "NL - Netherlands", label: "NL - Netherlands" },
+    { value: "PL - Poland", label: "PL - Poland" },
+    { value: "UA - Ukraine", label: "UA - Ukraine" },
+    { value: "CZ - Czech Republic", label: "CZ - Czech Republic" },
+    { value: "SK - Slovakia", label: "SK - Slovakia" },
+    { value: "RO - Romania", label: "RO - Romania" },
+    { value: "BG - Bulgaria", label: "BG - Bulgaria" },
+    { value: "PT - Portugal", label: "PT - Portugal" },
+    { value: "AT - Austria", label: "AT - Austria" },
+    { value: "KE - Kenya", label: "KE - Kenya" },
+    { value: "AE - United Arab Emirates", label: "AE - United Arab Emirates" },
+    { value: "SA - Saudi Arabia", label: "SA - Saudi Arabia" },
+    { value: "KW - Kuwait", label: "KW - Kuwait" },
+    { value: "IQ - Iraq", label: "IQ - Iraq" },
+    { value: "ID - Indonesia", label: "ID - Indonesia" },
+    { value: "VN - Vietnam", label: "VN - Vietnam" },
+    { value: "PE - Peru", label: "PE - Peru" },
+    { value: "CO - Colombia", label: "CO - Colombia" },
+    { value: "CL - Chile", label: "CL - Chile" }
+  ];
+  
+  
+  
+  
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -787,7 +1008,7 @@ const AddCustomer = () => {
                             <span className="w-32 text-base font-medium text-gray-700 mt-2">
                               GST Treatment:
                             </span>
-                            <select
+                            {/* <select
                               value={formData.gstTreatment}
                               onChange={(e) =>
                                 setFormData({
@@ -818,7 +1039,16 @@ const AddCustomer = () => {
                               <option value="special_economic_zone">
                                 SEZ Developer - A person/organization who own at least 26% of the equity in creating business units in a Special Economic Zones (SEZ)
                               </option>
-                            </select>
+                            </select> */}
+                            <Autocomplete
+                              disablePortal
+                              options={gstOptions}
+                              sx={{ width: 600 }}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Select GST Treatment" />
+                              )}
+                              className="flex-1 rounded-md p-2 text-sm"
+                            />
                           </div>
                         </div>
 
@@ -828,7 +1058,7 @@ const AddCustomer = () => {
                             <span className="w-32 text-base font-medium text-gray-700">
                               Place of Supply:
                             </span>
-                            <select
+                            {/* <select
                               value={formData.placeOfSupply}
                               onChange={(e) =>
                                 setFormData({
@@ -939,7 +1169,16 @@ const AddCustomer = () => {
                               <option value="[WB] - West Bengal">
                                 [WB] - West Bengal
                               </option>
-                            </select>
+                            </select> */}
+                            <Autocomplete
+                              disablePortal
+                              options={stateOptions}
+                              sx={{ width: 600 }}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Select State" />
+                              )}
+                              className="flex-1 rounded-md p-2 text-sm"
+                            />
                           </div>
                         </div>
 
@@ -1014,7 +1253,7 @@ const AddCustomer = () => {
                             <span className="w-32 text-base font-medium text-gray-700">
                               Currency:
                             </span>
-                            <select
+                            {/* <select
                               value={formData.currency}
                               onChange={(e) =>
                                 setFormData({
@@ -1083,7 +1322,16 @@ const AddCustomer = () => {
                               <option value="SAR - Saudi Riyal">
                                 SAR - Saudi Riyal
                               </option>
-                            </select>
+                            </select> */}
+                            <Autocomplete
+                              disablePortal
+                              options={currencyOptions}
+                              sx={{ width: 600 }}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Select Currency" />
+                              )}
+                              className="flex-1 rounded-md p-2 text-sm"
+                            />
                           </div>
                         </div>
                         {/* Payment Terms */}
@@ -1092,7 +1340,7 @@ const AddCustomer = () => {
                             <span className="w-32 text-base font-medium text-gray-700">
                               Payment Terms:
                             </span>
-                            <select
+                            {/* <select
                               value={formData.paymentTerms}
                               onChange={(e) =>
                                 setFormData({
@@ -1103,9 +1351,7 @@ const AddCustomer = () => {
                               className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                             >
                               <option value="">Select Payment Terms</option>
-                              <option value="Advance Paid">
-                                Advance Paid
-                              </option>
+                              <option value="Advance Paid">Advance Paid</option>
                               <option value="CC Auth Provided">
                                 CC Auth Provided
                               </option>
@@ -1118,12 +1364,8 @@ const AddCustomer = () => {
                               <option value="Entire Bill To Company">
                                 Entire Bill To Company
                               </option>
-                              <option value="30 Days">
-                                30 Days
-                              </option>
-                              <option value="45 Days">
-                                45 Days
-                              </option>
+                              <option value="30 Days">30 Days</option>
+                              <option value="45 Days">45 Days</option>
                               <option value="Direct From Guest">
                                 Direct From Guest
                               </option>
@@ -1133,7 +1375,16 @@ const AddCustomer = () => {
                               <option value="Due End Of Next Month">
                                 Due End Of Next Month
                               </option>
-                            </select>
+                            </select> */}
+                            <Autocomplete
+                              disablePortal
+                              options={paymentTermsOptions}
+                              sx={{ width: 600 }}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Select Payment Terms" />
+                              )}
+                              className="flex-1 rounded-md p-2 text-sm"
+                            />
                           </div>
                         </div>
                         {/* Price List */}
@@ -1142,7 +1393,7 @@ const AddCustomer = () => {
                             <span className="w-32 text-base font-medium text-gray-700">
                               Price List:
                             </span>
-                            <select
+                            {/* <select
                               value={formData.priceList}
                               onChange={(e) =>
                                 setFormData({
@@ -1171,7 +1422,16 @@ const AddCustomer = () => {
                               <option value="Website Audit">
                                 Website Audit
                               </option>
-                            </select>
+                            </select> */}
+                            <Autocomplete
+                              disablePortal
+                              options={priceListOptions}
+                              sx={{ width: 600 }}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Select Payment Terms" />
+                              )}
+                              className="flex-1 rounded-md p-2 text-sm"
+                            />
                           </div>
                         </div>
                         {/* Enable Portal */}
@@ -1204,7 +1464,7 @@ const AddCustomer = () => {
                             <span className="w-32 text-base font-medium text-gray-700">
                               Portal Language:
                             </span>
-                            <select
+                            {/* <select
                               value={formData.portalLanguage}
                               onChange={(e) =>
                                 setFormData({
@@ -1314,7 +1574,16 @@ const AddCustomer = () => {
                               <option value="DA - Danish">
                                 DA - Danish - Hej
                               </option>
-                            </select>
+                            </select> */}
+                            <Autocomplete
+                              disablePortal
+                              options={languageOptions}
+                              sx={{ width: 600 }}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Select Payment Terms" />
+                              )}
+                              className="flex-1 rounded-md p-2 text-sm"
+                            />
                           </div>
                         </div>
                         {/* Documents Upload */}
@@ -1479,7 +1748,7 @@ const AddCustomer = () => {
                               <span className="min-w-32 text-base font-medium text-gray-700">
                                 Country / Region:
                               </span>
-                              <select
+                              {/* <select
                                 value={formData.countryRegion}
                                 onChange={(e) =>
                                   setFormData({
@@ -1602,7 +1871,16 @@ const AddCustomer = () => {
                                   CO - Colombia
                                 </option>
                                 <option value="CL - Chile">CL - Chile</option>
-                              </select>
+                              </select> */}
+                              <Autocomplete
+                              disablePortal
+                              options={countryOptions}
+                              sx={{ width: 600 }}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Select Payment Terms" />
+                              )}
+                              className="flex-1 rounded-md p-2 text-sm"
+                            />
                             </div>
                           </div>
                           {/* Address */}
@@ -1665,7 +1943,7 @@ const AddCustomer = () => {
                               <span className="min-w-32 text-base font-medium text-gray-700">
                                 State:
                               </span>
-                              <select
+                              {/* <select
                                 value={formData.state}
                                 onChange={(e) =>
                                   setFormData({
@@ -1769,7 +2047,16 @@ const AddCustomer = () => {
                                 <option value="TN - Tamil Nadu">
                                   TN - Tamil Nadu
                                 </option>
-                              </select>
+                              </select> */}
+                              <Autocomplete
+                              disablePortal
+                              options={stateOptions}
+                              sx={{ width: 600 }}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Select Payment Terms" />
+                              )}
+                              className="flex-1 rounded-md p-2 text-sm"
+                            />
                             </div>
                           </div>
                           {/* Pin Code */}
@@ -1859,7 +2146,7 @@ const AddCustomer = () => {
                               <span className="min-w-32 text-base font-medium text-gray-700">
                                 Country / Region:
                               </span>
-                              <select
+                              {/* <select
                                 value={formData.shippingCountryRegion}
                                 onChange={(e) =>
                                   setFormData({
@@ -1982,7 +2269,16 @@ const AddCustomer = () => {
                                   CO - Colombia
                                 </option>
                                 <option value="CL - Chile">CL - Chile</option>
-                              </select>
+                              </select> */}
+                              <Autocomplete
+                              disablePortal
+                              options={countryOptions}
+                              sx={{ width: 600 }}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Select Payment Terms" />
+                              )}
+                              className="flex-1 rounded-md p-2 text-sm"
+                            />
                             </div>
                           </div>
                           {/* Shipping Address */}
@@ -2045,7 +2341,7 @@ const AddCustomer = () => {
                               <span className="min-w-32 text-base font-medium text-gray-700">
                                 State:
                               </span>
-                              <select
+                              {/* <select
                                 value={formData.shippingState}
                                 onChange={(e) =>
                                   setFormData({
@@ -2149,7 +2445,16 @@ const AddCustomer = () => {
                                 <option value="TN - Tamil Nadu">
                                   TN - Tamil Nadu
                                 </option>
-                              </select>
+                              </select> */}
+                              <Autocomplete
+                              disablePortal
+                              options={stateOptions}
+                              sx={{ width: 600 }}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Select Payment Terms" />
+                              )}
+                              className="flex-1 rounded-md p-2 text-sm"
+                            />
                             </div>
                           </div>
                           {/* Shipping Pin Code */}
