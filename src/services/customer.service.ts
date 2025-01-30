@@ -12,14 +12,18 @@ import { AxiosError } from "axios";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 
 const prefix = "/customer";
+type communicationChannelsProps = {
 
+  prefersEmail: boolean  ,
+  prefersSms : boolean ,
+  }
 export interface IContactPerson {
     salutation: string;
     firstName: string;
     lastName: string;
     email: string;
     workPhone: string;
-    communicationChannels: string[];
+    communicationChannels: communicationChannelsProps;
   }
 
 export interface ICustomer {
@@ -28,10 +32,18 @@ export interface ICustomer {
   contactName: string;
   contactOwner: string;
   companyName: string;
+  firstName: string;
+  lastName: string;
+  customerType: string;
+  taxPreference: string;
+  enablePortal: boolean;
+  gstTreatment: string;
   email: string;
   phoneNumber: string;
   panNumber: string;
   placeOfSupply: string;
+  prefersEmail: boolean;
+  prefersSms: boolean;
   state: string;
   city: string;
   Area: string;
@@ -67,6 +79,7 @@ export interface ICustomer {
   shippingFaxNumber?: string;
   contactPersons: IContactPerson[];
   documentArray: string[];
+  // communicationChannels: string[];
 //   contactPersonsSalutation?: string;
 //   contactPersonsFirstName?: string;
 //   contactPersonsLastName?: string;

@@ -22,7 +22,7 @@ interface ICustomerForm {
   panNumber: string;
   placeOfSupply: string;
   prefersEmail: boolean;
-  prefersSMS: boolean;
+  prefersSms: boolean;
   gstTreatment: string;
   taxPreference: string;
   currency: string;
@@ -49,6 +49,7 @@ interface ICustomerForm {
   shippingPinCode: string;
   shippingFaxNumber: string;
   documentArray: string[];
+  // communicationChannels: string[];
   // contactPersonsSalutation: string;
   // contactPersonsFirstName: string;
   // contactPersonsLastName: string;
@@ -57,6 +58,10 @@ interface ICustomerForm {
   // contactPersonsMobile: string;
   // contactPersonsCommunicationChannels: string[];
 }
+type communicationChannelsProps = {
+  prefersEmail: boolean;
+  prefersSms: boolean;
+};
 
 interface IContactPerson {
   salutation: string;
@@ -64,7 +69,7 @@ interface IContactPerson {
   lastName: string;
   email: string;
   workPhone: string;
-  communicationChannels: string[];
+  communicationChannels: communicationChannelsProps;
 }
 
 const AddCustomer = () => {
@@ -84,7 +89,7 @@ const AddCustomer = () => {
     panNumber: "",
     placeOfSupply: "",
     prefersEmail: false,
-    prefersSMS: false,
+    prefersSms: false,
     gstTreatment: "",
     taxPreference: "Taxable",
     currency: "",
@@ -111,6 +116,7 @@ const AddCustomer = () => {
     shippingPinCode: "",
     shippingFaxNumber: "",
     documentArray: [],
+    // communicationChannels: [],
     // contactPersonsSalutation: "",
     // contactPersonsFirstName: "",
     // contactPersonsLastName: "",
@@ -127,7 +133,7 @@ const AddCustomer = () => {
       lastName: "",
       email: "",
       workPhone: "",
-      communicationChannels: [],
+      communicationChannels: { prefersEmail: true, prefersSms: false },
     },
   ]);
 
@@ -140,7 +146,7 @@ const AddCustomer = () => {
         lastName: "",
         email: "",
         workPhone: "",
-        communicationChannels: [],
+        communicationChannels: { prefersEmail: true, prefersSms: false },
       },
     ]);
   };
@@ -161,21 +167,21 @@ const AddCustomer = () => {
     setContactPersons(newContacts);
   };
 
-  const handleChannelChange = (
-    index: number,
-    channel: string,
-    checked: boolean
-  ) => {
-    const newContacts = [...contactPersons];
-    if (checked) {
-      newContacts[index].communicationChannels.push(channel);
-    } else {
-      newContacts[index].communicationChannels = newContacts[
-        index
-      ].communicationChannels.filter((c) => c !== channel);
-    }
-    setContactPersons(newContacts);
-  };
+  // const handleChannelChange = (
+  //   index: number,
+  //   channel: string,
+  //   checked: boolean
+  // ) => {
+  //   const newContacts = [...contactPersons];
+  //   if (checked) {
+  //     newContacts[index].communicationChannels.push(channel);
+  //   } else {
+  //     newContacts[index].communicationChannels = newContacts[
+  //       index
+  //     ].communicationChannels.filter((c) => c !== channel);
+  //   }
+  //   setContactPersons(newContacts);
+  // };
 
   const [isEmailValid, setIsEmailValid] = useState(true);
   const { id } = useParams();
@@ -187,7 +193,7 @@ const AddCustomer = () => {
   //for file upload
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
-  const [uploadFiles, setUploadFiles] = useState<string[]>([])
+  const [uploadFiles, setUploadFiles] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Update your useEffect to use optional chaining
@@ -195,6 +201,21 @@ const AddCustomer = () => {
     if (customerDataById) {
       const apiData = customerDataById.data;
       console.log(apiData, "check for api data");
+
+      if (apiData.contactPersons) {
+        setContactPersons(
+          apiData.contactPersons.map((person: any) => ({
+            salutation: person.salutation || "",
+            firstName: person.firstName || "",
+            lastName: person.lastName || "",
+            email: person.email || "",
+            workPhone: person.workPhone || "",
+            communicationChannels: person.communicationChannels || [],
+          }))
+        );
+      }
+
+      console.log("customer salutation: ", apiData.salutation)
       setFormData((prev) => ({
         ...prev,
         email: apiData?.email || "",
@@ -204,11 +225,13 @@ const AddCustomer = () => {
         placeOfSupply: apiData?.placeOfSupply || "",
         companyName: apiData?.companyName || "",
         displayName: apiData?.displayName || "",
-        customerType: "Business",
-        salutation: "",
-        firstName: "",
-        lastName: "",
-        taxPreference: "Taxable",
+        customerType: apiData?.customerType || "",
+        salutation: apiData?.salutation || "",
+        firstName: apiData?.firstName || "",
+        lastName: apiData?.lastName || "",
+        taxPreference: apiData?.taxPreference || "",
+        gstTreatment: apiData?.gstTreatment || "",
+        enablePortal: apiData?.enablePortal || false,
         currency: apiData?.currency || "",
         paymentTerms: apiData?.paymentTerms || "",
         priceList: apiData?.priceList || "",
@@ -217,8 +240,11 @@ const AddCustomer = () => {
         countryRegion: apiData?.countryRegion || "",
         addressStreet1: apiData?.addressStreet1 || "",
         addressStreet2: apiData?.addressStreet2 || "",
+        pinCode: apiData?.pinCode || "",
         city: apiData?.city || "",
         state: apiData?.state || "",
+        prefersEmail: apiData?.prefersEmail,
+        prefersSms: apiData?.prefersSms,
         phoneNumber: apiData?.phoneNumber || "",
         faxNumber: apiData?.faxNumber || "",
         shippingAttention: apiData?.shippingAttention || "",
@@ -230,6 +256,7 @@ const AddCustomer = () => {
         shippingPinCode: apiData?.shippingPinCode || "",
         shippingPhoneNumber: apiData?.shippingPhoneNumber || "",
         shippingFaxNumber: apiData?.shippingFaxNumber || "",
+        // communicationChannels: apiData?.communicationChannels || [],
         // contactPersonsSalutation: apiData?.contactPersonsSalutation || "",
         // contactPersonsFirstName: apiData?.contactPersonsFirstName || "",
         // contactPersonsLastName: apiData?.contactPersonsLastName || "",
@@ -313,8 +340,6 @@ const AddCustomer = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     setImageState: React.Dispatch<React.SetStateAction<string[]>>
   ) => {
-
-
     const files = e.target.files;
     if (files) {
       const fileReaders: Promise<string>[] = Array.from(files).map((file) => {
@@ -418,6 +443,8 @@ const AddCustomer = () => {
         documentArray: uploadFiles,
       };
 
+      console.log(submissionData, "check the submission data");
+
       // Handle create/update based on whether we have an ID
       if (id) {
         await updateCustomer({
@@ -436,6 +463,26 @@ const AddCustomer = () => {
     }
   };
 
+  const handleChannelChange = (
+    index: number,
+    channel: string,
+    value: boolean
+  ) => {
+    setContactPersons((prev) =>
+      prev.map((person, i) =>
+        i === index
+          ? {
+              ...person,
+              communicationChannels: {
+                ...person.communicationChannels,
+                [channel]: value,
+              },
+            }
+          : person
+      )
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
@@ -444,7 +491,7 @@ const AddCustomer = () => {
           {/* Customer Type Section */}
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-4">
-              <span className="text-base font-medium text-gray-700">
+              <span className="w-32 text-base font-medium text-gray-700">
                 Customer Type:
               </span>
               <div className="flex gap-6">
@@ -457,7 +504,7 @@ const AddCustomer = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, customerType: e.target.value })
                     }
-                    className="form-radio h-4 w-4 text-blue-600"
+                    className="ml-2 form-radio h-4 w-4 text-blue-600"
                   />
                   <span className="text-gray-700">Business</span>
                 </label>
@@ -481,7 +528,7 @@ const AddCustomer = () => {
           {/* Primary Contact Section */}
           <div className="mb-8">
             <div className="flex items-start gap-4">
-              <span className="text-base font-medium text-gray-700 mt-2">
+              <span className="w-32 text-base font-medium text-gray-700 mt-2">
                 Primary Contact:
               </span>
               <div className="flex-1 space-y-4">
@@ -492,7 +539,7 @@ const AddCustomer = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, salutation: e.target.value })
                       }
-                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                      className="w-full ml-2 border border-gray-300 rounded-md p-2 text-sm"
                     >
                       <option value="">Salutation</option>
                       <option value="Mr.">Mr.</option>
@@ -535,7 +582,7 @@ const AddCustomer = () => {
               <div className="flex-1 space-y-6">
                 {/* Company Name */}
                 <div className="flex items-center gap-6">
-                  <span className="text-base font-medium text-gray-700 mt-2">
+                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
                     Company Name:
                   </span>
                   <input
@@ -551,7 +598,7 @@ const AddCustomer = () => {
 
                 {/* Display Name */}
                 <div className="flex items-center gap-6">
-                  <span className="text-base font-medium text-gray-700 mt-2">
+                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
                     Display Name:
                   </span>
                   <select
@@ -569,10 +616,23 @@ const AddCustomer = () => {
 
                 {/* Email Address */}
                 <div className="flex items-center gap-6">
-                  <span className="text-base font-medium text-gray-700 mt-2">
+                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
                     Email Address:
                   </span>
                   <div className="flex-1 relative">
+                    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                      <svg
+                        className="h-5 w-5 text-gray-400"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
                     <input
                       type="email"
                       value={formData.email}
@@ -584,19 +644,8 @@ const AddCustomer = () => {
                       placeholder="Enter email address"
                       className={`w-full border ${
                         !isEmailValid ? "border-red-500" : "border-gray-300"
-                      } rounded-md p-2 text-sm pl-10`}
+                      } rounded-md p-2 pl-10 text-sm`}
                     />
-                    <svg
-                      className="absolute left-3 top-3 h-5 w-5 text-gray-400"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
                     {!isEmailValid && (
                       <p className="text-red-500 text-sm mt-1">
                         Please enter a valid email address
@@ -607,11 +656,25 @@ const AddCustomer = () => {
 
                 {/* Phone Numbers */}
                 <div className="flex items-center gap-6">
-                  <span className="text-base font-medium text-gray-700 mt-2">
+                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
                     Phone:
                   </span>
                   <div className="flex-1 flex gap-4">
+                    {/* Work Phone Input */}
                     <div className="relative flex-1">
+                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                        <svg
+                          className="h-5 w-5 text-gray-400"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                      </div>
                       <input
                         type="tel"
                         value={formData.workPhone}
@@ -622,21 +685,25 @@ const AddCustomer = () => {
                           })
                         }
                         placeholder="Work Phone"
-                        className="w-full border border-gray-300 rounded-md p-2 text-sm pl-10"
+                        className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
                       />
-                      <svg
-                        className="absolute left-3 top-3 h-5 w-5 text-gray-400"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
                     </div>
+
+                    {/* Mobile Phone Input */}
                     <div className="relative flex-1">
+                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                        <svg
+                          className="h-5 w-5 text-gray-400"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                      </div>
                       <input
                         type="tel"
                         value={formData.mobile}
@@ -644,25 +711,15 @@ const AddCustomer = () => {
                           setFormData({ ...formData, mobile: e.target.value })
                         }
                         placeholder="Mobile"
-                        className="w-full border border-gray-300 rounded-md p-2 text-sm pl-10"
+                        className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
                       />
-                      <svg
-                        className="absolute left-3 top-3 h-5 w-5 text-gray-400"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                      </svg>
                     </div>
                   </div>
                 </div>
+
                 {/* Communication Channels */}
                 <div className="flex items-center gap-6 mt-4">
-                  <span className="text-base font-medium text-gray-700 mt-2">
+                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
                     Communication Channels:
                   </span>
                   <div className="flex gap-6">
@@ -683,11 +740,11 @@ const AddCustomer = () => {
                     <label className="flex items-center space-x-2">
                       <input
                         type="checkbox"
-                        checked={formData.prefersSMS}
+                        checked={formData.prefersSms}
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            prefersSMS: e.target.checked,
+                            prefersSms: e.target.checked,
                           })
                         }
                         className="form-checkbox h-4 w-4 text-blue-600"
@@ -723,11 +780,11 @@ const AddCustomer = () => {
                   {/* Tab Content */}
                   <div className="pt-6">
                     {activeTab === "Other Details" && (
-                      <div className="grid grid-cols-2 gap-6">
+                      <div className="grid grid-cols-2 gap-x-10 gap-y-6 ">
                         {/* GST Treatment */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700 mt-2">
+                            <span className="w-32 text-base font-medium text-gray-700 mt-2">
                               GST Treatment:
                             </span>
                             <select
@@ -742,21 +799,24 @@ const AddCustomer = () => {
                             >
                               <option value="">Select GST Treatment</option>
                               <option value="registered_regular">
-                                Registered Business - Regular
+                                Registered Business - Business that is registered under GST
                               </option>
                               <option value="registered_composite">
-                                Registered Business - Composite
+                                Registered Business - Composition (Business that is registered under the Composition Scheme in GST)
                               </option>
                               <option value="unregistered">
-                                Unregistered Business
+                                Unregistered Business - Business that is not registered under GST
                               </option>
-                              <option value="consumer">Consumer</option>
-                              <option value="overseas">Overseas</option>
-                              <option value="special_economic_zone">
-                                Special Economic Zone
-                              </option>
+                              <option value="consumer">Consumer - A consumer that is a regular customer</option>
+                              <option value="overseas">Overseas - A person with whome you do import or export of supplies outside India</option>
                               <option value="deemed_export">
-                                Deemed Export
+                                Deemed Export - Supply of goods to an Export Oriented Unit or against Advanced Authorization/Export Promotion Capital Goods
+                              </option>
+                              <option value="special_economic_zone">
+                                Tax Deductors - Departments of the State/Central government, governmental agencies or local authorities
+                              </option>
+                              <option value="special_economic_zone">
+                                SEZ Developer - A person/organization who own at least 26% of the equity in creating business units in a Special Economic Zones (SEZ)
                               </option>
                             </select>
                           </div>
@@ -765,7 +825,7 @@ const AddCustomer = () => {
                         {/* Place of Supply */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className="w-32 text-base font-medium text-gray-700">
                               Place of Supply:
                             </span>
                             <select
@@ -779,20 +839,106 @@ const AddCustomer = () => {
                               className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                             >
                               <option value="">Select State</option>
-                              <option value="Maharashtra">Maharashtra</option>
-                              <option value="Delhi">Delhi</option>
-                              <option value="Karnataka">Karnataka</option>
-                              <option value="Tamil Nadu">Tamil Nadu</option>
-                              <option value="Uttar Pradesh">
-                                Uttar Pradesh
+                              <option value="[AN] - Andaman and Nicobar Islands">
+                                [AN] - Andaman and Nicobar Islands
                               </option>
-                              <option value="Gujarat">Gujarat</option>
-                              <option value="West Bengal">West Bengal</option>
-                              <option value="Rajasthan">Rajasthan</option>
-                              <option value="Andhra Pradesh">
-                                Andhra Pradesh
+                              <option value="[AP] - Andhra Pradesh">
+                                [AP] - Andhra Pradesh
                               </option>
-                              <option value="Telangana">Telangana</option>
+                              <option value="[AR] - Arunachal Pradesh">
+                                [AR] - Arunachal Pradesh
+                              </option>
+                              <option value="[AS] - Assam">[AS] - Assam</option>
+                              <option value="[BR] - Bihar">[BR] - Bihar</option>
+                              <option value="[CH] - Chandigarh">
+                                [CH] - Chandigarh
+                              </option>
+                              <option value="[CG] - Chhattisgarh">
+                                [CG] - Chhattisgarh
+                              </option>
+                              <option value="[DH] - Dadra and Nagar Haveli and Daman and Diu">
+                                [DH] - Dadra and Nagar Haveli and Daman and Diu
+                              </option>
+                              <option value="[DL] - Delhi">[DL] - Delhi</option>
+                              <option value="[GA] - Goa">[GA] - Goa</option>
+                              <option value="[GJ] - Gujarat">
+                                [GJ] - Gujarat
+                              </option>
+                              <option value="[HR] - Haryana">
+                                [HR] - Haryana
+                              </option>
+                              <option value="[HP] - Himachal Pradesh">
+                                [HP] - Himachal Pradesh
+                              </option>
+                              <option value="[JK] - Jammu and Kashmir">
+                                [JK] - Jammu and Kashmir
+                              </option>
+                              <option value="[JH] - Jharkhand">
+                                [JH] - Jharkhand
+                              </option>
+                              <option value="[KA] - Karnataka">
+                                [KA] - Karnataka
+                              </option>
+                              <option value="[KL] - Kerala">
+                                [KL] - Kerala
+                              </option>
+                              <option value="[LA] - Ladakh">
+                                [LA] - Ladakh
+                              </option>
+                              <option value="[LD] - Lakshadweep">
+                                [LD] - Lakshadweep
+                              </option>
+                              <option value="[MP] - Madhya Pradesh">
+                                [MP] - Madhya Pradesh
+                              </option>
+                              <option value="[MH] - Maharashtra">
+                                [MH] - Maharashtra
+                              </option>
+                              <option value="[MN] - Manipur">
+                                [MN] - Manipur
+                              </option>
+                              <option value="[ML] - Meghalaya">
+                                [ML] - Meghalaya
+                              </option>
+                              <option value="[MZ] - Mizoram">
+                                [MZ] - Mizoram
+                              </option>
+                              <option value="[NL] - Nagaland">
+                                [NL] - Nagaland
+                              </option>
+                              <option value="[OD] - Odisha">
+                                [OD] - Odisha
+                              </option>
+                              <option value="[PY] - Puducherry">
+                                [PY] - Puducherry
+                              </option>
+                              <option value="[PB] - Punjab">
+                                [PB] - Punjab
+                              </option>
+                              <option value="[RJ] - Rajasthan">
+                                [RJ] - Rajasthan
+                              </option>
+                              <option value="[SK] - Sikkim">
+                                [SK] - Sikkim
+                              </option>
+                              <option value="[TN] - Tamil Nadu">
+                                [TN] - Tamil Nadu
+                              </option>
+                              <option value="[TS] - Telangana">
+                                [TS] - Telangana
+                              </option>
+                              <option value="[TR] - Tripura">
+                                [TR] - Tripura
+                              </option>
+                              <option value="[UP] - Uttar Pradesh">
+                                [UP] - Uttar Pradesh
+                              </option>
+                              <option value="[UK] - Uttarakhand">
+                                [UK] - Uttarakhand
+                              </option>
+                              <option value="[WB] - West Bengal">
+                                [WB] - West Bengal
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -800,7 +946,7 @@ const AddCustomer = () => {
                         {/* PAN Number */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className="w-32 text-base font-medium text-gray-700">
                               PAN Number:
                             </span>
                             <input
@@ -817,12 +963,12 @@ const AddCustomer = () => {
                           </div>
                         </div>
                         {/*Tax Preference*/}
-                        <div className="mb-8">
+                        <div className="">
                           <div className="flex items-center gap-4 mb-4">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className="w-32 text-base font-medium text-gray-700">
                               Tax Prefernce:
                             </span>
-                            <div className="flex gap-6">
+                            <div className="flex items-center space-x-4">
                               <label className="flex items-center space-x-2">
                                 <input
                                   type="radio"
@@ -835,9 +981,9 @@ const AddCustomer = () => {
                                       taxPreference: e.target.value,
                                     })
                                   }
-                                  className="form-radio h-4 w-4 text-blue-600"
+                                  className="ml-2 form-radio h-4 w-4 text-blue-600"
                                 />
-                                <span className="text-gray-700">Taxable</span>
+                                <span className="text-gray-700 ">Taxable</span>
                               </label>
                               <label className="flex items-center space-x-2">
                                 <input
@@ -865,7 +1011,7 @@ const AddCustomer = () => {
                         {/* Currency */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className="w-32 text-base font-medium text-gray-700">
                               Currency:
                             </span>
                             <select
@@ -907,13 +1053,43 @@ const AddCustomer = () => {
                               <option value="HKD - Hong Kong Dollar">
                                 HKD - Hong Kong Dollar
                               </option>
+                              <option value="NZD - New Zealand Dollar">
+                                NZD - New Zealand Dollar
+                              </option>
+                              <option value="SGD - Singapore Dollar">
+                                SGD - Singapore Dollar
+                              </option>
+                              <option value="KRW - South Korean Won">
+                                KRW - South Korean Won
+                              </option>
+                              <option value="THB - Thai Baht">
+                                THB - Thai Baht
+                              </option>
+                              <option value="ZAR - South African Rand">
+                                ZAR - South African Rand
+                              </option>
+                              <option value="BRL - Brazilian Real">
+                                BRL - Brazilian Real
+                              </option>
+                              <option value="MXN - Mexican Peso">
+                                MXN - Mexican Peso
+                              </option>
+                              <option value="MYR - Malaysian Ringgit">
+                                MYR - Malaysian Ringgit
+                              </option>
+                              <option value="IDR - Indonesian Rupiah">
+                                IDR - Indonesian Rupiah
+                              </option>
+                              <option value="SAR - Saudi Riyal">
+                                SAR - Saudi Riyal
+                              </option>
                             </select>
                           </div>
                         </div>
                         {/* Payment Terms */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className="w-32 text-base font-medium text-gray-700">
                               Payment Terms:
                             </span>
                             <select
@@ -927,23 +1103,35 @@ const AddCustomer = () => {
                               className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                             >
                               <option value="">Select Payment Terms</option>
+                              <option value="Advance Paid">
+                                Advance Paid
+                              </option>
+                              <option value="CC Auth Provided">
+                                CC Auth Provided
+                              </option>
                               <option value="Due on Receipt">
                                 Due on Receipt
                               </option>
-                              <option value="End of Month (EOM)">
-                                End of Month (EOM)
+                              <option value="Bill To Company Extras Direct">
+                                Bill To Company Extras Direct
                               </option>
-                              <option value="Cash in Advance (CIA)">
-                                Cash in Advance (CIA)
+                              <option value="Entire Bill To Company">
+                                Entire Bill To Company
                               </option>
-                              <option value="Cash on Delivery (COD)">
-                                Cash on Delivery (COD)
+                              <option value="30 Days">
+                                30 Days
                               </option>
-                              <option value="Partial Payment">
-                                Partial Payment
+                              <option value="45 Days">
+                                45 Days
                               </option>
-                              <option value="Progressive Payment">
-                                Progressive Payment
+                              <option value="Direct From Guest">
+                                Direct From Guest
+                              </option>
+                              <option value="Due End Of The Month">
+                                Due End Of The Month
+                              </option>
+                              <option value="Due End Of Next Month">
+                                Due End Of Next Month
                               </option>
                             </select>
                           </div>
@@ -951,7 +1139,7 @@ const AddCustomer = () => {
                         {/* Price List */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className="w-32 text-base font-medium text-gray-700">
                               Price List:
                             </span>
                             <select
@@ -965,6 +1153,9 @@ const AddCustomer = () => {
                               className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                             >
                               <option value="">Select Price List</option>
+                              <option value="HEALTHCARE VEDARK [10% Markdown]">
+                                HEALTHCARE VEDARK [10% Markdown]
+                              </option>
                               <option value="Basic SEO Package">
                                 Basic SEO Package
                               </option>
@@ -985,7 +1176,7 @@ const AddCustomer = () => {
                         </div>
                         {/* Enable Portal */}
                         <div className="flex items-center gap-6 mt-4">
-                          <span className="text-base font-medium text-gray-700 mt-2">
+                          <span className="w-32 text-base font-medium text-gray-700 mt-2">
                             Enable Portal:
                           </span>
                           <div className="flex gap-6">
@@ -999,7 +1190,7 @@ const AddCustomer = () => {
                                     enablePortal: e.target.checked,
                                   })
                                 }
-                                className="form-checkbox h-4 w-4 text-blue-600"
+                                className="ml-1 form-checkbox h-4 w-4 text-blue-600"
                               />
                               <span className="text-gray-700">
                                 Allow portal access for this Customer
@@ -1010,7 +1201,7 @@ const AddCustomer = () => {
                         {/* Portal Language */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className="w-32 text-base font-medium text-gray-700">
                               Portal Language:
                             </span>
                             <select
@@ -1023,19 +1214,113 @@ const AddCustomer = () => {
                               }
                               className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                             >
-                              <option value="">Select Portal Language</option>
-                              <option value="English (EN)">English (EN)</option>
-                              <option value="Spanish (ES)">Spanish (ES)</option>
-                              <option value="French (FR)">French (FR)</option>
-                              <option value="German (DE)">German (DE)</option>
-                              <option value="Hindi (HI)">Hindi (HI)</option>
+                              <option value="">Select Language</option>
+                              <option value="EN - English">
+                                EN - English - Hello
+                              </option>
+                              <option value="ES - Spanish">
+                                ES - Spanish - Hola
+                              </option>
+                              <option value="ZH - Chinese (Mandarin)">
+                                ZH - Chinese (Mandarin) - 你好 (Nǐ hǎo)
+                              </option>
+                              <option value="HI - Hindi">
+                                HI - Hindi - नमस्ते (Namaste)
+                              </option>
+                              <option value="AR - Arabic">
+                                AR - Arabic - مرحبا (Marhaban)
+                              </option>
+                              <option value="BN - Bengali">
+                                BN - Bengali - হ্যালো (Hyālō)
+                              </option>
+                              <option value="PT - Portuguese">
+                                PT - Portuguese - Olá
+                              </option>
+                              <option value="RU - Russian">
+                                RU - Russian - Привет (Privet)
+                              </option>
+                              <option value="JA - Japanese">
+                                JA - Japanese - こんにちは (Konnichiwa)
+                              </option>
+                              <option value="DE - German">
+                                DE - German - Hallo
+                              </option>
+                              <option value="KO - Korean">
+                                KO - Korean - 안녕하세요 (Annyeonghaseyo)
+                              </option>
+                              <option value="FR - French">
+                                FR - French - Bonjour
+                              </option>
+                              <option value="IT - Italian">
+                                IT - Italian - Ciao
+                              </option>
+                              <option value="TR - Turkish">
+                                TR - Turkish - Merhaba
+                              </option>
+                              <option value="VI - Vietnamese">
+                                VI - Vietnamese - Xin chào
+                              </option>
+                              <option value="PL - Polish">
+                                PL - Polish - Witaj
+                              </option>
+                              <option value="PA - Punjabi">
+                                PA - Punjabi - ਸਤ ਸ੍ਰੀ ਅਕਾਲ (Sat Sri Akal)
+                              </option>
+                              <option value="UR - Urdu">
+                                UR - Urdu - سلام (Salaam)
+                              </option>
+                              <option value="FA - Persian (Farsi)">
+                                FA - Persian (Farsi) - سلام (Salaam)
+                              </option>
+                              <option value="HE - Hebrew">
+                                HE - Hebrew - שלום (Shalom)
+                              </option>
+                              <option value="MS - Malay">
+                                MS - Malay - Halo
+                              </option>
+                              <option value="TH - Thai">
+                                TH - Thai - สวัสดี (Sawasdee)
+                              </option>
+                              <option value="SW - Swahili">
+                                SW - Swahili - Hujambo
+                              </option>
+                              <option value="TA - Tamil">
+                                TA - Tamil - வணக்கம் (Vanakkam)
+                              </option>
+                              <option value="TE - Telugu">
+                                TE - Telugu - హలో (Halo)
+                              </option>
+                              <option value="EL - Greek">
+                                EL - Greek - Γειά σας (Yia sas)
+                              </option>
+                              <option value="ML - Malayalam">
+                                ML - Malayalam - ഹലോ (Halo)
+                              </option>
+                              <option value="CS - Czech">
+                                CS - Czech - Ahoj
+                              </option>
+                              <option value="SK - Slovak">
+                                SK - Slovak - Ahoj
+                              </option>
+                              <option value="HU - Hungarian">
+                                HU - Hungarian - Helló
+                              </option>
+                              <option value="SR - Serbian">
+                                SR - Serbian - Zdravo
+                              </option>
+                              <option value="RO - Romanian">
+                                RO - Romanian - Bună ziua
+                              </option>
+                              <option value="DA - Danish">
+                                DA - Danish - Hej
+                              </option>
                             </select>
                           </div>
                         </div>
                         {/* Documents Upload */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className="w-32 text-base font-medium text-gray-700">
                               Documents:
                             </span>
                             <div className="flex-1">
@@ -1128,32 +1413,39 @@ const AddCustomer = () => {
                           </div>
                         </div>
                         <div>
-              <div style={{ display: "flex", flexWrap: "wrap" }}>
-                {formData && formData.documentArray.length > 0 &&formData.documentArray.map((image, index) => (
-                  <img
-                    key={index}
-                     style={{
-                    height: 100,
-                    width: 100,
-                    objectFit: "cover",
-                    border: "1px solid #ddd",
-                    borderRadius: "5px",
-                    marginTop: "10px",
-                  }}
-                    src={image?.includes("base64") ? image : generateFilePath(image)}
-                    alt={`Image Preview ${index + 1}`}
-
-                  />
-                ))}
-              </div>
-              <input
-                type="file"
-                accept="image/csv/*"
-                multiple
-                onChange={(e) => handleImageUpload(e, setUploadFiles)}
-                style={{ marginTop: "10px", display: "block" }}
-              />
-            </div>
+                          <div style={{ display: "flex", flexWrap: "wrap" }}>
+                            {formData &&
+                              formData.documentArray.length > 0 &&
+                              formData.documentArray.map((image, index) => (
+                                <img
+                                  key={index}
+                                  style={{
+                                    height: 100,
+                                    width: 100,
+                                    objectFit: "cover",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "5px",
+                                    marginTop: "10px",
+                                  }}
+                                  src={
+                                    image?.includes("base64")
+                                      ? image
+                                      : generateFilePath(image)
+                                  }
+                                  alt={`Image Preview ${index + 1}`}
+                                />
+                              ))}
+                          </div>
+                          <input
+                            type="file"
+                            accept="image/csv/*"
+                            multiple
+                            onChange={(e) =>
+                              handleImageUpload(e, setUploadFiles)
+                            }
+                            style={{ marginTop: "10px", display: "block" }}
+                          />
+                        </div>
                       </div>
                     )}
 
@@ -1166,7 +1458,7 @@ const AddCustomer = () => {
                           </h2>
                           {/* Attention */}
                           <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className=" min-w-32 text-base font-medium text-gray-700">
                               Attention:
                             </span>
                             <input
@@ -1184,7 +1476,7 @@ const AddCustomer = () => {
                           {/* Country / Region */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Country / Region:
                               </span>
                               <select
@@ -1197,18 +1489,119 @@ const AddCustomer = () => {
                                 }
                                 className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                               >
-                                <option value="">
-                                  Select Country / Region
+                                <option value="">Select Country/Region</option>
+                                <option value="US - United States">
+                                  US - United States
                                 </option>
-                                <option value="India">India</option>
-                                <option value="United States">
-                                  United States
+                                <option value="CA - Canada">CA - Canada</option>
+                                <option value="GB - United Kingdom">
+                                  GB - United Kingdom
                                 </option>
-                                <option value="France">France</option>
-                                <option value="Germany">Germany</option>
-                                <option value="United Kingdom">
-                                  United Kingdom
+                                <option value="AU - Australia">
+                                  AU - Australia
                                 </option>
+                                <option value="IN - India">IN - India</option>
+                                <option value="CN - China">CN - China</option>
+                                <option value="JP - Japan">JP - Japan</option>
+                                <option value="DE - Germany">
+                                  DE - Germany
+                                </option>
+                                <option value="FR - France">FR - France</option>
+                                <option value="IT - Italy">IT - Italy</option>
+                                <option value="ES - Spain">ES - Spain</option>
+                                <option value="BR - Brazil">BR - Brazil</option>
+                                <option value="MX - Mexico">MX - Mexico</option>
+                                <option value="ZA - South Africa">
+                                  ZA - South Africa
+                                </option>
+                                <option value="RU - Russia">RU - Russia</option>
+                                <option value="KR - South Korea">
+                                  KR - South Korea
+                                </option>
+                                <option value="AR - Argentina">
+                                  AR - Argentina
+                                </option>
+                                <option value="NG - Nigeria">
+                                  NG - Nigeria
+                                </option>
+                                <option value="EG - Egypt">EG - Egypt</option>
+                                <option value="SE - Sweden">SE - Sweden</option>
+                                <option value="NO - Norway">NO - Norway</option>
+                                <option value="FI - Finland">
+                                  FI - Finland
+                                </option>
+                                <option value="PL - Poland">PL - Poland</option>
+                                <option value="GR - Greece">GR - Greece</option>
+                                <option value="TR - Turkey">TR - Turkey</option>
+                                <option value="PH - Philippines">
+                                  PH - Philippines
+                                </option>
+                                <option value="TH - Thailand">
+                                  TH - Thailand
+                                </option>
+                                <option value="SG - Singapore">
+                                  SG - Singapore
+                                </option>
+                                <option value="HK - Hong Kong">
+                                  HK - Hong Kong
+                                </option>
+                                <option value="MY - Malaysia">
+                                  MY - Malaysia
+                                </option>
+                                <option value="KR - South Korea">
+                                  KR - South Korea
+                                </option>
+                                <option value="CH - Switzerland">
+                                  CH - Switzerland
+                                </option>
+                                <option value="BE - Belgium">
+                                  BE - Belgium
+                                </option>
+                                <option value="NL - Netherlands">
+                                  NL - Netherlands
+                                </option>
+                                <option value="PL - Poland">PL - Poland</option>
+                                <option value="UA - Ukraine">
+                                  UA - Ukraine
+                                </option>
+                                <option value="CZ - Czech Republic">
+                                  CZ - Czech Republic
+                                </option>
+                                <option value="SK - Slovakia">
+                                  SK - Slovakia
+                                </option>
+                                <option value="RO - Romania">
+                                  RO - Romania
+                                </option>
+                                <option value="BG - Bulgaria">
+                                  BG - Bulgaria
+                                </option>
+                                <option value="PT - Portugal">
+                                  PT - Portugal
+                                </option>
+                                <option value="AT - Austria">
+                                  AT - Austria
+                                </option>
+                                <option value="KE - Kenya">KE - Kenya</option>
+                                <option value="AE - United Arab Emirates">
+                                  AE - United Arab Emirates
+                                </option>
+                                <option value="SA - Saudi Arabia">
+                                  SA - Saudi Arabia
+                                </option>
+                                <option value="KW - Kuwait">KW - Kuwait</option>
+                                <option value="IQ - Iraq">IQ - Iraq</option>
+                                <option value="ID - Indonesia">
+                                  ID - Indonesia
+                                </option>
+                                <option value="VN - Vietnam">
+                                  VN - Vietnam
+                                </option>
+                                <option value="PE - Peru">PE - Peru</option>
+                                <option value="CO - Colombia">
+                                  CO - Colombia
+                                </option>
+                                <option value="CL - Chile">CL - Chile</option>
                               </select>
                             </div>
                           </div>
@@ -1232,6 +1625,7 @@ const AddCustomer = () => {
                               />
                             </div>
                             <div className="flex items-center gap-6 mt-4">
+                              <span className="min-w-32 text-base font-medium text-gray-700"></span>
                               <input
                                 type="text"
                                 value={formData.addressStreet2}
@@ -1242,14 +1636,14 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Street 2"
-                                className="w-full ml-36 border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
                               />
                             </div>
                           </div>
                           {/* City */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 City:
                               </span>
                               <input
@@ -1268,7 +1662,7 @@ const AddCustomer = () => {
                           {/* State */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 State:
                               </span>
                               <select
@@ -1282,18 +1676,106 @@ const AddCustomer = () => {
                                 className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                               >
                                 <option value="">Select State</option>
-                                <option value="Alabama">Alabama</option>
-                                <option value="Alaska">Alaska</option>
-                                <option value="Arizona">Arizona</option>
-                                <option value="Arkansas">Arkansas</option>
-                                <option value="California">California</option>
+                                <option value="AP - Andhra Pradesh">
+                                  AP - Andhra Pradesh
+                                </option>
+                                <option value="AR - Arunachal Pradesh">
+                                  AR - Arunachal Pradesh
+                                </option>
+                                <option value="AS - Assam">AS - Assam</option>
+                                <option value="BR - Bihar">BR - Bihar</option>
+                                <option value="CT - Chhattisgarh">
+                                  CT - Chhattisgarh
+                                </option>
+                                <option value="GA - Goa">GA - Goa</option>
+                                <option value="GJ - Gujarat">
+                                  GJ - Gujarat
+                                </option>
+                                <option value="HR - Haryana">
+                                  HR - Haryana
+                                </option>
+                                <option value="HP - Himachal Pradesh">
+                                  HP - Himachal Pradesh
+                                </option>
+                                <option value="JK - Jammu and Kashmir">
+                                  JK - Jammu and Kashmir
+                                </option>
+                                <option value="JH - Jharkhand">
+                                  JH - Jharkhand
+                                </option>
+                                <option value="KA - Karnataka">
+                                  KA - Karnataka
+                                </option>
+                                <option value="KL - Kerala">KL - Kerala</option>
+                                <option value="MP - Madhya Pradesh">
+                                  MP - Madhya Pradesh
+                                </option>
+                                <option value="MH - Maharashtra">
+                                  MH - Maharashtra
+                                </option>
+                                <option value="MN - Manipur">
+                                  MN - Manipur
+                                </option>
+                                <option value="ML - Meghalaya">
+                                  ML - Meghalaya
+                                </option>
+                                <option value="MZ - Mizoram">
+                                  MZ - Mizoram
+                                </option>
+                                <option value="NL - Nagaland">
+                                  NL - Nagaland
+                                </option>
+                                <option value="OD - Odisha">OD - Odisha</option>
+                                <option value="PB - Punjab">PB - Punjab</option>
+                                <option value="RJ - Rajasthan">
+                                  RJ - Rajasthan
+                                </option>
+                                <option value="SK - Sikkim">SK - Sikkim</option>
+                                <option value="TN - Tamil Nadu">
+                                  TN - Tamil Nadu
+                                </option>
+                                <option value="TS - Telangana">
+                                  TS - Telangana
+                                </option>
+                                <option value="UP - Uttar Pradesh">
+                                  UP - Uttar Pradesh
+                                </option>
+                                <option value="UK - Uttarakhand">
+                                  UK - Uttarakhand
+                                </option>
+                                <option value="WB - West Bengal">
+                                  WB - West Bengal
+                                </option>
+                                <option value="AN - Andaman and Nicobar Islands">
+                                  AN - Andaman and Nicobar Islands
+                                </option>
+                                <option value="CH - Chandigarh">
+                                  CH - Chandigarh
+                                </option>
+                                <option value="DN - Dadra and Nagar Haveli and Daman and Diu">
+                                  DN - Dadra and Nagar Haveli and Daman and Diu
+                                </option>
+                                <option value="DD - Lakshadweep">
+                                  DD - Lakshadweep
+                                </option>
+                                <option value="DL - Delhi">DL - Delhi</option>
+                                <option value="PY - Puducherry">
+                                  PY - Puducherry
+                                </option>
+                                <option value="LD - Ladakh">LD - Ladakh</option>
+                                <option value="LC - Lakshadweep">
+                                  LC - Lakshadweep
+                                </option>
+                                <option value="TN - Tamil Nadu">
+                                  TN - Tamil Nadu
+                                </option>
                               </select>
                             </div>
                           </div>
                           {/* Pin Code */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700 w-20">
+                              <span className="min-w-32 text-base font-medium text-gray-700 w-20">
                                 Pin Code:
                               </span>
                               <input
@@ -1312,7 +1794,7 @@ const AddCustomer = () => {
                           {/* Phone */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Phone:
                               </span>
                               <input
@@ -1331,7 +1813,7 @@ const AddCustomer = () => {
                           {/* Fax Number */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Fax Number:
                               </span>
                               <input
@@ -1356,7 +1838,7 @@ const AddCustomer = () => {
                           </h2>
                           {/* Shipping Attention */}
                           <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className="min-w-32 text-base font-medium text-gray-700">
                               Attention:
                             </span>
                             <input
@@ -1374,7 +1856,7 @@ const AddCustomer = () => {
                           {/* Shipping Country / Region */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Country / Region:
                               </span>
                               <select
@@ -1387,25 +1869,126 @@ const AddCustomer = () => {
                                 }
                                 className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                               >
-                                <option value="">
-                                  Select Country / Region
+                                <option value="">Select Country/Region</option>
+                                <option value="US - United States">
+                                  US - United States
                                 </option>
-                                <option value="India">India</option>
-                                <option value="United States">
-                                  United States
+                                <option value="CA - Canada">CA - Canada</option>
+                                <option value="GB - United Kingdom">
+                                  GB - United Kingdom
                                 </option>
-                                <option value="France">France</option>
-                                <option value="Germany">Germany</option>
-                                <option value="United Kingdom">
-                                  United Kingdom
+                                <option value="AU - Australia">
+                                  AU - Australia
                                 </option>
+                                <option value="IN - India">IN - India</option>
+                                <option value="CN - China">CN - China</option>
+                                <option value="JP - Japan">JP - Japan</option>
+                                <option value="DE - Germany">
+                                  DE - Germany
+                                </option>
+                                <option value="FR - France">FR - France</option>
+                                <option value="IT - Italy">IT - Italy</option>
+                                <option value="ES - Spain">ES - Spain</option>
+                                <option value="BR - Brazil">BR - Brazil</option>
+                                <option value="MX - Mexico">MX - Mexico</option>
+                                <option value="ZA - South Africa">
+                                  ZA - South Africa
+                                </option>
+                                <option value="RU - Russia">RU - Russia</option>
+                                <option value="KR - South Korea">
+                                  KR - South Korea
+                                </option>
+                                <option value="AR - Argentina">
+                                  AR - Argentina
+                                </option>
+                                <option value="NG - Nigeria">
+                                  NG - Nigeria
+                                </option>
+                                <option value="EG - Egypt">EG - Egypt</option>
+                                <option value="SE - Sweden">SE - Sweden</option>
+                                <option value="NO - Norway">NO - Norway</option>
+                                <option value="FI - Finland">
+                                  FI - Finland
+                                </option>
+                                <option value="PL - Poland">PL - Poland</option>
+                                <option value="GR - Greece">GR - Greece</option>
+                                <option value="TR - Turkey">TR - Turkey</option>
+                                <option value="PH - Philippines">
+                                  PH - Philippines
+                                </option>
+                                <option value="TH - Thailand">
+                                  TH - Thailand
+                                </option>
+                                <option value="SG - Singapore">
+                                  SG - Singapore
+                                </option>
+                                <option value="HK - Hong Kong">
+                                  HK - Hong Kong
+                                </option>
+                                <option value="MY - Malaysia">
+                                  MY - Malaysia
+                                </option>
+                                <option value="KR - South Korea">
+                                  KR - South Korea
+                                </option>
+                                <option value="CH - Switzerland">
+                                  CH - Switzerland
+                                </option>
+                                <option value="BE - Belgium">
+                                  BE - Belgium
+                                </option>
+                                <option value="NL - Netherlands">
+                                  NL - Netherlands
+                                </option>
+                                <option value="PL - Poland">PL - Poland</option>
+                                <option value="UA - Ukraine">
+                                  UA - Ukraine
+                                </option>
+                                <option value="CZ - Czech Republic">
+                                  CZ - Czech Republic
+                                </option>
+                                <option value="SK - Slovakia">
+                                  SK - Slovakia
+                                </option>
+                                <option value="RO - Romania">
+                                  RO - Romania
+                                </option>
+                                <option value="BG - Bulgaria">
+                                  BG - Bulgaria
+                                </option>
+                                <option value="PT - Portugal">
+                                  PT - Portugal
+                                </option>
+                                <option value="AT - Austria">
+                                  AT - Austria
+                                </option>
+                                <option value="KE - Kenya">KE - Kenya</option>
+                                <option value="AE - United Arab Emirates">
+                                  AE - United Arab Emirates
+                                </option>
+                                <option value="SA - Saudi Arabia">
+                                  SA - Saudi Arabia
+                                </option>
+                                <option value="KW - Kuwait">KW - Kuwait</option>
+                                <option value="IQ - Iraq">IQ - Iraq</option>
+                                <option value="ID - Indonesia">
+                                  ID - Indonesia
+                                </option>
+                                <option value="VN - Vietnam">
+                                  VN - Vietnam
+                                </option>
+                                <option value="PE - Peru">PE - Peru</option>
+                                <option value="CO - Colombia">
+                                  CO - Colombia
+                                </option>
+                                <option value="CL - Chile">CL - Chile</option>
                               </select>
                             </div>
                           </div>
                           {/* Shipping Address */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Address:
                               </span>
                               <input
@@ -1422,6 +2005,7 @@ const AddCustomer = () => {
                               />
                             </div>
                             <div className="flex items-center gap-6 mt-4">
+                              <span className="min-w-32 text-base font-medium text-gray-700"></span>
                               <input
                                 type="text"
                                 value={formData.shippingAddressStreet2}
@@ -1432,14 +2016,14 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Street 2"
-                                className="w-full ml-24 border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
                               />
                             </div>
                           </div>
                           {/* Shippping City */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 City:
                               </span>
                               <input
@@ -1458,7 +2042,7 @@ const AddCustomer = () => {
                           {/* Shipping State */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 State:
                               </span>
                               <select
@@ -1472,18 +2056,106 @@ const AddCustomer = () => {
                                 className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                               >
                                 <option value="">Select State</option>
-                                <option value="Alabama">Alabama</option>
-                                <option value="Alaska">Alaska</option>
-                                <option value="Arizona">Arizona</option>
-                                <option value="Arkansas">Arkansas</option>
-                                <option value="California">California</option>
+                                <option value="AP - Andhra Pradesh">
+                                  AP - Andhra Pradesh
+                                </option>
+                                <option value="AR - Arunachal Pradesh">
+                                  AR - Arunachal Pradesh
+                                </option>
+                                <option value="AS - Assam">AS - Assam</option>
+                                <option value="BR - Bihar">BR - Bihar</option>
+                                <option value="CT - Chhattisgarh">
+                                  CT - Chhattisgarh
+                                </option>
+                                <option value="GA - Goa">GA - Goa</option>
+                                <option value="GJ - Gujarat">
+                                  GJ - Gujarat
+                                </option>
+                                <option value="HR - Haryana">
+                                  HR - Haryana
+                                </option>
+                                <option value="HP - Himachal Pradesh">
+                                  HP - Himachal Pradesh
+                                </option>
+                                <option value="JK - Jammu and Kashmir">
+                                  JK - Jammu and Kashmir
+                                </option>
+                                <option value="JH - Jharkhand">
+                                  JH - Jharkhand
+                                </option>
+                                <option value="KA - Karnataka">
+                                  KA - Karnataka
+                                </option>
+                                <option value="KL - Kerala">KL - Kerala</option>
+                                <option value="MP - Madhya Pradesh">
+                                  MP - Madhya Pradesh
+                                </option>
+                                <option value="MH - Maharashtra">
+                                  MH - Maharashtra
+                                </option>
+                                <option value="MN - Manipur">
+                                  MN - Manipur
+                                </option>
+                                <option value="ML - Meghalaya">
+                                  ML - Meghalaya
+                                </option>
+                                <option value="MZ - Mizoram">
+                                  MZ - Mizoram
+                                </option>
+                                <option value="NL - Nagaland">
+                                  NL - Nagaland
+                                </option>
+                                <option value="OD - Odisha">OD - Odisha</option>
+                                <option value="PB - Punjab">PB - Punjab</option>
+                                <option value="RJ - Rajasthan">
+                                  RJ - Rajasthan
+                                </option>
+                                <option value="SK - Sikkim">SK - Sikkim</option>
+                                <option value="TN - Tamil Nadu">
+                                  TN - Tamil Nadu
+                                </option>
+                                <option value="TS - Telangana">
+                                  TS - Telangana
+                                </option>
+                                <option value="UP - Uttar Pradesh">
+                                  UP - Uttar Pradesh
+                                </option>
+                                <option value="UK - Uttarakhand">
+                                  UK - Uttarakhand
+                                </option>
+                                <option value="WB - West Bengal">
+                                  WB - West Bengal
+                                </option>
+                                <option value="AN - Andaman and Nicobar Islands">
+                                  AN - Andaman and Nicobar Islands
+                                </option>
+                                <option value="CH - Chandigarh">
+                                  CH - Chandigarh
+                                </option>
+                                <option value="DN - Dadra and Nagar Haveli and Daman and Diu">
+                                  DN - Dadra and Nagar Haveli and Daman and Diu
+                                </option>
+                                <option value="DD - Lakshadweep">
+                                  DD - Lakshadweep
+                                </option>
+                                <option value="DL - Delhi">DL - Delhi</option>
+                                <option value="PY - Puducherry">
+                                  PY - Puducherry
+                                </option>
+                                <option value="LD - Ladakh">LD - Ladakh</option>
+                                <option value="LC - Lakshadweep">
+                                  LC - Lakshadweep
+                                </option>
+                                <option value="TN - Tamil Nadu">
+                                  TN - Tamil Nadu
+                                </option>
                               </select>
                             </div>
                           </div>
                           {/* Shipping Pin Code */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Pin Code:
                               </span>
                               <input
@@ -1502,7 +2174,7 @@ const AddCustomer = () => {
                           {/* Shipping Phone */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Phone:
                               </span>
                               <input
@@ -1521,7 +2193,7 @@ const AddCustomer = () => {
                           {/* Shipping Fax Number */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Fax Number:
                               </span>
                               <input
@@ -1664,16 +2336,27 @@ const AddCustomer = () => {
                                       <label className="flex items-center space-x-1">
                                         <input
                                           type="checkbox"
-                                          checked={person.communicationChannels.includes(
-                                            "Email"
-                                          )}
+                                          checked={
+                                            person.communicationChannels
+                                              .prefersEmail
+                                          }
                                           onChange={(e) =>
                                             handleChannelChange(
                                               index,
-                                              "Email",
+                                              "prefersEmail",
                                               e.target.checked
                                             )
                                           }
+                                          // checked={person.communicationChannels.includes(
+                                          //   "Email"
+                                          // )}
+                                          // onChange={(e) =>
+                                          //   handleChannelChange(
+                                          //     index,
+                                          //     "Email",
+                                          //     e.target.checked
+                                          //   )
+                                          // }
                                           className="form-checkbox h-4 w-4"
                                         />
                                         <span className="text-sm">Email</span>
@@ -1681,16 +2364,27 @@ const AddCustomer = () => {
                                       <label className="flex items-center space-x-1">
                                         <input
                                           type="checkbox"
-                                          checked={person.communicationChannels.includes(
-                                            "SMS"
-                                          )}
+                                          checked={
+                                            person.communicationChannels
+                                              .prefersSms
+                                          }
                                           onChange={(e) =>
                                             handleChannelChange(
                                               index,
-                                              "SMS",
+                                              "prefersSms",
                                               e.target.checked
                                             )
                                           }
+                                          // checked={person.communicationChannels.includes(
+                                          //   "SMS"
+                                          // )}
+                                          // onChange={(e) =>
+                                          //   handleChannelChange(
+                                          //     index,
+                                          //     "SMS",
+                                          //     e.target.checked
+                                          //   )
+                                          // }
                                           className="form-checkbox h-4 w-4"
                                         />
                                         <span className="text-sm">SMS</span>
