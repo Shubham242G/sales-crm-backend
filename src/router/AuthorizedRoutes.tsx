@@ -64,6 +64,7 @@ import EnquiryLIst from "@/pages/Sales/enquiryList";
 import AddEnquiry from "@/pages/Sales/addEnquiry";
 import AddPurchaseContact from "@/pages/LedgerPage/addPurchaseContacts";
 import VendorList from "../pages/LedgerPage/vendorList";
+import Admin from "@/pages/Admin/Admin";
 
 
 
@@ -75,6 +76,7 @@ export default function AuthorizedRoutes() {
                         {/* <Route path="/login" element={<Dashboard />}></Route>
                         <Route path="/home" element={<Dashboard />}></Route> */}
                         <Route path="/dashboard" element={<Dashboard />}></Route>
+                        <Route path="/admin" element={<Admin />}></Route>
                         <Route path="/vendorList" element={<VendorList />}></Route>
                         <Route path="/rfps" element={<Rfps />}></Route>
                         <Route path="/leads" element={<Leads />}></Route>

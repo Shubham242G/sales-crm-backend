@@ -23,6 +23,14 @@ function Sidebar() {
       isArrow: false,
     },
     {
+      mainlink: "/admin",
+      heading: "Admin",
+      icon: ledger,
+      activeIcon: ledgerw,
+      isActive: false,
+      isArrow: false,
+    },
+    {
       mainlink: "/",
       heading: "Purchase",
       icon: ledger,
