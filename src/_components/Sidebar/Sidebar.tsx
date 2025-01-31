@@ -15,7 +15,7 @@ function Sidebar() {
   // const [isHovered, setIsHovered] = useState(false);
   const [sidebarArr] = useState([
     {
-      mainlink: "/dashboard",
+      mainlink: "/",
       heading: "Dashboard",
       icon: home,
       activeIcon: homew,
