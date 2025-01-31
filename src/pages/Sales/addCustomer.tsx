@@ -1044,6 +1044,15 @@ const AddCustomer = () => {
                               disablePortal
                               options={gstOptions}
                               sx={{ width: 600 }}
+                              value={
+                                gstOptions.find(option => option.value === formData.gstTreatment) || null
+                              }
+                              onChange={(event, newValue) => {
+                                setFormData({
+                                  ...formData,
+                                  gstTreatment: newValue?.value || '',
+                                });
+                              }}
                               renderInput={(params) => (
                                 <TextField {...params} label="Select GST Treatment" />
                               )}
@@ -1174,6 +1183,15 @@ const AddCustomer = () => {
                               disablePortal
                               options={stateOptions}
                               sx={{ width: 600 }}
+                              value={
+                                stateOptions.find(option => option.value === formData.placeOfSupply) || null
+                              }
+                              onChange={(event, newValue) => {
+                                setFormData({
+                                  ...formData,
+                                  placeOfSupply: newValue?.value || "",
+                                });
+                              }}
                               renderInput={(params) => (
                                 <TextField {...params} label="Select State" />
                               )}
@@ -1327,6 +1345,15 @@ const AddCustomer = () => {
                               disablePortal
                               options={currencyOptions}
                               sx={{ width: 600 }}
+                              value={
+                                currencyOptions.find(option => option.value === formData.currency) || null
+                              }
+                              onChange={(event, newValue) => {
+                                setFormData({
+                                  ...formData,
+                                  currency: newValue?.value || "",
+                                });
+                              }}
                               renderInput={(params) => (
                                 <TextField {...params} label="Select Currency" />
                               )}
@@ -1380,6 +1407,15 @@ const AddCustomer = () => {
                               disablePortal
                               options={paymentTermsOptions}
                               sx={{ width: 600 }}
+                              value={
+                                paymentTermsOptions.find(option => option.value === formData.paymentTerms) || null
+                              }
+                              onChange={(event, newValue) => {
+                                setFormData({
+                                  ...formData,
+                                  paymentTerms: newValue?.value || "",
+                                });
+                              }}
                               renderInput={(params) => (
                                 <TextField {...params} label="Select Payment Terms" />
                               )}
@@ -1427,6 +1463,15 @@ const AddCustomer = () => {
                               disablePortal
                               options={priceListOptions}
                               sx={{ width: 600 }}
+                              value={
+                                priceListOptions.find(option => option.value === formData.priceList) || null
+                              }
+                              onChange={(event, newValue) => {
+                                setFormData({
+                                  ...formData,
+                                  priceList: newValue?.value || "",
+                                });
+                              }}
                               renderInput={(params) => (
                                 <TextField {...params} label="Select Payment Terms" />
                               )}
@@ -1579,6 +1624,15 @@ const AddCustomer = () => {
                               disablePortal
                               options={languageOptions}
                               sx={{ width: 600 }}
+                              value={
+                                languageOptions.find(option => option.value === formData.portalLanguage) || null
+                              }
+                              onChange={(event, newValue) => {
+                                setFormData({
+                                  ...formData,
+                                  portalLanguage: newValue?.value || "",
+                                });
+                              }}
                               renderInput={(params) => (
                                 <TextField {...params} label="Select Payment Terms" />
                               )}
@@ -1876,6 +1930,15 @@ const AddCustomer = () => {
                               disablePortal
                               options={countryOptions}
                               sx={{ width: 600 }}
+                              value={
+                                countryOptions.find(option => option.value === formData.countryRegion) || null
+                              }
+                              onChange={(event, newValue) => {
+                                setFormData({
+                                  ...formData,
+                                  countryRegion: newValue?.value || "",
+                                });
+                              }}
                               renderInput={(params) => (
                                 <TextField {...params} label="Select Payment Terms" />
                               )}
@@ -2052,6 +2115,15 @@ const AddCustomer = () => {
                               disablePortal
                               options={stateOptions}
                               sx={{ width: 600 }}
+                              value={
+                                stateOptions.find(option => option.value === formData.state) || null
+                              }
+                              onChange={(event, newValue) => {
+                                setFormData({
+                                  ...formData,
+                                  state: newValue?.value || "",
+                                });
+                              }}
                               renderInput={(params) => (
                                 <TextField {...params} label="Select Payment Terms" />
                               )}
@@ -2274,6 +2346,15 @@ const AddCustomer = () => {
                               disablePortal
                               options={countryOptions}
                               sx={{ width: 600 }}
+                              value={
+                                countryOptions.find(option => option.value === formData.countryRegion) || null
+                              }
+                              onChange={(event, newValue) => {
+                                setFormData({
+                                  ...formData,
+                                  countryRegion: newValue?.value || "",
+                                });
+                              }}
                               renderInput={(params) => (
                                 <TextField {...params} label="Select Payment Terms" />
                               )}
@@ -2450,6 +2531,15 @@ const AddCustomer = () => {
                               disablePortal
                               options={stateOptions}
                               sx={{ width: 600 }}
+                              value={
+                                stateOptions.find(option => option.value === formData.state) || null
+                              }
+                              onChange={(event, newValue) => {
+                                setFormData({
+                                  ...formData,
+                                  state: newValue?.value || "",
+                                });
+                              }}
                               renderInput={(params) => (
                                 <TextField {...params} label="Select Payment Terms" />
                               )}
