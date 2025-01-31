@@ -37,7 +37,7 @@ export default function LoginPage() {
       if (response?.success) {
         console.log(response, "123456123456123456123456");
         setIsAuthorized(true);
-        navigate("/");
+        navigate("/dasboard");
       } else {
         toastError(response?.msg);
       }

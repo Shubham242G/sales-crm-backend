@@ -56,10 +56,6 @@ function Sidebar() {
           link: "confirmedQuotes",
         },
         {
-          dropHead: "Contact",
-          link: "contact",
-        },
-        {
           dropHead: "Purchase Contacts",
           link: "add-purchase-contact",
         },

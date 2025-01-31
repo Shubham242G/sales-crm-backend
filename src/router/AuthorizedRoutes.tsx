@@ -75,7 +75,7 @@ export default function AuthorizedRoutes() {
                     <Route element={<Layout />}>
                         {/* <Route path="/login" element={<Dashboard />}></Route>
                         <Route path="/home" element={<Dashboard />}></Route> */}
-                        <Route path="/" element={<Dashboard />}></Route>
+                        <Route path="/dashboard" element={<Dashboard />}></Route>
                         <Route path="/admin" element={<Admin />}></Route>
                         <Route path="/vendorList" element={<VendorList />}></Route>
                         <Route path="/rfps" element={<Rfps />}></Route>
