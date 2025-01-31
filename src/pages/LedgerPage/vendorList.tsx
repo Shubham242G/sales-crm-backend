@@ -1,12 +1,14 @@
 import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
+import { useVendorById , useVendor, usedeleteVendorById, useUpdateVendorById} from "@/services/vendor.service";
+import { toastError, toastSuccess } from "@/utils/toast";
 
-function CustomerLedger() {
+function VendorList() {
   const navigate = useNavigate()
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
@@ -17,12 +19,66 @@ function CustomerLedger() {
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
+
+
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [query, setQuery] = useState("");
+  const searchObj = useMemo(() => ({
+    ...(query && { query }),
+    pageIndex: pageIndex - 1,
+    pageSize
+  }), [pageIndex, pageSize, query]);
+
+  const { data: VendorData } = useVendor(searchObj);
+  console.log(VendorData, "check leadData")
+  const { mutateAsync: deleteVendor } = usedeleteVendorById();
+  const {mutateAsync: updateVendor} = useUpdateVendorById();
+
+  const handleDelete = async (id: string) => {
+    try {
+        if (window.confirm("Are you sure you want to delete this contact?")) {
+            const { data: res } = await deleteVendor(id);
+            if (res) {
+                toastSuccess(res.message);
+                // Optionally refresh the data
+            }
+        }
+    } catch (error) {
+        toastError(error);
+    }
+};
+
+// useEffect(()=>{
+//     if(VendorData){
+//         setVendorList(VendorData?.data)
+//     } 
+// },[VendorList])
+
+const handleUpdate = async (id: string, data: any) => {
+  try {
+          const { data: res } = await updateVendor({
+              id: id,
+              obj: data // Add the required object data here
+          });
+          if (res) {
+              toastSuccess(res.message);
+              // Optionally refresh the data
+          }
+      
+  } catch (error) {
+      toastError(error);
+  }
+};
+
+
+
   const columns = [
     {
-      name: "Vendor Name",
+      name: "Vendor Name", 
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.name}</h6> 
+          <h6>{row.vendor?.firstName}</h6> 
         </div>
       ),
       width: "20%",
@@ -33,7 +89,7 @@ function CustomerLedger() {
       selector: (row: any) => (
         <div className="flex gap-1">
           <FaMobileScreenButton className=" text-[#938d8d]" />
-          {row.company}
+          {row.vendor?.companyName}
         </div>
       ),
       width: "20%",
@@ -43,7 +99,7 @@ function CustomerLedger() {
       selector: (row: any) => (
         <div className="flex gap-1">
           <FaMobileScreenButton className=" text-[#938d8d]" />
-          {row.contactno}
+          {row.vendor?.phoneNumber}
         </div>
       ),
       width: "10%",
@@ -51,95 +107,44 @@ function CustomerLedger() {
 
     {
       name: "Email",
-      selector: (row: any) => row.email,
-      width: "20%",
-    },
-    {
-      name: "Service",
-      selector: (row: any) => (
-        <>
-          <div className="flex justify-around">
-            {row.service.map((e: any, index: number) => (
-              <div
-                key={index}
-                className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
-              >
-                {e.name}
-              </div>
-            ))}
-          </div>
-        </>
-      ),
+      selector: (row: any) => row.vendor?.email,
       width: "20%",
     },
     {
       name: "Action",
       width: "10%",
-      selector: () => (
+      selector: (row: any) => (
+        <div className="flex items-center gap-3">
+          <Link
+            to={`/add-vendor/${row?._id}`}
+            className="p-[6px] text-black-400 text-lg flex items-center"
+            onClick={() => handleUpdate(row._id, row.data)}
+          >
+            <FaEye />
+          </Link>
+        </div>
+      ),
+    },
+    {
+      name: "Delete",
+      width: "10%",
+      selector: (row: any) => (
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={handleLedgerDetailsModal}
-            className=" text-black-500 text-lg p-[6px]"
-          >
-            <FaEye />
-          </button>
-          <Link
-            to="/update-ledger/id=1234"
-            className=" p-[6px] text-black-400 text-lg"
+            onClick={() => handleDelete(row._id)}
+            className="p-[6px] text-black-400 text-lg"
+            title="Delete Customer"
           >
             <RiDeleteBin6Line />
-          </Link>
+          </button>
         </div>
       ),
     },
   ];
 
   // Sample data
-  const data = [
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
-    },
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "Event" },{ name: "Banquet" }],
-    },
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
-    },
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "Event" },{ name: "Banquet" }],
-    },
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
-    },
-    {
-      name: "Ajay Kumar",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      service: [{ name: "hotel" }, { name: "Event" },{ name: "Banquet" }]
-    },
-  ];
+ 
 
 
   return (
@@ -190,17 +195,11 @@ function CustomerLedger() {
           </div>
           {/* React Table */}
           <ReactTable
-            data={data}
-            columns={columns}
-            loading={false}
-            totalRows={0} 
-            // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+           data={VendorData?.data}
+           columns={columns}
+           loading={false}
+           totalRows={VendorData?.total}
+         // loading={loading}
           />
         </div>
       </div>
@@ -208,4 +207,4 @@ function CustomerLedger() {
   );
 }
 
-export default CustomerLedger;
+export default VendorList;

@@ -13,7 +13,6 @@ export default function RootRouter() {
 const checkAuth =  async() => {
   try {
     const decodedToken = await getAuth();
-
     console.log(decodedToken);
     if (decodedToken?.token) {
       setIsAuthorized(true);
@@ -26,10 +25,12 @@ const checkAuth =  async() => {
   }
 }
 
-console.log(isAuthorized, "isAuthorized");
 useEffect(() => {
   checkAuth()
 },[])
+useEffect(() => {
+  console.log(isAuthorized)
+},[isAuthorized])
 
  
 
@@ -39,9 +40,9 @@ useEffect(() => {
   // }
 
   return (<>
-    
-      {isAuthorized ? <Router><AuthorizedRoutes /> </Router>:<Router><UnauthorizedRoutes /></Router> }
-      {/* {<AuthorizedRoutes />} */}
+    <Router>
+      {isAuthorized ? <AuthorizedRoutes /> :<UnauthorizedRoutes />}
+      </Router> 
       </>
   );
 }

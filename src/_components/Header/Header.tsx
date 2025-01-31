@@ -103,18 +103,27 @@
 import mainlogo from "../../assets/mainlogo/logo.png";
 import hamburger from "../../assets/header/hamburger.webp";
 import { useSidebar } from "../../provider/SidebarContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoChevronDown } from "react-icons/io5";
 import { FaUserCircle, FaBell } from "react-icons/fa";
 import userimg from "../../assets/header/userimg.webp";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import CreateCustomer from "../ReuseableComponents/Modals/CreateCustomer";
+import { AuthContext } from "@/context/AuthProvider";
 
 function Header() {
   const { showSlim, toggleSlim } = useSidebar();
   const [loginDrop, setLoginDrop] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const { isAuthorized, setIsAuthorized } = useContext(AuthContext);
+  const navigate = useNavigate();
 
+  const handleLogut = () => {
+    localStorage.removeItem("token");
+    setIsAuthorized(false);
+    navigate("/");
+
+  }
   return (
     <>
       <header className="w-full h-full">
@@ -170,7 +179,7 @@ function Header() {
                         </li>
                       </ul>
                       <button
-                        onClick={() => setLoginDrop(false)}
+                        onClick={() => handleLogut()}
                         className="text-paracolor py-2 px-3 w-full text-left tracking-wide hover:bg-buttnhover hover:text-white"
                       >
                         Logout

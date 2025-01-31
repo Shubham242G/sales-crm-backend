@@ -7,14 +7,13 @@ import { AuthProvider } from "@/context/AuthProvider";
 
 function App() {
   return (
-      <>
-        <Toaster />
+      <AuthProvider>
+      <Toaster />
         <SidebarProvider>
-
           <RoutesPage />
         </SidebarProvider>
-
-      </>
+      </AuthProvider>
+     
 
   );
 }

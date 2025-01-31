@@ -2,7 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Dashboard from "../pages/DashboardPage/Dashboard";
 
 import Layout from "./Layout";
-import CustomerLedger from "../pages/LedgerPage/CustomerLedger";
+import vendorList from "../pages/LedgerPage/vendorList";
 import LedgerGroup from "../pages/MasterPages/LedgerGroup";
 import SupplierGroup from "../pages/MasterPages/SupplierGroup";
 import Category from "../pages/MasterPages/Category";
@@ -63,19 +63,19 @@ import SalesContactView from "@/pages/Sales/salesContactView";
 import EnquiryLIst from "@/pages/Sales/enquiryList";
 import AddEnquiry from "@/pages/Sales/addEnquiry";
 import AddPurchaseContact from "@/pages/LedgerPage/addPurchaseContacts";
+import VendorList from "../pages/LedgerPage/vendorList";
 
 
 
 export default function AuthorizedRoutes() {
     return (
         <>
-            <Router>
                 <Routes>
                     <Route element={<Layout />}>
                         {/* <Route path="/login" element={<Dashboard />}></Route>
                         <Route path="/home" element={<Dashboard />}></Route> */}
-                        <Route path="/dashboard" element={<Dashboard />}></Route>
-                        <Route path="/all-ledger" element={<CustomerLedger />}></Route>
+                        <Route path="/" element={<Dashboard />}></Route>
+                        <Route path="/vendorList" element={<VendorList />}></Route>
                         <Route path="/rfps" element={<Rfps />}></Route>
                         <Route path="/leads" element={<Leads />}></Route>
                         <Route path="/category2" element={<AddCategory />}></Route>
@@ -120,6 +120,7 @@ export default function AuthorizedRoutes() {
                         <Route path="/add-sales-contact/:id" element={<AddSalesContact />}></Route>
                         <Route path="/sales-contact-view/" element={<SalesContactView />}></Route>
                         <Route path="/add-vendor" element={<AddVendorForm />}></Route>
+                        <Route path="/add-vendor/:id" element={<AddVendorForm />}></Route>
                         <Route path="/add-rfps" element={<AddRfpsForm />}></Route>
                         <Route path="/add-leads" element={<AddLeadsForm />}></Route>
                         <Route path="/view-rfps" element={<RfpsView />}></Route>
@@ -179,7 +180,6 @@ export default function AuthorizedRoutes() {
                         ></Route>
                     </Route>
                 </Routes>
-            </Router>
         </>
     );
 }

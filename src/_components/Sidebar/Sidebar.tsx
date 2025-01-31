@@ -32,8 +32,8 @@ function Sidebar() {
 
       dropArr: [
         {
-          dropHead: "Add Vendors",
-          link: "all-ledger",
+          dropHead: "Vendors",
+          link: "vendorList",
         },
         {
           dropHead: "RFPS",
