@@ -8,7 +8,7 @@ export default function UnauthorizedRoutes() {
             <div className="row">
                 <div className="col-12">
                     <Routes>
-                        <Route path="/login" element={<LoginPage />}></Route>
+                        <Route path="/" element={<LoginPage />}></Route>
                     </Routes>
                 </div>
             </div>

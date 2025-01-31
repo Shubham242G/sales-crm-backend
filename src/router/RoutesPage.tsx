@@ -1,20 +1,47 @@
-import React from "react";
+import React,{useContext, useEffect} from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import AuthorizedRoutes from "./AuthorizedRoutes";
 import UnauthorizedRoutes from "./UnauthorizedRoutes";
-import { useAuth } from "../context/AuthProvider";
+import { AuthContext } from "../context/AuthProvider";
+import { getAuth } from "@/utils/auth";
+
 
 export default function RootRouter() {
-  const { isAuthorized, isLoading } = useAuth();
+    const { isAuthorized, setIsAuthorized } = useContext(AuthContext);
 
-  if (isLoading) {
-    return <div><AuthorizedRoutes /></div>; // Replace with a loading spinner or other UI
+
+const checkAuth =  async() => {
+  try {
+    const decodedToken = await getAuth();
+
+    console.log(decodedToken);
+    if (decodedToken?.token) {
+      setIsAuthorized(true);
+  } else {
+      setIsAuthorized(false);
   }
+    
+  } catch (error) {
+    
+  }
+}
 
-  return (
-    <>
-      {/* {isAuthorized ? <AuthorizedRoutes /> : <UnauthorizedRoutes />} */}
-      {<AuthorizedRoutes />}
-    </>
+console.log(isAuthorized, "isAuthorized");
+useEffect(() => {
+  checkAuth()
+},[])
+
+ 
+
+  // if (isLoading) {
+  //   // return <div><AuthorizedRoutes /></div>; // Replace with a loading spinner or other UI
+  //   return <div>Loading...</div>;
+  // }
+
+  return (<>
+    
+      {isAuthorized ? <Router><AuthorizedRoutes /> </Router>:<Router><UnauthorizedRoutes /></Router> }
+      {/* {<AuthorizedRoutes />} */}
+      </>
   );
 }

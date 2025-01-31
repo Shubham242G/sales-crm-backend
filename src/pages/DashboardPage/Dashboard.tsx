@@ -4,7 +4,7 @@ function Dashboard() {
   return (
    <>
    
-   Dashboard
+   <div>Dashboard</div>
    </>
   )
 }
