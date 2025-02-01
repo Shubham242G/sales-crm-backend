@@ -4,44 +4,48 @@ import { useHotel } from "@/services/hotel.service";
 import FileUpload from "@/utils/FileUpload";
 import { toastError, toastSuccess } from "@/utils/toast";
 import Select from "react-select";
-import React, { useRef, useState,useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { customReactStylesSmall } from "@/utils/ReactSelectStyle";
 import { generateFilePath, ReactSelectFormat } from "@/services/urls.service";
 import { useBanquet } from "@/services/banquet.service";
 import { useNavigate, useParams } from "react-router-dom";
-import { useUpdateVendorById, useAddVendor , useVendorById} from "@/services/vendor.service";
+import {
+  useUpdateVendorById,
+  useAddVendor,
+  useVendorById,
+} from "@/services/vendor.service";
 import { set } from "lodash";
 
 interface IVendor {
-  salutation: string
-  firstName: string
-  lastName: string
-  email: string
-  companyName: string
-  landLine: string
-  phoneNumber: string
+  salutation: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  companyName: string;
+  landLine: string;
+  phoneNumber: string;
   displayName: string;
 }
 
 interface IOtherDetails {
-  sourceOfSupply: string,
-  gstTreatment: string,
-  gstin: string,
-  pan: string,
-  msmeRegistered: boolean,
-  currency: string,
-  paymentTerms: string,
-  tds: string,
-  priceList: string,
-  enablePortal: boolean,
-  portalLanguage: string,
-  documents: [],
-  addOtherDetails: [],
+  sourceOfSupply: string;
+  gstTreatment: string;
+  gstin: string;
+  pan: string;
+  msmeRegistered: boolean;
+  currency: string;
+  paymentTerms: string;
+  tds: string;
+  priceList: string;
+  enablePortal: boolean;
+  portalLanguage: string;
+  documents: [];
+  addOtherDetails: [];
 }
 
 interface IBillingAdress {
   addressId: string;
-  attention: string;
+  // attention: string;
   billingCountry: string;
   billingAddressStreet1: string;
   billingAddressStreet2: string;
@@ -53,7 +57,7 @@ interface IBillingAdress {
 }
 
 interface IShipppingAddress {
-  attention: string;
+  // attention: string;
   shippingCountry: string;
   shippingAddressStreet1: string;
   shippingAddressStreet2: string;
@@ -71,9 +75,8 @@ interface IContactPersons {
   contactPersonEmail: string;
   contactPersonWorkPhone: string;
   contactPersonMobile: string;
-}[]
-
-
+}
+[];
 
 const AddVendorForm = () => {
   const [isClearable, setIsClearable] = useState(true);
@@ -83,13 +86,13 @@ const AddVendorForm = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-
-  
   const { id } = useParams();
   const navigate = useNavigate();
   const { mutateAsync: createVendor } = useAddVendor();
   const { mutateAsync: updateVendor } = useUpdateVendorById();
-  const { data: vendorDataById, isLoading: vendorLoading } = useVendorById(id || "");
+  const { data: vendorDataById, isLoading: vendorLoading } = useVendorById(
+    id || ""
+  );
 
   const [vendor, setVendor] = useState<IVendor>({
     salutation: "",
@@ -97,10 +100,10 @@ const AddVendorForm = () => {
     lastName: "",
     landLine: "",
     email: "",
-    companyName: '',
+    companyName: "",
     phoneNumber: "",
     displayName: "",
-  })
+  });
 
   const [otherDetails, setOtherDetails] = useState<IOtherDetails>({
     sourceOfSupply: "",
@@ -116,11 +119,11 @@ const AddVendorForm = () => {
     portalLanguage: "",
     documents: [],
     addOtherDetails: [],
-  })
+  });
 
   const [billingAddress, setBillingAddress] = useState<IBillingAdress>({
     addressId: "",
-    attention: "",
+    // attention: "",
     billingCountry: "",
     billingAddressStreet1: "",
     billingAddressStreet2: "",
@@ -129,10 +132,10 @@ const AddVendorForm = () => {
     billingPincode: "",
     billingPhone: "",
     billingFaxNumber: "",
-  })
+  });
 
   const [shippingAddress, setShippingAddress] = useState<IShipppingAddress>({
-    attention: "",
+    // attention: "",
     shippingCountry: "",
     shippingAddressStreet1: "",
     shippingAddressStreet2: "",
@@ -141,19 +144,18 @@ const AddVendorForm = () => {
     shippingPincode: "",
     shippingPhone: "",
     shippingFaxNumber: "",
-  })
+  });
 
-
-
-
-  const [contactPersons, setContactPersons] = useState<IContactPersons[]>([{
-    salutation: "",
-    contactPersonFirstName: "",
-    contactPersonLastName: "",
-    contactPersonEmail: "",
-    contactPersonWorkPhone: "",
-    contactPersonMobile: "",
-  }])
+  const [contactPersons, setContactPersons] = useState<IContactPersons[]>([
+    {
+      salutation: "",
+      contactPersonFirstName: "",
+      contactPersonLastName: "",
+      contactPersonEmail: "",
+      contactPersonWorkPhone: "",
+      contactPersonMobile: "",
+    },
+  ]);
 
   useEffect(() => {
     console.log(vendorDataById, "vendorDataById");
@@ -169,13 +171,13 @@ const AddVendorForm = () => {
         landLine: apiData?.vendor?.landLine,
         phoneNumber: apiData?.vendor?.phoneNumber,
         displayName: apiData?.vendor?.displayName,
-        companyName: apiData?.vendor?.companyName
+        companyName: apiData?.vendor?.companyName,
       }));
 
       setBillingAddress((prev) => ({
         ...prev,
         billingAddressStreet1: apiData?.billingAddress?.billingAddressStreet1,
-        attention: apiData?.billingAddress?.attention,
+        // attention: apiData?.billingAddress?.attention,
         billingCountry: apiData?.billingAddress?.billingCountry,
         billingAddressStreet2: apiData?.billingAddress?.billingAddressStreet2,
         billingCity: apiData?.billingAddress?.billingCity,
@@ -187,26 +189,28 @@ const AddVendorForm = () => {
 
       setShippingAddress((prev) => ({
         ...prev,
-        shippingAddressStreet1: apiData?.shippingAddress?.shippingAddressStreet1, 
-        shippingAddressStreet2: apiData?.shippingAddress?.shippingAddressStreet2,
-        attention: apiData?.shippingAddress?.attention,
+        shippingAddressStreet1:
+          apiData?.shippingAddress?.shippingAddressStreet1,
+        shippingAddressStreet2:
+          apiData?.shippingAddress?.shippingAddressStreet2,
+        // attention: apiData?.shippingAddress?.attention,
         shippingCountry: apiData?.shippingAddress?.shippingCountry,
         shippingCity: apiData?.shippingAddress?.shippingCity,
         shippingState: apiData?.shippingAddress?.shippingState,
         shippingPincode: apiData?.shippingAddress?.shippingPincode,
         shippingPhone: apiData?.shippingAddress?.shippingPhone,
-        shippingFaxNumber: apiData?.shippingAddress?.shippingFaxNumber, 
+        shippingFaxNumber: apiData?.shippingAddress?.shippingFaxNumber,
       }));
 
-      setOtherDetails((prev) => ({  
+      setOtherDetails((prev) => ({
         ...prev,
         sourceOfSupply: apiData?.otherDetails?.sourceOfSupply,
         gstTreatment: apiData?.otherDetails?.gstTreatment,
-        gstin: apiData?.otherDetails?.gstin,  
+        gstin: apiData?.otherDetails?.gstin,
         pan: apiData?.otherDetails?.pan,
         msmeRegistered: apiData?.otherDetails?.msmeRegistered,
         currency: apiData?.otherDetails?.currency,
-        paymentTerms: apiData?.otherDetails?.paymentTerms,  
+        paymentTerms: apiData?.otherDetails?.paymentTerms,
         tds: apiData?.otherDetails?.tds,
         priceList: apiData?.otherDetails?.priceList,
         enablePortal: apiData?.otherDetails?.enablePortal,
@@ -217,18 +221,12 @@ const AddVendorForm = () => {
 
       setContactPersons(apiData?.contactPersons);
     }
+  }, [vendorDataById]);
 
-
-  }, []);
-
-
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      
-
-      console.log(vendor,  "check for vendor data");
+      console.log(vendor, "check for vendor data");
       const obj = {
         vendor,
         contactPersons,
@@ -237,20 +235,15 @@ const AddVendorForm = () => {
         otherDetails,
       };
 
-
       console.log(obj, "check obj");
 
       if (id) {
-
         const { data: res } = await updateVendor({ id, obj });
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/vendorList");
-      
-
         }
       } else {
-
         const { data: res } = await addVendor(obj);
         if (res?.message) {
           setContactPersons(contactPersons);
@@ -260,17 +253,16 @@ const AddVendorForm = () => {
           setOtherDetails(otherDetails);
           toastSuccess(res.message);
           navigate("/vendorList");
-
         }
       }
     } catch (error) {
       toastError(error);
     }
-    console.log("FormDataaaa:-->" ,vendor)
+    console.log("FormDataaaa:-->", vendor);
   };
 
   const [isEmailValid, setIsEmailValid] = useState(true);
-  const [uploadFiles, setUploadFiles] = useState<string[]>([])
+  const [uploadFiles, setUploadFiles] = useState<string[]>([]);
 
   const [activeTab, setActiveTab] = useState<
     "Other Details" | "Address" | "Contact Persons"
@@ -278,8 +270,6 @@ const AddVendorForm = () => {
 
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
-  
-
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -355,8 +345,6 @@ const AddVendorForm = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     setImageState: React.Dispatch<React.SetStateAction<string[]>>
   ) => {
-
-
     const files = e.target.files;
     if (files) {
       const fileReaders: Promise<string>[] = Array.from(files).map((file) => {
@@ -394,25 +382,22 @@ const AddVendorForm = () => {
     ]);
   };
 
-
   const handleDeleteContactPerson = (index: number) => {
     const newContacts = [...contactPersons];
     newContacts.splice(index, 1);
     setContactPersons(newContacts);
   };
 
-  
-
   const validateEmail = (email: string) => {
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     setIsEmailValid(isValid);
   };
 
-  const salutationOptions = ['Mr.', 'Ms.', 'Dr.', 'Mrs.'];
-  const currencyOptions = ['INR.', 'Dollars.', 'Pounds', 'Euros.'];
-  const tdsOptions = ['TDS1', 'TDS2.', 'TDS3']; //change these options
-  const priceListOptions = ['PL1', 'PL2', 'PL3']; //change these options
-  const languageOptions = ['English', 'Hindi', 'Espanyol']; //change these options
+  const salutationOptions = ["Mr.", "Ms.", "Dr.", "Mrs."];
+  const currencyOptions = ["INR.", "Dollars.", "Pounds", "Euros."];
+  const tdsOptions = ["TDS1", "TDS2.", "TDS3"]; //change these options
+  const priceListOptions = ["PL1", "PL2", "PL3"]; //change these options
+  const languageOptions = ["English", "Hindi", "Espanyol"]; //change these options
   // const [contactName, setContactName] = useState("");
   // const [phoneNumber, setPhoneNumber] = useState("");
   // const [alternateContact, setAlternateContact] = useState("");
@@ -434,7 +419,6 @@ const AddVendorForm = () => {
   // const [vendorBankName, setVendorBankName] = useState("");
   // const [vendorIfscCode, setVendorIfscCode] = useState("");
 
-
   const { mutateAsync: addVendor } = useAddVendor();
   // const { data: categoryData } = useCategory();
   // const [selectedCategory, setSelectedCategory] = useState("");
@@ -443,7 +427,6 @@ const AddVendorForm = () => {
   // const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   //   setSelectedCategory(e.target.value);
   // };
-
 
   // const addContactPersons = (contactPersonsIndex:  number) => {
   //   // Create the new room object to add
@@ -543,12 +526,14 @@ const AddVendorForm = () => {
 
   
 
+ 
+
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">Add Vendor</h1>
         <form onSubmit={handleSubmit}>
-
           {/* Primary Contact Section */}
           <div className="mb-8">
             <div className="flex items-start gap-4">
@@ -557,7 +542,7 @@ const AddVendorForm = () => {
               </span>
               <div className="flex-1 space-y-4">
                 <div className="flex gap-6">
-                  <div className="w-32">
+                  <div className="flex-1 max-w-[200px]">
                     <select
                       value={vendor.salutation}
                       onChange={(e) =>
@@ -609,15 +594,19 @@ const AddVendorForm = () => {
                   <span className="text-base font-medium text-gray-700 mt-2">
                     Company Name:
                   </span>
-                  <input
-                    type="text"
-                    value={vendor.companyName}
-                    onChange={(e) =>
-                      setVendor({ ...vendor, companyName: e.target.value })
-                    }
-                    placeholder="Enter company name"
-                    className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                  />
+                  <div className="w-96">
+                    {" "}
+                    {/* Ensures consistent width */}
+                    <input
+                      type="text"
+                      value={vendor.companyName}
+                      onChange={(e) =>
+                        setVendor({ ...vendor, companyName: e.target.value })
+                      }
+                      placeholder="Enter company name"
+                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                    />
+                  </div>
                 </div>
 
                 {/* Display Name */}
@@ -625,17 +614,21 @@ const AddVendorForm = () => {
                   <span className="text-base font-medium text-gray-700 mt-2">
                     Display Name:
                   </span>
-                  <select
-                    value={vendor.displayName}
-                    onChange={(e) =>
-                      setVendor({ ...vendor, displayName: e.target.value })
-                    }
-                    className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                  >
-                    <option value="">Select Display Name</option>
-                    <option value="company">Company Name</option>
-                    <option value="contact">Contact Name</option>
-                  </select>
+                  <div className="w-96 ml-4">
+                    {" "}
+                    {/* Consistent width for dropdown */}
+                    <select
+                      value={vendor.displayName}
+                      onChange={(e) =>
+                        setVendor({ ...vendor, displayName: e.target.value })
+                      }
+                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                    >
+                      <option value="">Select Display Name</option>
+                      <option value="company">Company Name</option>
+                      <option value="contact">Contact Name</option>
+                    </select>
+                  </div>
                 </div>
 
                 {/* Email Address */}
@@ -643,7 +636,7 @@ const AddVendorForm = () => {
                   <span className="text-base font-medium text-gray-700 mt-2">
                     Email Address:
                   </span>
-                  <div className="flex-1 relative">
+                  <div className="w-96 relative ml-2">
                     <input
                       type="email"
                       value={vendor.email}
@@ -653,11 +646,12 @@ const AddVendorForm = () => {
                       }}
                       onBlur={(e) => validateEmail(e.target.value)}
                       placeholder="Enter email address"
-                      className={`w-full border ${!isEmailValid ? "border-red-500" : "border-gray-300"
-                        } rounded-md p-2 text-sm pl-10`}
+                      className={`w-full border ${
+                        !isEmailValid ? "border-red-500" : "border-gray-300"
+                      } rounded-md p-2 text-sm pl-10`}
                     />
                     <svg
-                      className="absolute left-3 top-3 h-5 w-5 text-gray-400"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
                       fill="none"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -677,11 +671,11 @@ const AddVendorForm = () => {
 
                 {/* Phone Numbers */}
                 <div className="flex items-center gap-6">
-                  <span className="text-base font-medium text-gray-700 mt-2">
+                  <span className="text-base font-medium text-gray-700 mt-2 mr-16">
                     Phone:
                   </span>
                   <div className="flex-1 flex gap-4">
-                    <div className="relative flex-1">
+                    <div className="relative w-44">
                       <input
                         type="tel"
                         value={vendor.landLine}
@@ -695,7 +689,7 @@ const AddVendorForm = () => {
                         className="w-full border border-gray-300 rounded-md p-2 text-sm pl-10"
                       />
                       <svg
-                        className="absolute left-3 top-3 h-5 w-5 text-gray-400"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
                         fill="none"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -706,7 +700,7 @@ const AddVendorForm = () => {
                         <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                     </div>
-                    <div className="relative flex-1">
+                    <div className="relative w-48">
                       <input
                         type="tel"
                         value={vendor.phoneNumber}
@@ -717,7 +711,7 @@ const AddVendorForm = () => {
                         className="w-full border border-gray-300 rounded-md p-2 text-sm pl-10"
                       />
                       <svg
-                        className="absolute left-3 top-3 h-5 w-5 text-gray-400"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
                         fill="none"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -730,6 +724,7 @@ const AddVendorForm = () => {
                     </div>
                   </div>
                 </div>
+
                 {/* Communication Channels
                 <div className="flex items-center gap-6 mt-4">
                   <span className="text-base font-medium text-gray-700 mt-2">
@@ -777,10 +772,11 @@ const AddVendorForm = () => {
                             type="button"
                             key={tab}
                             onClick={() => setActiveTab(tab as any)}
-                            className={`pb-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab
+                            className={`pb-4 px-1 border-b-2 font-medium text-sm ${
+                              activeTab === tab
                                 ? "border-orange-500 text-orange-600"
                                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                              }`}
+                            }`}
                           >
                             {tab}
                           </button>
@@ -799,35 +795,39 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700 mt-2">
                               GST Treatment:
                             </span>
-                            <select
-                              value={otherDetails.gstTreatment}
-                              onChange={(e) =>
-                                setOtherDetails({
-                                  ...otherDetails,
-                                  gstTreatment: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select GST Treatment</option>
-                              <option value="registered_regular">
-                                Registered Business - Regular
-                              </option>
-                              <option value="registered_composite">
-                                Registered Business - Composite
-                              </option>
-                              <option value="unregistered">
-                                Unregistered Business
-                              </option>
-                              <option value="consumer">Consumer</option>
-                              <option value="overseas">Overseas</option>
-                              <option value="special_economic_zone">
-                                Special Economic Zone
-                              </option>
-                              <option value="deemed_export">
-                                Deemed Export
-                              </option>
-                            </select>
+                            <div className="w-96 mt-2 ml-8">
+                              {" "}
+                              {/* Adjusting width for consistency */}
+                              <select
+                                value={otherDetails.gstTreatment}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    gstTreatment: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select GST Treatment</option>
+                                <option value="registered_regular">
+                                  Registered Business - Regular
+                                </option>
+                                <option value="registered_composite">
+                                  Registered Business - Composite
+                                </option>
+                                <option value="unregistered">
+                                  Unregistered Business
+                                </option>
+                                <option value="consumer">Consumer</option>
+                                <option value="overseas">Overseas</option>
+                                <option value="special_economic_zone">
+                                  Special Economic Zone
+                                </option>
+                                <option value="deemed_export">
+                                  Deemed Export
+                                </option>
+                              </select>
+                            </div>
                           </div>
                         </div>
 
@@ -837,17 +837,21 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               GSTIN:
                             </span>
-                            <input
-                              type="text"
-                              value={otherDetails.gstin}
-                              onChange={(e) =>
-                                setOtherDetails({
-                                  ...otherDetails,
-                                  gstin: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            />
+                            <div className="w-96 ml-20">
+                              {" "}
+                              {/* Set width for consistency */}
+                              <input
+                                type="text"
+                                value={otherDetails.gstin}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    gstin: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
                           </div>
                         </div>
 
@@ -857,32 +861,34 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               Place of Supply:
                             </span>
-                            <select
-                              value={otherDetails.sourceOfSupply}
-                              onChange={(e) =>
-                                setOtherDetails({
-                                  ...otherDetails,
-                                  sourceOfSupply: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select State</option>
-                              <option value="Maharashtra">Maharashtra</option>
-                              <option value="Delhi">Delhi</option>
-                              <option value="Karnataka">Karnataka</option>
-                              <option value="Tamil Nadu">Tamil Nadu</option>
-                              <option value="Uttar Pradesh">
-                                Uttar Pradesh
-                              </option>
-                              <option value="Gujarat">Gujarat</option>
-                              <option value="West Bengal">West Bengal</option>
-                              <option value="Rajasthan">Rajasthan</option>
-                              <option value="Andhra Pradesh">
-                                Andhra Pradesh
-                              </option>
-                              <option value="Telangana">Telangana</option>
-                            </select>
+                            <div className="w-96 ml-4">
+                              <select
+                                value={otherDetails.sourceOfSupply}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    sourceOfSupply: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select State</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Uttar Pradesh">
+                                  Uttar Pradesh
+                                </option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Andhra Pradesh">
+                                  Andhra Pradesh
+                                </option>
+                                <option value="Telangana">Telangana</option>
+                              </select>
+                            </div>
                           </div>
                         </div>
 
@@ -892,25 +898,30 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               PAN:
                             </span>
-                            <input
-                              type="text"
-                              value={otherDetails.pan}
-                              onChange={(e) =>
-                                setOtherDetails({
-                                  ...otherDetails,
-                                  pan: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            />
+                            <div className="w-96 ml-24">
+                              {" "}
+                              {/* Same width as the "Place of Supply" field */}
+                              <input
+                                type="text"
+                                value={otherDetails.pan}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    pan: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
                           </div>
                         </div>
+
                         {/*Msme registered*/}
                         <div className="flex items-center gap-6 mt-4">
                           <span className="text-base font-medium text-gray-700 mt-2">
                             MSME Registered?:
                           </span>
-                          <div className="flex gap-6">
+                          <div className="flex gap-6 mt-2">
                             <label className="flex items-center space-x-2">
                               <input
                                 type="checkbox"
@@ -935,84 +946,93 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               Currency:
                             </span>
-                            <select
-                              value={otherDetails.currency}
-                              onChange={(e) =>
-                                setOtherDetails({
-                                  ...otherDetails,
-                                  currency: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select Currency</option>
-                              <option value="INR - Indian Rupee">
-                                INR - Indian Rupee
-                              </option>
-                              <option value="USD - United States Dollar">
-                                USD - United States Dollar
-                              </option>
-                              <option value="EUR - Euro">EUR - Euro</option>
-                              <option value="JPY - Japanese Yen">
-                                JPY - Japanese Yen
-                              </option>
-                              <option value="GBP - British Pound Sterling">
-                                GBP - British Pound Sterling
-                              </option>
-                              <option value="AUD - Australian Dollar">
-                                AUD - Australian Dollar
-                              </option>
-                              <option value="CAD - Canadian Dollar">
-                                CAD - Canadian Dollar
-                              </option>
-                              <option value="CHF - Swiss Franc">
-                                CHF - Swiss Franc
-                              </option>
-                              <option value="CNY - Chinese Yuan">
-                                CNY - Chinese Yuan
-                              </option>
-                              <option value="HKD - Hong Kong Dollar">
-                                HKD - Hong Kong Dollar
-                              </option>
-                            </select>
+                            <div className="w-96 ml-16">
+                              {" "}
+                              {/* Set width for consistency */}
+                              <select
+                                value={otherDetails.currency}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    currency: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Currency</option>
+                                <option value="INR - Indian Rupee">
+                                  INR - Indian Rupee
+                                </option>
+                                <option value="USD - United States Dollar">
+                                  USD - United States Dollar
+                                </option>
+                                <option value="EUR - Euro">EUR - Euro</option>
+                                <option value="JPY - Japanese Yen">
+                                  JPY - Japanese Yen
+                                </option>
+                                <option value="GBP - British Pound Sterling">
+                                  GBP - British Pound Sterling
+                                </option>
+                                <option value="AUD - Australian Dollar">
+                                  AUD - Australian Dollar
+                                </option>
+                                <option value="CAD - Canadian Dollar">
+                                  CAD - Canadian Dollar
+                                </option>
+                                <option value="CHF - Swiss Franc">
+                                  CHF - Swiss Franc
+                                </option>
+                                <option value="CNY - Chinese Yuan">
+                                  CNY - Chinese Yuan
+                                </option>
+                                <option value="HKD - Hong Kong Dollar">
+                                  HKD - Hong Kong Dollar
+                                </option>
+                              </select>
+                            </div>
                           </div>
                         </div>
+
                         {/* Payment Terms */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="text-base font-medium text-gray-700">
                               Payment Terms:
                             </span>
-                            <select
-                              value={otherDetails.paymentTerms}
-                              onChange={(e) =>
-                                setOtherDetails({
-                                  ...otherDetails,
-                                  paymentTerms: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select Payment Terms</option>
-                              <option value="Due on Receipt">
-                                Due on Receipt
-                              </option>
-                              <option value="End of Month (EOM)">
-                                End of Month (EOM)
-                              </option>
-                              <option value="Cash in Advance (CIA)">
-                                Cash in Advance (CIA)
-                              </option>
-                              <option value="Cash on Delivery (COD)">
-                                Cash on Delivery (COD)
-                              </option>
-                              <option value="Partial Payment">
-                                Partial Payment
-                              </option>
-                              <option value="Progressive Payment">
-                                Progressive Payment
-                              </option>
-                            </select>
+                            <div className="w-96 ml-4">
+                              {" "}
+                              {/* Set width for consistency */}
+                              <select
+                                value={otherDetails.paymentTerms}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    paymentTerms: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Payment Terms</option>
+                                <option value="Due on Receipt">
+                                  Due on Receipt
+                                </option>
+                                <option value="End of Month (EOM)">
+                                  End of Month (EOM)
+                                </option>
+                                <option value="Cash in Advance (CIA)">
+                                  Cash in Advance (CIA)
+                                </option>
+                                <option value="Cash on Delivery (COD)">
+                                  Cash on Delivery (COD)
+                                </option>
+                                <option value="Partial Payment">
+                                  Partial Payment
+                                </option>
+                                <option value="Progressive Payment">
+                                  Progressive Payment
+                                </option>
+                              </select>
+                            </div>
                           </div>
                         </div>
 
@@ -1022,36 +1042,39 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               TDS:
                             </span>
-                            <select
-                              value={otherDetails.tds}
-                              onChange={(e) =>
-                                setOtherDetails({
-                                  ...otherDetails,
-                                  tds: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select Price List</option>
-                              <option value="Basic SEO Package">
-                                Basic SEO Package
-                              </option>
-                              <option value="Social Media Management">
-                                Social Media Management
-                              </option>
-                              <option value="Pay-Per-Click (PPC) Campaign Setup">
-                                Pay-Per-Click (PPC) Campaign Setup
-                              </option>
-                              <option value="Content Writing">
-                                Content Writing
-                              </option>
-                              <option value="Website Audit">
-                                Website Audit
-                              </option>
-                            </select>
+                            <div className="w-96 ml-24">
+                              {" "}
+                              {/* Set width for consistency */}
+                              <select
+                                value={otherDetails.tds}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    tds: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Price List</option>
+                                <option value="Basic SEO Package">
+                                  Basic SEO Package
+                                </option>
+                                <option value="Social Media Management">
+                                  Social Media Management
+                                </option>
+                                <option value="Pay-Per-Click (PPC) Campaign Setup">
+                                  Pay-Per-Click (PPC) Campaign Setup
+                                </option>
+                                <option value="Content Writing">
+                                  Content Writing
+                                </option>
+                                <option value="Website Audit">
+                                  Website Audit
+                                </option>
+                              </select>
+                            </div>
                           </div>
                         </div>
-
 
                         {/* Price List */}
                         <div className="col-span-2">
@@ -1059,41 +1082,46 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               Price List:
                             </span>
-                            <select
-                              value={otherDetails.priceList}
-                              onChange={(e) =>
-                                setOtherDetails({
-                                  ...otherDetails,
-                                  priceList: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select Price List</option>
-                              <option value="Basic SEO Package">
-                                Basic SEO Package
-                              </option>
-                              <option value="Social Media Management">
-                                Social Media Management
-                              </option>
-                              <option value="Pay-Per-Click (PPC) Campaign Setup">
-                                Pay-Per-Click (PPC) Campaign Setup
-                              </option>
-                              <option value="Content Writing">
-                                Content Writing
-                              </option>
-                              <option value="Website Audit">
-                                Website Audit
-                              </option>
-                            </select>
+                            <div className="w-96 ml-16">
+                              {" "}
+                              {/* Set width for consistency */}
+                              <select
+                                value={otherDetails.priceList}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    priceList: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Price List</option>
+                                <option value="Basic SEO Package">
+                                  Basic SEO Package
+                                </option>
+                                <option value="Social Media Management">
+                                  Social Media Management
+                                </option>
+                                <option value="Pay-Per-Click (PPC) Campaign Setup">
+                                  Pay-Per-Click (PPC) Campaign Setup
+                                </option>
+                                <option value="Content Writing">
+                                  Content Writing
+                                </option>
+                                <option value="Website Audit">
+                                  Website Audit
+                                </option>
+                              </select>
+                            </div>
                           </div>
                         </div>
+
                         {/* Enable Portal */}
                         <div className="flex items-center gap-6 mt-4">
                           <span className="text-base font-medium text-gray-700 mt-2">
                             Enable Portal:
                           </span>
-                          <div className="flex gap-6">
+                          <div className="flex gap-6 mt-2 ml-8">
                             <label className="flex items-center space-x-2">
                               <input
                                 type="checkbox"
@@ -1118,32 +1146,41 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               Portal Language:
                             </span>
-                            <select
-                              value={otherDetails.portalLanguage}
-                              onChange={(e) =>
-                                setOtherDetails({
-                                  ...otherDetails,
-                                  portalLanguage: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select Portal Language</option>
-                              <option value="English (EN)">English (EN)</option>
-                              <option value="Spanish (ES)">Espanol (ES)</option>
-                              <option value="French (FR)">French (FR)</option>
-                              <option value="German (DE)">German (DE)</option>
-                              <option value="Hindi (HI)">Hindi (HI)</option>
-                            </select>
+                            <div className="w-96 ml-2">
+                              {" "}
+                              {/* Set width for consistency */}
+                              <select
+                                value={otherDetails.portalLanguage}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    portalLanguage: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Portal Language</option>
+                                <option value="English (EN)">
+                                  English (EN)
+                                </option>
+                                <option value="Spanish (ES)">
+                                  Espanol (ES)
+                                </option>
+                                <option value="French (FR)">French (FR)</option>
+                                <option value="German (DE)">German (DE)</option>
+                                <option value="Hindi (HI)">Hindi (HI)</option>
+                              </select>
+                            </div>
                           </div>
                         </div>
+
                         {/* Documents Upload */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="text-base font-medium text-gray-700">
                               Documents:
                             </span>
-                            <div className="flex-1">
+                            <div className="flex-1 ml-12">
                               <input
                                 type="file"
                                 multiple
@@ -1234,28 +1271,37 @@ const AddVendorForm = () => {
                         </div>
                         <div>
                           <div style={{ display: "flex", flexWrap: "wrap" }}>
-                            {otherDetails && otherDetails.documents.length > 0 && otherDetails.documents.map((image: string, index) => (
-                              <img
-                                key={index}
-                                style={{
-                                  height: 100,
-                                  width: 100,
-                                  objectFit: "cover",
-                                  border: "1px solid #ddd",
-                                  borderRadius: "5px",
-                                  marginTop: "10px",
-                                }}
-                                src={image?.includes("base64") ? image : generateFilePath(image)}
-                                alt={`Image Preview ${index + 1}`}
-
-                              />
-                            ))}
+                            {otherDetails &&
+                              otherDetails.documents.length > 0 &&
+                              otherDetails.documents.map(
+                                (image: string, index) => (
+                                  <img
+                                    key={index}
+                                    style={{
+                                      height: 100,
+                                      width: 100,
+                                      objectFit: "cover",
+                                      border: "1px solid #ddd",
+                                      borderRadius: "5px",
+                                      marginTop: "10px",
+                                    }}
+                                    src={
+                                      image?.includes("base64")
+                                        ? image
+                                        : generateFilePath(image)
+                                    }
+                                    alt={`Image Preview ${index + 1}`}
+                                  />
+                                )
+                              )}
                           </div>
                           <input
                             type="file"
                             accept="image/csv/*"
                             multiple
-                            onChange={(e) => handleImageUpload(e, setUploadFiles)}
+                            onChange={(e) =>
+                              handleImageUpload(e, setUploadFiles)
+                            }
                             style={{ marginTop: "10px", display: "block" }}
                           />
                         </div>
@@ -1270,7 +1316,7 @@ const AddVendorForm = () => {
                             Billing Address
                           </h2>
                           {/* Attention */}
-                          <div className="flex items-center gap-6">
+                          {/* <div className="flex items-center gap-6">
                             <span className="text-base font-medium text-gray-700">
                               Attention:
                             </span>
@@ -1285,7 +1331,7 @@ const AddVendorForm = () => {
                               }
                               className="w-full border border-gray-300 rounded-md p-2 text-sm"
                             />
-                          </div>
+                          </div> */}
                           {/* Country / Region */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
@@ -1301,6 +1347,7 @@ const AddVendorForm = () => {
                                   })
                                 }
                                 className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
+                                style={{ height: "40px" }}
                               >
                                 <option value="">
                                   Select Country / Region
@@ -1317,6 +1364,7 @@ const AddVendorForm = () => {
                               </select>
                             </div>
                           </div>
+
                           {/* Address */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
@@ -1366,10 +1414,11 @@ const AddVendorForm = () => {
                                     billingCity: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full min-w-32 border border-gray-300 rounded-md p-2 text-sm"
                               />
                             </div>
                           </div>
+
                           {/* State */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
@@ -1460,7 +1509,7 @@ const AddVendorForm = () => {
                             Shipping Address
                           </h2>
                           {/* Shipping Attention */}
-                          <div className="flex items-center gap-6">
+                          {/* <div className="flex items-center gap-6">
                             <span className="text-base font-medium text-gray-700">
                               Attention:
                             </span>
@@ -1475,7 +1524,7 @@ const AddVendorForm = () => {
                               }
                               className="w-full border border-gray-300 rounded-md p-2 text-sm"
                             />
-                          </div>
+                          </div> */}
                           {/* Shipping Country / Region */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
@@ -1808,7 +1857,6 @@ const AddVendorForm = () => {
             <button
               type="submit"
               className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
-
             >
               Save
             </button>

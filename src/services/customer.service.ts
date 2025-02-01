@@ -62,13 +62,13 @@ export interface ICustomer {
   paymentTerms?: string;
   priceList?: string;
   portalLanguage?: string;
-  attention?: string;
+  // attention?: string;
   countryRegion?: string;
   addressStreet1?: string;
   addressStreet2?: string;
   pinCode?: string;
   faxNumber?: string;
-  shippingAttention?: string;
+  // shippingAttention?: string;
   shippingCountryRegion?: string;
   shippingAddressStreet1?: string;
   shippingAddressStreet2?: string;

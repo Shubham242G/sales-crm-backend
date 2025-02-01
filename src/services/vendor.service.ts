@@ -36,7 +36,7 @@ export interface IVendor {
 
     billingAddress:{
       addressId: string;
-      attention : string;
+    //   attention : string;
       billingCountry: string;
       billingAddressStreet1: string;
       billingAddressStreet2: string;
@@ -48,7 +48,7 @@ export interface IVendor {
     };
 
     shipppingAddress:{
-      attention : string;
+    //   attention : string;
       shippingCountry: string;
       shippingAddressStreet1: string;
       shippingAddressStreet2: string;

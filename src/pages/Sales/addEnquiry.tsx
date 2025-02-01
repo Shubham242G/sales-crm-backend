@@ -104,10 +104,11 @@ const AddEnquiryForm = () => {
     { value: "resort", label: "Resort" },
   ];
   const [occupancy, setOccupancy] = useState<string[]>([]);
-  const occupancyOptions = [
-    { value: "single occupancy", label: "Single Occupancy" },
-    { value: "double occupancy", label: "Double Occupancy" },
-  ]
+  // const occupancyOptions = [
+  //   { value: "single occupancy", label: "Single Occupancy" },
+  //   { value: "double occupancy", label: "Double Occupancy" },
+  //   { value: "extra bed", label: "Extra Bed" },
+  // ]
   const [approxPassengers, setApproxPassengers] = useState("");
   // const [hotelPreferences, setHotelPreferences] = useState("");
   const [city, setCity] = useState("");
@@ -278,6 +279,14 @@ const AddEnquiryForm = () => {
       updatedTable[index].mealPlan.push(value);
     }
     setTable(updatedTable);
+  };
+
+  const handleCheckboxChange = (value: string) => {
+    setOccupancy((prev) =>
+      prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
+    );
   };
 
   const removeMealPlan = (
@@ -620,6 +629,38 @@ const AddEnquiryForm = () => {
     }
   };
 
+  const cityOptions = [
+    { value: "Mumbai", label: "Mumbai" },
+    { value: "Delhi", label: "Delhi" },
+    { value: "Bangalore", label: "Bangalore" },
+    { value: "Hyderabad", label: "Hyderabad" },
+    { value: "Ahmedabad", label: "Ahmedabad" },
+    { value: "Chennai", label: "Chennai" },
+    { value: "Kolkata", label: "Kolkata" },
+    { value: "Pune", label: "Pune" },
+    { value: "Jaipur", label: "Jaipur" },
+    { value: "Surat", label: "Surat" },
+    { value: "Lucknow", label: "Lucknow" },
+    { value: "Kanpur", label: "Kanpur" },
+    { value: "Nagpur", label: "Nagpur" },
+    { value: "Indore", label: "Indore" },
+    { value: "Thane", label: "Thane" },
+    { value: "Bhopal", label: "Bhopal" },
+    { value: "Visakhapatnam", label: "Visakhapatnam" },
+    { value: "Vadodara", label: "Vadodara" },
+    { value: "Patna", label: "Patna" },
+    { value: "Ghaziabad", label: "Ghaziabad" },
+    { value: "Ludhiana", label: "Ludhiana" },
+    { value: "Agra", label: "Agra" },
+    { value: "Nashik", label: "Nashik" },
+    { value: "Faridabad", label: "Faridabad" },
+    { value: "Meerut", label: "Meerut" },
+    { value: "Rajkot", label: "Rajkot" },
+    { value: "Varanasi", label: "Varanasi" },
+    { value: "Srinagar", label: "Srinagar" },
+    { value: "Amritsar", label: "Amritsar" },
+  ];
+
   // const nameOptions =
   //   contact?.data &&
   //   contact?.data.map((item: any) => ({ value: item._id, label: item.name }));
@@ -813,14 +854,13 @@ const AddEnquiryForm = () => {
               </select>
               {othersPreference === "other" && (
                 <input
-                type="text"
-                placeholder="Enter Hotel Name"
-                value={hotelName}
-                onChange={(e) => setHotelName(e.target.value)}
-                className="w-full border border-gray-300 rounded-md p-2 mt-2"
-              />
+                  type="text"
+                  placeholder="Enter Hotel Name"
+                  value={hotelName}
+                  onChange={(e) => setHotelName(e.target.value)}
+                  className="w-full border border-gray-300 rounded-md p-2 "
+                />
               )}
-              
             </div>
             {/* Hotel Category */}
             <div>
@@ -846,25 +886,41 @@ const AddEnquiryForm = () => {
             </div>
             {/* Rate Required for (Occupancy) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-              Rate Required for (Occupancy)
+              <label className="block text-sm font-medium text-gray-700 mb-4 mt-2">
+                Rate Required for (Occupancy)
               </label>
-              <Select
-                isMulti
-                options={occupancyOptions}
-                value={occupancyOptions.filter((option) =>
-                  occupancy.includes(option.value)
-                )}
-                onChange={(selected) => {
-                  const values = selected
-                    ? selected.map((opt) => opt.value)
-                    : [];
-                  setOccupancy(values);
-                }}
-                className="basic-multi-select"
-                classNamePrefix="select"
-                placeholder="Select Occupancy..."
-              />
+
+              <div className="flex space-x-4 mb-6">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    value="single occupancy"
+                    checked={occupancy.includes("single occupancy")}
+                    onChange={() => handleCheckboxChange("single occupancy")}
+                  />
+                  <span>Single Occupancy</span>
+                </label>
+
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    value="double occupancy"
+                    checked={occupancy.includes("double occupancy")}
+                    onChange={() => handleCheckboxChange("double occupancy")}
+                  />
+                  <span>Double Occupancy</span>
+                </label>
+
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    value="extra bed"
+                    checked={occupancy.includes("extra bed")}
+                    onChange={() => handleCheckboxChange("extra bed")}
+                  />
+                  <span>Extra Bed</span>
+                </label>
+              </div>
             </div>
           </div>
 
@@ -1238,7 +1294,7 @@ const AddEnquiryForm = () => {
                 </div>
               ))}
             <button
-            type="button"
+              type="button"
               onClick={addEventDate}
               className="bg-orange-500 text-white px-4 py-2 mt-4 rounded hover:bg-orange-600"
             >
@@ -1284,32 +1340,42 @@ const AddEnquiryForm = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  From city
+                  From City
                 </label>
-                <input
-                  type="text"
-                  placeholder="From City"
+                <select
                   value={airTickets?.fromCity}
                   onChange={(e) =>
                     handleAirTicketChange("fromCity", e.target.value)
                   }
                   className="border border-gray-300 p-2 rounded-md w-full"
-                />
+                >
+                  <option value="">Select From City</option>
+                  {cityOptions.map((city) => (
+                    <option key={city.value} value={city.value}>
+                      {city.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   To City
                 </label>
-                <input
-                  type="text"
-                  placeholder="To City"
+                <select
                   value={airTickets?.toCity}
                   onChange={(e) =>
                     handleAirTicketChange("toCity", e.target.value)
                   }
                   className="border border-gray-300 p-2 rounded-md w-full"
-                />
+                >
+                  <option value="">Select To City</option>
+                  {cityOptions.map((city) => (
+                    <option key={city.value} value={city.value}>
+                      {city.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div>
@@ -1382,8 +1448,6 @@ const AddEnquiryForm = () => {
                 />
               </div>
             </div>
-
-            
 
             <table className="table-auto w-full border mt-4">
               <thead>

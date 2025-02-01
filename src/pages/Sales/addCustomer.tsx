@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import { generateFilePath } from "@/services/urls.service";
 import { Autocomplete, TextField } from "@mui/material";
+import { ChevronDown } from "lucide-react";
 
 interface ICustomerForm {
   customerType: string;
@@ -31,7 +32,7 @@ interface ICustomerForm {
   priceList: string;
   enablePortal: boolean;
   portalLanguage: string;
-  attention: string;
+  // attention: string;
   countryRegion: string;
   addressStreet1: string;
   addressStreet2: string;
@@ -40,7 +41,7 @@ interface ICustomerForm {
   phoneNumber: string;
   pinCode: string;
   faxNumber: string;
-  shippingAttention: string;
+  // shippingAttention: string;
   shippingCountryRegion: string;
   shippingAddressStreet1: string;
   shippingAddressStreet2: string;
@@ -98,7 +99,7 @@ const AddCustomer = () => {
     priceList: "",
     enablePortal: false,
     portalLanguage: "",
-    attention: "",
+    // attention: "",
     countryRegion: "",
     addressStreet1: "",
     addressStreet2: "",
@@ -107,7 +108,7 @@ const AddCustomer = () => {
     phoneNumber: "",
     pinCode: "",
     faxNumber: "",
-    shippingAttention: "",
+    // shippingAttention: "",
     shippingCountryRegion: "",
     shippingAddressStreet1: "",
     shippingAddressStreet2: "",
@@ -237,7 +238,7 @@ const AddCustomer = () => {
         paymentTerms: apiData?.paymentTerms || "",
         priceList: apiData?.priceList || "",
         portalLanguage: apiData?.portalLanguage || "",
-        attention: apiData?.attention || "",
+        // attention: apiData?.attention || "",
         countryRegion: apiData?.countryRegion || "",
         addressStreet1: apiData?.addressStreet1 || "",
         addressStreet2: apiData?.addressStreet2 || "",
@@ -248,7 +249,7 @@ const AddCustomer = () => {
         prefersSms: apiData?.prefersSms,
         phoneNumber: apiData?.phoneNumber || "",
         faxNumber: apiData?.faxNumber || "",
-        shippingAttention: apiData?.shippingAttention || "",
+        // shippingAttention: apiData?.shippingAttention || "",
         shippingCountryRegion: apiData?.shippingCountryRegion || "",
         shippingAddressStreet1: apiData?.shippingAddressStreet1 || "",
         shippingAddressStreet2: apiData?.shippingAddressStreet2 || "",
@@ -483,6 +484,21 @@ const AddCustomer = () => {
           : person
       )
     );
+  };
+
+  const copyBillingAddress = () => {
+    console.log("check function working ");
+    setFormData({
+      ...formData,
+      shippingCountryRegion: formData.countryRegion,
+      shippingAddressStreet1: formData.addressStreet1,
+      shippingAddressStreet2: formData.addressStreet2,
+      shippingCity: formData.city,
+      shippingState: formData.state,
+      shippingPinCode: formData.pinCode,
+      shippingPhoneNumber: formData.phoneNumber,
+      shippingFaxNumber: formData.faxNumber,
+    });
   };
 
   const gstOptions = [
@@ -787,13 +803,13 @@ const AddCustomer = () => {
               </span>
               <div className="flex-1 space-y-4">
                 <div className="flex gap-6">
-                  <div className="w-32">
+                  <div className="flex-1 max-w-[200px]">
                     <select
                       value={formData.salutation}
                       onChange={(e) =>
                         setFormData({ ...formData, salutation: e.target.value })
                       }
-                      className="w-full ml-2 border border-gray-300 rounded-md p-2 text-sm"
+                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
                     >
                       <option value="">Salutation</option>
                       <option value="Mr.">Mr.</option>
@@ -839,15 +855,22 @@ const AddCustomer = () => {
                   <span className="w-32 text-base font-medium text-gray-700 mt-2">
                     Company Name:
                   </span>
-                  <input
-                    type="text"
-                    value={formData.companyName}
-                    onChange={(e) =>
-                      setFormData({ ...formData, companyName: e.target.value })
-                    }
-                    placeholder="Enter company name"
-                    className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                  />
+                  <div className="w-96">
+                    {" "}
+                    {/* Added width container matching other fields */}
+                    <input
+                      type="text"
+                      value={formData.companyName}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          companyName: e.target.value,
+                        })
+                      }
+                      placeholder="Enter company name"
+                      className="w-full border border-gray-300 rounded-md p-2 text-sm mt-1"
+                    />
+                  </div>
                 </div>
 
                 {/* Display Name */}
@@ -855,17 +878,24 @@ const AddCustomer = () => {
                   <span className="w-32 text-base font-medium text-gray-700 mt-2">
                     Display Name:
                   </span>
-                  <select
-                    value={formData.displayName}
-                    onChange={(e) =>
-                      setFormData({ ...formData, displayName: e.target.value })
-                    }
-                    className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                  >
-                    <option value="">Select Display Name</option>
-                    <option value="company">Company Name</option>
-                    <option value="contact">Contact Name</option>
-                  </select>
+                  <div className="w-96">
+                    {" "}
+                    {/* Added matching width container */}
+                    <select
+                      value={formData.displayName}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          displayName: e.target.value,
+                        })
+                      }
+                      className="w-full border border-gray-300 rounded-md p-2 text-sm" /* Changed to w-full */
+                    >
+                      <option value="">Select Display Name</option>
+                      <option value="company">Company Name</option>
+                      <option value="contact">Contact Name</option>
+                    </select>
+                  </div>
                 </div>
 
                 {/* Email Address */}
@@ -887,24 +917,26 @@ const AddCustomer = () => {
                         <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     </div>
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => {
-                        setFormData({ ...formData, email: e.target.value });
-                        setIsEmailValid(true);
-                      }}
-                      onBlur={(e) => validateEmail(e.target.value)}
-                      placeholder="Enter email address"
-                      className={`w-full border ${
-                        !isEmailValid ? "border-red-500" : "border-gray-300"
-                      } rounded-md p-2 pl-10 text-sm`}
-                    />
-                    {!isEmailValid && (
-                      <p className="text-red-500 text-sm mt-1">
-                        Please enter a valid email address
-                      </p>
-                    )}
+                    <div className="w-96">
+                      <input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => {
+                          setFormData({ ...formData, email: e.target.value });
+                          setIsEmailValid(true);
+                        }}
+                        onBlur={(e) => validateEmail(e.target.value)}
+                        placeholder="Enter email address"
+                        className={`w-full border ${
+                          !isEmailValid ? "border-red-500" : "border-gray-300"
+                        } rounded-md p-2 pl-10 text-sm`}
+                      />
+                      {!isEmailValid && (
+                        <p className="text-red-500 text-sm mt-1">
+                          Please enter a valid email address
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -915,7 +947,7 @@ const AddCustomer = () => {
                   </span>
                   <div className="flex-1 flex gap-4">
                     {/* Work Phone Input */}
-                    <div className="relative flex-1">
+                    <div className="relative ">
                       <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                         <svg
                           className="h-5 w-5 text-gray-400"
@@ -929,18 +961,20 @@ const AddCustomer = () => {
                           <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
                       </div>
-                      <input
-                        type="tel"
-                        value={formData.workPhone}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            workPhone: e.target.value,
-                          })
-                        }
-                        placeholder="Work Phone"
-                        className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
-                      />
+                      <div className="w-44">
+                        <input
+                          type="tel"
+                          value={formData.workPhone}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              workPhone: e.target.value,
+                            })
+                          }
+                          placeholder="Work Phone"
+                          className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
+                        />
+                      </div>
                     </div>
 
                     {/* Mobile Phone Input */}
@@ -958,15 +992,17 @@ const AddCustomer = () => {
                           <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
                       </div>
-                      <input
-                        type="tel"
-                        value={formData.mobile}
-                        onChange={(e) =>
-                          setFormData({ ...formData, mobile: e.target.value })
-                        }
-                        placeholder="Mobile"
-                        className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
-                      />
+                      <div className="w-48">
+                        <input
+                          type="tel"
+                          value={formData.mobile}
+                          onChange={(e) =>
+                            setFormData({ ...formData, mobile: e.target.value })
+                          }
+                          placeholder="Mobile"
+                          className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1041,233 +1077,189 @@ const AddCustomer = () => {
                             <span className="w-32 text-base font-medium text-gray-700 mt-2">
                               GST Treatment:
                             </span>
-                            {/* <select
-                              value={formData.gstTreatment}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  gstTreatment: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select GST Treatment</option>
-                              <option value="registered_regular">
-                                Registered Business - Business that is registered under GST
-                              </option>
-                              <option value="registered_composite">
-                                Registered Business - Composition (Business that is registered under the Composition Scheme in GST)
-                              </option>
-                              <option value="unregistered">
-                                Unregistered Business - Business that is not registered under GST
-                              </option>
-                              <option value="consumer">Consumer - A consumer that is a regular customer</option>
-                              <option value="overseas">Overseas - A person with whome you do import or export of supplies outside India</option>
-                              <option value="deemed_export">
-                                Deemed Export - Supply of goods to an Export Oriented Unit or against Advanced Authorization/Export Promotion Capital Goods
-                              </option>
-                              <option value="special_economic_zone">
-                                Tax Deductors - Departments of the State/Central government, governmental agencies or local authorities
-                              </option>
-                              <option value="special_economic_zone">
-                                SEZ Developer - A person/organization who own at least 26% of the equity in creating business units in a Special Economic Zones (SEZ)
-                              </option>
-                            </select> */}
-                            <Autocomplete
-                              disablePortal
-                              options={gstOptions}
-                              sx={{ width: 600 }}
-                              value={
-                                gstOptions.find(
-                                  (option) =>
-                                    option.value === formData.gstTreatment
-                                ) || null
-                              }
-                              onChange={(event, newValue) => {
-                                setFormData({
-                                  ...formData,
-                                  gstTreatment: newValue?.value || "",
-                                });
-                              }}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  label="Select GST Treatment"
-                                />
-                              )}
-                              className="flex-1 rounded-md p-2 text-sm"
-                            />
+                            <div className="w-96">
+                              <Autocomplete
+                                disablePortal
+                                options={gstOptions}
+                                value={
+                                  gstOptions.find(
+                                    (option) =>
+                                      option.value === formData.gstTreatment
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    gstTreatment: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select GST Treatment"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                              />
+                            </div>
+                            {/* <div className="w-96 mt-1">
+                              {" "}
+                              {/* Reduced margin-top here */}
+                            {/* <Autocomplete
+                                disablePortal
+                                options={gstOptions}
+                                sx={{ width: "100%" }}
+                                value={
+                                  gstOptions.find(
+                                    (option) =>
+                                      option.value === formData.gstTreatment
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    gstTreatment: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select GST Treatment"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: {
+                                        height: "36px", // Reduced height for the dropdown
+                                        padding: "0 14px", // Adjusted padding
+                                      },
+                                    }}
+                                    InputLabelProps={{
+                                      ...params.InputLabelProps,
+                                      style: {
+                                        top: "50%", // Centers the label vertically
+                                        transform: "translateY(-50%)", // Vertically centers label
+                                        paddingLeft: "8px", // Added some gap from the left
+                                      },
+                                    }}
+                                  />
+                                )}
+                                className="flex-1 rounded-md p-2 text-sm"
+                              /> */}
+                            {/* </div> */}
                           </div>
                         </div>
 
                         {/* Place of Supply */}
-                        <div className="col-span-2">
+                        <div className="col-span-2 mt-1">
+                          {/* Reduced margin-top here */}
                           <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700">
+                            <span className="w-32 text-base font-medium text-gray-700 mt-2">
                               Place of Supply:
                             </span>
-                            {/* <select
-                              value={formData.placeOfSupply}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  placeOfSupply: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select State</option>
-                              <option value="[AN] - Andaman and Nicobar Islands">
-                                [AN] - Andaman and Nicobar Islands
-                              </option>
-                              <option value="[AP] - Andhra Pradesh">
-                                [AP] - Andhra Pradesh
-                              </option>
-                              <option value="[AR] - Arunachal Pradesh">
-                                [AR] - Arunachal Pradesh
-                              </option>
-                              <option value="[AS] - Assam">[AS] - Assam</option>
-                              <option value="[BR] - Bihar">[BR] - Bihar</option>
-                              <option value="[CH] - Chandigarh">
-                                [CH] - Chandigarh
-                              </option>
-                              <option value="[CG] - Chhattisgarh">
-                                [CG] - Chhattisgarh
-                              </option>
-                              <option value="[DH] - Dadra and Nagar Haveli and Daman and Diu">
-                                [DH] - Dadra and Nagar Haveli and Daman and Diu
-                              </option>
-                              <option value="[DL] - Delhi">[DL] - Delhi</option>
-                              <option value="[GA] - Goa">[GA] - Goa</option>
-                              <option value="[GJ] - Gujarat">
-                                [GJ] - Gujarat
-                              </option>
-                              <option value="[HR] - Haryana">
-                                [HR] - Haryana
-                              </option>
-                              <option value="[HP] - Himachal Pradesh">
-                                [HP] - Himachal Pradesh
-                              </option>
-                              <option value="[JK] - Jammu and Kashmir">
-                                [JK] - Jammu and Kashmir
-                              </option>
-                              <option value="[JH] - Jharkhand">
-                                [JH] - Jharkhand
-                              </option>
-                              <option value="[KA] - Karnataka">
-                                [KA] - Karnataka
-                              </option>
-                              <option value="[KL] - Kerala">
-                                [KL] - Kerala
-                              </option>
-                              <option value="[LA] - Ladakh">
-                                [LA] - Ladakh
-                              </option>
-                              <option value="[LD] - Lakshadweep">
-                                [LD] - Lakshadweep
-                              </option>
-                              <option value="[MP] - Madhya Pradesh">
-                                [MP] - Madhya Pradesh
-                              </option>
-                              <option value="[MH] - Maharashtra">
-                                [MH] - Maharashtra
-                              </option>
-                              <option value="[MN] - Manipur">
-                                [MN] - Manipur
-                              </option>
-                              <option value="[ML] - Meghalaya">
-                                [ML] - Meghalaya
-                              </option>
-                              <option value="[MZ] - Mizoram">
-                                [MZ] - Mizoram
-                              </option>
-                              <option value="[NL] - Nagaland">
-                                [NL] - Nagaland
-                              </option>
-                              <option value="[OD] - Odisha">
-                                [OD] - Odisha
-                              </option>
-                              <option value="[PY] - Puducherry">
-                                [PY] - Puducherry
-                              </option>
-                              <option value="[PB] - Punjab">
-                                [PB] - Punjab
-                              </option>
-                              <option value="[RJ] - Rajasthan">
-                                [RJ] - Rajasthan
-                              </option>
-                              <option value="[SK] - Sikkim">
-                                [SK] - Sikkim
-                              </option>
-                              <option value="[TN] - Tamil Nadu">
-                                [TN] - Tamil Nadu
-                              </option>
-                              <option value="[TS] - Telangana">
-                                [TS] - Telangana
-                              </option>
-                              <option value="[TR] - Tripura">
-                                [TR] - Tripura
-                              </option>
-                              <option value="[UP] - Uttar Pradesh">
-                                [UP] - Uttar Pradesh
-                              </option>
-                              <option value="[UK] - Uttarakhand">
-                                [UK] - Uttarakhand
-                              </option>
-                              <option value="[WB] - West Bengal">
-                                [WB] - West Bengal
-                              </option>
-                            </select> */}
-                            <Autocomplete
-                              disablePortal
-                              options={stateOptions}
-                              sx={{ width: 600 }}
-                              value={
-                                stateOptions.find(
-                                  (option) =>
-                                    option.value === formData.placeOfSupply
-                                ) || null
-                              }
-                              onChange={(event, newValue) => {
-                                setFormData({
-                                  ...formData,
-                                  placeOfSupply: newValue?.value || "",
-                                });
-                              }}
-                              renderInput={(params) => (
-                                <TextField {...params} label="Select State" />
-                              )}
-                              className="flex-1 rounded-md p-2 text-sm"
-                            />
+                            <div className="w-96 mt-1">
+                              {/* Reduced margin-top here */}
+                              <Autocomplete
+                                disablePortal
+                                options={stateOptions}
+                                value={
+                                  stateOptions.find(
+                                    (option) =>
+                                      option.value === formData.placeOfSupply
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    placeOfSupply: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select State"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                              />
+                            </div>
                           </div>
                         </div>
 
                         {/* PAN Number */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700">
+                            <label
+                              className="w-32 text-base font-medium text-gray-700"
+                              htmlFor="panNumber"
+                            >
                               PAN Number:
-                            </span>
-                            <input
-                              type="text"
-                              value={formData.panNumber}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  panNumber: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            />
+                            </label>
+                            <div className="w-96">
+                              {" "}
+                              {/* Removed ml-2 to match exact dropdown width */}
+                              <input
+                                id="panNumber"
+                                type="text"
+                                value={formData.panNumber}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    panNumber: e.target.value,
+                                  })
+                                }
+                                placeholder="Enter PAN Number"
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 mt-1"
+                              />
+                            </div>
                           </div>
                         </div>
+
                         {/*Tax Preference*/}
-                        <div className="">
+                        <div className="mt-4">
                           <div className="flex items-center gap-4 mb-4">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Tax Prefernce:
                             </span>
-                            <div className="flex items-center space-x-4">
+                            <div className="flex items-center space-x-4 ml-2">
                               <label className="flex items-center space-x-2">
                                 <input
                                   type="radio"
@@ -1313,233 +1305,164 @@ const AddCustomer = () => {
                             <span className="w-32 text-base font-medium text-gray-700">
                               Currency:
                             </span>
-                            {/* <select
-                              value={formData.currency}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  currency: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select Currency</option>
-                              <option value="INR - Indian Rupee">
-                                INR - Indian Rupee
-                              </option>
-                              <option value="USD - United States Dollar">
-                                USD - United States Dollar
-                              </option>
-                              <option value="EUR - Euro">EUR - Euro</option>
-                              <option value="JPY - Japanese Yen">
-                                JPY - Japanese Yen
-                              </option>
-                              <option value="GBP - British Pound Sterling">
-                                GBP - British Pound Sterling
-                              </option>
-                              <option value="AUD - Australian Dollar">
-                                AUD - Australian Dollar
-                              </option>
-                              <option value="CAD - Canadian Dollar">
-                                CAD - Canadian Dollar
-                              </option>
-                              <option value="CHF - Swiss Franc">
-                                CHF - Swiss Franc
-                              </option>
-                              <option value="CNY - Chinese Yuan">
-                                CNY - Chinese Yuan
-                              </option>
-                              <option value="HKD - Hong Kong Dollar">
-                                HKD - Hong Kong Dollar
-                              </option>
-                              <option value="NZD - New Zealand Dollar">
-                                NZD - New Zealand Dollar
-                              </option>
-                              <option value="SGD - Singapore Dollar">
-                                SGD - Singapore Dollar
-                              </option>
-                              <option value="KRW - South Korean Won">
-                                KRW - South Korean Won
-                              </option>
-                              <option value="THB - Thai Baht">
-                                THB - Thai Baht
-                              </option>
-                              <option value="ZAR - South African Rand">
-                                ZAR - South African Rand
-                              </option>
-                              <option value="BRL - Brazilian Real">
-                                BRL - Brazilian Real
-                              </option>
-                              <option value="MXN - Mexican Peso">
-                                MXN - Mexican Peso
-                              </option>
-                              <option value="MYR - Malaysian Ringgit">
-                                MYR - Malaysian Ringgit
-                              </option>
-                              <option value="IDR - Indonesian Rupiah">
-                                IDR - Indonesian Rupiah
-                              </option>
-                              <option value="SAR - Saudi Riyal">
-                                SAR - Saudi Riyal
-                              </option>
-                            </select> */}
-                            <Autocomplete
-                              disablePortal
-                              options={currencyOptions}
-                              sx={{ width: 600 }}
-                              value={
-                                currencyOptions.find(
-                                  (option) => option.value === formData.currency
-                                ) || null
-                              }
-                              onChange={(event, newValue) => {
-                                setFormData({
-                                  ...formData,
-                                  currency: newValue?.value || "",
-                                });
-                              }}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  label="Select Currency"
-                                />
-                              )}
-                              className="flex-1 rounded-md p-2 text-sm"
-                            />
+                            <div className="w-96">
+                              <Autocomplete
+                                disablePortal
+                                options={currencyOptions}
+                                value={
+                                  currencyOptions.find(
+                                    (option) =>
+                                      option.value === formData.currency
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    currency: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Currency"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                              />
+                            </div>
                           </div>
                         </div>
+
                         {/* Payment Terms */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Payment Terms:
                             </span>
-                            {/* <select
-                              value={formData.paymentTerms}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  paymentTerms: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select Payment Terms</option>
-                              <option value="Advance Paid">Advance Paid</option>
-                              <option value="CC Auth Provided">
-                                CC Auth Provided
-                              </option>
-                              <option value="Due on Receipt">
-                                Due on Receipt
-                              </option>
-                              <option value="Bill To Company Extras Direct">
-                                Bill To Company Extras Direct
-                              </option>
-                              <option value="Entire Bill To Company">
-                                Entire Bill To Company
-                              </option>
-                              <option value="30 Days">30 Days</option>
-                              <option value="45 Days">45 Days</option>
-                              <option value="Direct From Guest">
-                                Direct From Guest
-                              </option>
-                              <option value="Due End Of The Month">
-                                Due End Of The Month
-                              </option>
-                              <option value="Due End Of Next Month">
-                                Due End Of Next Month
-                              </option>
-                            </select> */}
-                            <Autocomplete
-                              disablePortal
-                              options={paymentTermsOptions}
-                              sx={{ width: 600 }}
-                              value={
-                                paymentTermsOptions.find(
-                                  (option) =>
-                                    option.value === formData.paymentTerms
-                                ) || null
-                              }
-                              onChange={(event, newValue) => {
-                                setFormData({
-                                  ...formData,
-                                  paymentTerms: newValue?.value || "",
-                                });
-                              }}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  label="Select Payment Terms"
-                                />
-                              )}
-                              className="flex-1 rounded-md p-2 text-sm"
-                            />
+                            <div className="w-96">
+                              <Autocomplete
+                                disablePortal
+                                options={paymentTermsOptions}
+                                value={
+                                  paymentTermsOptions.find(
+                                    (option) =>
+                                      option.value === formData.paymentTerms
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    paymentTerms: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                              />
+                            </div>
                           </div>
                         </div>
+
                         {/* Price List */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Price List:
                             </span>
-                            {/* <select
-                              value={formData.priceList}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  priceList: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select Price List</option>
-                              <option value="HEALTHCARE VEDARK [10% Markdown]">
-                                HEALTHCARE VEDARK [10% Markdown]
-                              </option>
-                              <option value="Basic SEO Package">
-                                Basic SEO Package
-                              </option>
-                              <option value="Social Media Management">
-                                Social Media Management
-                              </option>
-                              <option value="Pay-Per-Click (PPC) Campaign Setup">
-                                Pay-Per-Click (PPC) Campaign Setup
-                              </option>
-                              <option value="Content Writing">
-                                Content Writing
-                              </option>
-                              <option value="Website Audit">
-                                Website Audit
-                              </option>
-                            </select> */}
-                            <Autocomplete
-                              disablePortal
-                              options={priceListOptions}
-                              sx={{ width: 600 }}
-                              value={
-                                priceListOptions.find(
-                                  (option) =>
-                                    option.value === formData.priceList
-                                ) || null
-                              }
-                              onChange={(event, newValue) => {
-                                setFormData({
-                                  ...formData,
-                                  priceList: newValue?.value || "",
-                                });
-                              }}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  label="Select Payment Terms"
-                                />
-                              )}
-                              className="flex-1 rounded-md p-2 text-sm"
-                            />
+                            <div className="w-96">
+                              <Autocomplete
+                                disablePortal
+                                options={priceListOptions}
+                                value={
+                                  priceListOptions.find(
+                                    (option) =>
+                                      option.value === formData.priceList
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    priceList: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Price List"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                              />
+                            </div>
                           </div>
                         </div>
+
                         {/* Enable Portal */}
-                        <div className="flex items-center gap-6 mt-4">
+                        <div className="flex items-center gap-6 mt-2 mb-4">
                           <span className="w-32 text-base font-medium text-gray-700 mt-2">
                             Enable Portal:
                           </span>
@@ -1568,163 +1491,96 @@ const AddCustomer = () => {
                             <span className="w-32 text-base font-medium text-gray-700">
                               Portal Language:
                             </span>
-                            {/* <select
-                              value={formData.portalLanguage}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  portalLanguage: e.target.value,
-                                })
-                              }
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select Language</option>
-                              <option value="EN - English">
-                                EN - English - Hello
-                              </option>
-                              <option value="ES - Spanish">
-                                ES - Spanish - Hola
-                              </option>
-                              <option value="ZH - Chinese (Mandarin)">
-                                ZH - Chinese (Mandarin) - 你好 (Nǐ hǎo)
-                              </option>
-                              <option value="HI - Hindi">
-                                HI - Hindi - नमस्ते (Namaste)
-                              </option>
-                              <option value="AR - Arabic">
-                                AR - Arabic - مرحبا (Marhaban)
-                              </option>
-                              <option value="BN - Bengali">
-                                BN - Bengali - হ্যালো (Hyālō)
-                              </option>
-                              <option value="PT - Portuguese">
-                                PT - Portuguese - Olá
-                              </option>
-                              <option value="RU - Russian">
-                                RU - Russian - Привет (Privet)
-                              </option>
-                              <option value="JA - Japanese">
-                                JA - Japanese - こんにちは (Konnichiwa)
-                              </option>
-                              <option value="DE - German">
-                                DE - German - Hallo
-                              </option>
-                              <option value="KO - Korean">
-                                KO - Korean - 안녕하세요 (Annyeonghaseyo)
-                              </option>
-                              <option value="FR - French">
-                                FR - French - Bonjour
-                              </option>
-                              <option value="IT - Italian">
-                                IT - Italian - Ciao
-                              </option>
-                              <option value="TR - Turkish">
-                                TR - Turkish - Merhaba
-                              </option>
-                              <option value="VI - Vietnamese">
-                                VI - Vietnamese - Xin chào
-                              </option>
-                              <option value="PL - Polish">
-                                PL - Polish - Witaj
-                              </option>
-                              <option value="PA - Punjabi">
-                                PA - Punjabi - ਸਤ ਸ੍ਰੀ ਅਕਾਲ (Sat Sri Akal)
-                              </option>
-                              <option value="UR - Urdu">
-                                UR - Urdu - سلام (Salaam)
-                              </option>
-                              <option value="FA - Persian (Farsi)">
-                                FA - Persian (Farsi) - سلام (Salaam)
-                              </option>
-                              <option value="HE - Hebrew">
-                                HE - Hebrew - שלום (Shalom)
-                              </option>
-                              <option value="MS - Malay">
-                                MS - Malay - Halo
-                              </option>
-                              <option value="TH - Thai">
-                                TH - Thai - สวัสดี (Sawasdee)
-                              </option>
-                              <option value="SW - Swahili">
-                                SW - Swahili - Hujambo
-                              </option>
-                              <option value="TA - Tamil">
-                                TA - Tamil - வணக்கம் (Vanakkam)
-                              </option>
-                              <option value="TE - Telugu">
-                                TE - Telugu - హలో (Halo)
-                              </option>
-                              <option value="EL - Greek">
-                                EL - Greek - Γειά σας (Yia sas)
-                              </option>
-                              <option value="ML - Malayalam">
-                                ML - Malayalam - ഹലോ (Halo)
-                              </option>
-                              <option value="CS - Czech">
-                                CS - Czech - Ahoj
-                              </option>
-                              <option value="SK - Slovak">
-                                SK - Slovak - Ahoj
-                              </option>
-                              <option value="HU - Hungarian">
-                                HU - Hungarian - Helló
-                              </option>
-                              <option value="SR - Serbian">
-                                SR - Serbian - Zdravo
-                              </option>
-                              <option value="RO - Romanian">
-                                RO - Romanian - Bună ziua
-                              </option>
-                              <option value="DA - Danish">
-                                DA - Danish - Hej
-                              </option>
-                            </select> */}
-                            <Autocomplete
-                              disablePortal
-                              options={languageOptions}
-                              sx={{ width: 600 }}
-                              value={
-                                languageOptions.find(
-                                  (option) =>
-                                    option.value === formData.portalLanguage
-                                ) || null
-                              }
-                              onChange={(event, newValue) => {
-                                setFormData({
-                                  ...formData,
-                                  portalLanguage: newValue?.value || "",
-                                });
-                              }}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  label="Select Payment Terms"
-                                />
-                              )}
-                              className="flex-1 rounded-md p-2 text-sm"
-                            />
+                            <div className="w-96">
+                              <Autocomplete
+                                disablePortal
+                                options={languageOptions}
+                                value={
+                                  languageOptions.find(
+                                    (option) =>
+                                      option.value === formData.portalLanguage
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    portalLanguage: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Language"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                              />
+                            </div>
                           </div>
                         </div>
+
                         {/* Documents Upload */}
-                        <div className="col-span-2">
-                          {/* <div className="flex items-center gap-6">
+                        <div className="col-span-2 mt-4">
+                          <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Documents:
                             </span>
                             <div className="flex-1">
                               <input
                                 type="file"
+                                accept=".pdf,.jpg,.jpeg"
                                 multiple
-                                ref={fileInputRef}
-                                onChange={handleFileSelect}
+                                onChange={(e) => {
+                                  const files = e.target.files;
+                                  if (files) {
+                                    // Filter for only PDF and JPEG files
+                                    const validFiles = Array.from(files).filter(
+                                      (file) =>
+                                        file.type === "application/pdf" ||
+                                        file.type === "image/jpeg"
+                                    );
+
+                                    if (validFiles.length !== files.length) {
+                                      alert(
+                                        "Only PDF and JPEG files are allowed"
+                                      );
+                                    }
+
+                                    // Update selectedFiles with only valid files
+                                    setSelectedFiles((prev) => [
+                                      ...prev,
+                                      ...validFiles,
+                                    ]);
+                                    handleImageUpload(e, setUploadFiles); // Your existing upload logic
+                                  }
+                                }}
                                 className="hidden"
-                                accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
+                                ref={fileInputRef}
                               />
                               <button
                                 type="button"
                                 onClick={() => fileInputRef.current?.click()}
-                                disabled={uploading}
-                                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-8"
+                                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
                               >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -1738,186 +1594,74 @@ const AddCustomer = () => {
                                     clipRule="evenodd"
                                   />
                                 </svg>
-                                <span>
-                                  {uploading
-                                    ? "Uploading..."
-                                    : "Upload Document"}
-                                </span>
+                                <span>Upload Document</span>
                               </button>
                               <p className="text-sm text-gray-500 mt-1">
-                                You can upload a maximum of 10 files, 10MB each.
-                              </p> */}
-
-                          {/* Display selected files */}
-                          {/* {selectedFiles.length > 0 && (
-                                <div className="mt-4">
-                                  <h4 className="text-sm font-medium text-gray-700 mb-2">
-                                    Selected Files:
-                                  </h4>
-                                  <div className="space-y-2">
-                                    {selectedFiles.map((file, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex items-center justify-between bg-gray-50 p-2 rounded"
-                                      >
-                                        <span className="text-sm text-gray-600">
-                                          {file.name}
-                                        </span>
-                                        <button
-                                          type="button"
-                                          onClick={() =>
-                                            handleRemoveFile(index)
-                                          }
-                                          className="text-red-500 hover:text-red-700"
-                                        >
-                                          <svg
-                                            className="w-4 h-4"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                          >
-                                            <path
-                                              fillRule="evenodd"
-                                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                              clipRule="evenodd"
-                                            />
-                                          </svg>
-                                        </button>
-                                      </div>
-                                    ))}
+                                You can upload multiple PDF and JPEG files
+                              </p>
+                            </div>
+                          </div>
+                          {selectedFiles.length > 0 && (
+                            <div className="mt-4">
+                              <h4 className="text-sm font-medium text-gray-700 mb-2">
+                                Selected Files:
+                              </h4>
+                              <div className="space-y-2">
+                                {selectedFiles.map((file, index) => (
+                                  <div
+                                    key={index}
+                                    className="flex items-center justify-between bg-gray-50 p-2 rounded"
+                                  >
+                                    <span className="text-sm text-gray-600">
+                                      {file.name}
+                                    </span>
                                     <button
                                       type="button"
-                                      onClick={handleFileUpload}
-                                      disabled={uploading}
-                                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300"
+                                      onClick={() => handleRemoveFile(index)}
+                                      className="text-red-500 hover:text-red-700"
                                     >
-                                      {uploading
-                                        ? "Uploading..."
-                                        : "Upload Selected Files"}
+                                      <svg
+                                        className="w-4 h-4"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                      >
+                                        <path
+                                          fillRule="evenodd"
+                                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                          clipRule="evenodd"
+                                        />
+                                      </svg>
                                     </button>
                                   </div>
-                                </div>
-                              )}
-                            </div>
-                          </div> */}
-                        </div>
-                        <div>
-                          <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="w-32 text-base font-medium text-gray-700">
-                                Documents:
-                              </span>
-                              <div className="flex-1">
-                                <input
-                                  type="file"
-                                  accept="image/csv/*"
-                                  multiple
-                                  onChange={(e) => {
-                                    const files = e.target.files;
-                                    if (files) {
-                                      // Update selectedFiles with the new File objects
-                                      setSelectedFiles((prev) => [
-                                        ...prev,
-                                        ...Array.from(files),
-                                      ]);
-                                      handleImageUpload(e, setUploadFiles); // Your existing upload logic
-                                    }
-                                  }}
-                                  className="hidden"
-                                  ref={fileInputRef}
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => fileInputRef.current?.click()}
-                                  className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-8"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5 text-gray-400"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                  <span>Upload Document</span>
-                                </button>
-                                <p className="text-sm text-gray-500 mt-1">
-                                  You can upload multiple image files
-                                </p>
-                              </div>
-                            </div>
-                            {selectedFiles.length > 0 && (
-                              <div className="mt-4">
-                                <h4 className="text-sm font-medium text-gray-700 mb-2">
-                                  Selected Files:
-                                </h4>
-                                <div className="space-y-2">
-                                  {selectedFiles.map((file, index) => (
-                                    <div
-                                      key={index}
-                                      className="flex items-center justify-between bg-gray-50 p-2 rounded"
-                                    >
-                                      <span className="text-sm text-gray-600">
-                                        {file.name}
-                                      </span>
-                                      <button
-                                        type="button"
-                                        onClick={() => handleRemoveFile(index)}
-                                        className="text-red-500 hover:text-red-700"
-                                      >
-                                        <svg
-                                          className="w-4 h-4"
-                                          fill="currentColor"
-                                          viewBox="0 0 20 20"
-                                        >
-                                          <path
-                                            fillRule="evenodd"
-                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                            clipRule="evenodd"
-                                          />
-                                        </svg>
-                                      </button>
-                                    </div>
-                                  ))}
-                                  {/* <button
-                                    type="button"
-                                    onClick={handleFileUpload}
-                                    disabled={uploading}
-                                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300"
-                                  >
-                                    {uploading
-                                      ? "Uploading..."
-                                      : "Upload Selected Files"}
-                                  </button> */}
-                                </div>
-                              </div>
-                            )}
-                            <div style={{ display: "flex", flexWrap: "wrap" }} className="gap-4">
-                              {formData &&
-                                formData.documentArray.length > 0 &&
-                                formData.documentArray.map((image, index) => (
-                                  <img
-                                    key={index}
-                                    style={{
-                                      height: 100,
-                                      width: 100,
-                                      objectFit: "cover",
-                                      border: "1px solid #ddd",
-                                      borderRadius: "5px",
-                                      marginTop: "10px",
-                                    }}
-                                    src={
-                                      image?.includes("base64")
-                                        ? image
-                                        : generateFilePath(image)
-                                    }
-                                    alt={`Image Preview ${index + 1}`}
-                                  />
                                 ))}
+                              </div>
                             </div>
+                          )}
+                          <div
+                            style={{ display: "flex", flexWrap: "wrap" }}
+                            className="gap-4 mt-4"
+                          >
+                            {formData &&
+                              formData.documentArray.length > 0 &&
+                              formData.documentArray.map((image, index) => (
+                                <img
+                                  key={index}
+                                  style={{
+                                    height: 100,
+                                    width: 100,
+                                    objectFit: "cover",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "5px",
+                                    marginTop: "10px",
+                                  }}
+                                  src={
+                                    image?.includes("base64")
+                                      ? image
+                                      : generateFilePath(image)
+                                  }
+                                  alt={`Image Preview ${index + 1}`}
+                                />
+                              ))}
                           </div>
                         </div>
                       </div>
@@ -1931,7 +1675,7 @@ const AddCustomer = () => {
                             Billing Address
                           </h2>
                           {/* Attention */}
-                          <div className="flex items-center gap-6">
+                          {/* <div className="flex items-center gap-6">
                             <span className=" min-w-32 text-base font-medium text-gray-700">
                               Attention:
                             </span>
@@ -1946,7 +1690,7 @@ const AddCustomer = () => {
                               }
                               className="w-full border border-gray-300 rounded-md p-2 text-sm"
                             />
-                          </div>
+                          </div> */}
                           {/* Country / Region */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
@@ -2097,6 +1841,27 @@ const AddCustomer = () => {
                                   <TextField
                                     {...params}
                                     label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
                                   />
                                 )}
                                 className="flex-1 rounded-md p-2 text-sm"
@@ -2287,6 +2052,27 @@ const AddCustomer = () => {
                                   <TextField
                                     {...params}
                                     label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
                                   />
                                 )}
                                 className="flex-1 rounded-md p-2 text-sm"
@@ -2354,11 +2140,22 @@ const AddCustomer = () => {
 
                         {/* Shipping Address */}
                         <div className="col-span-1">
-                          <h2 className="text-2xl font-bold mb-6">
-                            Shipping Address
-                          </h2>
+                          <div className="flex items-center gap-4 mb-6">
+                            <h2 className="text-2xl font-bold">
+                              Shipping Address
+                            </h2>
+                            <div
+                              onClick={copyBillingAddress}
+                              className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md"
+                            >
+                              <span className="text-blue-600">
+                                Same as Billing Address
+                              </span>
+                              <ChevronDown className="h-4 w-4 text-blue-600" />
+                            </div>
+                          </div>
                           {/* Shipping Attention */}
-                          <div className="flex items-center gap-6">
+                          {/* <div className="flex items-center gap-6">
                             <span className="min-w-32 text-base font-medium text-gray-700">
                               Attention:
                             </span>
@@ -2373,7 +2170,7 @@ const AddCustomer = () => {
                               }
                               className="w-full border border-gray-300 rounded-md p-2 text-sm"
                             />
-                          </div>
+                          </div> */}
                           {/* Shipping Country / Region */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
@@ -2511,7 +2308,8 @@ const AddCustomer = () => {
                                 value={
                                   countryOptions.find(
                                     (option) =>
-                                      option.value === formData.countryRegion
+                                      option.value ===
+                                      formData.shippingCountryRegion
                                   ) || null
                                 }
                                 onChange={(event, newValue) => {
@@ -2524,6 +2322,27 @@ const AddCustomer = () => {
                                   <TextField
                                     {...params}
                                     label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
                                   />
                                 )}
                                 className="flex-1 rounded-md p-2 text-sm"
@@ -2701,7 +2520,8 @@ const AddCustomer = () => {
                                 sx={{ width: 600 }}
                                 value={
                                   stateOptions.find(
-                                    (option) => option.value === formData.state
+                                    (option) =>
+                                      option.value === formData.shippingState
                                   ) || null
                                 }
                                 onChange={(event, newValue) => {
@@ -2714,6 +2534,27 @@ const AddCustomer = () => {
                                   <TextField
                                     {...params}
                                     label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
                                   />
                                 )}
                                 className="flex-1 rounded-md p-2 text-sm"
