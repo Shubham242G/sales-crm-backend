@@ -10,7 +10,7 @@ const AddNewLead = () => {
   const [formData, setFormData] = useState({
 
     //new fields 
-
+    salutation: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -41,6 +41,13 @@ const AddNewLead = () => {
 
     }
   }, [leadDataById]);
+
+  const salutationOptions = [
+    { value: "Mr", label: "Mr" },
+    { value: "Ms", label: "Ms" },
+    { value: "Mrs", label: "Mrs" },
+  ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -67,7 +74,7 @@ const AddNewLead = () => {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/leads");
-      
+
 
         }
       } else {
@@ -83,7 +90,7 @@ const AddNewLead = () => {
     } catch (error) {
       toastError(error);
     }
-    console.log("FormDataaaa:-->" ,formData)
+    console.log("FormDataaaa:-->", formData)
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -108,6 +115,15 @@ const AddNewLead = () => {
         <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+            {/* Salutation */}
+            <select onChange={(val) => handleSelectChange("salutation", val.target.value)} value={formData.salutation} className="border border-gray-300 rounded-md mt-6 px-4 py-2 w-20 mt-1">
+              {salutationOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
 
             {/* First Name */}
             <div>

@@ -5,6 +5,7 @@ import { PaginationState } from "@tanstack/react-table";
 import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination } from "./urls.service";
 import axios from "../libs/hooks/axios";
 import { CHARGE_TYPE } from "@/common/constant.common";
+import { ICustomer } from "./customer.service";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 
 
@@ -12,7 +13,7 @@ const prefix = "/lead";
 export interface ILead {
     // Basic Details
 
-
+    salutation: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -122,7 +123,7 @@ export const useleadApiHook = () => {
         return axios.get<GeneralApiResponsePagination<ILead>>(`${BASE_URL}${prefix}/?${query}`);
     };
 
-    const convertEnquiry = async (id: any) => {
+    const convertToContact = async (id: any) => {
         return axios.post<GeneralApiResponse<ILead>>(`${BASE_URL}${prefix}/convert/${id}`);
     }
 
@@ -132,6 +133,7 @@ export const useleadApiHook = () => {
         deleteLeadById,
         getContactById,
         addLead,
+        convertToContact
 
     };
 };
@@ -199,6 +201,12 @@ export const useUpdateLeadById = () => {
     });
 };
 
+
+export const convertToContact = async (id: any) => {
+    return axios.post<GeneralApiResponse<ILead>>(
+      `${BASE_URL}${prefix}/convert/${id}`
+    );
+  };
 
 
 

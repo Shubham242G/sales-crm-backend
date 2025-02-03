@@ -7,7 +7,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 
 
-import { useRpf, usedeleteRpfById, useAddRpf, useUpdateRpfById } from "@/services/rpf.service";
+import { useRfp, usedeleteRfpById, useAddRfp, useUpdateRfpById } from "@/services/rfp.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 
 function CustomerLedger() {
@@ -32,9 +32,26 @@ function CustomerLedger() {
     pageSize
   }), [pageIndex, pageSize, query]);
 
-  const { data: RpfData } = useRpf(searchObj);
-  console.log(RpfData, "check RpfData")
-  const { mutateAsync: deleteRpf } = usedeleteRpfById();
+  const { data: RfpData } = useRfp(searchObj);
+  console.log(RfpData, "check RfpData")
+  const { mutateAsync: deleteRfp } = usedeleteRfpById();
+  const {mutateAsync: updateRfp} = useUpdateRfpById();
+
+  const handleUpdate = async (id: string, data: any) => {
+    try {
+            const { data: res } = await updateRfp({
+                id: id,
+                obj: data // Add the required object data here
+            });
+            if (res) {
+                toastSuccess(res.message);
+                // Optionally refresh the data
+            }
+        
+    } catch (error) {
+        toastError(error);
+    }
+  };
 
 
 
@@ -90,7 +107,7 @@ function CustomerLedger() {
   const handleDelete = async (id: string) => {
     try {
       if (window.confirm("Are you sure you want to delete this enquiry?")) {
-        const { data: res } = await deleteRpf(id);
+        const { data: res } = await deleteRfp(id);
         if (res) {
           toastSuccess(res.message);
           // Optionally refresh the data
@@ -101,30 +118,31 @@ function CustomerLedger() {
     }
   };
 
+
   const columns = [
     {
-      name: "RPFs Id",
+      name: "Service Type",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.rpfId}</h6>
+          <h6>{row.serviceType}</h6>
+        </div>
+      ),
+      width: "35%",
+    },
+    {
+      name: "Event Date",
+      selector: (row: any) => (
+        <div className="flex gap-1 flex-col">
+          <h6>{row.eventDate}</h6>
         </div>
       ),
       width: "10%",
     },
     {
-      name: "Vendor Name",
+      name: "Deadline for proposal",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.name}</h6>
-        </div>
-      ),
-      width: "10%",
-    },
-    {
-      name: "Submission Date",
-      selector: (row: any) => (
-        <div className="flex gap-1 flex-col">
-          <h6>{row.submissionDate}</h6>
+          <h6>{row.deadlineOfProposal}</h6>
         </div>
       ),
       width: "15%",
@@ -167,101 +185,28 @@ function CustomerLedger() {
     {
       name: "Action",
       width: "10%",
-      selector: () => (
+      selector: (row:any) => (
         <div className="flex items-center gap-3">
           <Link
-            to="/view-rfps"
+            to={`/add-rfps/${row._id}`}
             className="p-[6px] text-black-400 text-lg flex items-center"
+            onClick={() => handleUpdate(row._id, row.data)}
           >
             <FaEye />
           </Link>
           {/* </button> */}
           <Link
-            to="/update-ledger/id=1234"
+            to="/rfps"
             className=" p-[6px] text-Black-400 text-lg"
           >
-            <RiDeleteBin6Line />
+            <RiDeleteBin6Line onClick={()=>handleDelete(row._id)}/>
           </Link>
         </div>
       ),
     },
   ];
 
-  // Sample data
-  const data = [
-    {
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Pending",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Reviewed",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Rejected",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Pending",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Rejected",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Reviewed",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-  ];
+  
 
   return (
     <>
@@ -313,13 +258,13 @@ function CustomerLedger() {
           </div>
           {/* React Table */}
           <ReactTable
-            data={RpfData.data}
+            data={RfpData.data}
             columns={columns}
             loading={false}
 
 
             // loading={loading}
-            totalRows={RpfData?.total}
+            totalRows={RfpData?.total}
           // onChangePage={handlePageChange}
           // onChangeRowsPerPage={handleRowsPerPageChange}
           // pagination

@@ -1,38 +1,36 @@
 import { toastError, toastSuccess } from "@/utils/toast";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAddRpf, useUpdateRpfById, useRpfById } from "@/services/rpf.service";
+import { useAddRfp, useUpdateRfpById, useRfpById } from "@/services/rfp.service";
 
 const AddRfpsForm = () => {
 
   const [formData, setFormData] = useState({
 
     //new fields 
-    rpfId: '',
-    serviceType: '',
+    rfpId: '',
+    serviceType: [] as string[],
     eventDate: '',
     eventDetails: '',
     deadlineOfProposal: '',
-    vendorList: '',
+    vendorList: [] as string[],
     additionalInstructions: '',
   })
+
+  const serviceTypeOptions = ["Hotel", "Banquet", "Event", "Transport"];
+
+
 
 
   const { id } = useParams();
 
   const navigate = useNavigate();
-  const { mutateAsync: addRpf } = useAddRpf();
-  const { mutateAsync: updateRpf } = useUpdateRpfById();
-  const { data: rpfDataById, isLoading } = useRpfById(id || "");
+  const { mutateAsync: addRfp } = useAddRfp();
+  const { mutateAsync: updateRfp } = useUpdateRfpById();
+  const { data: rfpDataById, isLoading } = useRfpById(id || "");
 
 
-  useEffect(() => {
-    // Prefill form when editing
-    if (rpfDataById) {
-      console.log(rpfDataById, "getById/");
-      setFormData(rpfDataById?.data || "");
-    }
-  }, [rpfDataById]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -42,24 +40,45 @@ const AddRfpsForm = () => {
 
       if (id) {
 
-        const { data: res } = await updateRpf({ id, obj });
+        const { data: res } = await updateRfp({ id, obj });
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/rfps")
+          
 
         }
       } else {
 
-        const { data: res } = await addRpf(obj);
+        const { data: res } = await addRfp(obj);
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/rfps")
 
         }
+
+        console.log(obj, "<<<<<<<check obj");
       }
     } catch (error) {
       toastError(error);
     }
+  };
+
+
+
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValues = Array.from(event.target.selectedOptions, (option) => option.value);
+    setFormData((prev) => ({
+      ...prev,
+      serviceType: Array.from(new Set([...prev.serviceType, ...selectedValues])), // Prevent duplicates
+    }));
+  };
+
+  const removeOption = (optionToRemove: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      serviceType: prev.serviceType.filter((option) => option !== optionToRemove),
+    }));
   };
 
 
@@ -71,12 +90,12 @@ const AddRfpsForm = () => {
     }));
   };
 
-  const handleSelectChange = (name: string, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  // const handleSelectChange = (name: string, value: any) => {
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     [name]: value
+  //   }));
+  // };
 
 
   return (
@@ -87,15 +106,29 @@ const AddRfpsForm = () => {
           {/* Service Type and Event Date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Service Type
-              </label>
-              <select className="input mb-6" name={"serviceType"} value={formData.serviceType} onChange={(e) => handleSelectChange("serviceType", e.target.value)}>
-                <option value="">Service Type</option>
-                <option value="Hotel">Hotel</option>
-                <option value="Banquet">Banquet</option>
-                <option value="Event">Event</option>
-                <option value="Transport">Transport</option>
+              <label className="block text-gray-700 font-medium">Service Type</label>
+
+              {/* Selected Options as Tags */}
+              <div className="flex flex-wrap gap-2 mt-2">
+                {formData.serviceType.map((option) => (
+                  <span key={option} className="bg-gray-200 px-2 py-1 rounded-md text-sm flex items-center">
+                    {option}
+                    <button className="ml-2 text-red-500 hover:text-red-700" onClick={() => removeOption(option)}>
+                      ✖
+                    </button>
+                  </span>
+                ))}
+              </div>
+
+              {/* Dropdown */}
+              <select multiple onChange={handleSelectChange} className="w-full mt-2 border px-2 py-2 rounded-md">
+                {serviceTypeOptions
+                  .filter((option) => !formData.serviceType.includes(option)) // Hide already selected options
+                  .map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
               </select>
               {/* <input
                 placeholder="Contact Person"
@@ -124,6 +157,19 @@ const AddRfpsForm = () => {
                 className="w-full border border-gray-300 rounded-md p-2"
               />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              RFP ID
+            </label>
+            <input
+              name={"rfpId"}
+              value={formData.rfpId}
+              onChange={handleInputChange}
+              type="text"
+              className="w-full border border-gray-300 rounded-md p-2"
+            />
           </div>
 
           {/* Event Details and Deadline */}

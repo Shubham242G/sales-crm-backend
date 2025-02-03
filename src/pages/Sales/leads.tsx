@@ -6,7 +6,7 @@ import { useState, useMemo } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
-import { useLeadById, useAddLead, useUpdateLeadById, usedeleteLeadById, useLead } from "@/services/lead.service";
+import { useLeadById, useAddLead, useUpdateLeadById, usedeleteLeadById, useLead, convertToContact } from "@/services/lead.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 
 function Leads() {
@@ -35,9 +35,26 @@ function Leads() {
   const { data: LeadData } = useLead(searchObj);
   console.log(LeadData, "check leadData")
   const { mutateAsync: deleteLead } = usedeleteLeadById();
+  // const { mutateAsync: convert } = convertToContact();
 
 
 
+  const handleConvertEnquery = async (id: any) => {
+
+    try {
+        const { data: res } = await convertToContact(id)
+        if (res) {
+            toastSuccess(res.message)
+
+        }
+
+    }
+    catch (error) {
+        toastError(error)
+    }
+
+
+}
 
 
 
@@ -106,6 +123,44 @@ function Leads() {
       selector: (row: any) => row.email,
       width: "30%",
     },
+    {
+      name :"convertor", 
+      width:"10%",
+      selector: (row: any) => (
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => handleConvertEnquery(row._id)}
+            className=" text-black-500 text-lg p-[6px]"
+          >
+         convert
+          </button>
+       
+        </div>
+      ),
+    },
+    {
+      name:"action",
+      width:"10%",
+      selector: (row: any) => (
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate(`/lead/${row._id}`)}
+            className=" text-black-500 text-lg p-[6px]"
+          >
+            <FaEye />
+          </button>
+          <button
+            type="button"
+            onClick={() => handleDelete(row._id)}
+            className=" p-[6px] text-black-400 text-lg"
+          >
+            <RiDeleteBin6Line />
+          </button>
+        </div>
+      ),
+    }
     // {
     //   name: "Action",
     //   width: "10%",
@@ -129,50 +184,7 @@ function Leads() {
     // },
   ];
 
-  // Sample data
-  const data = [
-    {
-      name: "Ajay Kumar",
-      ownerName: "Vandana Sharma",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
-    },
-    {
-      name: "Ajay Kumar",
-      ownerName: "Vandana Sharma",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
-    },
-    {
-      name: "Ajay Kumar",
-      ownerName: "Vandana Sharma",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
-    },
-    {
-      name: "Ajay Kumar",
-      ownerName: "Vandana Sharma",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
-    },
-    {
-      name: "Ajay Kumar",
-      ownerName: "Vandana Sharma",
-      contactno: "9968237063",
-      email: "test@test.com",
-      company: "Google",
-      //   service: [{ name: "hotel" }, { name: "banquet" },{ name: "Event" }],
-    },
-
-  ];
+  
 
 
   return (

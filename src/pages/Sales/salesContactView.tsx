@@ -119,19 +119,19 @@ function SalesContactView() {
 
     const columns = [
         {
-            name: "first Name",
+            name: "Name",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
-                    <h6>{row.salutation}.{row.firstName}</h6>
+                    <h6>{row.firstName+ " " +row.lastName}</h6>
                 </div>
             ),
             width: "20%",
         },
         {
-            name: "Last Name",
+            name: "Company",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
-                    <h6>{row.lastName}</h6>
+                    <h6>{row.company}</h6>
                 </div>
             ),
             width: "20%",

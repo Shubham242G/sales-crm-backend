@@ -8,16 +8,16 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 
 
-const prefix = "/rpf";
+const prefix = "/rfp";
 export interface IRPF {
     // Basic Details
     _id: string; // Unique identifier
-    rpfId: string;
-    serviceType: string,
+    rfpId: string;
+    serviceType: [],
     eventDate: string,
     eventDetails: string,
     deadlineOfProposal: string,
-    vendorList: string,
+    vendorList: [],
     additionalInstructions: string,
     // displayName: string;
     // companyName: string;
@@ -98,25 +98,25 @@ export interface IRPF {
 
 
 
-export const useRpfApiHook = () => {
+export const useRfpApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
-    const addRpf = async (obj: any) => {
+    const addRfp = async (obj: any) => {
 
         return axios.post<GeneralApiResponse<IRPF>>(`${BASE_URL}${prefix}/`, obj);
     };
-    const updateRpfById = async ({ id, obj }: { id: string; obj: any }) => {
+    const updateRfpById = async ({ id, obj }: { id: string; obj: any }) => {
         return axios.patch<GeneralApiResponse>(`${BASE_URL}${prefix}/updateById/${id}`, obj);
     };
-    const deleteRpfById = async (id: any) => {
+    const deleteRfpById = async (id: any) => {
         return axios.delete<GeneralApiResponse>(`${BASE_URL}${prefix}/deleteById/${id}`);
     };
-    const getRpfById = async (id: any) => {
+    const getRfpById = async (id: any) => {
         return axios.get<GeneralApiResponse<IRPF>>(`${BASE_URL}${prefix}/getById/${id}`);
     };
 
 
 
-    const getAllRpf = async (pagination: PaginationState, searchObj: any) => {
+    const getAllRfp = async (pagination: PaginationState, searchObj: any) => {
         const query = new URLSearchParams({
             pageIndex: String(pagination.pageIndex),
             pageSize: String(pagination.pageSize),
@@ -126,45 +126,45 @@ export const useRpfApiHook = () => {
     };
 
     return {
-        getAllRpf,
-        updateRpfById,
-        deleteRpfById,
-        getRpfById,
-        addRpf,
+        getAllRfp,
+        updateRfpById,
+        deleteRfpById,
+        getRfpById,
+        addRfp,
 
     };
 };
 
-export const useAddRpf = () => {
+export const useAddRfp = () => {
     const queryClient = useQueryClient();
-    const api = useRpfApiHook();
+    const api = useRfpApiHook();
     return useMutation({
-        mutationFn: api.addRpf,
+        mutationFn: api.addRfp,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["Rpf"] });
+            queryClient.invalidateQueries({ queryKey: ["Rfp"] });
         },
     });
 };
 
-export const useRpfById = (id: string) => {
-    const api = useRpfApiHook();
+export const useRfpById = (id: string) => {
+    const api = useRfpApiHook();
 
     return useQuery({
-        queryKey: ["rpf_id", id],
-        queryFn: () => api.getRpfById(id).then((res) => res.data),
+        queryKey: ["rfp_id", id],
+        queryFn: () => api.getRfpById(id).then((res) => res.data),
         enabled: !!id,
     });
 };
 
-export const useRpf = (searchObj: Record<string, any> = {}, getPaginationFromParams = true) => {
+export const useRfp = (searchObj: Record<string, any> = {}, getPaginationFromParams = true) => {
     const pagination = usePagination(getPaginationFromParams);
 
-    const api = useRpfApiHook();
+    const api = useRfpApiHook();
 
 
     return useQuery({
-        queryKey: ["Rpf", pagination, searchObj],
-        queryFn: () => api.getAllRpf(pagination, searchObj).then((res) => res?.data),
+        queryKey: ["Rfp", pagination, searchObj],
+        queryFn: () => api.getAllRfp(pagination, searchObj).then((res) => res?.data),
         initialData: {
             data: [],
             total: 0,
@@ -173,27 +173,27 @@ export const useRpf = (searchObj: Record<string, any> = {}, getPaginationFromPar
     });
 };
 
-export const usedeleteRpfById = () => {
-    const api = useRpfApiHook();
+export const usedeleteRfpById = () => {
+    const api = useRfpApiHook();
 
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: api.deleteRpfById,
+        mutationFn: api.deleteRfpById,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["Rpf"] });
+            queryClient.invalidateQueries({ queryKey: ["Rfp"] });
             // toastSuccess(res);
         },
     });
 };
 
-export const useUpdateRpfById = () => {
-    const api = useRpfApiHook();
+export const useUpdateRfpById = () => {
+    const api = useRfpApiHook();
 
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: api.updateRpfById,
+        mutationFn: api.updateRfpById,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["rpf"] });
+            queryClient.invalidateQueries({ queryKey: ["rfp"] });
         },
     });
 };
@@ -203,7 +203,7 @@ export const getExel = async () => {
 };
 
 
-export const addRpfExel = async (obj: any,) => {
+export const addRfpExel = async (obj: any,) => {
 
     return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadEnquiries`, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
 };
