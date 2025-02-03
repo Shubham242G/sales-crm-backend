@@ -42,10 +42,12 @@ function Sidebar() {
         {
           dropHead: "Vendors",
           link: "vendorList",
+          plusLink: "/add-vendor",
         },
         {
           dropHead: "RFPS",
           link: "rfps",
+          plusLink: "/add-rfps",
         },
         {
           dropHead: "Quotes from Vendors",
@@ -59,7 +61,6 @@ function Sidebar() {
           dropHead: "Purchase Contacts",
           link: "add-purchase-contact",
         },
-
       ],
     },
 
@@ -75,18 +76,22 @@ function Sidebar() {
         {
           dropHead: "Leads",
           link: "leads",
+          plusLink: "/add-leads",
         },
         {
           dropHead: "Customers",
           link: "customer-sales",
+          plusLink: "/add-customer",
         },
         {
           dropHead: "Quotes for Customer",
           link: "quotesForCustomer",
+          plusLink: "/quotesForCustomerView",
         },
         {
           dropHead: "Enquiry",
           link: "enquiryList",
+          plusLink: "/addEnquiry",
         },
 
         {
@@ -104,12 +109,8 @@ function Sidebar() {
         {
           dropHead: "Sales Contacts",
           link: "sales-contact-view",
+          plusLink: "/add-sales-contact",
         },
-
-
-
-
-
       ],
     },
     // {
@@ -125,7 +126,6 @@ function Sidebar() {
     //       dropHead: "Contact",
     //       link: "contact",
     //     },
-
 
     //   ],
     // },
@@ -172,14 +172,6 @@ function Sidebar() {
         },
       ],
     },
-
-
-
-
-
-
-
-
   ]);
 
   const [showdrop, setShowDrop] = useState<number | null>(null);
@@ -217,8 +209,9 @@ function Sidebar() {
                     </h6>
                   </div>
                   <MdChevronRight
-                    className={`transition-transform ${showdrop === index ? "rotate-90" : ""
-                      }`}
+                    className={`transition-transform ${
+                      showdrop === index ? "rotate-90" : ""
+                    }`}
                   />
                 </button>
               ) : (
@@ -238,12 +231,26 @@ function Sidebar() {
                   <ul className="pl-6">
                     {el.dropArr.map((ele, idx) => (
                       <li key={idx} className="py-1">
-                        <Link
-                          to={ele.link}
-                          className="text-sm text-sidebartext hover:text-sidebartexthover"
-                        >
-                          {ele.dropHead}
-                        </Link>
+                        {/* Add group container */}
+                        <div className="flex justify-between items-center group">
+                          <Link
+                            to={ele.link}
+                            className="text-sm text-sidebartext hover:text-sidebartexthover"
+                          >
+                            {ele.dropHead}
+                          </Link>
+                          {ele.plusLink && (
+                            <Link
+                              to={ele.plusLink}
+                              // Add opacity and group-hover classes
+                              className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
+                            >
+                              <span className="bg-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-medium leading-none">
+                                +
+                              </span>
+                            </Link>
+                          )}
+                        </div>
                       </li>
                     ))}
                   </ul>

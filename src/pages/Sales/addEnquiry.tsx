@@ -82,6 +82,7 @@ import Select from "react-select";
 import { pageIndex } from "@/common/constant.common";
 import { ReactSelectFormat } from "@/services/urls.service";
 import { eventNames } from "node:process";
+import { Autocomplete, TextField } from "@mui/material";
 
 const AddEnquiryForm = () => {
   // State for User Details
@@ -659,6 +660,14 @@ const AddEnquiryForm = () => {
     { value: "Varanasi", label: "Varanasi" },
     { value: "Srinagar", label: "Srinagar" },
     { value: "Amritsar", label: "Amritsar" },
+  ];
+
+  const vehicleTypeOptions = [
+    { label: "Sedan", value: "sedan" },
+    { label: "SUV", value: "suv" },
+    { label: "Minivan", value: "minivan" },
+    { label: "Hatchback", value: "hatchback" },
+    { label: "Luxury", value: "luxury" },
   ];
 
   // const nameOptions =
@@ -1452,23 +1461,28 @@ const AddEnquiryForm = () => {
             <table className="table-auto w-full border mt-4">
               <thead>
                 <tr>
-                  <th className="border px-4 py-2">Date</th>
+                  <th className="border px-2 py-2 w-[14.28%]">Date</th>
                   {isOutOfStation && (
-                    <th className="border px-4 py-2">From City</th>
+                    <th className="border px-2 py-2 w-[14.28%]">From City</th>
                   )}
                   {isOutOfStation && (
-                    <th className="border px-4 py-2">To City</th>
+                    <th className="border px-2 py-2 w-[14.28%]">To City</th>
                   )}
-                  <th className="border px-4 py-2">No. of Vehicles</th>
-                  <th className="border px-4 py-2">Type of Vehicle</th>
-                  <th className="border px-4 py-2">Trip Type</th>
-                  <th className="border px-4 py-2">Meal Plan</th>
+                  <th className="border px-2 py-2 w-[14.28%]">
+                    No. of Vehicles
+                  </th>
+                  <th className="border px-2 py-2 w-[14.28%]">
+                    Type of Vehicle
+                  </th>
+                  <th className="border px-2 py-2 w-[14.28%]">Trip Type</th>
+                  <th className="border px-2 py-2 w-[14.28%]">Meal Plan</th>
                 </tr>
               </thead>
               <tbody>
                 {cab.map((row, index) => (
                   <tr key={index}>
-                    <td className="border px-4 py-2">
+                    {/* Date Column */}
+                    <td className="border px-2 py-2 w-[14.28%]">
                       <input
                         type="date"
                         value={row?.date}
@@ -1484,7 +1498,127 @@ const AddEnquiryForm = () => {
                         className="border p-1 w-full rounded"
                       />
                     </td>
-                    <td className="border px-4 py-2">
+
+                    {/* From City Column */}
+                    {isOutOfStation && (
+                      <td className="border px-2 py-2 w-[14.28%]">
+                        <Autocomplete
+                          options={cityOptions}
+                          getOptionLabel={(option) => option.label}
+                          value={
+                            cityOptions.find(
+                              (option) => option.value === row?.fromCity
+                            ) || null
+                          }
+                          onChange={(event, newValue) =>
+                            handleTableChange(
+                              cab,
+                              setCab,
+                              index,
+                              "fromCity",
+                              newValue?.value || ""
+                            )
+                          }
+                          isOptionEqualToValue={(option, value) =>
+                            option.value === value.value
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              className="w-full"
+                              variant="outlined"
+                              size="small" // Added this to reduce input height
+                              sx={{
+                                "& .MuiInputLabel-root": {
+                                  left: "50%",
+                                  transform: "translate(-50%, -50%)",
+                                  "&.MuiInputLabel-shrink": {
+                                    transform:
+                                      "translate(-50%, -50%) scale(0.75)",
+                                    transformOrigin: "center top",
+                                  },
+                                },
+                              }}
+                            />
+                          )}
+                          // sx={{
+                          //   "& .MuiAutocomplete-inputRoot": {
+                          //     padding: "1px 4px", // Reduced padding
+                          //     minHeight: "32px", // Reduced height
+                          //   },
+                          //   "& .MuiAutocomplete-listbox": {
+                          //     maxHeight: "120px", // Reduced dropdown height
+                          //     fontSize: "14px",
+                          //     "& li": {
+                          //       padding: "4px 8px", // Reduced option padding
+                          //     },
+                          //   },
+                          // }}
+                        />
+                      </td>
+                    )}
+
+                    {/* To City Column */}
+                    {isOutOfStation && (
+                      <td className="border px-2 py-2 w-[14.28%]">
+                        <Autocomplete
+                          options={cityOptions}
+                          getOptionLabel={(option) => option.label}
+                          value={
+                            cityOptions.find(
+                              (option) => option.value === row?.toCity
+                            ) || null
+                          }
+                          onChange={(event, newValue) =>
+                            handleTableChange(
+                              cab,
+                              setCab,
+                              index,
+                              "toCity",
+                              newValue?.value || ""
+                            )
+                          }
+                          isOptionEqualToValue={(option, value) =>
+                            option.value === value.value
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              className="w-full"
+                              variant="outlined"
+                              size="small" // Added this to reduce input height
+                              sx={{
+                                "& .MuiInputLabel-root": {
+                                  left: "50%",
+                                  transform: "translate(-50%, -50%)",
+                                  "&.MuiInputLabel-shrink": {
+                                    transform:
+                                      "translate(-50%, -50%) scale(0.75)",
+                                    transformOrigin: "center top",
+                                  },
+                                },
+                              }}
+                            />
+                          )}
+                          // sx={{
+                          //   "& .MuiAutocomplete-inputRoot": {
+                          //     padding: "1px 4px", // Reduced padding
+                          //     minHeight: "32px", // Reduced height
+                          //   },
+                          //   "& .MuiAutocomplete-listbox": {
+                          //     maxHeight: "120px", // Reduced dropdown height
+                          //     fontSize: "14px",
+                          //     "& li": {
+                          //       padding: "4px 8px", // Reduced option padding
+                          //     },
+                          //   },
+                          // }}
+                        />
+                      </td>
+                    )}
+
+                    {/* Number of Vehicles Column */}
+                    <td className="border px-2 py-2 w-[14.28%]">
                       <input
                         type="number"
                         value={row?.noOfVehicles}
@@ -1500,59 +1634,61 @@ const AddEnquiryForm = () => {
                         className="border p-1 w-full rounded"
                       />
                     </td>
-                    {isOutOfStation && (
-                      <>
-                        <td className="border px-4 py-2">
-                          <input
-                            type="text"
-                            value={row?.fromCity}
-                            onChange={(e) =>
-                              handleTableChange(
-                                cab,
-                                setCab,
-                                index,
-                                "fromCity",
-                                e.target.value
-                              )
-                            }
-                            className="border p-1 w-full rounded"
-                          />
-                        </td>
-                        <td className="border px-4 py-2">
-                          <input
-                            type="text"
-                            value={row?.toCity}
-                            onChange={(e) =>
-                              handleTableChange(
-                                cab,
-                                setCab,
-                                index,
-                                "toCity",
-                                e.target.value
-                              )
-                            }
-                            className="border p-1 w-full rounded"
-                          />
-                        </td>
-                      </>
-                    )}
-                    <td className="border px-4 py-2">
-                      <input
-                        type="text"
-                        value={row?.vehicleType}
-                        onChange={(e) =>
+
+                    {/* Type of Vehicle Column */}
+                    <td className="border px-2 py-2 w-[14.28%]">
+                      <Autocomplete
+                        options={vehicleTypeOptions}
+                        getOptionLabel={(option) => option.label}
+                        value={
+                          vehicleTypeOptions.find(
+                            (option) => option.value === row?.vehicleType
+                          ) || null
+                        }
+                        onChange={(event, newValue) =>
                           handleTableChange(
                             cab,
                             setCab,
                             index,
                             "vehicleType",
-                            e.target.value
+                            newValue?.value || ""
                           )
                         }
-                        className="border p-1 w-full rounded"
+                        isOptionEqualToValue={(option, value) =>
+                          option.value === value.value
+                        }
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            className="w-full"
+                            variant="outlined"
+                            // sx={{
+                            //   "& .MuiInputLabel-root": {
+                            //     left: "50%",
+                            //     transform: "translate(-50%, -50%)",
+                            //     "&.MuiInputLabel-shrink": {
+                            //       transform:
+                            //         "translate(-50%, -50%) scale(0.75)",
+                            //       transformOrigin: "center top",
+                            //     },
+                            //   },
+                            // }}
+                          />
+                        )}
+                        sx={{
+                          "& .MuiAutocomplete-inputRoot": {
+                            padding: "2px 8px",
+                          },
+                          "& .MuiAutocomplete-listbox": {
+                            maxHeight: "150px",
+                            fontSize: "14px",
+                          },
+                        }}
                       />
                     </td>
-                    <td className="border px-4 py-2">
+
+                    {/* Trip Type Column */}
+                    <td className="border px-2 py-2 w-[14.28%]">
                       <select
                         value={row?.tripType}
                         onChange={(e) =>
@@ -1574,7 +1710,9 @@ const AddEnquiryForm = () => {
                         <option value="Outstation">Outstation</option>
                       </select>
                     </td>
-                    <td className="border px-4 py-2">
+
+                    {/* Meal Plan Column */}
+                    <td className="border px-2 py-2 w-[14.28%]">
                       <select
                         onChange={(e) =>
                           handleMealPlanChange(
@@ -1584,7 +1722,7 @@ const AddEnquiryForm = () => {
                             e.target.value
                           )
                         }
-                        className="border p-1 w-full rounded"
+                        className="border p-1 w-full rounded mt-2"
                       >
                         <option value="">Select Meal Plan</option>
                         {mealPlanOptions.map(
@@ -1619,6 +1757,7 @@ const AddEnquiryForm = () => {
                 ))}
               </tbody>
             </table>
+
             <button
               type="button"
               onClick={addCabRow}
