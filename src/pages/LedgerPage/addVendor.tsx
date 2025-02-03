@@ -15,6 +15,9 @@ import {
   useVendorById,
 } from "@/services/vendor.service";
 import { set } from "lodash";
+import { Autocomplete } from "@mui/material";
+import { TextField, TextFieldProps } from "@mui/material";
+import { ChevronDown } from "lucide-react";
 
 interface IVendor {
   salutation: string;
@@ -39,7 +42,7 @@ interface IOtherDetails {
   priceList: string;
   enablePortal: boolean;
   portalLanguage: string;
-  documents: [];
+  documents: string[];
   addOtherDetails: [];
 }
 
@@ -77,6 +80,8 @@ interface IContactPersons {
   contactPersonMobile: string;
 }
 [];
+
+
 
 const AddVendorForm = () => {
   const [isClearable, setIsClearable] = useState(true);
@@ -524,9 +529,120 @@ const AddVendorForm = () => {
   //   }
   // };
 
-  
+  const countryOptions = [
+    { value: "US - United States", label: "US - United States" },
+    { value: "CA - Canada", label: "CA - Canada" },
+    { value: "GB - United Kingdom", label: "GB - United Kingdom" },
+    { value: "AU - Australia", label: "AU - Australia" },
+    { value: "IN - India", label: "IN - India" },
+    { value: "CN - China", label: "CN - China" },
+    { value: "JP - Japan", label: "JP - Japan" },
+    { value: "DE - Germany", label: "DE - Germany" },
+    { value: "FR - France", label: "FR - France" },
+    { value: "IT - Italy", label: "IT - Italy" },
+    { value: "ES - Spain", label: "ES - Spain" },
+    { value: "BR - Brazil", label: "BR - Brazil" },
+    { value: "MX - Mexico", label: "MX - Mexico" },
+    { value: "ZA - South Africa", label: "ZA - South Africa" },
+    { value: "RU - Russia", label: "RU - Russia" },
+    { value: "KR - South Korea", label: "KR - South Korea" },
+    { value: "AR - Argentina", label: "AR - Argentina" },
+    { value: "NG - Nigeria", label: "NG - Nigeria" },
+    { value: "EG - Egypt", label: "EG - Egypt" },
+    { value: "SE - Sweden", label: "SE - Sweden" },
+    { value: "NO - Norway", label: "NO - Norway" },
+    { value: "FI - Finland", label: "FI - Finland" },
+    { value: "PL - Poland", label: "PL - Poland" },
+    { value: "GR - Greece", label: "GR - Greece" },
+    { value: "TR - Turkey", label: "TR - Turkey" },
+    { value: "PH - Philippines", label: "PH - Philippines" },
+    { value: "TH - Thailand", label: "TH - Thailand" },
+    { value: "SG - Singapore", label: "SG - Singapore" },
+    { value: "HK - Hong Kong", label: "HK - Hong Kong" },
+    { value: "MY - Malaysia", label: "MY - Malaysia" },
+    { value: "KR - South Korea", label: "KR - South Korea" },
+    { value: "CH - Switzerland", label: "CH - Switzerland" },
+    { value: "BE - Belgium", label: "BE - Belgium" },
+    { value: "NL - Netherlands", label: "NL - Netherlands" },
+    { value: "PL - Poland", label: "PL - Poland" },
+    { value: "UA - Ukraine", label: "UA - Ukraine" },
+    { value: "CZ - Czech Republic", label: "CZ - Czech Republic" },
+    { value: "SK - Slovakia", label: "SK - Slovakia" },
+    { value: "RO - Romania", label: "RO - Romania" },
+    { value: "BG - Bulgaria", label: "BG - Bulgaria" },
+    { value: "PT - Portugal", label: "PT - Portugal" },
+    { value: "AT - Austria", label: "AT - Austria" },
+    { value: "KE - Kenya", label: "KE - Kenya" },
+    { value: "AE - United Arab Emirates", label: "AE - United Arab Emirates" },
+    { value: "SA - Saudi Arabia", label: "SA - Saudi Arabia" },
+    { value: "KW - Kuwait", label: "KW - Kuwait" },
+    { value: "IQ - Iraq", label: "IQ - Iraq" },
+    { value: "ID - Indonesia", label: "ID - Indonesia" },
+    { value: "VN - Vietnam", label: "VN - Vietnam" },
+    { value: "PE - Peru", label: "PE - Peru" },
+    { value: "CO - Colombia", label: "CO - Colombia" },
+    { value: "CL - Chile", label: "CL - Chile" },
+  ];
 
- 
+  const stateOptions = [
+    {
+      value: "[AN] - Andaman and Nicobar Islands",
+      label: "[AN] - Andaman and Nicobar Islands",
+    },
+    { value: "[AP] - Andhra Pradesh", label: "[AP] - Andhra Pradesh" },
+    { value: "[AR] - Arunachal Pradesh", label: "[AR] - Arunachal Pradesh" },
+    { value: "[AS] - Assam", label: "[AS] - Assam" },
+    { value: "[BR] - Bihar", label: "[BR] - Bihar" },
+    { value: "[CH] - Chandigarh", label: "[CH] - Chandigarh" },
+    { value: "[CG] - Chhattisgarh", label: "[CG] - Chhattisgarh" },
+    {
+      value: "[DH] - Dadra and Nagar Haveli and Daman and Diu",
+      label: "[DH] - Dadra and Nagar Haveli and Daman and Diu",
+    },
+    { value: "[DL] - Delhi", label: "[DL] - Delhi" },
+    { value: "[GA] - Goa", label: "[GA] - Goa" },
+    { value: "[GJ] - Gujarat", label: "[GJ] - Gujarat" },
+    { value: "[HR] - Haryana", label: "[HR] - Haryana" },
+    { value: "[HP] - Himachal Pradesh", label: "[HP] - Himachal Pradesh" },
+    { value: "[JK] - Jammu and Kashmir", label: "[JK] - Jammu and Kashmir" },
+    { value: "[JH] - Jharkhand", label: "[JH] - Jharkhand" },
+    { value: "[KA] - Karnataka", label: "[KA] - Karnataka" },
+    { value: "[KL] - Kerala", label: "[KL] - Kerala" },
+    { value: "[LA] - Ladakh", label: "[LA] - Ladakh" },
+    { value: "[LD] - Lakshadweep", label: "[LD] - Lakshadweep" },
+    { value: "[MP] - Madhya Pradesh", label: "[MP] - Madhya Pradesh" },
+    { value: "[MH] - Maharashtra", label: "[MH] - Maharashtra" },
+    { value: "[MN] - Manipur", label: "[MN] - Manipur" },
+    { value: "[ML] - Meghalaya", label: "[ML] - Meghalaya" },
+    { value: "[MZ] - Mizoram", label: "[MZ] - Mizoram" },
+    { value: "[NL] - Nagaland", label: "[NL] - Nagaland" },
+    { value: "[OD] - Odisha", label: "[OD] - Odisha" },
+    { value: "[PY] - Puducherry", label: "[PY] - Puducherry" },
+    { value: "[PB] - Punjab", label: "[PB] - Punjab" },
+    { value: "[RJ] - Rajasthan", label: "[RJ] - Rajasthan" },
+    { value: "[SK] - Sikkim", label: "[SK] - Sikkim" },
+    { value: "[TN] - Tamil Nadu", label: "[TN] - Tamil Nadu" },
+    { value: "[TS] - Telangana", label: "[TS] - Telangana" },
+    { value: "[TR] - Tripura", label: "[TR] - Tripura" },
+    { value: "[UP] - Uttar Pradesh", label: "[UP] - Uttar Pradesh" },
+    { value: "[UK] - Uttarakhand", label: "[UK] - Uttarakhand" },
+    { value: "[WB] - West Bengal", label: "[WB] - West Bengal" },
+  ];
+
+  const copyBillingAddress = () => {
+    console.log("check function working ");
+    setShippingAddress({
+      ...shippingAddress,
+      shippingCountry: billingAddress.billingCountry,
+      shippingAddressStreet1: billingAddress.billingAddressStreet1,
+      shippingAddressStreet2: billingAddress.billingAddressStreet2,
+      shippingCity: billingAddress.billingCity,
+      shippingState: billingAddress.billingState,
+      shippingPincode: billingAddress.billingPincode,
+      shippingPhone: billingAddress.billingPhone,
+      shippingFaxNumber: billingAddress.billingFaxNumber,
+    });
+  };
 
 
   return (
@@ -1175,101 +1291,131 @@ const AddVendorForm = () => {
                         </div>
 
                         {/* Documents Upload */}
-                        <div className="col-span-2">
-                          <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
-                              Documents:
-                            </span>
-                            <div className="flex-1 ml-12">
-                              <input
-                                type="file"
-                                multiple
-                                ref={fileInputRef}
-                                onChange={handleFileSelect}
-                                className="hidden"
-                                accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => fileInputRef.current?.click()}
-                                disabled={uploading}
-                                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-8"
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-5 w-5 text-gray-400"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span>
-                                  {uploading
-                                    ? "Uploading..."
-                                    : "Upload Document"}
-                                </span>
-                              </button>
-                              <p className="text-sm text-gray-500 mt-1">
-                                You can upload a maximum of 10 files, 10MB each.
-                              </p>
-
-                              {/* Display selected files */}
-                              {selectedFiles.length > 0 && (
-                                <div className="mt-4">
-                                  <h4 className="text-sm font-medium text-gray-700 mb-2">
-                                    Selected Files:
-                                  </h4>
-                                  <div className="space-y-2">
-                                    {selectedFiles.map((file, index) => (
-                                      <div
-                                        key={index}
-                                        className="flex items-center justify-between bg-gray-50 p-2 rounded"
-                                      >
-                                        <span className="text-sm text-gray-600">
-                                          {file.name}
-                                        </span>
-                                        <button
-                                          type="button"
-                                          onClick={() =>
-                                            handleRemoveFile(index)
-                                          }
-                                          className="text-red-500 hover:text-red-700"
-                                        >
-                                          <svg
-                                            className="w-4 h-4"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                          >
-                                            <path
-                                              fillRule="evenodd"
-                                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                              clipRule="evenodd"
-                                            />
-                                          </svg>
-                                        </button>
-                                      </div>
-                                    ))}
-                                    <button
-                                      type="button"
-                                      onClick={handleFileUpload}
-                                      disabled={uploading}
-                                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300"
-                                    >
-                                      {uploading
-                                        ? "Uploading..."
-                                        : "Upload Selected Files"}
-                                    </button>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div>
+                        <div className="col-span-2 mt-4">
+                                                  <div className="flex items-center gap-6">
+                                                    <span className="w-32 text-base font-medium text-gray-700">
+                                                      Documents:
+                                                    </span>
+                                                    <div className="flex-1">
+                                                      <input
+                                                        type="file"
+                                                        accept=".pdf,.jpg,.jpeg"
+                                                        multiple
+                                                        onChange={(e) => {
+                                                          const files = e.target.files;
+                                                          if (files) {
+                                                            // Filter for only PDF and JPEG files
+                                                            const validFiles = Array.from(files).filter(
+                                                              (file) =>
+                                                                file.type === "application/pdf" ||
+                                                                file.type === "image/jpeg"
+                                                            );
+                        
+                                                            if (validFiles.length !== files.length) {
+                                                              alert(
+                                                                "Only PDF and JPEG files are allowed"
+                                                              );
+                                                            }
+                        
+                                                            // Update selectedFiles with only valid files
+                                                            setSelectedFiles((prev) => [
+                                                              ...prev,
+                                                              ...validFiles,
+                                                            ]);
+                                                            handleImageUpload(e, setUploadFiles); // Your existing upload logic
+                                                          }
+                                                        }}
+                                                        className="hidden"
+                                                        ref={fileInputRef}
+                                                      />
+                                                      <button
+                                                        type="button"
+                                                        onClick={() => fileInputRef.current?.click()}
+                                                        className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
+                                                      >
+                                                        <svg
+                                                          xmlns="http://www.w3.org/2000/svg"
+                                                          className="h-5 w-5 text-gray-400"
+                                                          viewBox="0 0 20 20"
+                                                          fill="currentColor"
+                                                        >
+                                                          <path
+                                                            fillRule="evenodd"
+                                                            d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
+                                                            clipRule="evenodd"
+                                                          />
+                                                        </svg>
+                                                        <span>Upload Document</span>
+                                                      </button>
+                                                      <p className="text-sm text-gray-500 mt-1">
+                                                        You can upload multiple PDF and JPEG files
+                                                      </p>
+                                                    </div>
+                                                  </div>
+                                                  {selectedFiles.length > 0 && (
+                                                    <div className="mt-4">
+                                                      <h4 className="text-sm font-medium text-gray-700 mb-2">
+                                                        Selected Files:
+                                                      </h4>
+                                                      <div className="space-y-2">
+                                                        {selectedFiles.map((file, index) => (
+                                                          <div
+                                                            key={index}
+                                                            className="flex items-center justify-between bg-gray-50 p-2 rounded"
+                                                          >
+                                                            <span className="text-sm text-gray-600">
+                                                              {file.name}
+                                                            </span>
+                                                            <button
+                                                              type="button"
+                                                              onClick={() => handleRemoveFile(index)}
+                                                              className="text-red-500 hover:text-red-700"
+                                                            >
+                                                              <svg
+                                                                className="w-4 h-4"
+                                                                fill="currentColor"
+                                                                viewBox="0 0 20 20"
+                                                              >
+                                                                <path
+                                                                  fillRule="evenodd"
+                                                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                                  clipRule="evenodd"
+                                                                />
+                                                              </svg>
+                                                            </button>
+                                                          </div>
+                                                        ))}
+                                                      </div>
+                                                    </div>
+                                                  )}
+                                                  <div
+                                                    style={{ display: "flex", flexWrap: "wrap" }}
+                                                    className="gap-4 mt-4"
+                                                  >
+                                                    {otherDetails &&
+                                                      otherDetails.documents.length > 0 &&
+                                                      otherDetails.documents.map((image, index) => (
+                                                        <img
+                                                          key={index}
+                                                          style={{
+                                                            height: 100,
+                                                            width: 100,
+                                                            objectFit: "cover",
+                                                            border: "1px solid #ddd",
+                                                            borderRadius: "5px",
+                                                            marginTop: "10px",
+                                                          }}
+                                                          src={
+                                                            image?.includes("base64")
+                                                              ? image
+                                                              : generateFilePath(image)
+                                                          }
+                                                          alt={`Image Preview ${index + 1}`}
+                                                        />
+                                                      ))}
+                                                  </div>
+                                                </div>
+                        {/* <div>
                           <div style={{ display: "flex", flexWrap: "wrap" }}>
                             {otherDetails &&
                               otherDetails.documents.length > 0 &&
@@ -1304,11 +1450,11 @@ const AddVendorForm = () => {
                             }
                             style={{ marginTop: "10px", display: "block" }}
                           />
-                        </div>
+                        </div> */}
                       </div>
                     )}
 
-                    {activeTab === "Address" && (
+{activeTab === "Address" && (
                       <div className="grid grid-cols-2 gap-8">
                         {/* Billing Address */}
                         <div className="col-span-1">
@@ -1317,15 +1463,15 @@ const AddVendorForm = () => {
                           </h2>
                           {/* Attention */}
                           {/* <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className=" min-w-32 text-base font-medium text-gray-700">
                               Attention:
                             </span>
                             <input
                               type="text"
-                              value={billingAddress.attention}
+                              value={formData.attention}
                               onChange={(e) =>
-                                setBillingAddress({
-                                  ...billingAddress,
+                                setFormData({
+                                  ...formData,
                                   attention: e.target.value,
                                 })
                               }
@@ -1335,36 +1481,180 @@ const AddVendorForm = () => {
                           {/* Country / Region */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Country / Region:
                               </span>
-                              <select
-                                value={billingAddress.billingCountry}
+                              {/* <select
+                                value={formData.countryRegion}
                                 onChange={(e) =>
-                                  setBillingAddress({
-                                    ...billingAddress,
-                                    billingCountry: e.target.value,
+                                  setFormData({
+                                    ...formData,
+                                    countryRegion: e.target.value,
                                   })
                                 }
                                 className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                                style={{ height: "40px" }}
                               >
-                                <option value="">
-                                  Select Country / Region
+                                <option value="">Select Country/Region</option>
+                                <option value="US - United States">
+                                  US - United States
                                 </option>
-                                <option value="India">India</option>
-                                <option value="United States">
-                                  United States
+                                <option value="CA - Canada">CA - Canada</option>
+                                <option value="GB - United Kingdom">
+                                  GB - United Kingdom
                                 </option>
-                                <option value="France">France</option>
-                                <option value="Germany">Germany</option>
-                                <option value="United Kingdom">
-                                  United Kingdom
+                                <option value="AU - Australia">
+                                  AU - Australia
                                 </option>
-                              </select>
+                                <option value="IN - India">IN - India</option>
+                                <option value="CN - China">CN - China</option>
+                                <option value="JP - Japan">JP - Japan</option>
+                                <option value="DE - Germany">
+                                  DE - Germany
+                                </option>
+                                <option value="FR - France">FR - France</option>
+                                <option value="IT - Italy">IT - Italy</option>
+                                <option value="ES - Spain">ES - Spain</option>
+                                <option value="BR - Brazil">BR - Brazil</option>
+                                <option value="MX - Mexico">MX - Mexico</option>
+                                <option value="ZA - South Africa">
+                                  ZA - South Africa
+                                </option>
+                                <option value="RU - Russia">RU - Russia</option>
+                                <option value="KR - South Korea">
+                                  KR - South Korea
+                                </option>
+                                <option value="AR - Argentina">
+                                  AR - Argentina
+                                </option>
+                                <option value="NG - Nigeria">
+                                  NG - Nigeria
+                                </option>
+                                <option value="EG - Egypt">EG - Egypt</option>
+                                <option value="SE - Sweden">SE - Sweden</option>
+                                <option value="NO - Norway">NO - Norway</option>
+                                <option value="FI - Finland">
+                                  FI - Finland
+                                </option>
+                                <option value="PL - Poland">PL - Poland</option>
+                                <option value="GR - Greece">GR - Greece</option>
+                                <option value="TR - Turkey">TR - Turkey</option>
+                                <option value="PH - Philippines">
+                                  PH - Philippines
+                                </option>
+                                <option value="TH - Thailand">
+                                  TH - Thailand
+                                </option>
+                                <option value="SG - Singapore">
+                                  SG - Singapore
+                                </option>
+                                <option value="HK - Hong Kong">
+                                  HK - Hong Kong
+                                </option>
+                                <option value="MY - Malaysia">
+                                  MY - Malaysia
+                                </option>
+                                <option value="KR - South Korea">
+                                  KR - South Korea
+                                </option>
+                                <option value="CH - Switzerland">
+                                  CH - Switzerland
+                                </option>
+                                <option value="BE - Belgium">
+                                  BE - Belgium
+                                </option>
+                                <option value="NL - Netherlands">
+                                  NL - Netherlands
+                                </option>
+                                <option value="PL - Poland">PL - Poland</option>
+                                <option value="UA - Ukraine">
+                                  UA - Ukraine
+                                </option>
+                                <option value="CZ - Czech Republic">
+                                  CZ - Czech Republic
+                                </option>
+                                <option value="SK - Slovakia">
+                                  SK - Slovakia
+                                </option>
+                                <option value="RO - Romania">
+                                  RO - Romania
+                                </option>
+                                <option value="BG - Bulgaria">
+                                  BG - Bulgaria
+                                </option>
+                                <option value="PT - Portugal">
+                                  PT - Portugal
+                                </option>
+                                <option value="AT - Austria">
+                                  AT - Austria
+                                </option>
+                                <option value="KE - Kenya">KE - Kenya</option>
+                                <option value="AE - United Arab Emirates">
+                                  AE - United Arab Emirates
+                                </option>
+                                <option value="SA - Saudi Arabia">
+                                  SA - Saudi Arabia
+                                </option>
+                                <option value="KW - Kuwait">KW - Kuwait</option>
+                                <option value="IQ - Iraq">IQ - Iraq</option>
+                                <option value="ID - Indonesia">
+                                  ID - Indonesia
+                                </option>
+                                <option value="VN - Vietnam">
+                                  VN - Vietnam
+                                </option>
+                                <option value="PE - Peru">PE - Peru</option>
+                                <option value="CO - Colombia">
+                                  CO - Colombia
+                                </option>
+                                <option value="CL - Chile">CL - Chile</option>
+                              </select> */}
+                              <Autocomplete
+                                disablePortal
+                                options={countryOptions}
+                                sx={{ width: 600 }}
+                                value={
+                                  countryOptions.find(
+                                    (option) =>
+                                      option.value === billingAddress.billingCountry
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setBillingAddress({
+                                    ...billingAddress,
+                                    billingCountry: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                                className="flex-1 rounded-md p-2 text-sm"
+                              />
                             </div>
                           </div>
-
                           {/* Address */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
@@ -1385,6 +1675,7 @@ const AddVendorForm = () => {
                               />
                             </div>
                             <div className="flex items-center gap-6 mt-4">
+                              <span className="min-w-32 text-base font-medium text-gray-700"></span>
                               <input
                                 type="text"
                                 value={billingAddress.billingAddressStreet2}
@@ -1395,14 +1686,14 @@ const AddVendorForm = () => {
                                   })
                                 }
                                 placeholder="Street 2"
-                                className="w-full ml-36 border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
                               />
                             </div>
                           </div>
                           {/* City */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 City:
                               </span>
                               <input
@@ -1414,40 +1705,171 @@ const AddVendorForm = () => {
                                     billingCity: e.target.value,
                                   })
                                 }
-                                className="w-full min-w-32 border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
                               />
                             </div>
                           </div>
-
                           {/* State */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 State:
                               </span>
-                              <select
-                                value={billingAddress.billingState}
+                              {/* <select
+                                value={formData.state}
                                 onChange={(e) =>
-                                  setBillingAddress({
-                                    ...billingAddress,
-                                    billingState: e.target.value,
+                                  setFormData({
+                                    ...formData,
+                                    state: e.target.value,
                                   })
                                 }
                                 className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                               >
                                 <option value="">Select State</option>
-                                <option value="Alabama">Alabama</option>
-                                <option value="Alaska">Alaska</option>
-                                <option value="Arizona">Arizona</option>
-                                <option value="Arkansas">Arkansas</option>
-                                <option value="California">California</option>
-                              </select>
+                                <option value="AP - Andhra Pradesh">
+                                  AP - Andhra Pradesh
+                                </option>
+                                <option value="AR - Arunachal Pradesh">
+                                  AR - Arunachal Pradesh
+                                </option>
+                                <option value="AS - Assam">AS - Assam</option>
+                                <option value="BR - Bihar">BR - Bihar</option>
+                                <option value="CT - Chhattisgarh">
+                                  CT - Chhattisgarh
+                                </option>
+                                <option value="GA - Goa">GA - Goa</option>
+                                <option value="GJ - Gujarat">
+                                  GJ - Gujarat
+                                </option>
+                                <option value="HR - Haryana">
+                                  HR - Haryana
+                                </option>
+                                <option value="HP - Himachal Pradesh">
+                                  HP - Himachal Pradesh
+                                </option>
+                                <option value="JK - Jammu and Kashmir">
+                                  JK - Jammu and Kashmir
+                                </option>
+                                <option value="JH - Jharkhand">
+                                  JH - Jharkhand
+                                </option>
+                                <option value="KA - Karnataka">
+                                  KA - Karnataka
+                                </option>
+                                <option value="KL - Kerala">KL - Kerala</option>
+                                <option value="MP - Madhya Pradesh">
+                                  MP - Madhya Pradesh
+                                </option>
+                                <option value="MH - Maharashtra">
+                                  MH - Maharashtra
+                                </option>
+                                <option value="MN - Manipur">
+                                  MN - Manipur
+                                </option>
+                                <option value="ML - Meghalaya">
+                                  ML - Meghalaya
+                                </option>
+                                <option value="MZ - Mizoram">
+                                  MZ - Mizoram
+                                </option>
+                                <option value="NL - Nagaland">
+                                  NL - Nagaland
+                                </option>
+                                <option value="OD - Odisha">OD - Odisha</option>
+                                <option value="PB - Punjab">PB - Punjab</option>
+                                <option value="RJ - Rajasthan">
+                                  RJ - Rajasthan
+                                </option>
+                                <option value="SK - Sikkim">SK - Sikkim</option>
+                                <option value="TN - Tamil Nadu">
+                                  TN - Tamil Nadu
+                                </option>
+                                <option value="TS - Telangana">
+                                  TS - Telangana
+                                </option>
+                                <option value="UP - Uttar Pradesh">
+                                  UP - Uttar Pradesh
+                                </option>
+                                <option value="UK - Uttarakhand">
+                                  UK - Uttarakhand
+                                </option>
+                                <option value="WB - West Bengal">
+                                  WB - West Bengal
+                                </option>
+                                <option value="AN - Andaman and Nicobar Islands">
+                                  AN - Andaman and Nicobar Islands
+                                </option>
+                                <option value="CH - Chandigarh">
+                                  CH - Chandigarh
+                                </option>
+                                <option value="DN - Dadra and Nagar Haveli and Daman and Diu">
+                                  DN - Dadra and Nagar Haveli and Daman and Diu
+                                </option>
+                                <option value="DD - Lakshadweep">
+                                  DD - Lakshadweep
+                                </option>
+                                <option value="DL - Delhi">DL - Delhi</option>
+                                <option value="PY - Puducherry">
+                                  PY - Puducherry
+                                </option>
+                                <option value="LD - Ladakh">LD - Ladakh</option>
+                                <option value="LC - Lakshadweep">
+                                  LC - Lakshadweep
+                                </option>
+                                <option value="TN - Tamil Nadu">
+                                  TN - Tamil Nadu
+                                </option>
+                              </select> */}
+                              <Autocomplete
+                                disablePortal
+                                options={stateOptions}
+                                sx={{ width: 600 }}
+                                value={
+                                  stateOptions.find(
+                                    (option) => option.value === billingAddress.billingState
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setBillingAddress({
+                                    ...billingAddress,
+                                    billingState: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                                className="flex-1 rounded-md p-2 text-sm"
+                              />
                             </div>
                           </div>
                           {/* Pin Code */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700 w-20">
+                              <span className="min-w-32 text-base font-medium text-gray-700 w-20">
                                 Pin Code:
                               </span>
                               <input
@@ -1466,7 +1888,7 @@ const AddVendorForm = () => {
                           {/* Phone */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Phone:
                               </span>
                               <input
@@ -1485,7 +1907,7 @@ const AddVendorForm = () => {
                           {/* Fax Number */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Fax Number:
                               </span>
                               <input
@@ -1505,21 +1927,32 @@ const AddVendorForm = () => {
 
                         {/* Shipping Address */}
                         <div className="col-span-1">
-                          <h2 className="text-2xl font-bold mb-6">
-                            Shipping Address
-                          </h2>
+                          <div className="flex items-center gap-4 mb-6">
+                            <h2 className="text-2xl font-bold">
+                              Shipping Address
+                            </h2>
+                            <div
+                              onClick={copyBillingAddress}
+                              className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md"
+                            >
+                              <span className="text-blue-600">
+                                Same as Billing Address
+                              </span>
+                              <ChevronDown className="h-4 w-4 text-blue-600" />
+                            </div>
+                          </div>
                           {/* Shipping Attention */}
                           {/* <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
+                            <span className="min-w-32 text-base font-medium text-gray-700">
                               Attention:
                             </span>
                             <input
                               type="text"
-                              value={shippingAddress.attention}
+                              value={formData.shippingAttention}
                               onChange={(e) =>
-                                setShippingAddress({
-                                  ...shippingAddress,
-                                  attention: e.target.value,
+                                setFormData({
+                                  ...formData,
+                                  shippingAttention: e.target.value,
                                 })
                               }
                               className="w-full border border-gray-300 rounded-md p-2 text-sm"
@@ -1528,38 +1961,185 @@ const AddVendorForm = () => {
                           {/* Shipping Country / Region */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Country / Region:
                               </span>
-                              <select
-                                value={shippingAddress.shippingCountry}
+                              {/* <select
+                                value={formData.shippingCountryRegion}
                                 onChange={(e) =>
-                                  setShippingAddress({
-                                    ...shippingAddress,
-                                    shippingCountry: e.target.value,
+                                  setFormData({
+                                    ...formData,
+                                    shippingCountryRegion: e.target.value,
                                   })
                                 }
                                 className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                               >
-                                <option value="">
-                                  Select Country / Region
+                                <option value="">Select Country/Region</option>
+                                <option value="US - United States">
+                                  US - United States
                                 </option>
-                                <option value="India">India</option>
-                                <option value="United States">
-                                  United States
+                                <option value="CA - Canada">CA - Canada</option>
+                                <option value="GB - United Kingdom">
+                                  GB - United Kingdom
                                 </option>
-                                <option value="France">France</option>
-                                <option value="Germany">Germany</option>
-                                <option value="United Kingdom">
-                                  United Kingdom
+                                <option value="AU - Australia">
+                                  AU - Australia
                                 </option>
-                              </select>
+                                <option value="IN - India">IN - India</option>
+                                <option value="CN - China">CN - China</option>
+                                <option value="JP - Japan">JP - Japan</option>
+                                <option value="DE - Germany">
+                                  DE - Germany
+                                </option>
+                                <option value="FR - France">FR - France</option>
+                                <option value="IT - Italy">IT - Italy</option>
+                                <option value="ES - Spain">ES - Spain</option>
+                                <option value="BR - Brazil">BR - Brazil</option>
+                                <option value="MX - Mexico">MX - Mexico</option>
+                                <option value="ZA - South Africa">
+                                  ZA - South Africa
+                                </option>
+                                <option value="RU - Russia">RU - Russia</option>
+                                <option value="KR - South Korea">
+                                  KR - South Korea
+                                </option>
+                                <option value="AR - Argentina">
+                                  AR - Argentina
+                                </option>
+                                <option value="NG - Nigeria">
+                                  NG - Nigeria
+                                </option>
+                                <option value="EG - Egypt">EG - Egypt</option>
+                                <option value="SE - Sweden">SE - Sweden</option>
+                                <option value="NO - Norway">NO - Norway</option>
+                                <option value="FI - Finland">
+                                  FI - Finland
+                                </option>
+                                <option value="PL - Poland">PL - Poland</option>
+                                <option value="GR - Greece">GR - Greece</option>
+                                <option value="TR - Turkey">TR - Turkey</option>
+                                <option value="PH - Philippines">
+                                  PH - Philippines
+                                </option>
+                                <option value="TH - Thailand">
+                                  TH - Thailand
+                                </option>
+                                <option value="SG - Singapore">
+                                  SG - Singapore
+                                </option>
+                                <option value="HK - Hong Kong">
+                                  HK - Hong Kong
+                                </option>
+                                <option value="MY - Malaysia">
+                                  MY - Malaysia
+                                </option>
+                                <option value="KR - South Korea">
+                                  KR - South Korea
+                                </option>
+                                <option value="CH - Switzerland">
+                                  CH - Switzerland
+                                </option>
+                                <option value="BE - Belgium">
+                                  BE - Belgium
+                                </option>
+                                <option value="NL - Netherlands">
+                                  NL - Netherlands
+                                </option>
+                                <option value="PL - Poland">PL - Poland</option>
+                                <option value="UA - Ukraine">
+                                  UA - Ukraine
+                                </option>
+                                <option value="CZ - Czech Republic">
+                                  CZ - Czech Republic
+                                </option>
+                                <option value="SK - Slovakia">
+                                  SK - Slovakia
+                                </option>
+                                <option value="RO - Romania">
+                                  RO - Romania
+                                </option>
+                                <option value="BG - Bulgaria">
+                                  BG - Bulgaria
+                                </option>
+                                <option value="PT - Portugal">
+                                  PT - Portugal
+                                </option>
+                                <option value="AT - Austria">
+                                  AT - Austria
+                                </option>
+                                <option value="KE - Kenya">KE - Kenya</option>
+                                <option value="AE - United Arab Emirates">
+                                  AE - United Arab Emirates
+                                </option>
+                                <option value="SA - Saudi Arabia">
+                                  SA - Saudi Arabia
+                                </option>
+                                <option value="KW - Kuwait">KW - Kuwait</option>
+                                <option value="IQ - Iraq">IQ - Iraq</option>
+                                <option value="ID - Indonesia">
+                                  ID - Indonesia
+                                </option>
+                                <option value="VN - Vietnam">
+                                  VN - Vietnam
+                                </option>
+                                <option value="PE - Peru">PE - Peru</option>
+                                <option value="CO - Colombia">
+                                  CO - Colombia
+                                </option>
+                                <option value="CL - Chile">CL - Chile</option>
+                              </select> */}
+                              <Autocomplete
+                                disablePortal
+                                options={countryOptions}
+                                sx={{ width: 600 }}
+                                value={
+                                  countryOptions.find(
+                                    (option) =>
+                                      option.value ===
+                                      shippingAddress.shippingCountry
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setShippingAddress({
+                                    ...shippingAddress,
+                                    shippingCountry: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                                className="flex-1 rounded-md p-2 text-sm"
+                              />
                             </div>
                           </div>
                           {/* Shipping Address */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Address:
                               </span>
                               <input
@@ -1576,6 +2156,7 @@ const AddVendorForm = () => {
                               />
                             </div>
                             <div className="flex items-center gap-6 mt-4">
+                              <span className="min-w-32 text-base font-medium text-gray-700"></span>
                               <input
                                 type="text"
                                 value={shippingAddress.shippingAddressStreet2}
@@ -1586,14 +2167,14 @@ const AddVendorForm = () => {
                                   })
                                 }
                                 placeholder="Street 2"
-                                className="w-full ml-24 border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
                               />
                             </div>
                           </div>
                           {/* Shippping City */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 City:
                               </span>
                               <input
@@ -1612,32 +2193,165 @@ const AddVendorForm = () => {
                           {/* Shipping State */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 State:
                               </span>
-                              <select
-                                value={shippingAddress.shippingState}
+                              {/* <select
+                                value={formData.shippingState}
                                 onChange={(e) =>
-                                  setShippingAddress({
-                                    ...shippingAddress,
+                                  setFormData({
+                                    ...formData,
                                     shippingState: e.target.value,
                                   })
                                 }
                                 className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
                               >
                                 <option value="">Select State</option>
-                                <option value="Alabama">Alabama</option>
-                                <option value="Alaska">Alaska</option>
-                                <option value="Arizona">Arizona</option>
-                                <option value="Arkansas">Arkansas</option>
-                                <option value="California">California</option>
-                              </select>
+                                <option value="AP - Andhra Pradesh">
+                                  AP - Andhra Pradesh
+                                </option>
+                                <option value="AR - Arunachal Pradesh">
+                                  AR - Arunachal Pradesh
+                                </option>
+                                <option value="AS - Assam">AS - Assam</option>
+                                <option value="BR - Bihar">BR - Bihar</option>
+                                <option value="CT - Chhattisgarh">
+                                  CT - Chhattisgarh
+                                </option>
+                                <option value="GA - Goa">GA - Goa</option>
+                                <option value="GJ - Gujarat">
+                                  GJ - Gujarat
+                                </option>
+                                <option value="HR - Haryana">
+                                  HR - Haryana
+                                </option>
+                                <option value="HP - Himachal Pradesh">
+                                  HP - Himachal Pradesh
+                                </option>
+                                <option value="JK - Jammu and Kashmir">
+                                  JK - Jammu and Kashmir
+                                </option>
+                                <option value="JH - Jharkhand">
+                                  JH - Jharkhand
+                                </option>
+                                <option value="KA - Karnataka">
+                                  KA - Karnataka
+                                </option>
+                                <option value="KL - Kerala">KL - Kerala</option>
+                                <option value="MP - Madhya Pradesh">
+                                  MP - Madhya Pradesh
+                                </option>
+                                <option value="MH - Maharashtra">
+                                  MH - Maharashtra
+                                </option>
+                                <option value="MN - Manipur">
+                                  MN - Manipur
+                                </option>
+                                <option value="ML - Meghalaya">
+                                  ML - Meghalaya
+                                </option>
+                                <option value="MZ - Mizoram">
+                                  MZ - Mizoram
+                                </option>
+                                <option value="NL - Nagaland">
+                                  NL - Nagaland
+                                </option>
+                                <option value="OD - Odisha">OD - Odisha</option>
+                                <option value="PB - Punjab">PB - Punjab</option>
+                                <option value="RJ - Rajasthan">
+                                  RJ - Rajasthan
+                                </option>
+                                <option value="SK - Sikkim">SK - Sikkim</option>
+                                <option value="TN - Tamil Nadu">
+                                  TN - Tamil Nadu
+                                </option>
+                                <option value="TS - Telangana">
+                                  TS - Telangana
+                                </option>
+                                <option value="UP - Uttar Pradesh">
+                                  UP - Uttar Pradesh
+                                </option>
+                                <option value="UK - Uttarakhand">
+                                  UK - Uttarakhand
+                                </option>
+                                <option value="WB - West Bengal">
+                                  WB - West Bengal
+                                </option>
+                                <option value="AN - Andaman and Nicobar Islands">
+                                  AN - Andaman and Nicobar Islands
+                                </option>
+                                <option value="CH - Chandigarh">
+                                  CH - Chandigarh
+                                </option>
+                                <option value="DN - Dadra and Nagar Haveli and Daman and Diu">
+                                  DN - Dadra and Nagar Haveli and Daman and Diu
+                                </option>
+                                <option value="DD - Lakshadweep">
+                                  DD - Lakshadweep
+                                </option>
+                                <option value="DL - Delhi">DL - Delhi</option>
+                                <option value="PY - Puducherry">
+                                  PY - Puducherry
+                                </option>
+                                <option value="LD - Ladakh">LD - Ladakh</option>
+                                <option value="LC - Lakshadweep">
+                                  LC - Lakshadweep
+                                </option>
+                                <option value="TN - Tamil Nadu">
+                                  TN - Tamil Nadu
+                                </option>
+                              </select> */}
+                              <Autocomplete
+                                disablePortal
+                                options={stateOptions}
+                                sx={{ width: 600 }}
+                                value={
+                                  stateOptions.find(
+                                    (option) =>
+                                      option.value === shippingAddress.shippingState
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setShippingAddress({
+                                    ...shippingAddress,
+                                    shippingState: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                                className="flex-1 rounded-md p-2 text-sm"
+                              />
                             </div>
                           </div>
                           {/* Shipping Pin Code */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Pin Code:
                               </span>
                               <input
@@ -1656,7 +2370,7 @@ const AddVendorForm = () => {
                           {/* Shipping Phone */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Phone:
                               </span>
                               <input
@@ -1675,7 +2389,7 @@ const AddVendorForm = () => {
                           {/* Shipping Fax Number */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
                                 Fax Number:
                               </span>
                               <input
