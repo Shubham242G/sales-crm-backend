@@ -1069,9 +1069,28 @@ const AddEnquiryForm = () => {
               <button
                 type="button"
                 onClick={() => {
-                  if (banquet?.length > 0) {
-                    const firstRow = banquet[0];
-                    setBanquet(banquet.map(() => ({ ...firstRow })));
+                  if (room?.length > 0) {
+                    const filledRow = room.find(
+                      (row) =>
+                        (row.noOfRooms && parseInt(row.noOfRooms) > 0) ||
+                        row.roomCategory ||
+                        row.occupancy ||
+                        (row.mealPlan && row.mealPlan.length > 0)
+                    );
+                    if (filledRow) {
+                      setRoom(
+                        room.map((originalRow) => ({
+                          ...filledRow,
+                          date: originalRow.date,
+                        }))
+                      );
+                    } else {
+                      alert(
+                        "Please fill in at least one row before applying to all days."
+                      );
+                    }
+                  } else {
+                    alert("No room data available.");
                   }
                 }}
                 className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
@@ -1088,7 +1107,9 @@ const AddEnquiryForm = () => {
               <table className="table-auto w-full border-collapse border border-gray-300">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="border border-gray-300 px-4 py-2">Date</th>
+                    <th className="border border-gray-300 px-4 py-2 w-32">
+                      Date
+                    </th>
                     <th className="border border-gray-300 px-4 py-2">
                       Session
                     </th>
@@ -1112,8 +1133,8 @@ const AddEnquiryForm = () => {
                 <tbody>
                   {banquet.map((row, index) => (
                     <tr key={index} className="even:bg-gray-50">
-                      <td className="border border-gray-300 px-4 py-2">
-                        {row.date}
+                      <td className="border border-gray-300 px-4 py-2 w-32">
+                        {moment(row.date).format("YYYY-MM-DD")}
                       </td>
                       <td className="border border-gray-300 px-4 py-2">
                         <input
@@ -1219,8 +1240,29 @@ const AddEnquiryForm = () => {
                 type="button"
                 onClick={() => {
                   if (banquet?.length > 0) {
-                    const firstRow = banquet[0];
-                    setBanquet(banquet.map(() => ({ ...firstRow })));
+                    const filledRow = banquet.find(
+                      (row) =>
+                        row.session ||
+                        row.seatingStyle ||
+                        row.avSetup ||
+                        row.menuType ||
+                        (row.minPax && parseInt(row.minPax) > 0) ||
+                        row.seatingRequired
+                    );
+                    if (filledRow) {
+                      setBanquet(
+                        banquet.map((originalRow) => ({
+                          ...filledRow,
+                          date: originalRow.date,
+                        }))
+                      );
+                    } else {
+                      alert(
+                        "Please fill in at least one row before applying to all days."
+                      );
+                    }
+                  } else {
+                    alert("No banquet data available.");
                   }
                 }}
                 className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
