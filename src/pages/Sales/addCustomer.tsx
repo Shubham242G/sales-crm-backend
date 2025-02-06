@@ -26,6 +26,9 @@ interface ICustomerForm {
   prefersEmail: boolean;
   prefersSms: boolean;
   gstTreatment: string;
+  openingBalanceState: string;
+  openingBalance: string;
+  creditLimit: string;
   taxPreference: string;
   currency: string;
   paymentTerms: string;
@@ -71,6 +74,7 @@ interface IContactPerson {
   lastName: string;
   email: string;
   workPhone: string;
+  mobilePhone: string;
   communicationChannels: communicationChannelsProps;
 }
 
@@ -99,6 +103,9 @@ const AddCustomer = () => {
     priceList: "",
     enablePortal: false,
     portalLanguage: "",
+    openingBalanceState: "",
+    openingBalance: "",
+    creditLimit: "",
     // attention: "",
     countryRegion: "",
     addressStreet1: "",
@@ -135,6 +142,7 @@ const AddCustomer = () => {
       lastName: "",
       email: "",
       workPhone: "",
+      mobilePhone: "",
       communicationChannels: { prefersEmail: true, prefersSms: false },
     },
   ]);
@@ -148,6 +156,7 @@ const AddCustomer = () => {
         lastName: "",
         email: "",
         workPhone: "",
+        mobilePhone: "",
         communicationChannels: { prefersEmail: true, prefersSms: false },
       },
     ]);
@@ -212,6 +221,7 @@ const AddCustomer = () => {
             lastName: person.lastName || "",
             email: person.email || "",
             workPhone: person.workPhone || "",
+            mobilePhone: person.mobilePhone || "",
             communicationChannels: person.communicationChannels || [],
           }))
         );
@@ -233,6 +243,9 @@ const AddCustomer = () => {
         lastName: apiData?.lastName || "",
         taxPreference: apiData?.taxPreference || "",
         gstTreatment: apiData?.gstTreatment || "",
+        openingBalanceState: apiData?.openingBalanceState || "",
+        openingBalance: apiData?.openingBalance || "",
+        creditLimit: apiData?.creditLimit || "",
         enablePortal: apiData?.enablePortal || false,
         currency: apiData?.currency || "",
         paymentTerms: apiData?.paymentTerms || "",
@@ -268,6 +281,7 @@ const AddCustomer = () => {
         // contactPersonsMobile: apiData?.contactPersonsMobile || "",
         // contactPersonsCommunicationChannels: apiData?. contactPersonsCommunicationChannels || "",
       }));
+      console.log(apiData, "api data for the final time");
     }
   }, [customerDataById]);
 
@@ -500,6 +514,8 @@ const AddCustomer = () => {
       shippingFaxNumber: formData.faxNumber,
     });
   };
+
+  console.log(formData.openingBalance, "checking the opening balance");
 
   const gstOptions = [
     {
@@ -1348,6 +1364,181 @@ const AddCustomer = () => {
                                     }}
                                   />
                                 )}
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Opening Balance */}
+                        <div className="col-span-2">
+                          <div className="flex items-center gap-6">
+                            <span className="w-32 text-base font-medium text-gray-700">
+                              Opening Balance:
+                            </span>
+                            <div className="flex gap-4">
+                              {/* State Dropdown */}
+                              <div className="w-48">
+                                <Autocomplete
+                                  disablePortal
+                                  options={stateOptions}
+                                  value={
+                                    stateOptions.find(
+                                      (option) =>
+                                        option.value ===
+                                        formData.openingBalanceState
+                                    ) || null
+                                  }
+                                  onChange={(event, newValue) => {
+                                    setFormData({
+                                      ...formData,
+                                      openingBalanceState:
+                                        newValue?.value || "",
+                                    });
+                                  }}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      label="Select State"
+                                      InputProps={{
+                                        ...params.InputProps,
+                                        style: { height: "40px" },
+                                      }}
+                                      sx={{
+                                        "& .MuiInputBase-root": {
+                                          height: "40px",
+                                        },
+                                        "& .MuiInputLabel-root": {
+                                          transform:
+                                            "translate(14px, 10px) scale(1)",
+                                          "&.MuiInputLabel-shrink": {
+                                            transform:
+                                              "translate(14px, -9px) scale(0.75)",
+                                          },
+                                        },
+                                        "& .MuiInputLabel-root.Mui-focused": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      }}
+                                    />
+                                  )}
+                                />
+                              </div>
+
+                              {/* Opening Balance Input */}
+                              <div className="flex items-center w-44 relative">
+                                <TextField
+                                  label="Opening Balance"
+                                  value={formData.openingBalance}
+                                  onChange={(e) =>
+                                    setFormData({
+                                      ...formData,
+                                      openingBalance: e.target.value,
+                                    })
+                                  }
+                                  InputProps={{
+                                    startAdornment: (
+                                      <div
+                                        className="absolute left-0 pl-3 text-gray-700 bg-gray-50 border-r border-gray-300 flex items-center"
+                                        style={{
+                                          height: "100%",
+                                          fontWeight: "500",
+                                          minWidth: "50px",
+                                        }}
+                                      >
+                                        {currencyOptions
+                                          .find(
+                                            (option) =>
+                                              option.value === formData.currency
+                                          )
+                                          ?.value.split(" ")[0] || ""}
+                                      </div>
+                                    ),
+                                    style: {
+                                      paddingLeft: "60px",
+                                      height: "40px",
+                                    },
+                                  }}
+                                  sx={{
+                                    "& .MuiInputBase-root": {
+                                      height: "40px",
+                                    },
+                                    "& .MuiInputLabel-root": {
+                                      transform:
+                                        "translate(14px, 10px) scale(1)",
+                                      "&.MuiInputLabel-shrink": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    },
+                                    "& .MuiInputLabel-root.Mui-focused": {
+                                      transform:
+                                        "translate(14px, -9px) scale(0.75)",
+                                    },
+                                  }}
+                                  fullWidth
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Credit Limit */}
+                        <div className="col-span-2">
+                          <div className="flex items-center gap-6">
+                            <span className="w-32 text-base font-medium text-gray-700">
+                              Credit Limit:
+                            </span>
+                            <div className="w-96">
+                              <TextField
+                                label="Credit Limit"
+                                value={formData.creditLimit}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    creditLimit: e.target.value,
+                                  })
+                                }
+                                InputProps={{
+                                  startAdornment: (
+                                    <div
+                                      className="absolute left-0 pl-3 text-gray-700 bg-gray-50 border-r border-gray-300 flex items-center"
+                                      style={{
+                                        height: "100%",
+                                        fontWeight: "500",
+                                        minWidth: "50px",
+                                      }}
+                                    >
+                                      {currencyOptions
+                                        .find(
+                                          (option) =>
+                                            option.value === formData.currency
+                                        )
+                                        ?.value.split(" ")[0] || ""}
+                                    </div>
+                                  ),
+                                  style: {
+                                    paddingLeft: "60px",
+                                    height: "40px",
+                                  },
+                                }}
+                                sx={{
+                                  "& .MuiInputBase-root": {
+                                    height: "40px",
+                                  },
+                                  "& .MuiInputLabel-root": {
+                                    transform: "translate(14px, 10px) scale(1)",
+                                    "&.MuiInputLabel-shrink": {
+                                      transform:
+                                        "translate(14px, -9px) scale(0.75)",
+                                    },
+                                  },
+                                  "& .MuiInputLabel-root.Mui-focused": {
+                                    transform:
+                                      "translate(14px, -9px) scale(0.75)",
+                                  },
+                                }}
+                                fullWidth
                               />
                             </div>
                           </div>
@@ -2644,6 +2835,9 @@ const AddCustomer = () => {
                                   Work Phone
                                 </th>
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  Mobile
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
                                   Communication Channels
                                 </th>
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
@@ -2732,6 +2926,22 @@ const AddCustomer = () => {
                                         handleContactPersonChange(
                                           index,
                                           "workPhone",
+                                          e.target.value
+                                        )
+                                      }
+                                      className="w-full border rounded p-1 text-sm"
+                                    />
+                                  </td>
+
+                                  {/* Mobile Phone */}
+                                  <td className="px-4 py-2 border-b">
+                                    <input
+                                      type="tel"
+                                      value={person.mobilePhone}
+                                      onChange={(e) =>
+                                        handleContactPersonChange(
+                                          index,
+                                          "mobilePhone",
                                           e.target.value
                                         )
                                       }

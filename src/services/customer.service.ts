@@ -23,6 +23,7 @@ export interface IContactPerson {
     lastName: string;
     email: string;
     workPhone: string;
+    mobilePhone: string;
     communicationChannels: communicationChannelsProps;
   }
 
@@ -38,6 +39,9 @@ export interface ICustomer {
   taxPreference: string;
   enablePortal: boolean;
   gstTreatment: string;
+  openingBalanceState: string;
+  openingBalance: string;
+  creditLimit: string;
   email: string;
   phoneNumber: string;
   panNumber: string;
