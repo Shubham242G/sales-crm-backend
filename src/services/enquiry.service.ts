@@ -12,6 +12,7 @@ const prefix = "/enquiry";
 export interface IEnqiry {
     // Basic Details
     // nameObj: string;
+    salutation: string;
     firstName: string;
     lastName: string;
     phone: string;
