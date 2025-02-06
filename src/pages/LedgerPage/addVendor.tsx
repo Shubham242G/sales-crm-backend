@@ -37,6 +37,9 @@ interface IOtherDetails {
   pan: string;
   msmeRegistered: boolean;
   currency: string;
+  openingBalanceState: string;
+  openingBalance: string;
+  creditLimit: string;
   paymentTerms: string;
   tds: string;
   priceList: string;
@@ -77,11 +80,10 @@ interface IContactPersons {
   contactPersonLastName: string;
   contactPersonEmail: string;
   contactPersonWorkPhone: string;
+  contactPersonMobilePhone: string;
   contactPersonMobile: string;
 }
 [];
-
-
 
 const AddVendorForm = () => {
   const [isClearable, setIsClearable] = useState(true);
@@ -117,6 +119,9 @@ const AddVendorForm = () => {
     pan: "",
     msmeRegistered: false,
     currency: "",
+    openingBalanceState: "",
+    openingBalance: "",
+    creditLimit: "",
     paymentTerms: "",
     tds: "",
     priceList: "",
@@ -158,6 +163,7 @@ const AddVendorForm = () => {
       contactPersonLastName: "",
       contactPersonEmail: "",
       contactPersonWorkPhone: "",
+      contactPersonMobilePhone: "",
       contactPersonMobile: "",
     },
   ]);
@@ -215,6 +221,9 @@ const AddVendorForm = () => {
         pan: apiData?.otherDetails?.pan,
         msmeRegistered: apiData?.otherDetails?.msmeRegistered,
         currency: apiData?.otherDetails?.currency,
+        openingBalanceState: apiData?.otherDetails?.openingBalanceState,
+        openingBalance: apiData?.otherDetails?.openingBalance,
+        creditLimit: apiData?.otherDetails?.creditLimit,
         paymentTerms: apiData?.otherDetails?.paymentTerms,
         tds: apiData?.otherDetails?.tds,
         priceList: apiData?.otherDetails?.priceList,
@@ -227,6 +236,8 @@ const AddVendorForm = () => {
       setContactPersons(apiData?.contactPersons);
     }
   }, [vendorDataById]);
+
+  console.log(contactPersons.find(contactPersonMobilePhone => contactPersonMobilePhone, "checking the mobile number"))
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -382,6 +393,7 @@ const AddVendorForm = () => {
         contactPersonLastName: "",
         contactPersonEmail: "",
         contactPersonWorkPhone: "",
+        contactPersonMobilePhone: "",
         contactPersonMobile: "",
       },
     ]);
@@ -399,7 +411,34 @@ const AddVendorForm = () => {
   };
 
   const salutationOptions = ["Mr.", "Ms.", "Dr.", "Mrs."];
-  const currencyOptions = ["INR.", "Dollars.", "Pounds", "Euros."];
+  const currencyOptions = [
+    { value: "INR - Indian Rupee", label: "INR - Indian Rupee" },
+    {
+      value: "USD - United States Dollar",
+      label: "USD - United States Dollar",
+    },
+    { value: "EUR - Euro", label: "EUR - Euro" },
+    { value: "JPY - Japanese Yen", label: "JPY - Japanese Yen" },
+    {
+      value: "GBP - British Pound Sterling",
+      label: "GBP - British Pound Sterling",
+    },
+    { value: "AUD - Australian Dollar", label: "AUD - Australian Dollar" },
+    { value: "CAD - Canadian Dollar", label: "CAD - Canadian Dollar" },
+    { value: "CHF - Swiss Franc", label: "CHF - Swiss Franc" },
+    { value: "CNY - Chinese Yuan", label: "CNY - Chinese Yuan" },
+    { value: "HKD - Hong Kong Dollar", label: "HKD - Hong Kong Dollar" },
+    { value: "NZD - New Zealand Dollar", label: "NZD - New Zealand Dollar" },
+    { value: "SGD - Singapore Dollar", label: "SGD - Singapore Dollar" },
+    { value: "KRW - South Korean Won", label: "KRW - South Korean Won" },
+    { value: "THB - Thai Baht", label: "THB - Thai Baht" },
+    { value: "ZAR - South African Rand", label: "ZAR - South African Rand" },
+    { value: "BRL - Brazilian Real", label: "BRL - Brazilian Real" },
+    { value: "MXN - Mexican Peso", label: "MXN - Mexican Peso" },
+    { value: "MYR - Malaysian Ringgit", label: "MYR - Malaysian Ringgit" },
+    { value: "IDR - Indonesian Rupiah", label: "IDR - Indonesian Rupiah" },
+    { value: "SAR - Saudi Riyal", label: "SAR - Saudi Riyal" },
+  ];
   const tdsOptions = ["TDS1", "TDS2.", "TDS3"]; //change these options
   const priceListOptions = ["PL1", "PL2", "PL3"]; //change these options
   const languageOptions = ["English", "Hindi", "Espanyol"]; //change these options
@@ -1109,6 +1148,184 @@ const AddVendorForm = () => {
                           </div>
                         </div>
 
+                        {/* Opening Balance */}
+                        <div className="col-span-2">
+                          <div className="flex items-center gap-6">
+                            <span className="w-32 text-base font-medium text-gray-700">
+                              Opening Balance:
+                            </span>
+                            <div className="flex gap-4">
+                              {/* State Dropdown */}
+                              <div className="w-48">
+                                <Autocomplete
+                                  disablePortal
+                                  options={stateOptions}
+                                  value={
+                                    stateOptions.find(
+                                      (option) =>
+                                        option.value ===
+                                        otherDetails.openingBalanceState
+                                    ) || null
+                                  }
+                                  onChange={(event, newValue) => {
+                                    setOtherDetails({
+                                      ...otherDetails,
+                                      openingBalanceState:
+                                        newValue?.value || "",
+                                    });
+                                  }}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      label="Select State"
+                                      InputProps={{
+                                        ...params.InputProps,
+                                        style: { height: "40px" },
+                                      }}
+                                      sx={{
+                                        "& .MuiInputBase-root": {
+                                          height: "40px",
+                                        },
+                                        "& .MuiInputLabel-root": {
+                                          transform:
+                                            "translate(14px, 10px) scale(1)",
+                                          "&.MuiInputLabel-shrink": {
+                                            transform:
+                                              "translate(14px, -9px) scale(0.75)",
+                                          },
+                                        },
+                                        "& .MuiInputLabel-root.Mui-focused": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      }}
+                                    />
+                                  )}
+                                />
+                              </div>
+
+                              {/* Opening Balance Input */}
+                              <div className="flex items-center w-44 relative">
+                                <TextField
+                                  type="number"
+                                  label="Opening Balance"
+                                  value={otherDetails.openingBalance}
+                                  onChange={(e) =>
+                                    setOtherDetails({
+                                      ...otherDetails,
+                                      openingBalance: e.target.value,
+                                    })
+                                  }
+                                  InputProps={{
+                                    startAdornment: (
+                                      <div
+                                        className="absolute left-0 pl-3 text-gray-700 bg-gray-50 border-r border-gray-300 flex items-center"
+                                        style={{
+                                          height: "100%",
+                                          fontWeight: "500",
+                                          minWidth: "50px",
+                                        }}
+                                      >
+                                        {currencyOptions
+                                          .find(
+                                            (option) =>
+                                              option.value ===
+                                              otherDetails.currency
+                                          )
+                                          ?.value.split(" ")[0] || ""}
+                                      </div>
+                                    ),
+                                    style: {
+                                      paddingLeft: "60px",
+                                      height: "40px",
+                                    },
+                                  }}
+                                  sx={{
+                                    "& .MuiInputBase-root": {
+                                      height: "40px",
+                                    },
+                                    "& .MuiInputLabel-root": {
+                                      transform:
+                                        "translate(14px, 10px) scale(1)",
+                                      "&.MuiInputLabel-shrink": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    },
+                                    "& .MuiInputLabel-root.Mui-focused": {
+                                      transform:
+                                        "translate(14px, -9px) scale(0.75)",
+                                    },
+                                  }}
+                                  fullWidth
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Credit Limit */}
+                        <div className="col-span-2">
+                          <div className="flex items-center gap-6">
+                            <span className="w-32 text-base font-medium text-gray-700">
+                              Credit Limit:
+                            </span>
+                            <div className="w-96">
+                              <TextField
+                                label="Credit Limit"
+                                value={otherDetails.creditLimit}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    creditLimit: e.target.value,
+                                  })
+                                }
+                                InputProps={{
+                                  startAdornment: (
+                                    <div
+                                      className="absolute left-0 pl-3 text-gray-700 bg-gray-50 border-r border-gray-300 flex items-center"
+                                      style={{
+                                        height: "100%",
+                                        fontWeight: "500",
+                                        minWidth: "50px",
+                                      }}
+                                    >
+                                      {currencyOptions
+                                        .find(
+                                          (option) =>
+                                            option.value ===
+                                            otherDetails.currency
+                                        )
+                                        ?.value.split(" ")[0] || ""}
+                                    </div>
+                                  ),
+                                  style: {
+                                    paddingLeft: "60px",
+                                    height: "40px",
+                                  },
+                                }}
+                                sx={{
+                                  "& .MuiInputBase-root": {
+                                    height: "40px",
+                                  },
+                                  "& .MuiInputLabel-root": {
+                                    transform: "translate(14px, 10px) scale(1)",
+                                    "&.MuiInputLabel-shrink": {
+                                      transform:
+                                        "translate(14px, -9px) scale(0.75)",
+                                    },
+                                  },
+                                  "& .MuiInputLabel-root.Mui-focused": {
+                                    transform:
+                                      "translate(14px, -9px) scale(0.75)",
+                                  },
+                                }}
+                                fullWidth
+                              />
+                            </div>
+                          </div>
+                        </div>
+
                         {/* Payment Terms */}
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
@@ -1292,129 +1509,129 @@ const AddVendorForm = () => {
 
                         {/* Documents Upload */}
                         <div className="col-span-2 mt-4">
-                                                  <div className="flex items-center gap-6">
-                                                    <span className="w-32 text-base font-medium text-gray-700">
-                                                      Documents:
-                                                    </span>
-                                                    <div className="flex-1">
-                                                      <input
-                                                        type="file"
-                                                        accept=".pdf,.jpg,.jpeg"
-                                                        multiple
-                                                        onChange={(e) => {
-                                                          const files = e.target.files;
-                                                          if (files) {
-                                                            // Filter for only PDF and JPEG files
-                                                            const validFiles = Array.from(files).filter(
-                                                              (file) =>
-                                                                file.type === "application/pdf" ||
-                                                                file.type === "image/jpeg"
-                                                            );
-                        
-                                                            if (validFiles.length !== files.length) {
-                                                              alert(
-                                                                "Only PDF and JPEG files are allowed"
-                                                              );
-                                                            }
-                        
-                                                            // Update selectedFiles with only valid files
-                                                            setSelectedFiles((prev) => [
-                                                              ...prev,
-                                                              ...validFiles,
-                                                            ]);
-                                                            handleImageUpload(e, setUploadFiles); // Your existing upload logic
-                                                          }
-                                                        }}
-                                                        className="hidden"
-                                                        ref={fileInputRef}
-                                                      />
-                                                      <button
-                                                        type="button"
-                                                        onClick={() => fileInputRef.current?.click()}
-                                                        className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
-                                                      >
-                                                        <svg
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                          className="h-5 w-5 text-gray-400"
-                                                          viewBox="0 0 20 20"
-                                                          fill="currentColor"
-                                                        >
-                                                          <path
-                                                            fillRule="evenodd"
-                                                            d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
-                                                            clipRule="evenodd"
-                                                          />
-                                                        </svg>
-                                                        <span>Upload Document</span>
-                                                      </button>
-                                                      <p className="text-sm text-gray-500 mt-1">
-                                                        You can upload multiple PDF and JPEG files
-                                                      </p>
-                                                    </div>
-                                                  </div>
-                                                  {selectedFiles.length > 0 && (
-                                                    <div className="mt-4">
-                                                      <h4 className="text-sm font-medium text-gray-700 mb-2">
-                                                        Selected Files:
-                                                      </h4>
-                                                      <div className="space-y-2">
-                                                        {selectedFiles.map((file, index) => (
-                                                          <div
-                                                            key={index}
-                                                            className="flex items-center justify-between bg-gray-50 p-2 rounded"
-                                                          >
-                                                            <span className="text-sm text-gray-600">
-                                                              {file.name}
-                                                            </span>
-                                                            <button
-                                                              type="button"
-                                                              onClick={() => handleRemoveFile(index)}
-                                                              className="text-red-500 hover:text-red-700"
-                                                            >
-                                                              <svg
-                                                                className="w-4 h-4"
-                                                                fill="currentColor"
-                                                                viewBox="0 0 20 20"
-                                                              >
-                                                                <path
-                                                                  fillRule="evenodd"
-                                                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                                  clipRule="evenodd"
-                                                                />
-                                                              </svg>
-                                                            </button>
-                                                          </div>
-                                                        ))}
-                                                      </div>
-                                                    </div>
-                                                  )}
-                                                  <div
-                                                    style={{ display: "flex", flexWrap: "wrap" }}
-                                                    className="gap-4 mt-4"
-                                                  >
-                                                    {otherDetails &&
-                                                      otherDetails.documents.length > 0 &&
-                                                      otherDetails.documents.map((image, index) => (
-                                                        <img
-                                                          key={index}
-                                                          style={{
-                                                            height: 100,
-                                                            width: 100,
-                                                            objectFit: "cover",
-                                                            border: "1px solid #ddd",
-                                                            borderRadius: "5px",
-                                                            marginTop: "10px",
-                                                          }}
-                                                          src={
-                                                            image?.includes("base64")
-                                                              ? image
-                                                              : generateFilePath(image)
-                                                          }
-                                                          alt={`Image Preview ${index + 1}`}
-                                                        />
-                                                      ))}
-                                                  </div>
-                                                </div>
+                          <div className="flex items-center gap-6">
+                            <span className="w-32 text-base font-medium text-gray-700">
+                              Documents:
+                            </span>
+                            <div className="flex-1">
+                              <input
+                                type="file"
+                                accept=".pdf,.jpg,.jpeg"
+                                multiple
+                                onChange={(e) => {
+                                  const files = e.target.files;
+                                  if (files) {
+                                    // Filter for only PDF and JPEG files
+                                    const validFiles = Array.from(files).filter(
+                                      (file) =>
+                                        file.type === "application/pdf" ||
+                                        file.type === "image/jpeg"
+                                    );
+
+                                    if (validFiles.length !== files.length) {
+                                      alert(
+                                        "Only PDF and JPEG files are allowed"
+                                      );
+                                    }
+
+                                    // Update selectedFiles with only valid files
+                                    setSelectedFiles((prev) => [
+                                      ...prev,
+                                      ...validFiles,
+                                    ]);
+                                    handleImageUpload(e, setUploadFiles); // Your existing upload logic
+                                  }
+                                }}
+                                className="hidden"
+                                ref={fileInputRef}
+                              />
+                              <button
+                                type="button"
+                                onClick={() => fileInputRef.current?.click()}
+                                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-5 w-5 text-gray-400"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                <span>Upload Document</span>
+                              </button>
+                              <p className="text-sm text-gray-500 mt-1">
+                                You can upload multiple PDF and JPEG files
+                              </p>
+                            </div>
+                          </div>
+                          {selectedFiles.length > 0 && (
+                            <div className="mt-4">
+                              <h4 className="text-sm font-medium text-gray-700 mb-2">
+                                Selected Files:
+                              </h4>
+                              <div className="space-y-2">
+                                {selectedFiles.map((file, index) => (
+                                  <div
+                                    key={index}
+                                    className="flex items-center justify-between bg-gray-50 p-2 rounded"
+                                  >
+                                    <span className="text-sm text-gray-600">
+                                      {file.name}
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleRemoveFile(index)}
+                                      className="text-red-500 hover:text-red-700"
+                                    >
+                                      <svg
+                                        className="w-4 h-4"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                      >
+                                        <path
+                                          fillRule="evenodd"
+                                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                          clipRule="evenodd"
+                                        />
+                                      </svg>
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          <div
+                            style={{ display: "flex", flexWrap: "wrap" }}
+                            className="gap-4 mt-4"
+                          >
+                            {otherDetails &&
+                              otherDetails.documents.length > 0 &&
+                              otherDetails.documents.map((image, index) => (
+                                <img
+                                  key={index}
+                                  style={{
+                                    height: 100,
+                                    width: 100,
+                                    objectFit: "cover",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "5px",
+                                    marginTop: "10px",
+                                  }}
+                                  src={
+                                    image?.includes("base64")
+                                      ? image
+                                      : generateFilePath(image)
+                                  }
+                                  alt={`Image Preview ${index + 1}`}
+                                />
+                              ))}
+                          </div>
+                        </div>
                         {/* <div>
                           <div style={{ display: "flex", flexWrap: "wrap" }}>
                             {otherDetails &&
@@ -1454,7 +1671,7 @@ const AddVendorForm = () => {
                       </div>
                     )}
 
-{activeTab === "Address" && (
+                    {activeTab === "Address" && (
                       <div className="grid grid-cols-2 gap-8">
                         {/* Billing Address */}
                         <div className="col-span-1">
@@ -1615,7 +1832,8 @@ const AddVendorForm = () => {
                                 value={
                                   countryOptions.find(
                                     (option) =>
-                                      option.value === billingAddress.billingCountry
+                                      option.value ===
+                                      billingAddress.billingCountry
                                   ) || null
                                 }
                                 onChange={(event, newValue) => {
@@ -1826,7 +2044,9 @@ const AddVendorForm = () => {
                                 sx={{ width: 600 }}
                                 value={
                                   stateOptions.find(
-                                    (option) => option.value === billingAddress.billingState
+                                    (option) =>
+                                      option.value ===
+                                      billingAddress.billingState
                                   ) || null
                                 }
                                 onChange={(event, newValue) => {
@@ -2308,7 +2528,8 @@ const AddVendorForm = () => {
                                 value={
                                   stateOptions.find(
                                     (option) =>
-                                      option.value === shippingAddress.shippingState
+                                      option.value ===
+                                      shippingAddress.shippingState
                                   ) || null
                                 }
                                 onChange={(event, newValue) => {
@@ -2431,6 +2652,9 @@ const AddVendorForm = () => {
                                   Work Phone
                                 </th>
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  Mobile
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
                                   Actions
                                 </th>
                               </tr>
@@ -2516,6 +2740,22 @@ const AddVendorForm = () => {
                                         handleContactPersonChange(
                                           index,
                                           "contactPersonWorkPhone",
+                                          e.target.value
+                                        )
+                                      }
+                                      className="w-full border rounded p-1 text-sm"
+                                    />
+                                  </td>
+
+                                  {/* Mobile Phone */}
+                                  <td className="px-4 py-2 border-b">
+                                    <input
+                                      type="tel"
+                                      value={person.contactPersonMobilePhone}
+                                      onChange={(e) =>
+                                        handleContactPersonChange(
+                                          index,
+                                          "contactPersonMobilePhone",
                                           e.target.value
                                         )
                                       }
