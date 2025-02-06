@@ -83,6 +83,12 @@ export interface ICustomer {
   shippingFaxNumber?: string;
   contactPersons: IContactPerson[];
   documentArray: string[];
+  websiteUrl: string;
+  department: string;
+  designation: string;
+  skype: string;
+  facebook: string;
+  twitter: string;
   // communicationChannels: string[];
 //   contactPersonsSalutation?: string;
 //   contactPersonsFirstName?: string;

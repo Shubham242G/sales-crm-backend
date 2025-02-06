@@ -9,7 +9,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import { generateFilePath } from "@/services/urls.service";
 import { Autocomplete, TextField } from "@mui/material";
-import { ChevronDown } from "lucide-react";
+import {
+  ChevronUp,
+  ChevronDown,
+  Globe,
+  Building2,
+  UserRound,
+  Twitter,
+  MessageCircle,
+  Facebook,
+} from "lucide-react";
 
 interface ICustomerForm {
   customerType: string;
@@ -54,6 +63,13 @@ interface ICustomerForm {
   shippingPinCode: string;
   shippingFaxNumber: string;
   documentArray: string[];
+  websiteUrl: string;
+  department: string;
+  designation: string;
+  skype: string;
+  facebook: string;
+  twitter: string;
+
   // communicationChannels: string[];
   // contactPersonsSalutation: string;
   // contactPersonsFirstName: string;
@@ -125,6 +141,12 @@ const AddCustomer = () => {
     shippingPinCode: "",
     shippingFaxNumber: "",
     documentArray: [],
+    websiteUrl: "",
+    department: "",
+    designation: "",
+    skype: "",
+    facebook: "",
+    twitter: "",
     // communicationChannels: [],
     // contactPersonsSalutation: "",
     // contactPersonsFirstName: "",
@@ -194,6 +216,7 @@ const AddCustomer = () => {
   //   setContactPersons(newContacts);
   // };
 
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -272,6 +295,12 @@ const AddCustomer = () => {
         shippingPhoneNumber: apiData?.shippingPhoneNumber || "",
         shippingFaxNumber: apiData?.shippingFaxNumber || "",
         documentArray: apiData?.documentArray || [],
+        websiteUrl: apiData?.websiteUrl || "",
+        department: apiData?.department || "",
+        designation: apiData?.designation || "",
+        twitter: apiData?.twitter || "",
+        skype: apiData?.skype || "",
+        facebook: apiData?.facebook || "",
         // communicationChannels: apiData?.communicationChannels || [],
         // contactPersonsSalutation: apiData?.contactPersonsSalutation || "",
         // contactPersonsFirstName: apiData?.contactPersonsFirstName || "",
@@ -1855,6 +1884,200 @@ const AddCustomer = () => {
                               ))}
                           </div>
                         </div>
+                        {/* Add More Details Section */}
+                        <div className="mt-6">
+                          <button
+                            type="button"
+                            onClick={() => setIsExpanded(!isExpanded)}
+                            className="flex items-center gap-2 text-base font-medium text-blue-600 hover:text-blue-700"
+                          >
+                            {isExpanded ? (
+                              <>
+                                <ChevronUp className="w-5 h-5" />
+                                Hide More Details
+                              </>
+                            ) : (
+                              <>
+                                <ChevronDown className="w-5 h-5" />
+                                Add More Details
+                              </>
+                            )}
+                          </button>
+
+                          {isExpanded && (
+                            <div className="col-span-2 mt-8">
+                              <div className="space-y-8">
+                                {/* Website URL */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="websiteUrl"
+                                  >
+                                    Website URL:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Globe className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="websiteUrl"
+                                      type="text"
+                                      value={formData.websiteUrl}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          websiteUrl: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Website URL"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
+
+                                {/* Department */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="department"
+                                  >
+                                    Department:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Building2 className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="department"
+                                      type="text"
+                                      value={formData.department}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          department: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Department"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
+
+                                {/* Designation */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="designation"
+                                  >
+                                    Designation:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <UserRound className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="designation"
+                                      type="text"
+                                      value={formData.designation}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          designation: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Designation"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
+
+                                {/* Twitter */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="twitter"
+                                  >
+                                    Twitter:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Twitter className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="twitter"
+                                      type="text"
+                                      value={formData.twitter}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          twitter: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Twitter id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
+
+                                {/* Skype */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="skype"
+                                  >
+                                    Skype:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <MessageCircle className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="skype"
+                                      type="text"
+                                      value={formData.skype}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          skype: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter skype id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
+
+                                {/* Facebook */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="facebook"
+                                  >
+                                    Facebook:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Facebook className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="facebook"
+                                      type="text"
+                                      value={formData.facebook}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          facebook: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter facebook id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     )}
 
@@ -2941,7 +3164,7 @@ const AddCustomer = () => {
                                       onChange={(e) =>
                                         handleContactPersonChange(
                                           index,
-                                          "mobilePhone",
+                                          "workPhone",
                                           e.target.value
                                         )
                                       }

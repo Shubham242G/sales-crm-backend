@@ -47,6 +47,12 @@ interface IOtherDetails {
   portalLanguage: string;
   documents: string[];
   addOtherDetails: [];
+  websiteUrl: string;
+  department: string;
+  designation: string;
+  skype: string;
+  facebook: string;
+  twitter: string;
 }
 
 interface IBillingAdress {
@@ -129,6 +135,12 @@ const AddVendorForm = () => {
     portalLanguage: "",
     documents: [],
     addOtherDetails: [],
+    websiteUrl: "",
+    department: "",
+    designation: "",
+    skype: "",
+    facebook: "",
+    twitter: "",
   });
 
   const [billingAddress, setBillingAddress] = useState<IBillingAdress>({
@@ -230,6 +242,12 @@ const AddVendorForm = () => {
         enablePortal: apiData?.otherDetails?.enablePortal,
         portalLanguage: apiData?.otherDetails?.portalLanguage,
         documents: apiData?.otherDetails?.documents,
+        websiteUrl: apiData?.otherDetails?.websiteUrl,
+        department: apiData?.otherDetails?.department,
+        designation: apiData?.otherDetails?.designation,
+        skype: apiData?.otherDetails?.skype,
+        facebook: apiData?.otherDetails?.facebook,
+        twitter: apiData?.otherDetails?.twitter,
         addOtherDetails: apiData?.otherDetails?.addOtherDetails,
       }));
 
