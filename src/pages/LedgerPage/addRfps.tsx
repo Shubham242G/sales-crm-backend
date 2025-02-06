@@ -2,6 +2,8 @@ import { toastError, toastSuccess } from "@/utils/toast";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAddRfp, useUpdateRfpById, useRfpById } from "@/services/rfp.service";
+import { useVendor } from "@/services/vendor.service";
+import Select from 'react-select';
 
 const AddRfpsForm = () => {
 
@@ -28,15 +30,33 @@ const AddRfpsForm = () => {
   const { mutateAsync: addRfp } = useAddRfp();
   const { mutateAsync: updateRfp } = useUpdateRfpById();
   const { data: rfpDataById, isLoading } = useRfpById(id || "");
+  const { data: vendorData } = useVendor();
+  const [vendorArr, setVendorArr] = useState<any>([]);
+  const [selectedVendors , setSelectedVendors] = useState<any>([]);
 
+  useEffect(() => {
+    // Prefill form when editing
+    if (rfpDataById && rfpDataById?.data) {
 
+      setFormData({
+        rfpId: rfpDataById?.data?.rfpId || "",
+        serviceType: rfpDataById?.data?.serviceType || [],
+        eventDate: rfpDataById?.data?.eventDate || "",
+        eventDetails: rfpDataById?.data?.eventDetails || "",
+        deadlineOfProposal: rfpDataById?.data?.deadlineOfProposal || "",
+        vendorList: rfpDataById?.data?.vendorList || [],
+        additionalInstructions: rfpDataById?.data?.additionalInstructions || "",
+      })
+    }
+
+  }, [rfpDataById]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
 
 
-      const obj = formData;
+      const obj = {...formData, vendorList:selectedVendors};
 
       if (id) {
 
@@ -44,7 +64,8 @@ const AddRfpsForm = () => {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/rfps")
-          
+          console.log(obj, "<<<<<<<check obj");
+          console.log("Thisssss---->",selectedVendors)
 
         }
       } else {
@@ -56,8 +77,9 @@ const AddRfpsForm = () => {
 
         }
 
-        console.log(obj, "<<<<<<<check obj");
+        
       }
+     
     } catch (error) {
       toastError(error);
     }
@@ -90,6 +112,10 @@ const AddRfpsForm = () => {
     }));
   };
 
+
+  const handleChange = (selected: string [] | null) => {
+    setFormData((prevData) => ({ ...prevData, vendorList: selected || [] }));
+  };
   // const handleSelectChange = (name: string, value: any) => {
   //   setFormData(prev => ({
   //     ...prev,
@@ -97,6 +123,20 @@ const AddRfpsForm = () => {
   //   }));
   // };
 
+  console.log(vendorData.data, "vendorData");
+  useEffect(() => {
+      if(vendorData && vendorData.data){
+        setVendorArr(vendorData.data.map((el: any) => ({
+          value: el._id,
+          label: el.vendor?.firstName + " " + el.vendor?.lastName
+        })));
+      }
+  },[vendorData])
+  const optionConvertor = (firstName: string, lastname: string) => {
+
+    console.log("firstname", firstName, "lastname", lastname);
+    return `${firstName} ${lastname}`
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -202,17 +242,19 @@ const AddRfpsForm = () => {
           </div>
 
           {/* Vendor List */}
-          <div className="mb-4">
+          <div className="w-96">
+
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Vendor List
             </label>
-            <input
-              name={"vendorList"}
-              value={formData.vendorList}
-              onChange={handleInputChange}
-              type="text"
-              className="w-full border border-gray-300 rounded-md p-2"
-              placeholder="Enter vendor name"
+            <Select
+                className="w-full border "
+                isMulti
+                // defaultValue={selectedOption}
+                value={selectedVendors}
+                options={vendorArr}
+                onChange={(val)=>setSelectedVendors(val)}
+        
             />
           </div>
 

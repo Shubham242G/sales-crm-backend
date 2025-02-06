@@ -134,7 +134,7 @@ function EnquiryLIst() {
       name: "Customer Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row ? console.log(row, "check row") : row.nameObj.label}</h6>
+          <h6>{row.firstName+ " " + row.lastName}</h6>
         </div>
       ),
       width: "13%",

@@ -89,6 +89,9 @@ const AddEnquiryForm = () => {
   const [nameObj, setNameObj] = useState<ReactSelectFormat | null>(null);
 
   const [companyName, setCompanyName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [salutation, setSalutation] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [enquiryType, setEnquiryType] = useState("");
@@ -104,6 +107,13 @@ const AddEnquiryForm = () => {
     { value: "business", label: "Business" },
     { value: "resort", label: "Resort" },
   ];
+
+  const salutationOptions = [
+    { value: "Mr", label: "Mr" },
+    { value: "Ms", label: "Ms" },
+    { value: "Mrs", label: "Mrs" },
+  ];
+
   const [occupancy, setOccupancy] = useState<string[]>([]);
   // const occupancyOptions = [
   //   { value: "single occupancy", label: "Single Occupancy" },
@@ -444,12 +454,12 @@ const AddEnquiryForm = () => {
         functionType: eventSetup.functionType || "",
         setupRequired: eventSetup.setupRequired || "",
         eventDates: eventSetup.eventDates.map((date: any) => ({
-          startDate: moment(date.startDate).format("YYYY-MM-DD"),
-          endDate: moment(date.endDate).format("YYYY-MM-DD"),
+          startDate: moment(date?.startDate).format("YYYY-MM-DD"),
+          endDate: moment(date?.endDate).format("YYYY-MM-DD"),
         })),
 
-        eventStartDate: eventSetup.eventStartDate || "",
-        eventEndDate: eventSetup.eventEndDate || "",
+        eventStartDate: eventSetup?.eventStartDate || "",
+        eventEndDate: eventSetup?.eventEndDate || "",
       });
       setBanquet(enquiryDataById?.data?.banquet);
       setRoom([...enquiryDataById?.data?.room]);
@@ -476,6 +486,10 @@ const AddEnquiryForm = () => {
       setCheckOut(enquiryDataById?.data?.checkOut);
       setLevelOfEnquiry(enquiryDataById?.data?.levelOfEnquiry);
       setEventSetup(enquiryDataById?.data?.eventSetup);
+      setFirstName(enquiryDataById?.data?.firstName);
+      setLastName(enquiryDataById?.data?.lastName);
+      setSalutation(enquiryDataById?.data?.salutation);
+
 
       setCab(enquiryDataById?.data?.cab);
       //  setUser(enquiryDataById?.data)
@@ -497,7 +511,9 @@ const AddEnquiryForm = () => {
       const { eventStartDate, eventEndDate, ...restEventSetup } = eventSetup;
 
       let obj = {
-        name: nameObj?.label,
+        salutation: salutation,
+        firstName: firstName,
+        lastName: lastName,
         phone: phone,
         email: email,
         companyName: companyName,
@@ -519,8 +535,8 @@ const AddEnquiryForm = () => {
           ...restEventSetup, // Spread the rest of the eventSetup properties
           setupRequired: eventSetup.setupRequired || "",
           eventDates: eventSetup.eventDates.map((date) => ({
-            startDate: date.startDate,
-            endDate: date.endDate,
+            startDate: date?.startDate,
+            endDate: date?.endDate,
           })),
         },
         airTickets: airTickets,
@@ -533,7 +549,8 @@ const AddEnquiryForm = () => {
 
       // Log each section of the object in detail
       console.log("User Details:", {
-        name: obj.name,
+        firstName: obj.firstName,
+        lastName: obj.lastName,
         phone: obj.phone,
         email: obj.email,
         companyName: obj.companyName,
@@ -593,8 +610,8 @@ const AddEnquiryForm = () => {
       console.log("Event Dates:", obj.eventSetup.eventDates);
       obj.eventSetup.eventDates.forEach((date, index) => {
         console.log(`Event Date ${index + 1}:`, {
-          startDate: date.startDate,
-          endDate: date.endDate,
+          startDate: date?.startDate,
+          endDate: date?.endDate,
         });
       });
 
@@ -667,6 +684,9 @@ const AddEnquiryForm = () => {
     { label: "Hatchback", value: "hatchback" },
     { label: "Luxury", value: "luxury" },
   ];
+  const handleSelectChange = (name: string, value: string) => {
+    setSalutation(value);
+  };
 
   // const nameOptions =
   //   contact?.data &&
@@ -687,17 +707,46 @@ const AddEnquiryForm = () => {
         <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+            <select onChange={(val) => handleSelectChange("salutation", val.target.value)} value={salutation} className="border border-gray-300 rounded-md mt-6 px-4 py-2 w-20 mt-1">
+              {salutationOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+
+            {/* FirstName */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Client Name
+                First Name
               </label>
-
-              <Select
-                options={nameOptions}
-                value={nameObj}
-                onChange={(e) => setNameObj(e)}
+              <input
+                type="text"
+                name="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First Name"
+                className="w-full border border-gray-300 rounded-md p-2"
               />
             </div>
+
+             {/* LastName */}
+             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Last Name
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Last Name"
+                className="w-full border border-gray-300 rounded-md p-2"
+              />
+            </div>
+
+            {/* Company Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Company Name
@@ -1609,19 +1658,19 @@ const AddEnquiryForm = () => {
                               }}
                             />
                           )}
-                          // sx={{
-                          //   "& .MuiAutocomplete-inputRoot": {
-                          //     padding: "1px 4px", // Reduced padding
-                          //     minHeight: "32px", // Reduced height
-                          //   },
-                          //   "& .MuiAutocomplete-listbox": {
-                          //     maxHeight: "120px", // Reduced dropdown height
-                          //     fontSize: "14px",
-                          //     "& li": {
-                          //       padding: "4px 8px", // Reduced option padding
-                          //     },
-                          //   },
-                          // }}
+                        // sx={{
+                        //   "& .MuiAutocomplete-inputRoot": {
+                        //     padding: "1px 4px", // Reduced padding
+                        //     minHeight: "32px", // Reduced height
+                        //   },
+                        //   "& .MuiAutocomplete-listbox": {
+                        //     maxHeight: "120px", // Reduced dropdown height
+                        //     fontSize: "14px",
+                        //     "& li": {
+                        //       padding: "4px 8px", // Reduced option padding
+                        //     },
+                        //   },
+                        // }}
                         />
                       </td>
                     )}
@@ -1668,19 +1717,19 @@ const AddEnquiryForm = () => {
                               }}
                             />
                           )}
-                          // sx={{
-                          //   "& .MuiAutocomplete-inputRoot": {
-                          //     padding: "1px 4px", // Reduced padding
-                          //     minHeight: "32px", // Reduced height
-                          //   },
-                          //   "& .MuiAutocomplete-listbox": {
-                          //     maxHeight: "120px", // Reduced dropdown height
-                          //     fontSize: "14px",
-                          //     "& li": {
-                          //       padding: "4px 8px", // Reduced option padding
-                          //     },
-                          //   },
-                          // }}
+                        // sx={{
+                        //   "& .MuiAutocomplete-inputRoot": {
+                        //     padding: "1px 4px", // Reduced padding
+                        //     minHeight: "32px", // Reduced height
+                        //   },
+                        //   "& .MuiAutocomplete-listbox": {
+                        //     maxHeight: "120px", // Reduced dropdown height
+                        //     fontSize: "14px",
+                        //     "& li": {
+                        //       padding: "4px 8px", // Reduced option padding
+                        //     },
+                        //   },
+                        // }}
                         />
                       </td>
                     )}
@@ -1730,17 +1779,17 @@ const AddEnquiryForm = () => {
                             {...params}
                             className="w-full"
                             variant="outlined"
-                            // sx={{
-                            //   "& .MuiInputLabel-root": {
-                            //     left: "50%",
-                            //     transform: "translate(-50%, -50%)",
-                            //     "&.MuiInputLabel-shrink": {
-                            //       transform:
-                            //         "translate(-50%, -50%) scale(0.75)",
-                            //       transformOrigin: "center top",
-                            //     },
-                            //   },
-                            // }}
+                          // sx={{
+                          //   "& .MuiInputLabel-root": {
+                          //     left: "50%",
+                          //     transform: "translate(-50%, -50%)",
+                          //     "&.MuiInputLabel-shrink": {
+                          //       transform:
+                          //         "translate(-50%, -50%) scale(0.75)",
+                          //       transformOrigin: "center top",
+                          //     },
+                          //   },
+                          // }}
                           />
                         )}
                         sx={{

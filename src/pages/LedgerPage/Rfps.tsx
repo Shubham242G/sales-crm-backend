@@ -7,6 +7,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 
 
+
 import { useRfp, usedeleteRfpById, useAddRfp, useUpdateRfpById } from "@/services/rfp.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 
@@ -121,10 +122,10 @@ function CustomerLedger() {
 
   const columns = [
     {
-      name: "Service Type",
+      name: "RFPID",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.serviceType}</h6>
+          <h6>{row.rfpId}</h6>
         </div>
       ),
       width: "35%",
@@ -165,7 +166,7 @@ function CustomerLedger() {
     // },
 
     {
-      name: "Service",
+      name: "Services",
       selector: (row: any) => (
         <>
           <div className="flex justify-around">
