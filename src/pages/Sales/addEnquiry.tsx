@@ -174,7 +174,6 @@ const AddEnquiryForm = () => {
     eventEndDate: "",
   });
 
-  // State for Air Tickets
   const [airTickets, setAirTickets] = useState<AirTickets>({
     tripType: "",
     numberOfPassengers: "",
@@ -183,6 +182,9 @@ const AddEnquiryForm = () => {
     departureDate: "",
     returnDate: "",
   });
+
+  const [isEventSetupVisible, setIsEventSetupVisible] = useState(false);
+  const [isAirTicketVisible, setIsAirTicketVisible] = useState(false);
 
   const { id } = useParams();
   const { data: enquiryDataById, isLoading } = useEnquiryById(id || "");
@@ -356,7 +358,7 @@ const AddEnquiryForm = () => {
     }));
   };
 
-  const handleAirTicketChange = (field: any, value: string) => {
+  const handleAirTicketChange = (field: keyof AirTickets, value: string) => {
     setAirTickets((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -368,19 +370,15 @@ const AddEnquiryForm = () => {
 
   const handleDateChange = (
     index: number,
-    field: keyof EventDates, // Ensures that field is either "startDate" or "endDate"
-    value: string // Assuming value is a string (you can adjust it based on your requirements)
+    field: keyof EventSetup["eventDates"][0], // Ensures that field is either "startDate" or "endDate"
+    value: string
   ): void => {
-    // Create a copy of the eventDates array
     const updatedDates = [...eventSetup.eventDates];
-
-    // Update the specific field for the specified index
     updatedDates[index] = {
-      ...updatedDates[index], // Copy the existing object at the index
-      [field]: value, // Update only the field that is passed
+      ...updatedDates[index],
+      [field]: value,
     };
 
-    // Update the state with the new array
     setEventSetup((prevState) => ({
       ...prevState,
       eventDates: updatedDates,
@@ -1120,9 +1118,28 @@ const AddEnquiryForm = () => {
               <button
                 type="button"
                 onClick={() => {
-                  if (banquet?.length > 0) {
-                    const firstRow = banquet[0];
-                    setBanquet(banquet.map(() => ({ ...firstRow })));
+                  if (room?.length > 0) {
+                    const filledRow = room.find(
+                      (row) =>
+                        (row.noOfRooms && parseInt(row.noOfRooms) > 0) ||
+                        row.roomCategory ||
+                        row.occupancy ||
+                        (row.mealPlan && row.mealPlan.length > 0)
+                    );
+                    if (filledRow) {
+                      setRoom(
+                        room.map((originalRow) => ({
+                          ...filledRow,
+                          date: originalRow.date,
+                        }))
+                      );
+                    } else {
+                      alert(
+                        "Please fill in at least one row before applying to all days."
+                      );
+                    }
+                  } else {
+                    alert("No room data available.");
                   }
                 }}
                 className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
@@ -1139,7 +1156,9 @@ const AddEnquiryForm = () => {
               <table className="table-auto w-full border-collapse border border-gray-300">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="border border-gray-300 px-4 py-2">Date</th>
+                    <th className="border border-gray-300 px-4 py-2 w-32">
+                      Date
+                    </th>
                     <th className="border border-gray-300 px-4 py-2">
                       Session
                     </th>
@@ -1163,8 +1182,8 @@ const AddEnquiryForm = () => {
                 <tbody>
                   {banquet.map((row, index) => (
                     <tr key={index} className="even:bg-gray-50">
-                      <td className="border border-gray-300 px-4 py-2">
-                        {row.date}
+                      <td className="border border-gray-300 px-4 py-2 w-32">
+                        {moment(row.date).format("YYYY-MM-DD")}
                       </td>
                       <td className="border border-gray-300 px-4 py-2">
                         <input
@@ -1270,8 +1289,29 @@ const AddEnquiryForm = () => {
                 type="button"
                 onClick={() => {
                   if (banquet?.length > 0) {
-                    const firstRow = banquet[0];
-                    setBanquet(banquet.map(() => ({ ...firstRow })));
+                    const filledRow = banquet.find(
+                      (row) =>
+                        row.session ||
+                        row.seatingStyle ||
+                        row.avSetup ||
+                        row.menuType ||
+                        (row.minPax && parseInt(row.minPax) > 0) ||
+                        row.seatingRequired
+                    );
+                    if (filledRow) {
+                      setBanquet(
+                        banquet.map((originalRow) => ({
+                          ...filledRow,
+                          date: originalRow.date,
+                        }))
+                      );
+                    } else {
+                      alert(
+                        "Please fill in at least one row before applying to all days."
+                      );
+                    }
+                  } else {
+                    alert("No banquet data available.");
                   }
                 }}
                 className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
@@ -1281,57 +1321,77 @@ const AddEnquiryForm = () => {
             </div>
           )}
 
+          {/* Checkboxes to toggle visibility */}
+          <div className="mb-4 mt-8">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={isEventSetupVisible}
+                onChange={() => setIsEventSetupVisible(!isEventSetupVisible)}
+                className="form-checkbox"
+              />
+              <span className="ml-2">Event Setup</span>
+            </label>
+            <label className="inline-flex items-center ml-4">
+              <input
+                type="checkbox"
+                checked={isAirTicketVisible}
+                onChange={() => setIsAirTicketVisible(!isAirTicketVisible)}
+                className="form-checkbox"
+              />
+              <span className="ml-2">Air Ticket</span>
+            </label>
+          </div>
+
           {/* Event Setup */}
-          <div className="border rounded-lg mt-8 p-6 shadow">
-            <h2 className="text-lg font-bold mb-4">Event Setup</h2>
+          {isEventSetupVisible && (
+            <div className="border rounded-lg mt-8 p-6 shadow">
+              <h2 className="text-lg font-bold mb-4">Event Setup</h2>
 
-            <div className="grid grid-cols-2 gap-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Function Type
-              </label>
-              <select
-                name={"functionType"}
-                value={eventSetup?.functionType}
-                onChange={(e) =>
-                  setEventSetup({ ...eventSetup, functionType: e.target.value })
-                }
-                className="border border-gray-300 p-2 rounded-md w-full"
-              >
-                <option value="">Select function type</option>
-                <option value="Wedding">Wedding</option>
-                <option value="Corporate Event">Corporate Event</option>
-                <option value="Birthday Party">Birthday Party</option>
-              </select>
-            </div>
+              <div className="grid grid-cols-2 gap-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Function Type
+                </label>
+                <select
+                  name="functionType"
+                  value={eventSetup.functionType}
+                  onChange={(e) =>
+                    handleEventDetailChange("functionType", e.target.value)
+                  }
+                  className="border border-gray-300 p-2 rounded-md w-full"
+                >
+                  <option value="">Select function type</option>
+                  <option value="Wedding">Wedding</option>
+                  <option value="Corporate Event">Corporate Event</option>
+                  <option value="Birthday Party">Birthday Party</option>
+                </select>
+              </div>
 
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Setup Required
-              </label>
-              <select
-                value={eventSetup?.setupRequired || ""} // Ensure a fallback value is provided
-                onChange={(e) =>
-                  handleEventDetailChange("setupRequired", e.target.value)
-                }
-                className="border border-gray-300 p-2 rounded-md w-full"
-              >
-                <option value="">Select required (yes / no)</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Setup Required
+                </label>
+                <select
+                  value={eventSetup.setupRequired || ""}
+                  onChange={(e) =>
+                    handleEventDetailChange("setupRequired", e.target.value)
+                  }
+                  className="border border-gray-300 p-2 rounded-md w-full"
+                >
+                  <option value="">Select required (yes / no)</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
 
-            {eventSetup &&
-              eventSetup.eventDates &&
-              eventSetup?.eventDates?.length > 0 &&
-              eventSetup.eventDates.map((date, index) => (
+              {eventSetup.eventDates.map((date, index) => (
                 <div key={index} className="grid grid-cols-2 gap-4 mt-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Event Start Date
                   </label>
                   <input
                     type="date"
-                    value={moment(date?.startDate).format("YYYY-MM-DD")}
+                    value={moment(date.startDate).format("YYYY-MM-DD")}
                     onChange={(e) =>
                       handleDateChange(index, "startDate", e.target.value)
                     }
@@ -1343,7 +1403,7 @@ const AddEnquiryForm = () => {
                   </label>
                   <input
                     type="date"
-                    value={moment(date?.endDate).format("YYYY-MM-DD")}
+                    value={moment(date.endDate).format("YYYY-MM-DD")}
                     onChange={(e) =>
                       handleDateChange(index, "endDate", e.target.value)
                     }
@@ -1351,122 +1411,130 @@ const AddEnquiryForm = () => {
                   />
                 </div>
               ))}
-            <button
-              type="button"
-              onClick={addEventDate}
-              className="bg-orange-500 text-white px-4 py-2 mt-4 rounded hover:bg-orange-600"
-            >
-              Add Date
-            </button>
-          </div>
+
+              <button
+                type="button"
+                onClick={addEventDate}
+                className="bg-orange-500 text-white px-4 py-2 mt-4 rounded hover:bg-orange-600"
+              >
+                Add Date
+              </button>
+            </div>
+          )}
 
           {/* Air Ticket */}
-          <div className="border rounded-lg mt-8 p-6 shadow">
-            <h2 className="text-lg font-bold mb-4">Air Ticket</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Trip type
-                </label>
-                <select
-                  value={airTickets?.tripType}
-                  onChange={(e) =>
-                    handleAirTicketChange("tripType", e.target.value)
-                  }
-                  className="border border-gray-300 p-2 rounded-md w-full"
-                >
-                  <option value="">Select trip type</option>
-                  <option value="One Way">One Way</option>
-                  <option value="Round Trip">Round Trip</option>
-                </select>
-              </div>
+          {isAirTicketVisible && (
+            <div className="border rounded-lg mt-8 p-6 shadow">
+              <h2 className="text-lg font-bold mb-4">Air Ticket</h2>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Number of passengers
-                </label>
-                <input
-                  type="number"
-                  placeholder="Select passengers"
-                  value={airTickets?.numberOfPassengers}
-                  onChange={(e) =>
-                    handleAirTicketChange("numberOfPassengers", e.target.value)
-                  }
-                  className="border border-gray-300 p-2 rounded-md w-full"
-                />
-              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Trip type
+                  </label>
+                  <select
+                    value={airTickets.tripType}
+                    onChange={(e) =>
+                      handleAirTicketChange("tripType", e.target.value)
+                    }
+                    className="border border-gray-300 p-2 rounded-md w-full"
+                  >
+                    <option value="">Select trip type</option>
+                    <option value="One Way">One Way</option>
+                    <option value="Round Trip">Round Trip</option>
+                  </select>
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  From City
-                </label>
-                <select
-                  value={airTickets?.fromCity}
-                  onChange={(e) =>
-                    handleAirTicketChange("fromCity", e.target.value)
-                  }
-                  className="border border-gray-300 p-2 rounded-md w-full"
-                >
-                  <option value="">Select From City</option>
-                  {cityOptions.map((city) => (
-                    <option key={city.value} value={city.value}>
-                      {city.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Number of passengers
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Select passengers"
+                    value={airTickets.numberOfPassengers}
+                    onChange={(e) =>
+                      handleAirTicketChange(
+                        "numberOfPassengers",
+                        e.target.value
+                      )
+                    }
+                    className="border border-gray-300 p-2 rounded-md w-full"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  To City
-                </label>
-                <select
-                  value={airTickets?.toCity}
-                  onChange={(e) =>
-                    handleAirTicketChange("toCity", e.target.value)
-                  }
-                  className="border border-gray-300 p-2 rounded-md w-full"
-                >
-                  <option value="">Select To City</option>
-                  {cityOptions.map((city) => (
-                    <option key={city.value} value={city.value}>
-                      {city.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    From City
+                  </label>
+                  <select
+                    value={airTickets.fromCity}
+                    onChange={(e) =>
+                      handleAirTicketChange("fromCity", e.target.value)
+                    }
+                    className="border border-gray-300 p-2 rounded-md w-full"
+                  >
+                    <option value="">Select From City</option>
+                    {cityOptions.map((city) => (
+                      <option key={city.value} value={city.value}>
+                        {city.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Departure date
-                </label>
-                <input
-                  type="date"
-                  placeholder="Select departure date"
-                  value={moment(airTickets?.departureDate).format("YYYY-MM-DD")}
-                  onChange={(e) =>
-                    handleAirTicketChange("departureDate", e.target.value)
-                  }
-                  className="border border-gray-300 p-2 rounded-md w-full"
-                />
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    To City
+                  </label>
+                  <select
+                    value={airTickets.toCity}
+                    onChange={(e) =>
+                      handleAirTicketChange("toCity", e.target.value)
+                    }
+                    className="border border-gray-300 p-2 rounded-md w-full"
+                  >
+                    <option value="">Select To City</option>
+                    {cityOptions.map((city) => (
+                      <option key={city.value} value={city.value}>
+                        {city.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Return date
-                </label>
-                <input
-                  type="date"
-                  placeholder="Select return date"
-                  value={moment(airTickets?.returnDate).format("YYYY-MM-DD")}
-                  onChange={(e) =>
-                    handleAirTicketChange("returnDate", e.target.value)
-                  }
-                  className="border border-gray-300 p-2 rounded-md w-full"
-                />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Departure date
+                  </label>
+                  <input
+                    type="date"
+                    value={moment(airTickets.departureDate).format(
+                      "YYYY-MM-DD"
+                    )}
+                    onChange={(e) =>
+                      handleAirTicketChange("departureDate", e.target.value)
+                    }
+                    className="border border-gray-300 p-2 rounded-md w-full"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Return date
+                  </label>
+                  <input
+                    type="date"
+                    value={moment(airTickets.returnDate).format("YYYY-MM-DD")}
+                    onChange={(e) =>
+                      handleAirTicketChange("returnDate", e.target.value)
+                    }
+                    className="border border-gray-300 p-2 rounded-md w-full"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Cab Table */}
 

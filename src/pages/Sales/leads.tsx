@@ -6,12 +6,18 @@ import { useState, useMemo } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
-import { useLeadById, useAddLead, useUpdateLeadById, usedeleteLeadById, useLead, convertToContact } from "@/services/lead.service";
+import {
+  useLeadById,
+  useAddLead,
+  useUpdateLeadById,
+  usedeleteLeadById,
+  useLead,
+  convertToContact,
+} from "@/services/lead.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 
 function Leads() {
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
@@ -26,39 +32,30 @@ function Leads() {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
-  const searchObj = useMemo(() => ({
-    ...(query && { query }),
-    pageIndex: pageIndex - 1,
-    pageSize
-  }), [pageIndex, pageSize, query]);
+  const searchObj = useMemo(
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
 
   const { data: LeadData } = useLead(searchObj);
-  console.log(LeadData, "check leadData")
+  console.log(LeadData, "check leadData");
   const { mutateAsync: deleteLead } = usedeleteLeadById();
   // const { mutateAsync: convert } = convertToContact();
 
-
-
   const handleConvertEnquery = async (id: any) => {
-
     try {
-        const { data: res } = await convertToContact(id)
-        if (res) {
-            toastSuccess(res.message)
-
-        }
-
+      const { data: res } = await convertToContact(id);
+      if (res) {
+        toastSuccess(res.message);
+      }
+    } catch (error) {
+      toastError(error);
     }
-    catch (error) {
-        toastError(error)
-    }
-
-
-}
-
-
-
-
+  };
 
   const handleDelete = async (id: string) => {
     try {
@@ -74,8 +71,6 @@ function Leads() {
     }
   };
 
-
-
   const columns = [
     {
       name: "Contact Name",
@@ -84,108 +79,75 @@ function Leads() {
           <h6>{row.firstName + " " + row.lastName}</h6>
         </div>
       ),
-      width: "20%",
+      width: "18%",
     },
-
     {
       name: "Contact Owner",
-      selector: (row: any) => (
-        <div className="flex gap-1">
-          {/* <FaMobileScreenButton className=" text-[#938d8d]" /> */}
-          {row.ownerName}
-        </div>
-      ),
-      width: "20%",
+      selector: (row: any) => <div className="flex gap-1">{row.ownerName}</div>,
+      width: "12%",
     },
     {
       name: "Mobile Number",
       selector: (row: any) => (
         <div className="flex gap-1">
-          <FaMobileScreenButton className=" text-[#938d8d]" />
+          <FaMobileScreenButton className="text-[#938d8d]" />
           {row.phone}
         </div>
       ),
-      width: "10%",
+      width: "15%",
     },
     {
       name: "Company Name",
-      selector: (row: any) => (
-        <div className="flex gap-1">
-          {/* <FaMobileScreenButton className=" text-[#938d8d]" /> */}
-          {row.company}
-        </div>
-      ),
-      width: "20%",
+      selector: (row: any) => <div className="flex gap-1">{row.company}</div>,
+      width: "18%",
     },
-
     {
       name: "Email",
       selector: (row: any) => row.email,
-      width: "30%",
+      width: "15%",
     },
     {
-      name :"convertor", 
-      width:"10%",
+      name: "Convertor",
+      width: "10%",
       selector: (row: any) => (
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => handleConvertEnquery(row._id)}
-            className=" text-black-500 text-lg p-[6px]"
+            className="text-black-500 text-lg p-[6px]"
           >
-         convert
+            Convert
           </button>
-       
         </div>
       ),
     },
     {
-      name:"action",
-      width:"10%",
+      name: "Edit",
+      width: "5%",
       selector: (row: any) => (
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(`/lead/${row._id}`)}
-            className=" text-black-500 text-lg p-[6px]"
-          >
-            <FaEye />
-          </button>
-          <button
-            type="button"
-            onClick={() => handleDelete(row._id)}
-            className=" p-[6px] text-black-400 text-lg"
-          >
-            <RiDeleteBin6Line />
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => navigate(`/add-leads/${row._id}`)}
+          className="text-black-500 text-lg p-[6px]"
+        >
+          <FaEye />
+        </button>
       ),
-    }
-    // {
-    //   name: "Action",
-    //   width: "10%",
-    //   selector: () => (
-    //     <div className="flex items-center gap-3">
-    //       <button
-    //         type="button"
-    //         onClick={handleLedgerDetailsModal}
-    //         className=" text-black-500 text-lg p-[6px]"
-    //       >
-    //         <FaEye />
-    //       </button>
-    //       <Link
-    //         to="/update-ledger/id=1234"
-    //         className=" p-[6px] text-black-400 text-lg"
-    //       >
-    //         <RiDeleteBin6Line />
-    //       </Link>
-    //     </div>
-    //   ),
-    // },
+    },
+    {
+      name: "Delete",
+      width: "8%",
+      selector: (row: any) => (
+        <button
+          type="button"
+          onClick={() => handleDelete(row._id)}
+          className="p-[6px] text-black-400 text-lg"
+        >
+          <RiDeleteBin6Line />
+        </button>
+      ),
+    },
   ];
-
-  
-
 
   return (
     <>
@@ -205,9 +167,7 @@ function Leads() {
         <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
-            <h2 className="text-xl font-semibold text-gray-800">
-              Leads List
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-800">Leads List</h2>
 
             {/* Search and Buttons on the Right */}
             <div className="flex items-center justify-start gap-2">
@@ -218,7 +178,9 @@ function Leads() {
                   className="rounded-md w-[250px] border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                   placeholder="Search by contact name"
                 />
-                <div className="relative right-8"><IoSearchOutline /></div>
+                <div className="relative right-8">
+                  <IoSearchOutline />
+                </div>
               </div>
               {/* Buttons */}
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
@@ -228,7 +190,10 @@ function Leads() {
                 <FaFileExport /> Export
               </button> */}
 
-              <button onClick={() => navigate("/add-leads")} className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
+              <button
+                onClick={() => navigate("/add-leads")}
+                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+              >
                 <FaPlus />
                 <span>New Lead</span>
               </button>
@@ -240,13 +205,13 @@ function Leads() {
             columns={columns}
             loading={false}
             totalRows={LeadData?.total}
-          // loading={loading}
-          // totalRows={data.length}
-          // onChangePage={handlePageChange}
-          // onChangeRowsPerPage={handleRowsPerPageChange}
-          // pagination
-          // paginationPerPage={rowsPerPage}
-          // paginationRowsPerPageOptions={[5, 10, 20]}
+            // loading={loading}
+            // totalRows={data.length}
+            // onChangePage={handlePageChange}
+            // onChangeRowsPerPage={handleRowsPerPageChange}
+            // pagination
+            // paginationPerPage={rowsPerPage}
+            // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

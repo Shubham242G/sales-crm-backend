@@ -126,6 +126,7 @@ export default function AuthorizedRoutes() {
                         <Route path="/add-rfps" element={<AddRfpsForm />}></Route>
                         <Route path="/add-rfps/:id" element={<AddRfpsForm />}></Route>
                         <Route path="/add-leads" element={<AddLeadsForm />}></Route>
+                        <Route path="/add-leads/:id" element={<AddLeadsForm />}></Route>
                         <Route path="/view-rfps" element={<RfpsView />}></Route>
                         <Route path="/view-rfps" element={<RfpsView />}></Route>
                         <Route path="/view-quotesForCustomer" element={<QuotesForCustomerView />}></Route>
