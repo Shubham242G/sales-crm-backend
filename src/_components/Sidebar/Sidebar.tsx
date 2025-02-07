@@ -28,7 +28,14 @@ function Sidebar() {
       icon: ledger,
       activeIcon: ledgerw,
       isActive: false,
-      isArrow: false,
+      isArrow: true,
+
+      dropArr: [
+        {
+          dropHead: "Roles",
+          link: "roles",
+        },
+      ],
     },
     {
       mainlink: "/",

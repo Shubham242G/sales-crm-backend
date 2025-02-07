@@ -65,6 +65,8 @@ import AddEnquiry from "@/pages/Sales/addEnquiry";
 import AddPurchaseContact from "@/pages/LedgerPage/addPurchaseContacts";
 import VendorList from "../pages/LedgerPage/vendorList";
 import Admin from "@/pages/Admin/Admin";
+import Roles from "../pages/Admin/roles";
+import AddRoles from "@/pages/Admin/addRoles";
 
 export default function AuthorizedRoutes() {
   return (
@@ -78,6 +80,9 @@ export default function AuthorizedRoutes() {
           <Route path="/vendorList" element={<VendorList />}></Route>
           <Route path="/rfps" element={<Rfps />}></Route>
           <Route path="/leads" element={<Leads />}></Route>
+          <Route path="/roles" element={<Roles />}></Route>
+          <Route path="/add-role" element={<AddRoles />}></Route>
+          <Route path="/add-role/:id" element={<AddRoles />}></Route>
           <Route path="/category2" element={<AddCategory />}></Route>
           <Route path="/hotel" element={<HotelAdd />}></Route>
           <Route path="/hotel/:id" element={<HotelAdd />}></Route>
