@@ -1089,10 +1089,13 @@ const AddCustomer = () => {
                   </div>
                 </div>
 
+                {/* Separation Line */}
+                <hr className="my-6 border-gray-300 mt-4" />
+
                 {/* Tab Menu */}
                 <div className="mt-8">
                   <div className="border-b border-gray-200">
-                    <nav className="flex space-x-8">
+                    <nav className="flex space-x-8 ">
                       {["Other Details", "Address", "Contact Persons"].map(
                         (tab) => (
                           <button
