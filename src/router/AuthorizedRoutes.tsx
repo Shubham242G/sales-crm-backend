@@ -32,9 +32,9 @@ import UpdateProduct from "../pages/Stock/UpdateProduct";
 import SalesLedger from "../pages/LedgerPage/SalesLedger";
 import AddLedger from "../pages/LedgerPage/AddLedger";
 // import UpdateLedger from '../pages/LedgerPage/UpdateLedger'
-import Rfps from "../pages/LedgerPage/Rfps"
-import QuotesForVendors from "../pages/LedgerPage/quotesForVendors"
-import ConfirmedQuotes from "../pages/LedgerPage/confirmedQuotes"
+import Rfps from "../pages/LedgerPage/Rfps";
+import QuotesForVendors from "../pages/LedgerPage/quotesForVendors";
+import ConfirmedQuotes from "../pages/LedgerPage/confirmedQuotes";
 import AddVendorForm from "../pages/LedgerPage/addVendor";
 import ConfirmedQuotesView from "../pages/LedgerPage/confirmedQutesView";
 import AddRfpsForm from "../pages/LedgerPage/addRfps";
@@ -66,124 +66,169 @@ import AddPurchaseContact from "@/pages/LedgerPage/addPurchaseContacts";
 import VendorList from "../pages/LedgerPage/vendorList";
 import Admin from "@/pages/Admin/Admin";
 
-
-
 export default function AuthorizedRoutes() {
-    return (
-        <>
-                <Routes>
-                    <Route element={<Layout />}>
-                        {/* <Route path="/login" element={<Dashboard />}></Route>
+  return (
+    <>
+      <Routes>
+        <Route element={<Layout />}>
+          {/* <Route path="/login" element={<Dashboard />}></Route>
                         <Route path="/home" element={<Dashboard />}></Route> */}
-                        <Route path="/" element={<Dashboard />}></Route>
-                        <Route path="/admin" element={<Admin />}></Route>
-                        <Route path="/vendorList" element={<VendorList />}></Route>
-                        <Route path="/rfps" element={<Rfps />}></Route>
-                        <Route path="/leads" element={<Leads />}></Route>
-                        <Route path="/category2" element={<AddCategory />}></Route>
-                        <Route path="/hotel" element={<HotelAdd />}></Route>
-                        <Route path="/hotel/:id" element={<HotelAdd />}></Route>
-                        <Route path="/banquet" element={<BanquetAdd />}></Route>
-                        <Route path="/banquet/:id" element={<BanquetAdd />}></Route>
-                        <Route path="/BanquetList" element={<BanquetList />}></Route>
-                        <Route path="/resturant" element={<ResturantAdd />}></Route>
-                        <Route path="/resturant/:id" element={<ResturantAdd />}></Route>
-                        <Route path="/ResturantList" element={<ResturantList />}></Route>
-                        <Route path="/category2/:id" element={<AddCategory />}></Route>
-                        <Route path="/CategoryList" element={<CategoryList />}></Route>
-                        <Route path="/HotelList" element={<HotelList />}></Route>
-                        <Route path="/quotesForCustomer" element={<QuotesForCustomer />}></Route>
-                        <Route path="/quotesForCustomerView" element={<QuotesForCustomerView />}></Route>
-                        <Route path="/quotesForCustomerView/:id" element={<QuotesForCustomer />}></Route>
-                        <Route path="/DailyActivityReport" element={<DailyActivityReport />}></Route>
-                        <Route path="/TaskManagement" element={<TaskManagement />}></Route>
-                        <Route path="/add-TaskManagement" element={<AddTaskManagement />}></Route>
-                        <Route path="/add-DailyActivityReport" element={<AddDailyActivityReport />}></Route>
-                        <Route path="/customer-sales" element={<CustomerSales />}></Route>
-                        
+          <Route path="/" element={<Dashboard />}></Route>
+          <Route path="/admin" element={<Admin />}></Route>
+          <Route path="/vendorList" element={<VendorList />}></Route>
+          <Route path="/rfps" element={<Rfps />}></Route>
+          <Route path="/leads" element={<Leads />}></Route>
+          <Route path="/category2" element={<AddCategory />}></Route>
+          <Route path="/hotel" element={<HotelAdd />}></Route>
+          <Route path="/hotel/:id" element={<HotelAdd />}></Route>
+          <Route path="/banquet" element={<BanquetAdd />}></Route>
+          <Route path="/banquet/:id" element={<BanquetAdd />}></Route>
+          <Route path="/BanquetList" element={<BanquetList />}></Route>
+          <Route path="/resturant" element={<ResturantAdd />}></Route>
+          <Route path="/resturant/:id" element={<ResturantAdd />}></Route>
+          <Route path="/ResturantList" element={<ResturantList />}></Route>
+          <Route path="/category2/:id" element={<AddCategory />}></Route>
+          <Route path="/CategoryList" element={<CategoryList />}></Route>
+          <Route path="/HotelList" element={<HotelList />}></Route>
+          <Route
+            path="/quotesForCustomer"
+            element={<QuotesForCustomer />}
+          ></Route>
+          <Route
+            path="/quotesForCustomerView"
+            element={<QuotesForCustomerView />}
+          ></Route>
+          <Route
+            path="/quotesForCustomerView/:id"
+            element={<QuotesForCustomer />}
+          ></Route>
+          <Route
+            path="/DailyActivityReport"
+            element={<DailyActivityReport />}
+          ></Route>
+          <Route path="/TaskManagement" element={<TaskManagement />}></Route>
+          <Route
+            path="/add-TaskManagement"
+            element={<AddTaskManagement />}
+          ></Route>
+          <Route
+            path="/add-TaskManagement/:id"
+            element={<AddTaskManagement />}
+          ></Route>
+          <Route
+            path="/add-DailyActivityReport"
+            element={<AddDailyActivityReport />}
+          ></Route>
+          <Route path="/customer-sales" element={<CustomerSales />}></Route>
 
+          <Route path="/enquiryList" element={<EnquiryLIst />}></Route>
+          <Route path="/addEnquiry" element={<AddEnquiry />}></Route>
+          <Route path="/addEnquiry/:id" element={<AddEnquiry />}></Route>
+          <Route
+            path="/quotesFromVendors"
+            element={<QuotesForVendors />}
+          ></Route>
+          <Route path="/confirmedQuotes" element={<ConfirmedQuotes />}></Route>
+          <Route path="/ledger-group" element={<LedgerGroup />}></Route>
+          <Route
+            path="/view-quotesFromVendor"
+            element={<QuotesForVendorsView />}
+          ></Route>
+          <Route path="/sales-ledger" element={<SalesLedger />}></Route>
+          <Route path="/add-ledger" element={<AddLedger />}></Route>
+          <Route path="/add-customer" element={<AddCustomer />}></Route>
+          <Route path="/add-customer/:id" element={<AddCustomer />}></Route>
+          <Route
+            path="/add-sales-contact"
+            element={<AddSalesContact />}
+          ></Route>
+          <Route
+            path="/add-purchase-contact"
+            element={<AddPurchaseContact />}
+          ></Route>
+          <Route
+            path="/add-purchase-contact/:id"
+            element={<AddPurchaseContact />}
+          ></Route>
+          <Route
+            path="/purchase-contact-view/"
+            element={<SalesContactView />}
+          ></Route>
 
-                        <Route path="/enquiryList" element={<EnquiryLIst />}></Route>
-                        <Route path="/addEnquiry" element={<AddEnquiry />}></Route>
-                        <Route path="/addEnquiry/:id" element={<AddEnquiry />}></Route>
-                        <Route path="/quotesFromVendors" element={<QuotesForVendors />}></Route>
-                        <Route path="/confirmedQuotes" element={<ConfirmedQuotes />}></Route>
-                        <Route path="/ledger-group" element={<LedgerGroup />}></Route>
-                        <Route path="/view-quotesFromVendor" element={<QuotesForVendorsView />}></Route>
-                        <Route path="/sales-ledger" element={<SalesLedger />}></Route>
-                        <Route path="/add-ledger" element={<AddLedger />}></Route>
-                        <Route path="/add-customer" element={<AddCustomer />}></Route>
-                        <Route path="/add-customer/:id" element={<AddCustomer />}></Route>
-                        <Route path="/add-sales-contact" element={<AddSalesContact />}></Route>
-                        <Route path="/add-purchase-contact" element={<AddPurchaseContact />}></Route>
-                        <Route path="/add-purchase-contact/:id" element={<AddPurchaseContact />}></Route>
-                        <Route path="/purchase-contact-view/" element={<SalesContactView />}></Route>
-
-                        <Route path="/add-sales-contact/:id" element={<AddSalesContact />}></Route>
-                        <Route path="/sales-contact-view/" element={<SalesContactView />}></Route>
-                        <Route path="/add-vendor" element={<AddVendorForm />}></Route>
-                        <Route path="/add-vendor/:id" element={<AddVendorForm />}></Route>
-                        <Route path="/add-rfps" element={<AddRfpsForm />}></Route>
-                        <Route path="/add-rfps/:id" element={<AddRfpsForm />}></Route>
-                        <Route path="/add-leads" element={<AddLeadsForm />}></Route>
-                        <Route path="/add-leads/:id" element={<AddLeadsForm />}></Route>
-                        <Route path="/view-rfps" element={<RfpsView />}></Route>
-                        <Route path="/view-rfps" element={<RfpsView />}></Route>
-                        <Route path="/view-quotesForCustomer" element={<QuotesForCustomerView />}></Route>
-                        <Route path="/ConfirmedQuotesView" element={<ConfirmedQuotesView />}></Route>
-                        <Route path="/update-ledger/:id" element={<AddLedger />}></Route>
-                        {/* <Route path="/update-ledger"  element={<UpdateLedger />}></Route> */}
-                        <Route path="/agent" element={<Agent />}></Route>
-                        <Route path="/transport" element={<Transport />}></Route>
-                        <Route
-                            path="/debit-credit-note"
-                            element={<DebitCreditNote />}
-                        ></Route>
-                        <Route
-                            path="/payment-collection"
-                            element={<PaymentCollection />}
-                        ></Route>
-                        <Route
-                            path="/edit-invoice-payment"
-                            element={<EditPaymentCollection />}
-                        ></Route>
-                        <Route
-                            path="/add-invoice-payment"
-                            element={<AddPaymentCollection />}
-                        ></Route>
-                        <Route path="/parcel" element={<Parcel />}></Route>
-                        <Route path="/all-product" element={<Stock />}></Route>
-                        <Route
-                            path="/stock-report-list"
-                            element={<StockReportList />}
-                        ></Route>
-                        <Route path="/update-product" element={<UpdateProduct />}></Route>
-                        <Route
-                            path="/add-credit-note"
-                            element={<AddDebitCreditNote />}
-                        ></Route>
-                        <Route
-                            path="/edit-credit-note"
-                            element={<EditDebitCreditNote />}
-                        ></Route>
-                        <Route path="/supplier-group" element={<SupplierGroup />}></Route>
-                        {/* <Route path="/category" element={<Category />}></Route> */}
-                        <Route path="/sub-category" element={<SubCategory />}></Route>
-                        <Route path="/brand-list" element={<BrandList />}></Route>
-                        <Route path="/all-state" element={<AllState />}></Route>
-                        <Route path="/all-city" element={<AllCity />}></Route>
-                        <Route path="/feedback-list" element={<FeedbackList />}></Route>
-                        <Route path="/hsncode" element={<HSNCode />}></Route>
-                        <Route path="/gst-slab" element={<GSTSlab />}></Route>
-                        <Route path="/other-charges" element={<OtherCharges />}></Route>
-                        <Route path="/godown-list" element={<SectionAndFloor />}></Route>
-                        <Route path="/payment-mode" element={<PaymentMode />}></Route>
-                        <Route
-                            path="/transaction-book"
-                            element={<TranscationBook />}
-                        ></Route>
-                    </Route>
-                </Routes>
-        </>
-    );
+          <Route
+            path="/add-sales-contact/:id"
+            element={<AddSalesContact />}
+          ></Route>
+          <Route
+            path="/sales-contact-view/"
+            element={<SalesContactView />}
+          ></Route>
+          <Route path="/add-vendor" element={<AddVendorForm />}></Route>
+          <Route path="/add-vendor/:id" element={<AddVendorForm />}></Route>
+          <Route path="/add-rfps" element={<AddRfpsForm />}></Route>
+          <Route path="/add-rfps/:id" element={<AddRfpsForm />}></Route>
+          <Route path="/add-leads" element={<AddLeadsForm />}></Route>
+          <Route path="/add-leads/:id" element={<AddLeadsForm />}></Route>
+          <Route path="/view-rfps" element={<RfpsView />}></Route>
+          <Route path="/view-rfps" element={<RfpsView />}></Route>
+          <Route
+            path="/view-quotesForCustomer"
+            element={<QuotesForCustomerView />}
+          ></Route>
+          <Route
+            path="/ConfirmedQuotesView"
+            element={<ConfirmedQuotesView />}
+          ></Route>
+          <Route path="/update-ledger/:id" element={<AddLedger />}></Route>
+          {/* <Route path="/update-ledger"  element={<UpdateLedger />}></Route> */}
+          <Route path="/agent" element={<Agent />}></Route>
+          <Route path="/transport" element={<Transport />}></Route>
+          <Route
+            path="/debit-credit-note"
+            element={<DebitCreditNote />}
+          ></Route>
+          <Route
+            path="/payment-collection"
+            element={<PaymentCollection />}
+          ></Route>
+          <Route
+            path="/edit-invoice-payment"
+            element={<EditPaymentCollection />}
+          ></Route>
+          <Route
+            path="/add-invoice-payment"
+            element={<AddPaymentCollection />}
+          ></Route>
+          <Route path="/parcel" element={<Parcel />}></Route>
+          <Route path="/all-product" element={<Stock />}></Route>
+          <Route
+            path="/stock-report-list"
+            element={<StockReportList />}
+          ></Route>
+          <Route path="/update-product" element={<UpdateProduct />}></Route>
+          <Route
+            path="/add-credit-note"
+            element={<AddDebitCreditNote />}
+          ></Route>
+          <Route
+            path="/edit-credit-note"
+            element={<EditDebitCreditNote />}
+          ></Route>
+          <Route path="/supplier-group" element={<SupplierGroup />}></Route>
+          {/* <Route path="/category" element={<Category />}></Route> */}
+          <Route path="/sub-category" element={<SubCategory />}></Route>
+          <Route path="/brand-list" element={<BrandList />}></Route>
+          <Route path="/all-state" element={<AllState />}></Route>
+          <Route path="/all-city" element={<AllCity />}></Route>
+          <Route path="/feedback-list" element={<FeedbackList />}></Route>
+          <Route path="/hsncode" element={<HSNCode />}></Route>
+          <Route path="/gst-slab" element={<GSTSlab />}></Route>
+          <Route path="/other-charges" element={<OtherCharges />}></Route>
+          <Route path="/godown-list" element={<SectionAndFloor />}></Route>
+          <Route path="/payment-mode" element={<PaymentMode />}></Route>
+          <Route path="/transaction-book" element={<TranscationBook />}></Route>
+        </Route>
+      </Routes>
+    </>
+  );
 }
