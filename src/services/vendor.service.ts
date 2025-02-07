@@ -37,7 +37,12 @@ export interface IVendor {
     enablePortal: boolean;
     portalLanguage: string;
     documents?: [];
-    addOtherDetails: [];
+    websiteUrl: string;
+    department: string;
+    designation: string;
+    skype: string;
+    facebook: string;
+    twitter: string;
   };
 
   billingAddress: {

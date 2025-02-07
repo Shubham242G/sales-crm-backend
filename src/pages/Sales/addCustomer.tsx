@@ -544,7 +544,7 @@ const AddCustomer = () => {
     });
   };
 
-  console.log(formData.openingBalance, "checking the opening balance");
+  // console.log(formData.openingBalance, "checking the opening balance");
 
   const gstOptions = [
     {
