@@ -44,21 +44,21 @@ function Users() {
     {
       name: "Name",
       selector: (row: any) => row?.name || "N/A",
-      width: "20%",
+      width: "25%",
     },
     {
       name: "Email",
       selector: (row: any) => row?.email || "N/A",
-      width: "20%",
+      width: "25%",
     },
     {
       name: "Role",
       selector: (row: any) => row?.role || "N/A",
-      width: "15%",
+      width: "20%",
     },
     {
       name: "Edit",
-      width: "10%",
+      width: "15%",
       selector: (row: any) => (
         <button
           type="button"
@@ -71,7 +71,7 @@ function Users() {
     },
     {
       name: "Delete",
-      width: "10%",
+      width: "15%",
       selector: (row: any) => (
         <button
           type="button"

@@ -1,46 +1,45 @@
 import { toastError, toastSuccess } from "@/utils/toast";
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import {
   useAddUser,
-  useUser,
   useUserById,
   useUpdateUser,
 } from "@/services/user.service";
-import { errorMessages } from "vue/compiler-sfc";
-import { error } from "console";
+import { generatePassword } from "@/utils/passwordGenerator";
 
 const AddNewUser = () => {
   const [formData, setFormData] = useState({
-    //new fields
-
     name: "",
     email: "",
     role: "",
+    password: "",
   });
 
-  const { id } = useParams();
+  const [showPassword, setShowPassword] = useState(false);
 
+  const { id } = useParams();
   const navigate = useNavigate();
   const { mutateAsync: addUser } = useAddUser();
   const { mutateAsync: updateUser } = useUpdateUser();
   const { data: UserDataById } = useUserById(id);
 
-  console.log(UserDataById, "check user data by id ");
-
   useEffect(() => {
-    if (UserDataById) {
-      console.log("Fetched user data:", UserDataById);
+    if (id && UserDataById) {
       setFormData({
         name: UserDataById.name || "",
         email: UserDataById.email || "",
         role: UserDataById.role || "",
+        password: UserDataById.password || "", // Pre-fill existing password
       });
     } else {
-      console.log(errorMessages, "error faced");
+      setFormData((prev) => ({
+        ...prev,
+        password: generatePassword(),
+      }));
     }
-  }, [UserDataById]);
+  }, [UserDataById, id]);
 
   const roleOptions = [
     { value: "Customer", label: "Customer" },
@@ -50,29 +49,10 @@ const AddNewUser = () => {
     { value: "Sub-Admin", label: "Sub-Admin" },
   ];
 
-  console.log(formData, "check form data");
-  console.log(UserDataById, "check User by data id");
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      //   if (!formData.firstName) {
-      //     toastError("First Name is required");
-      //     return;
-      //   }
-
-      //   if (!formData.lastName) {
-      //     toastError("Last Name is required");
-      //     return;
-      //   }
-
-      //   if (!formData.phone) {
-      //     toastError("Phone Number is required");
-      //     return;
-      //   }
-
       const obj = formData;
-
       if (id) {
         const { data: res } = await updateUser({ id });
         if (res?.message) {
@@ -87,12 +67,9 @@ const AddNewUser = () => {
           navigate("/users");
         }
       }
-      console.log(obj, "check obj");
-      console.log(formData, "check form data");
     } catch (error) {
       toastError(error);
     }
-    console.log("FormDataaaa:-->", formData);
   };
 
   const handleInputChange = (
@@ -106,72 +83,12 @@ const AddNewUser = () => {
     }));
   };
 
-  const handleSelectChange = (name: string, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   return (
     <div className="min-h-screen bg-gray-100 p-12">
       <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-16">
         <h1 className="text-2xl font-bold mb-10">Add New User</h1>
         <form onSubmit={handleSubmit}>
-          {/* Grid Layout for Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
-            {/* First Name */}
-            {/* <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                First Name
-              </label>
-              <input
-                type="text"
-                name={"firstName"}
-                value={formData.firstName}
-                onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })
-                }
-                placeholder="Enter first name"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
-              />
-            </div> */}
-
-            {/* Last Name */}
-            {/* <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Last Name
-              </label>
-              <input
-                name={"lastName"}
-                value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
-                }
-                type="text"
-                placeholder="Enter last name"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
-              />
-            </div> */}
-
-            {/* Company Name */}
-            {/* <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Company Name
-              </label>
-              <input
-                name={"company"}
-                value={formData.company}
-                onChange={(e) =>
-                  setFormData({ ...formData, company: e.target.value })
-                }
-                type="text"
-                placeholder="Enter company name"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
-              />
-            </div> */}
-
-            {/* Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Name
@@ -179,16 +96,13 @@ const AddNewUser = () => {
               <input
                 type="text"
                 value={formData.name}
-                name={"name"}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
+                name="name"
+                onChange={handleInputChange}
                 placeholder="Enter full name"
                 className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
               />
             </div>
 
-            {/* Email Address */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address
@@ -196,16 +110,34 @@ const AddNewUser = () => {
               <input
                 type="email"
                 value={formData.email}
-                name={"email"}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
+                name="email"
+                onChange={handleInputChange}
                 placeholder="Enter email address"
                 className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
               />
             </div>
 
-            {/* Salutation */}
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={formData.password}
+                name="password"
+                onChange={handleInputChange}
+                placeholder="Enter password"
+                readOnly={!id}
+                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
+              />
+              <div
+                className="absolute inset-y-0 right-4 flex items-center cursor-pointer mt-6"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Role
@@ -226,30 +158,13 @@ const AddNewUser = () => {
                 ))}
               </select>
             </div>
-
-            {/* Mobile Number */}
-            {/* <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Mobile Number
-              </label>
-              <input
-                name={"phone"}
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
-                type="text"
-                placeholder="Enter mobile number"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
-              />
-            </div> */}
           </div>
 
-          {/* Buttons */}
           <div className="flex justify-end gap-8">
             <button
               type="button"
               className="px-6 py-3 border border-gray-300 rounded-md text-gray-700"
+              onClick={() => navigate("/users")}
             >
               Cancel
             </button>
