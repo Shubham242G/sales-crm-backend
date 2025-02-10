@@ -34,6 +34,12 @@ function Sidebar() {
         {
           dropHead: "Roles",
           link: "roles",
+          plusLink: "/add-role",
+        },
+        {
+          dropHead: "User",
+          link: "users",
+          plusLink: "/add-users",
         },
       ],
     },

@@ -25,31 +25,7 @@ function Roles() {
   );
 
   const { data: roleData } = useRoles(searchObj);
-  //   console.log(RoleData, "check role data");
   const { mutateAsync: deleteRoles } = usedeleteRolesById();
-
-  // Mock Data
-  //   const roleData = [
-  //     { id: 1, roleName: "Accountant Payable", description: "" },
-  //     { id: 2, roleName: "Accountant Receivable", description: "" },
-  //     { id: 3, roleName: "Accounts Team Leader", description: "" },
-  //     {
-  //       id: 4,
-  //       roleName: "Admin",
-  //       description: "Unrestricted access to all modules.",
-  //     },
-  //     { id: 5, roleName: "HR", description: "" },
-  //     { id: 6, roleName: "MIS", description: "" },
-  //     { id: 7, roleName: "Operations Head", description: "" },
-  //     { id: 8, roleName: "Operations Team", description: "" },
-  //     { id: 9, roleName: "Sales Team", description: "" },
-  //     {
-  //       id: 10,
-  //       roleName: "Staff",
-  //       description:
-  //         "Access to all modules except reports, settings, and accountant.",
-  //     },
-  //   ];
 
   const handleDelete = async (id: string) => {
     try {
@@ -57,7 +33,6 @@ function Roles() {
         const { data: res } = await deleteRoles(id);
         if (res) {
           toastSuccess(res.message);
-          // Optionally refresh the data
         }
       }
     } catch (error) {
@@ -67,35 +42,64 @@ function Roles() {
 
   const columns = [
     {
-      name: "Role Name",
+      name: "Name",
+      selector: (row: any) => row.name,
+      width: "12%",
+    },
+    {
+      name: "Role",
       selector: (row: any) => row.roleName,
-      width: "40%",
+      width: "12%",
+    },
+    {
+      name: "Phone Number",
+      selector: (row: any) => row.phoneNo,
+      width: "12%",
+    },
+    {
+      name: "Email Address",
+      selector: (row: any) => row.email,
+      width: "12%",
+    },
+    {
+      name: "Department",
+      selector: (row: any) => row.department,
+      width: "12%",
+    },
+    {
+      name: "Designation",
+      selector: (row: any) => row.designation,
+      width: "12%",
     },
     {
       name: "Description",
       selector: (row: any) => row.description,
-      width: "40%",
+      width: "12%",
     },
     {
-      name: "Actions",
-      width: "20%",
+      name: "Edit",
+      width: "8%",
       selector: (row: any) => (
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(`/add-role/${row.id}`)}
-            className="text-black-500 text-lg p-[6px]"
-          >
-            <FaEye />
-          </button>
-          <button
-            type="button"
-            onClick={() => handleDelete(row.id)}
-            className="p-[6px] text-black-400 text-lg"
-          >
-            <RiDeleteBin6Line />
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => navigate(`/add-role/${row._id}`)}
+          className="text-black-500 text-lg p-[6px]"
+        >
+          <FaEye />
+        </button>
+      ),
+    },
+    {
+      name: "Delete",
+      width: "8%",
+      selector: (row: any) => (
+        <button
+          type="button"
+          onClick={() => handleDelete(row._id)}
+          className="p-[6px] text-black-400 text-lg"
+        >
+          <RiDeleteBin6Line />
+        </button>
       ),
     },
   ];

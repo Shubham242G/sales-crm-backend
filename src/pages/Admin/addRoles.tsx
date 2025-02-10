@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaSave } from "react-icons/fa";
+import { FaPlus, FaSave } from "react-icons/fa";
 import {
   useAddRoles,
   useRolesById,
@@ -7,6 +7,7 @@ import {
 } from "@/services/roles.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { useNavigate, useParams } from "react-router-dom";
+import { Autocomplete, TextField } from "@mui/material";
 
 // Permission types
 interface Permissions {
@@ -21,17 +22,36 @@ interface Role {
   roleName: string;
   description: string;
   routePermissions: RoutePermission[];
+  name: string;
+  email: string;
+  phoneNo: string;
+  designation: string;
+  department: string;
 }
 
 // Permissions for each route
 interface RoutePermission {
   routeName: string;
   permissions: Permissions;
+  isEditing?: boolean;
 }
+
+const roleOptions = [
+  "Customer",
+  "Operations",
+  "Moderators",
+  "Marketing",
+  "Sub-Admin",
+];
 
 function AddRoles() {
   const [roleName, setRoleName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phoneNo, setPhoneNo] = useState<string>("");
+  const [designation, setDesignation] = useState<string>("");
+  const [department, setDepartment] = useState<string>("");
   const [permissions, setPermissions] = useState<RoutePermission[]>([
     {
       routeName: "Customers",
@@ -65,28 +85,14 @@ function AddRoles() {
     if (roleDataById) {
       setRoleName(roleDataById?.data?.roleName);
       setDescription(roleDataById?.data?.description);
+      setName(roleDataById?.data?.name);
+      setEmail(roleDataById?.data?.email);
+      setPhoneNo(roleDataById?.data?.phoneNo);
+      setDesignation(roleDataById?.data?.designation);
+      setDepartment(roleDataById?.data?.department);
       setPermissions(roleDataById?.data?.routePermissions);
     }
   }, [roleDataById]);
-
-  const handlePermissionChange = (
-    routeName: string,
-    permissionType: keyof Permissions
-  ) => {
-    setPermissions((prevPermissions) =>
-      prevPermissions.map((routePermission) =>
-        routePermission.routeName === routeName
-          ? {
-              ...routePermission,
-              permissions: {
-                ...routePermission.permissions,
-                [permissionType]: !routePermission.permissions[permissionType],
-              },
-            }
-          : routePermission
-      )
-    );
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,6 +100,11 @@ function AddRoles() {
       const newRole: Role = {
         roleName,
         description,
+        name,
+        phoneNo,
+        email,
+        designation,
+        department,
         routePermissions: permissions,
       };
 
@@ -115,6 +126,65 @@ function AddRoles() {
     }
   };
 
+  const handleAddNewRoute = () => {
+    setPermissions((prev) => [
+      ...prev,
+      {
+        routeName: "",
+        permissions: {
+          create: false,
+          view: false,
+          update: false,
+          delete: false,
+        },
+        isEditing: true,
+      },
+    ]);
+  };
+
+  const handleRouteNameChange = (index: number, newRouteName: string) => {
+    setPermissions((prev) =>
+      prev.map((rp, i) =>
+        i === index ? { ...rp, routeName: newRouteName } : rp
+      )
+    );
+  };
+
+  const handleRouteBlur = (index: number) => {
+    setPermissions((prev) =>
+      prev.map((rp, i) => (i === index ? { ...rp, isEditing: false } : rp))
+    );
+  };
+
+  const handleEditClick = (index: number) => {
+    setPermissions((prev) =>
+      prev.map((rp, i) => (i === index ? { ...rp, isEditing: true } : rp))
+    );
+  };
+
+  const handleDeleteRoute = (index: number) => {
+    setPermissions((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handlePermissionChange = (
+    index: number,
+    permissionType: keyof Permissions
+  ) => {
+    setPermissions((prevPermissions) =>
+      prevPermissions.map((rp, i) =>
+        i === index
+          ? {
+              ...rp,
+              permissions: {
+                ...rp.permissions,
+                [permissionType]: !rp.permissions[permissionType],
+              },
+            }
+          : rp
+      )
+    );
+  };
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">
@@ -122,13 +192,69 @@ function AddRoles() {
       </h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block font-medium mb-2">Role Name</label>
+          <label className="block font-medium mb-2">Name</label>
           <input
             type="text"
-            value={roleName}
-            onChange={(e) => setRoleName(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
-            placeholder="Enter role name"
+            placeholder="Enter Name"
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-2">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Email Address"
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-2">Phone Number</label>
+          <input
+            type="number"
+            value={phoneNo}
+            onChange={(e) => setPhoneNo(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Phone Number"
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-2">Department</label>
+          <input
+            type="text"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Department"
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-2">Designation</label>
+          <input
+            type="text"
+            value={designation}
+            onChange={(e) => setDesignation(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Designation"
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-4">Role Name</label>
+          <Autocomplete
+            value={roleName}
+            onChange={(event, newValue) => setRoleName(newValue || "")}
+            options={roleOptions}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Role Name"
+                variant="outlined"
+                className="w-full"
+              />
+            )}
           />
         </div>
         <div>
@@ -137,7 +263,7 @@ function AddRoles() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
-            placeholder="Enter role description"
+            placeholder="Enter Role Description"
           ></textarea>
         </div>
 
@@ -146,10 +272,15 @@ function AddRoles() {
           <table className="w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
-                <th className="border border-gray-300 p-2 w-1/3">Routes</th>
-                <th className="border border-gray-300 p-2 w-2/3" colSpan={4}>
+                <th className="border border-gray-300 p-2 w-1/5">Routes</th>
+                <th className="border border-gray-300 p-2 w-2/5" colSpan={4}>
                   Permissions
                 </th>
+                <th className="border border-gray-300 p-2 w-2/5" colSpan={4}>
+                  Actions
+                </th>
+                {/* <th className="border border-gray-300 p-2 w-[10%]">Edit</th>
+                <th className="border border-gray-300 p-2 w-[10%]">Delete</th> */}
               </tr>
               <tr className="bg-gray-50">
                 <th className="border border-gray-300 p-2"></th>
@@ -157,61 +288,99 @@ function AddRoles() {
                 <th className="border border-gray-300 p-2 w-[17%]">View</th>
                 <th className="border border-gray-300 p-2 w-[17%]">Update</th>
                 <th className="border border-gray-300 p-2 w-[17%]">Delete</th>
+                <th className="border border-gray-300 p-2 w-[6%]">Edit</th>
+                <th className="border border-gray-300 p-2 w-[10%]">Delete</th>
               </tr>
             </thead>
             <tbody>
-              {permissions.map(({ routeName, permissions }) => (
-                <tr key={routeName} className="border border-gray-300">
+              {permissions.map((rp, index) => (
+                <tr key={index} className="border border-gray-300">
                   <td className="border border-gray-300 p-2 font-medium">
-                    {routeName}
+                    {rp.isEditing ? (
+                      <input
+                        type="text"
+                        value={rp.routeName}
+                        onChange={(e) =>
+                          handleRouteNameChange(index, e.target.value)
+                        }
+                        onBlur={() => handleRouteBlur(index)}
+                        className="w-full p-1 border rounded"
+                        placeholder="Enter route name"
+                        autoFocus
+                      />
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <span>{rp.routeName}</span>
+                      </div>
+                    )}
                   </td>
                   <td className="border border-gray-300 p-2 text-center">
                     <input
                       type="checkbox"
-                      checked={permissions.create}
-                      onChange={() =>
-                        handlePermissionChange(routeName, "create")
-                      }
+                      checked={rp.permissions.create}
+                      onChange={() => handlePermissionChange(index, "create")}
                     />
                   </td>
                   <td className="border border-gray-300 p-2 text-center">
                     <input
                       type="checkbox"
-                      checked={permissions.view}
-                      onChange={() => handlePermissionChange(routeName, "view")}
+                      checked={rp.permissions.view}
+                      onChange={() => handlePermissionChange(index, "view")}
                     />
                   </td>
                   <td className="border border-gray-300 p-2 text-center">
                     <input
                       type="checkbox"
-                      checked={permissions.update}
-                      onChange={() =>
-                        handlePermissionChange(routeName, "update")
-                      }
+                      checked={rp.permissions.update}
+                      onChange={() => handlePermissionChange(index, "update")}
                     />
                   </td>
                   <td className="border border-gray-300 p-2 text-center">
                     <input
                       type="checkbox"
-                      checked={permissions.delete}
-                      onChange={() =>
-                        handlePermissionChange(routeName, "delete")
-                      }
+                      checked={rp.permissions.delete}
+                      onChange={() => handlePermissionChange(index, "delete")}
                     />
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    <button
+                      type="button"
+                      className="text-orange-500 hover:underline"
+                      onClick={() => handleEditClick(index)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    <button
+                      type="button"
+                      className="text-red-500 hover:underline"
+                      onClick={() => handleDeleteRoute(index)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <button
+            type="button"
+            className="mt-4 flex items-center px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            onClick={handleAddNewRoute}
+          >
+            <FaPlus className="mr-2" /> Add New Route
+          </button>
         </div>
 
-        {/* Save Button */}
-        <button
-          type="submit"
-          className="flex items-center px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
-        >
-          <FaSave className="mr-2" /> {id ? "Update Role" : "Save Role"}
-        </button>
+        <div>
+          <button
+            type="submit"
+            className="flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+          >
+            <FaSave className="mr-2" /> Save Role
+          </button>
+        </div>
       </form>
     </div>
   );
