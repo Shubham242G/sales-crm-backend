@@ -17,6 +17,7 @@ import {
   usedeleteEnquiryById,
   useUpdateEnquiryById,
   useEnquiryById,
+  useConvert,
 } from "@/services/enquiry.service";
 import { toastSuccess, toastError } from "@/utils/toast";
 
@@ -24,6 +25,8 @@ import { generateFilePath } from "@/services/urls.service";
 import moment from "moment";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { Switch } from "@mui/material";
+import { SiConvertio } from "react-icons/si";
+import { useConvertRfpById } from "@/services/rfp.service";
 
 function EnquiryLIst() {
   const navigate = useNavigate();
@@ -47,6 +50,8 @@ function EnquiryLIst() {
   console.log(EnquiryData, "check EnquiryData");
   const { mutateAsync: deleteEnquiry } = usedeleteEnquiryById();
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
+  const { mutateAsync: convertEnquiry } = useConvert();
+  const { mutateAsync: convertRfq } = useConvertRfpById();
 
   // Handle triggering file input click
   const handleImportClick = () => {
@@ -127,8 +132,22 @@ function EnquiryLIst() {
     } catch (error) {
       toastError(error);
     }
-  };
+  }; const handleConvertEnquery = async (id: any) => {
 
+    try {
+        const { data: res } = await convertRfq(id)
+        if (res) {
+            toastSuccess(res.message)
+
+        }
+
+    }
+    catch (error) {
+        toastError(error)
+    }
+
+
+}
   const columns = [
     {
       name: "Customer Name",
@@ -233,6 +252,26 @@ function EnquiryLIst() {
         </button>
       ),
     },
+    {
+      name: "Convert to Enquiry",
+            width: "10%",
+            selector: (row: any) => (
+                <div className="flex items-center gap-3">
+                    <Link
+                        to={`/add-sales-contact/${row?._id}`}
+                        className="p-[6px] text-black-400 text-lg flex items-center"
+                    >
+
+                    </Link>
+                    <button
+                        className="p-[6px] text-black-400 text-lg"
+                        onClick={() => handleConvertEnquery(row._id)}
+                    >
+                        <SiConvertio />
+                    </button>
+                </div>
+            ),
+    }
   ];
 
   return (

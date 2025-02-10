@@ -67,6 +67,8 @@ import VendorList from "../pages/LedgerPage/vendorList";
 import Admin from "@/pages/Admin/Admin";
 import Roles from "../pages/Admin/roles";
 import AddRoles from "@/pages/Admin/addRoles";
+import AddDepartment from "@/pages/Important/DepartmentMaster";
+import DepartmentMasterListView from "@/pages/Important/departmentMasterListView";
 
 export default function AuthorizedRoutes() {
   return (
@@ -95,6 +97,9 @@ export default function AuthorizedRoutes() {
           <Route path="/category2/:id" element={<AddCategory />}></Route>
           <Route path="/CategoryList" element={<CategoryList />}></Route>
           <Route path="/HotelList" element={<HotelList />}></Route>
+          <Route path="/departmentMaster" element={<AddDepartment />}></Route>
+          <Route path="/departmentMaster/:id" element={<AddDepartment />}></Route>
+          <Route path="/departmentMasterView" element={<DepartmentMasterListView />}></Route>
           <Route
             path="/quotesForCustomer"
             element={<QuotesForCustomer />}

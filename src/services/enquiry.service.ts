@@ -80,81 +80,7 @@ export interface IEnqiry {
     }[];
     billingAddress:string;
 
-    // displayName: string;
-    // companyName: string;
-    // salutation: string;
-    // firstName: string;
-    // lastName: string;
-    // phone: string;
-    // currencyCode: string;
-    // notes: string;
-    // website: string;
-    // status: string;
-    // openingBalance: string;
-    // openingBalanceExchangeRate: string;
-    // branchId: string;
-    // branchName: string;
-    // bankAccountPayment: string;
-    // portalEnabled: boolean;
-    // creditLimit: string;
-    // customerSubType: string;
-    // department: string;
-    // designation: string;
-    // priceList: string;
-    // paymentTerms: string;
-    // paymentTermsLabel: string;
-
-    // // Contact Information
-    // emailId: string;
-    // mobilePhone: string;
-    // skypeIdentity: string;
-    // facebook: string;
-    // twitter: string;
-
-    // // GST Details
-    // gstTreatment: string;
-    // gstin: string;
-    // taxable: boolean;
-    // taxId: string;
-    // taxName: string;
-    // taxPercentage: string;
-    // exemptionReason: string;
-
-    // // Billing Address
-    // billingAttention: string;
-    // billingAddress: string;
-    // billingStreet2: string;
-    // billingCity: string;
-    // billingState: string;
-    // billingCountry: string;
-    // billingCounty: string;
-    // billingCode: string;
-    // billingPhone: string;
-    // billingFax: string;
-
-    // // Shipping Address
-    // shippingAttention: string;
-    // shippingAddress: string;
-    // shippingStreet2: string;
-    // shippingCity: string;
-    // shippingState: string;
-    // shippingCountry: string;
-    // shippingCounty: string;
-    // shippingCode: string;
-    // shippingPhone: string;
-    // shippingFax: string;
-
-    // // Additional Details
-    // placeOfContact: string;
-    // placeOfContactWithStateCode: string;
-    // contactAddressId: string;
-    // source: string;
-    // ownerName: string;
-    // primaryContactId: string;
-    // contactId: string;
-    // contactName: string;
-    // contactType: string;
-    // lastSyncTime: string;
+    
 }
 
 
@@ -186,12 +112,17 @@ export const useEnquiryApiHook = () => {
         return axios.get<GeneralApiResponsePagination<IEnqiry>>(`${BASE_URL}${prefix}?${query}`);
     };
 
+    const convertToRfp = async (id: any) => {
+        return axios.post<GeneralApiResponse<IEnqiry>>(`${BASE_URL}${prefix}/convert/${id}`);
+    }
+
     return {
         getAllEnquiry,
         updateEnquiryById,
         deleteEnquiryById,
         getEnquiryById,
         addEnquiry,
+        convertToRfp
 
     };
 };
@@ -253,6 +184,18 @@ export const useUpdateEnquiryById = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: api.updateEnquiryById,
+        onSuccess: (res) => {
+            queryClient.invalidateQueries({ queryKey: ["enquiry"] });
+        },
+    });
+};
+
+export const useConvert = () => {
+    const api = useEnquiryApiHook();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: api.convertToRfp,
         onSuccess: (res) => {
             queryClient.invalidateQueries({ queryKey: ["enquiry"] });
         },

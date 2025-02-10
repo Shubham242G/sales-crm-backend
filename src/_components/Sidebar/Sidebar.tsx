@@ -162,6 +162,10 @@ function Sidebar() {
 
       dropArr: [
         {
+          dropHead: "Add Department",
+          link: "departmentMasterView",
+        },
+        {
           dropHead: "Add Category",
           link: "CategoryList",
         },

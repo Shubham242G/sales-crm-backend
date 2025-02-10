@@ -134,7 +134,7 @@ function CustomerLedger() {
       name: "Event Date",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.eventDate}</h6>
+          <h6>{row.eventDates?.length > 0  ? new Date(row.eventDates[0].startDate).toDateString() :  "No Dates"}</h6>
         </div>
       ),
       width: "10%",
