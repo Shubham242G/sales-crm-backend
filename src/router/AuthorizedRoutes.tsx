@@ -69,6 +69,8 @@ import Roles from "../pages/Admin/roles";
 import AddRoles from "@/pages/Admin/addRoles";
 import AddDepartment from "@/pages/Important/DepartmentMaster";
 import DepartmentMasterListView from "@/pages/Important/departmentMasterListView";
+import Users from "@/pages/Admin/users";
+import AddUser from "@/pages/Admin/addUsers";
 
 export default function AuthorizedRoutes() {
   return (
@@ -82,6 +84,9 @@ export default function AuthorizedRoutes() {
           <Route path="/vendorList" element={<VendorList />}></Route>
           <Route path="/rfps" element={<Rfps />}></Route>
           <Route path="/leads" element={<Leads />}></Route>
+          <Route path="/users" element={<Users />}></Route>
+          <Route path="/add-users" element={<AddUser />}></Route>
+          <Route path="/add-users/:id" element={<AddUser />}></Route>
           <Route path="/roles" element={<Roles />}></Route>
           <Route path="/add-role" element={<AddRoles />}></Route>
           <Route path="/add-role/:id" element={<AddRoles />}></Route>

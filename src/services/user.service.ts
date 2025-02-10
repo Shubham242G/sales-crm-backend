@@ -8,10 +8,11 @@ import BASE_URL, {
 } from "./urls.service";
 import { usePagination } from "@/libs/hooks/usePagination";
 import axios from "axios";
+import axiosAuth from "./axios.service";
+
 const prefix = "/users";
 
 export interface IUser {
-    _id?: string;
     id?: string;
     name?: string;
     email?: string;
@@ -43,7 +44,7 @@ export const refreshTokenApi = async (obj: any) => {
 
 export const useUserApiHook = () => {
     const addUser = async (obj: IUser) => {
-        return axios.post<GeneralApiResponse>(
+        return axiosAuth.post<GeneralApiResponse>(
             `${BASE_URL}${prefix}/create-user`,
             obj
         );
@@ -57,13 +58,13 @@ export const useUserApiHook = () => {
     };
 
     const deleteUser = async (id: string | undefined) => {
-        return axios.delete<GeneralApiResponse>(
-            `${BASE_URL}${prefix}/deleteById/${id}`
+        return axiosAuth.delete<GeneralApiResponse>(
+            `${BASE_URL}${prefix}/deleteUserById/${id}`
         );
     };
 
     const getUserById = async (id: string | undefined) => {
-        return axios.get<GeneralApiResponse<IUser>>(
+        return axiosAuth.get<GeneralApiResponse<IUser>>(
             `${BASE_URL}${prefix}/getById/${id}`
         );
     };
@@ -77,8 +78,8 @@ export const useUserApiHook = () => {
             pageSize: String(pagination.pageSize),
             ...searchObj,
         }).toString();
-        return axios.get<GeneralApiResponsePagination<IUser>>(
-            `${BASE_URL}${prefix}/?${query}`
+        return axiosAuth.get<GeneralApiResponsePagination<IUser>>(
+            `${BASE_URL}${prefix}/getAllUsers?${query}`
         );
     };
 
