@@ -1132,14 +1132,14 @@ const AddVendorForm = () => {
                           </div>
                         </div>
                         {/* Currency */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="text-base font-medium text-gray-700">
                               Currency:
                             </span>
                             <div className="w-96 ml-16">
                               {" "}
-                              {/* Set width for consistency */}
+                               Set width for consistency 
                               <select
                                 value={otherDetails.currency}
                                 onChange={(e) =>
@@ -1182,16 +1182,16 @@ const AddVendorForm = () => {
                               </select>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Opening Balance */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Opening Balance:
                             </span>
                             <div className="flex gap-4">
-                              {/* State Dropdown */}
+                              
                               <div className="w-48">
                                 <Autocomplete
                                   disablePortal
@@ -1240,68 +1240,13 @@ const AddVendorForm = () => {
                                 />
                               </div>
 
-                              {/* Opening Balance Input */}
-                              <div className="flex items-center w-44 relative">
-                                <TextField
-                                  type="number"
-                                  label="Opening Balance"
-                                  value={otherDetails.openingBalance}
-                                  onChange={(e) =>
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      openingBalance: e.target.value,
-                                    })
-                                  }
-                                  InputProps={{
-                                    startAdornment: (
-                                      <div
-                                        className="absolute left-0 pl-3 text-gray-700 bg-gray-50 border-r border-gray-300 flex items-center"
-                                        style={{
-                                          height: "100%",
-                                          fontWeight: "500",
-                                          minWidth: "50px",
-                                        }}
-                                      >
-                                        {currencyOptions
-                                          .find(
-                                            (option) =>
-                                              option.value ===
-                                              otherDetails.currency
-                                          )
-                                          ?.value.split(" ")[0] || ""}
-                                      </div>
-                                    ),
-                                    style: {
-                                      paddingLeft: "60px",
-                                      height: "40px",
-                                    },
-                                  }}
-                                  sx={{
-                                    "& .MuiInputBase-root": {
-                                      height: "40px",
-                                    },
-                                    "& .MuiInputLabel-root": {
-                                      transform:
-                                        "translate(14px, 10px) scale(1)",
-                                      "&.MuiInputLabel-shrink": {
-                                        transform:
-                                          "translate(14px, -9px) scale(0.75)",
-                                      },
-                                    },
-                                    "& .MuiInputLabel-root.Mui-focused": {
-                                      transform:
-                                        "translate(14px, -9px) scale(0.75)",
-                                    },
-                                  }}
-                                  fullWidth
-                                />
-                              </div>
+                              
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Credit Limit */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Credit Limit:
@@ -1360,17 +1305,17 @@ const AddVendorForm = () => {
                               />
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Payment Terms */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="text-base font-medium text-gray-700">
                               Payment Terms:
                             </span>
                             <div className="w-96 ml-4">
                               {" "}
-                              {/* Set width for consistency */}
+                              Set width for consistency 
                               <select
                                 value={otherDetails.paymentTerms}
                                 onChange={(e) =>
@@ -1403,17 +1348,17 @@ const AddVendorForm = () => {
                               </select>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* TDS */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="text-base font-medium text-gray-700">
                               TDS:
                             </span>
                             <div className="w-96 ml-24">
                               {" "}
-                              {/* Set width for consistency */}
+                               Set width for consistency
                               <select
                                 value={otherDetails.tds}
                                 onChange={(e) =>
@@ -1443,17 +1388,17 @@ const AddVendorForm = () => {
                               </select>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Price List */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="text-base font-medium text-gray-700">
                               Price List:
                             </span>
                             <div className="w-96 ml-16">
                               {" "}
-                              {/* Set width for consistency */}
+                               Set width for consistency 
                               <select
                                 value={otherDetails.priceList}
                                 onChange={(e) =>
@@ -1483,7 +1428,7 @@ const AddVendorForm = () => {
                               </select>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Enable Portal */}
                         <div className="flex items-center gap-6 mt-4">
@@ -1510,14 +1455,14 @@ const AddVendorForm = () => {
                           </div>
                         </div>
                         {/* Portal Language */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="text-base font-medium text-gray-700">
                               Portal Language:
                             </span>
                             <div className="w-96 ml-2">
                               {" "}
-                              {/* Set width for consistency */}
+                               Set width for consistency 
                               <select
                                 value={otherDetails.portalLanguage}
                                 onChange={(e) =>
@@ -1541,7 +1486,7 @@ const AddVendorForm = () => {
                               </select>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Documents Upload */}
                         <div className="col-span-2 mt-4">

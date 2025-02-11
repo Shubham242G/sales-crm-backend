@@ -1302,7 +1302,7 @@ const AddCustomer = () => {
                         </div>
 
                         {/*Tax Preference*/}
-                        <div className="mt-4">
+                        {/* <div className="mt-4">
                           <div className="flex items-center gap-4 mb-4">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Tax Prefernce:
@@ -1346,9 +1346,9 @@ const AddCustomer = () => {
                               </label>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                         {/* Currency */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Currency:
@@ -1399,7 +1399,7 @@ const AddCustomer = () => {
                               />
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Opening Balance */}
                         <div className="col-span-2">
@@ -1458,7 +1458,7 @@ const AddCustomer = () => {
                               </div>
 
                               {/* Opening Balance Input */}
-                              <div className="flex items-center w-44 relative">
+                              {/* <div className="flex items-center w-44 relative">
                                 <TextField
                                   label="Opening Balance"
                                   value={formData.openingBalance}
@@ -1510,13 +1510,13 @@ const AddCustomer = () => {
                                   }}
                                   fullWidth
                                 />
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         </div>
 
                         {/* Credit Limit */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Credit Limit:
@@ -1574,10 +1574,10 @@ const AddCustomer = () => {
                               />
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Payment Terms */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Payment Terms:
@@ -1628,10 +1628,10 @@ const AddCustomer = () => {
                               />
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Price List */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Price List:
@@ -1682,7 +1682,7 @@ const AddCustomer = () => {
                               />
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Enable Portal */}
                         <div className="flex items-center gap-6 mt-2 mb-4">
@@ -1709,7 +1709,7 @@ const AddCustomer = () => {
                           </div>
                         </div>
                         {/* Portal Language */}
-                        <div className="col-span-2">
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Portal Language:
@@ -1760,7 +1760,7 @@ const AddCustomer = () => {
                               />
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
                         {/* Documents Upload */}
                         <div className="col-span-2 mt-4">

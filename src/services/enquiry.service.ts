@@ -5,6 +5,7 @@ import { PaginationState } from "@tanstack/react-table";
 import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination } from "./urls.service";
 import axios from "../libs/hooks/axios";
 import { CHARGE_TYPE } from "@/common/constant.common";
+import axiosAuth from "./axios.service";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 
 
@@ -66,7 +67,9 @@ export interface IEnqiry {
         toCity:string;
         departureDate:string;
         returnDate:string;
-
+        multiFromCity:string;
+        multiToCity:string;
+        multiDepartureDate:string;
     };
     cab:{
         date:string;

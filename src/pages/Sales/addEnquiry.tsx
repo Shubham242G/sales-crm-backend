@@ -64,6 +64,9 @@ interface AirTickets {
   toCity: string;
   departureDate: string;
   returnDate: string;
+  multiFromCity: string;
+  multiToCity: string;
+  multiDepartureDate: string;
 }
 
 import { toastError, toastSuccess } from "@/utils/toast";
@@ -181,6 +184,9 @@ const AddEnquiryForm = () => {
     toCity: "",
     departureDate: "",
     returnDate: "",
+    multiDepartureDate: "",
+    multiFromCity: "",
+    multiToCity: "",
   });
 
   const [isEventSetupVisible, setIsEventSetupVisible] = useState(false);
@@ -490,14 +496,13 @@ const AddEnquiryForm = () => {
       setLastName(enquiryDataById?.data?.lastName);
       setSalutation(enquiryDataById?.data?.salutation);
 
-
       setCab(enquiryDataById?.data?.cab);
       //  setUser(enquiryDataById?.data)
     }
   }, [enquiryDataById]);
 
   //   console.log("start date: ", moment(eventSetup.eventDates[0]).format("YYYY-MM-DD"))
-  console.log("start date: ", eventSetup.eventDates[0].startDate);
+  console.log("start date: ", eventSetup?.eventDates[0]?.startDate);
   console.log(eventSetup, "check event setup changes");
   console.log("Enquiry Data by ID:", enquiryDataById);
   console.log("number of rooms: ", enquiryDataById?.data?.noOfRooms);
@@ -626,6 +631,8 @@ const AddEnquiryForm = () => {
       console.log("Air Tickets Departure Date:", obj.airTickets.departureDate);
       console.log("Air Tickets Return Date:", obj.airTickets.returnDate);
 
+      console.log("airTickets:", obj.airTickets);
+
       if (id) {
         const { data: res } = await updateEnquiryById({ id, obj });
 
@@ -707,8 +714,13 @@ const AddEnquiryForm = () => {
         <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-
-            <select onChange={(val) => handleSelectChange("salutation", val.target.value)} value={salutation} className="border border-gray-300 rounded-md mt-6 px-4 py-2 w-20 mt-1">
+            <select
+              onChange={(val) =>
+                handleSelectChange("salutation", val.target.value)
+              }
+              value={salutation}
+              className="border border-gray-300 rounded-md mt-6 px-4 py-2 w-20 mt-1"
+            >
               {salutationOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -731,8 +743,8 @@ const AddEnquiryForm = () => {
               />
             </div>
 
-             {/* LastName */}
-             <div>
+            {/* LastName */}
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Last Name
               </label>
@@ -1391,7 +1403,11 @@ const AddEnquiryForm = () => {
                   </label>
                   <input
                     type="date"
-                    value={moment(date.startDate).format("YYYY-MM-DD")}
+                    value={
+                      date && date?.startDate
+                        ? moment(date?.startDate).format("YYYY-MM-DD")
+                        : ""
+                    }
                     onChange={(e) =>
                       handleDateChange(index, "startDate", e.target.value)
                     }
@@ -1428,6 +1444,7 @@ const AddEnquiryForm = () => {
               <h2 className="text-lg font-bold mb-4">Air Ticket</h2>
 
               <div className="grid grid-cols-2 gap-4">
+                {/* Common Fields */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Trip type
@@ -1442,6 +1459,7 @@ const AddEnquiryForm = () => {
                     <option value="">Select trip type</option>
                     <option value="One Way">One Way</option>
                     <option value="Round Trip">Round Trip</option>
+                    <option value="Multi City">Multi City</option>
                   </select>
                 </div>
 
@@ -1495,11 +1513,14 @@ const AddEnquiryForm = () => {
                     className="border border-gray-300 p-2 rounded-md w-full"
                   >
                     <option value="">Select To City</option>
-                    {cityOptions.map((city) => (
-                      <option key={city.value} value={city.value}>
-                        {city.label}
-                      </option>
-                    ))}
+                    {cityOptions
+                      // Filter out the city selected in the From City dropdown
+                      .filter((city) => city.value !== airTickets.fromCity)
+                      .map((city) => (
+                        <option key={city.value} value={city.value}>
+                          {city.label}
+                        </option>
+                      ))}
                   </select>
                 </div>
 
@@ -1519,19 +1540,91 @@ const AddEnquiryForm = () => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Return date
-                  </label>
-                  <input
-                    type="date"
-                    value={moment(airTickets.returnDate).format("YYYY-MM-DD")}
-                    onChange={(e) =>
-                      handleAirTicketChange("returnDate", e.target.value)
-                    }
-                    className="border border-gray-300 p-2 rounded-md w-full"
-                  />
-                </div>
+                {/* Round Trip Fields */}
+                {airTickets.tripType === "Round Trip" && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Return date
+                    </label>
+                    <input
+                      type="date"
+                      value={moment(airTickets.returnDate).format("YYYY-MM-DD")}
+                      onChange={(e) =>
+                        handleAirTicketChange("returnDate", e.target.value)
+                      }
+                      className="border border-gray-300 p-2 rounded-md w-full"
+                    />
+                  </div>
+                )}
+
+                {/* Multi City Fields */}
+                {airTickets.tripType === "Multi City" && (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        From City
+                      </label>
+                      <select
+                        value={airTickets.multiFromCity}
+                        onChange={(e) =>
+                          handleAirTicketChange("multiFromCity", e.target.value)
+                        }
+                        className="border border-gray-300 p-2 rounded-md w-full"
+                      >
+                        <option value="">Select From City</option>
+                        {cityOptions.map((city) => (
+                          <option key={city.value} value={city.value}>
+                            {city.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        To City
+                      </label>
+                      <select
+                        value={airTickets.multiToCity}
+                        onChange={(e) =>
+                          handleAirTicketChange("multiToCity", e.target.value)
+                        }
+                        className="border border-gray-300 p-2 rounded-md w-full"
+                      >
+                        <option value="">Select To City</option>
+                        {cityOptions
+                          // Filter out the city selected in the Multi From City dropdown
+                          .filter(
+                            (city) => city.value !== airTickets.multiFromCity
+                          )
+                          .map((city) => (
+                            <option key={city.value} value={city.value}>
+                              {city.label}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Departure date
+                      </label>
+                      <input
+                        type="date"
+                        value={moment(airTickets.multiDepartureDate).format(
+                          "YYYY-MM-DD"
+                        )}
+                        onChange={(e) =>
+                          handleAirTicketChange(
+                            "multiDepartureDate",
+                            e.target.value
+                          )
+                        }
+                        className="border border-gray-300 p-2 rounded-md w-full"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           )}
@@ -1658,19 +1751,19 @@ const AddEnquiryForm = () => {
                               }}
                             />
                           )}
-                        // sx={{
-                        //   "& .MuiAutocomplete-inputRoot": {
-                        //     padding: "1px 4px", // Reduced padding
-                        //     minHeight: "32px", // Reduced height
-                        //   },
-                        //   "& .MuiAutocomplete-listbox": {
-                        //     maxHeight: "120px", // Reduced dropdown height
-                        //     fontSize: "14px",
-                        //     "& li": {
-                        //       padding: "4px 8px", // Reduced option padding
-                        //     },
-                        //   },
-                        // }}
+                          // sx={{
+                          //   "& .MuiAutocomplete-inputRoot": {
+                          //     padding: "1px 4px", // Reduced padding
+                          //     minHeight: "32px", // Reduced height
+                          //   },
+                          //   "& .MuiAutocomplete-listbox": {
+                          //     maxHeight: "120px", // Reduced dropdown height
+                          //     fontSize: "14px",
+                          //     "& li": {
+                          //       padding: "4px 8px", // Reduced option padding
+                          //     },
+                          //   },
+                          // }}
                         />
                       </td>
                     )}
@@ -1717,19 +1810,19 @@ const AddEnquiryForm = () => {
                               }}
                             />
                           )}
-                        // sx={{
-                        //   "& .MuiAutocomplete-inputRoot": {
-                        //     padding: "1px 4px", // Reduced padding
-                        //     minHeight: "32px", // Reduced height
-                        //   },
-                        //   "& .MuiAutocomplete-listbox": {
-                        //     maxHeight: "120px", // Reduced dropdown height
-                        //     fontSize: "14px",
-                        //     "& li": {
-                        //       padding: "4px 8px", // Reduced option padding
-                        //     },
-                        //   },
-                        // }}
+                          // sx={{
+                          //   "& .MuiAutocomplete-inputRoot": {
+                          //     padding: "1px 4px", // Reduced padding
+                          //     minHeight: "32px", // Reduced height
+                          //   },
+                          //   "& .MuiAutocomplete-listbox": {
+                          //     maxHeight: "120px", // Reduced dropdown height
+                          //     fontSize: "14px",
+                          //     "& li": {
+                          //       padding: "4px 8px", // Reduced option padding
+                          //     },
+                          //   },
+                          // }}
                         />
                       </td>
                     )}
@@ -1779,17 +1872,17 @@ const AddEnquiryForm = () => {
                             {...params}
                             className="w-full"
                             variant="outlined"
-                          // sx={{
-                          //   "& .MuiInputLabel-root": {
-                          //     left: "50%",
-                          //     transform: "translate(-50%, -50%)",
-                          //     "&.MuiInputLabel-shrink": {
-                          //       transform:
-                          //         "translate(-50%, -50%) scale(0.75)",
-                          //       transformOrigin: "center top",
-                          //     },
-                          //   },
-                          // }}
+                            // sx={{
+                            //   "& .MuiInputLabel-root": {
+                            //     left: "50%",
+                            //     transform: "translate(-50%, -50%)",
+                            //     "&.MuiInputLabel-shrink": {
+                            //       transform:
+                            //         "translate(-50%, -50%) scale(0.75)",
+                            //       transformOrigin: "center top",
+                            //     },
+                            //   },
+                            // }}
                           />
                         )}
                         sx={{

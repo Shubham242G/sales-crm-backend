@@ -1,7 +1,7 @@
 import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import {
   FaFilter,
@@ -20,7 +20,6 @@ import {
   useConvert,
 } from "@/services/enquiry.service";
 import { toastSuccess, toastError } from "@/utils/toast";
-
 import { generateFilePath } from "@/services/urls.service";
 import moment from "moment";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
@@ -36,18 +35,41 @@ function EnquiryLIst() {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
+  const [selectedEnquiryType, setSelectedEnquiryType] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
 
   const searchObj = useMemo(
     () => ({
       ...(query && { query }),
+      ...(selectedEnquiryType && { enquiryType: selectedEnquiryType }),
+      ...(selectedLevel && { levelOfEnquiry: selectedLevel }),
+      ...(selectedStatus && { status: selectedStatus }),
       pageIndex: pageIndex - 1,
       pageSize,
     }),
-    [pageIndex, pageSize, query]
+    [
+      pageIndex,
+      pageSize,
+      query,
+      selectedEnquiryType,
+      selectedLevel,
+      selectedStatus,
+    ]
   );
 
-  const { data: EnquiryData } = useEnquiry(searchObj);
-  console.log(EnquiryData, "check EnquiryData");
+  const { data: EnquiryData, refetch } = useEnquiry(searchObj);
+
+  // useEffect(() => {
+  //   const { data: EnquiryData } = useEnquiry(searchObj);
+  //   setEnquiryData(EnquiryData);
+  // }, [isUploading]);
+  // console.log(EnquiryData, "check EnquiryData");
+  useEffect(() => {
+    setPageIndex(1);
+  }, [selectedEnquiryType, selectedLevel, selectedStatus]);
+
   const { mutateAsync: deleteEnquiry } = usedeleteEnquiryById();
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
   const { mutateAsync: convertEnquiry } = useConvert();
@@ -66,23 +88,44 @@ function EnquiryLIst() {
     if (!file) return;
 
     try {
-      setIsUploading(true);
+      console.log("Starting upload, setting isUploading to true");
+      setIsUploading(true); // Set uploading state
+
+      // Check for allowed file extensions
+      const allowedExtensions = ["xlsx", "csv"];
+      const fileExtension = file.name.split(".").pop()?.toLowerCase() || "";
+      if (!allowedExtensions.includes(fileExtension)) {
+        toastError("Invalid file type. Please upload an Excel or CSV file.");
+        return;
+      }
+
       const formData = new FormData();
       formData.append("file", file);
 
+      console.log("Calling addEnquiryExel with FormData");
       const response = await addEnquiryExel(formData);
 
-      console.log(response, "check response");
-      toastSuccess("Enquries imported successfully!");
+      console.log(response, "check response ");
 
-      // Optionally refresh the data
-      // You might want to add a refetch function from your useContact hook
-    } catch (error) {
-      toastError("Failed to import enquiries. Please try again.");
+      // Check if the upload was successful
+      if (response.status === 200) {
+        console.log("Upload response:", response);
+        toastSuccess("Enquiries imported successfully!");
+        refetch(); // Trigger data refetch
+      } else {
+        toastError("Error importing file. Please try again.");
+      }
+
+      setIsUploading(false); // End uploading state
+      console.log("set is uploading false inside try");
+    } catch (error: any) {
       console.error("Import Error:", error);
+      toastError("An error occurred during import. Please try again.");
     } finally {
-      setIsUploading(false);
-      // Clear the file input
+      console.log("In finally block, setting isUploading to false");
+      setIsUploading(false); // Always set uploading to false
+
+      // Reset the file input value after upload attempt
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -132,28 +175,23 @@ function EnquiryLIst() {
     } catch (error) {
       toastError(error);
     }
-  }; const handleConvertEnquery = async (id: any) => {
-
+  };
+  const handleConvertEnquery = async (id: any) => {
     try {
-        const { data: res } = await convertRfq(id)
-        if (res) {
-            toastSuccess(res.message)
-
-        }
-
+      const { data: res } = await convertRfq(id);
+      if (res) {
+        toastSuccess(res.message);
+      }
+    } catch (error) {
+      toastError(error);
     }
-    catch (error) {
-        toastError(error)
-    }
-
-
-}
+  };
   const columns = [
     {
       name: "Customer Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.firstName+ " " + row.lastName}</h6>
+          <h6>{row.firstName + " " + row.lastName}</h6>
         </div>
       ),
       width: "13%",
@@ -226,7 +264,7 @@ function EnquiryLIst() {
       width: "8%",
     },
     {
-      name: "Action",
+      name: "Edit",
       width: "6%",
       selector: (row: any) => (
         <div className="flex items-center gap-3">
@@ -254,25 +292,81 @@ function EnquiryLIst() {
     },
     {
       name: "Convert to Enquiry",
-            width: "10%",
-            selector: (row: any) => (
-                <div className="flex items-center gap-3">
-                    <Link
-                        to={`/add-sales-contact/${row?._id}`}
-                        className="p-[6px] text-black-400 text-lg flex items-center"
-                    >
-
-                    </Link>
-                    <button
-                        className="p-[6px] text-black-400 text-lg"
-                        onClick={() => handleConvertEnquery(row._id)}
-                    >
-                        <SiConvertio />
-                    </button>
-                </div>
-            ),
-    }
+      width: "10%",
+      selector: (row: any) => (
+        <div className="flex items-center gap-3">
+          <Link
+            to={`/add-sales-contact/${row?._id}`}
+            className="p-[6px] text-black-400 text-lg flex items-center"
+          ></Link>
+          <button
+            className="p-[6px] text-black-400 text-lg"
+            onClick={() => handleConvertEnquery(row._id)}
+          >
+            <SiConvertio />
+          </button>
+        </div>
+      ),
+    },
   ];
+
+  const FilterDropdown = () => (
+    <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-10 border border-gray-200">
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium">Enquiry Type</label>
+          <select
+            className="p-2 border rounded-md"
+            value={selectedEnquiryType}
+            onChange={(e) => setSelectedEnquiryType(e.target.value)}
+          >
+            <option value="">All Types</option>
+            <option value="Corporate">Room</option>
+            <option value="Individual">Banquet</option>
+            <option value="Group">Both</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium">Level of Enquiry</label>
+          <select
+            className="p-2 border rounded-md"
+            value={selectedLevel}
+            onChange={(e) => setSelectedLevel(e.target.value)}
+          >
+            <option value="">All Levels</option>
+            <option value="urgent">Urgent</option>
+            <option value="moderate">Moderate</option>
+            <option value="Not Urgent">Not Urgent</option>
+          </select>
+        </div>
+
+        {/* <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium">Status</label>
+          <select
+            className="p-2 border rounded-md"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+          >
+            <option value="">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div> */}
+
+        <button
+          className="mt-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md"
+          onClick={() => {
+            setSelectedEnquiryType("");
+            setSelectedLevel("");
+            setSelectedStatus("");
+          }}
+        >
+          Clear Filters
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="container px-6">
@@ -290,9 +384,15 @@ function EnquiryLIst() {
               />
             </div>
 
-            <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
-              <FaFilter /> Filter
-            </button>
+            <div className="relative">
+              <button
+                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <FaFilter /> Filter
+              </button>
+              {showFilters && <FilterDropdown />}
+            </div>
 
             <button
               className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
