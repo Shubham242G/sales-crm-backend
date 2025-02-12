@@ -2,9 +2,9 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
+import { FaFilter, FaFileExport, FaPlus, FaFileImport } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 import {
   useLeadById,
@@ -13,8 +13,11 @@ import {
   usedeleteLeadById,
   useLead,
   convertToContact,
+  addLeadExel,
+  getExel,
 } from "@/services/lead.service";
 import { toastError, toastSuccess } from "@/utils/toast";
+import { generateFilePath } from "@/services/urls.service";
 
 function Leads() {
   const navigate = useNavigate();
@@ -29,6 +32,9 @@ function Leads() {
     setShowLedgerDetailsModal(true);
   };
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
@@ -40,6 +46,8 @@ function Leads() {
     }),
     [pageIndex, pageSize, query]
   );
+
+  const { data: leadData, refetch } = useLead(searchObj);
 
   const { data: LeadData } = useLead(searchObj);
   console.log(LeadData, "check leadData");
@@ -71,6 +79,81 @@ function Leads() {
     }
   };
 
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // Handle file selection and upload
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      console.log("Starting upload, setting isUploading to true");
+      setIsUploading(true); // Set uploading state
+
+      // Check for allowed file extensions
+      const allowedExtensions = ["xlsx", "csv"];
+      const fileExtension = file.name.split(".").pop()?.toLowerCase() || "";
+      if (!allowedExtensions.includes(fileExtension)) {
+        toastError("Invalid file type. Please upload an Excel or CSV file.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      console.log("Calling addEnquiryExel with FormData");
+      const response = await addLeadExel(formData);
+
+      console.log(response, "check response ");
+
+      // Check if the upload was successful
+      if (response.status === 200) {
+        console.log("Upload response:", response);
+        toastSuccess("Enquiries imported successfully!");
+        refetch(); // Trigger data refetch
+      } else {
+        toastError("Error importing file. Please try again.");
+      }
+
+      setIsUploading(false); // End uploading state
+      console.log("set is uploading false inside try");
+    } catch (error: any) {
+      console.error("Import Error:", error);
+      toastError("An error occurred during import. Please try again.");
+    } finally {
+      console.log("In finally block, setting isUploading to false");
+      setIsUploading(false); // Always set uploading to false
+
+      // Reset the file input value after upload attempt
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  // Handle Export Contacts
+  const handleExportEnquiries = async () => {
+    try {
+      const { data: response } = await getExel();
+      console.log(response, "check response");
+      const url = generateFilePath("/" + response.filename);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "enquiries.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      toastSuccess("Enquries exported successfully!");
+    } catch (error) {
+      toastError("Failed to export enquiries. Please try again.");
+      console.error("Export Error:", error);
+    }
+  };
+
   const columns = [
     {
       name: "Contact Name",
@@ -82,7 +165,7 @@ function Leads() {
       width: "18%",
     },
     {
-      name: "Contact Owner",
+      name: "Account Manager",
       selector: (row: any) => <div className="flex gap-1">{row.ownerName}</div>,
       width: "12%",
     },
@@ -191,6 +274,30 @@ function Leads() {
               </button> */}
 
               <button
+                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
+                onClick={handleExportEnquiries}
+              >
+                <FaFileExport /> Export
+              </button>
+
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                onChange={handleFileChange}
+              />
+
+              <button
+                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
+                onClick={handleImportClick}
+                disabled={isUploading}
+              >
+                <FaFileImport />
+                {isUploading ? "Importing..." : "Import"}
+              </button>
+
+              <button
                 onClick={() => navigate("/add-leads")}
                 className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
               >
@@ -205,6 +312,11 @@ function Leads() {
             columns={columns}
             loading={false}
             totalRows={LeadData?.total}
+            onChangeRowsPerPage={setPageSize}
+            onChangePage={setPageIndex}
+            page={pageIndex}
+            rowsPerPageText={pageSize}
+            isServerPropsDisabled={false}
             // loading={loading}
             // totalRows={data.length}
             // onChangePage={handlePageChange}
