@@ -1,38 +1,116 @@
-import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
-import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
-import { FaEye } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
-import { useState, useMemo } from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaPlus } from "react-icons/fa";
-import { IoSearchOutline } from "react-icons/io5";
-import { usedeleteRolesById, useRoles } from "@/services/roles.service";
+import { useState, useEffect } from "react";
+import { FaPlus, FaSave } from "react-icons/fa";
+import {
+  useAddRoles,
+  useRolesById,
+  useUpdateRolesById,
+} from "@/services/roles.service";
 import { toastError, toastSuccess } from "@/utils/toast";
+import { useNavigate, useParams } from "react-router-dom";
+import { Autocomplete, TextField } from "@mui/material";
 
-function Roles() {
+// Permission types
+interface Permissions {
+  create: boolean;
+  view: boolean;
+  update: boolean;
+  delete: boolean;
+}
+
+// Role model
+interface Role {
+  roleName: string;
+  description: string;
+  routePermissions: RoutePermission[];
+  name: string;
+  email: string;
+  phoneNo: string;
+  designation: string;
+  department: string;
+}
+
+// Permissions for each route
+interface RoutePermission {
+  routeName: string;
+  permissions: Permissions;
+  isEditing?: boolean;
+}
+
+function AddRoles() {
+  const [roleName, setRoleName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phoneNo, setPhoneNo] = useState<string>("");
+  const [designation, setDesignation] = useState<string>("");
+  const [department, setDepartment] = useState<string>("");
+  const [permissions, setPermissions] = useState<RoutePermission[]>([
+    {
+      routeName: "Customers",
+      permissions: { create: false, view: false, update: false, delete: false },
+    },
+    {
+      routeName: "Operations",
+      permissions: { create: false, view: false, update: false, delete: false },
+    },
+    {
+      routeName: "Moderators",
+      permissions: { create: false, view: false, update: false, delete: false },
+    },
+    {
+      routeName: "Marketing",
+      permissions: { create: false, view: false, update: false, delete: false },
+    },
+    {
+      routeName: "Sub-Admin",
+      permissions: { create: false, view: false, update: false, delete: false },
+    },
+  ]);
+
+  const { id } = useParams();
   const navigate = useNavigate();
+  const { mutateAsync: addRoles } = useAddRoles();
+  const { mutateAsync: updateRoles } = useUpdateRolesById();
+  const { data: roleDataById } = useRolesById(id || "");
 
-  const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [query, setQuery] = useState("");
-  const searchObj = useMemo(
-    () => ({
-      ...(query && { query }),
-      pageIndex: pageIndex - 1,
-      pageSize,
-    }),
-    [pageIndex, pageSize, query]
-  );
+  useEffect(() => {
+    if (roleDataById) {
+      setRoleName(roleDataById?.data?.roleName);
+      setDescription(roleDataById?.data?.description);
+      setName(roleDataById?.data?.name);
+      setEmail(roleDataById?.data?.email);
+      setPhoneNo(roleDataById?.data?.phoneNo);
+      setDesignation(roleDataById?.data?.designation);
+      setDepartment(roleDataById?.data?.department);
+      setPermissions(roleDataById?.data?.routePermissions);
+    }
+  }, [roleDataById]);
 
-  const { data: roleData } = useRoles(searchObj);
-  const { mutateAsync: deleteRoles } = usedeleteRolesById();
-
-  const handleDelete = async (id: string) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      if (window.confirm("Are you sure you want to delete this contact?")) {
-        const { data: res } = await deleteRoles(id);
-        if (res) {
+      const newRole: Role = {
+        roleName,
+        description,
+        name,
+        phoneNo,
+        email,
+        designation,
+        department,
+        routePermissions: permissions,
+      };
+
+      if (id) {
+        const { data: res } = await updateRoles({ id, obj: newRole });
+        if (res?.message) {
           toastSuccess(res.message);
+          navigate("/roles");
+        }
+      } else {
+        const { data: res } = await addRoles(newRole);
+        if (res?.message) {
+          toastSuccess(res.message);
+          navigate("/roles");
         }
       }
     } catch (error) {
@@ -40,104 +118,258 @@ function Roles() {
     }
   };
 
-  const columns = [
-    {
-      name: "Name",
-      selector: (row: any) => row.name,
-      width: "12%",
-    },
-    {
-      name: "Role",
-      selector: (row: any) => row.roleName,
-      width: "12%",
-    },
-    {
-      name: "Phone Number",
-      selector: (row: any) => row.phoneNo,
-      width: "12%",
-    },
-    {
-      name: "Email Address",
-      selector: (row: any) => row.email,
-      width: "12%",
-    },
-    {
-      name: "Department",
-      selector: (row: any) => row.department,
-      width: "12%",
-    },
-    {
-      name: "Designation",
-      selector: (row: any) => row.designation,
-      width: "12%",
-    },
-    {
-      name: "Description",
-      selector: (row: any) => row.description,
-      width: "12%",
-    },
-    {
-      name: "Edit",
-      width: "8%",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => navigate(`/add-role/${row._id}`)}
-          className="text-black-500 text-lg p-[6px]"
-        >
-          <FaEye />
-        </button>
-      ),
-    },
-    {
-      name: "Delete",
-      width: "8%",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => handleDelete(row._id)}
-          className="p-[6px] text-black-400 text-lg"
-        >
-          <RiDeleteBin6Line />
-        </button>
-      ),
-    },
-  ];
+  const handleAddNewRoute = () => {
+    setPermissions((prev) => [
+      ...prev,
+      {
+        routeName: "",
+        permissions: {
+          create: false,
+          view: false,
+          update: false,
+          delete: false,
+        },
+        isEditing: true,
+      },
+    ]);
+  };
+
+  const handleRouteNameChange = (index: number, newRouteName: string) => {
+    setPermissions((prev) =>
+      prev.map((rp, i) =>
+        i === index ? { ...rp, routeName: newRouteName } : rp
+      )
+    );
+  };
+
+  const handleRouteBlur = (index: number) => {
+    setPermissions((prev) =>
+      prev.map((rp, i) => (i === index ? { ...rp, isEditing: false } : rp))
+    );
+  };
+
+  const handleEditClick = (index: number) => {
+    setPermissions((prev) =>
+      prev.map((rp, i) => (i === index ? { ...rp, isEditing: true } : rp))
+    );
+  };
+
+  const handleDeleteRoute = (index: number) => {
+    setPermissions((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handlePermissionChange = (
+    index: number,
+    permissionType: keyof Permissions
+  ) => {
+    setPermissions((prevPermissions) =>
+      prevPermissions.map((rp, i) =>
+        i === index
+          ? {
+              ...rp,
+              permissions: {
+                ...rp.permissions,
+                [permissionType]: !rp.permissions[permissionType],
+              },
+            }
+          : rp
+      )
+    );
+  };
 
   return (
-    <div className="container px-6">
-      <div className="bg-white table_container rounded-xl shadow-xl p-6">
-        <div className="search_boxes flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800">Roles List</h2>
-          <div className="flex items-center justify-start gap-2">
-            <div className="w-full flex items-center">
-              <input
-                type="search"
-                className="rounded-md w-[250px] border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                placeholder="Search by role name"
-              />
-              <div className="relative right-8">
-                <IoSearchOutline />
-              </div>
-            </div>
-            <button
-              onClick={() => navigate("/add-role")}
-              className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
-            >
-              <FaPlus />
-              <span>New Role</span>
-            </button>
-          </div>
+    <div className="container mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">
+        {id ? "Edit Role" : "Add New Role"}
+      </h1>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block font-medium mb-2">Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Name"
+          />
         </div>
-        <ReactTable
-          data={roleData?.data}
-          columns={columns}
-          loading={false}
-          totalRows={roleData?.total}
-        />
-      </div>
+        <div>
+          <label className="block font-medium mb-2">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Email Address"
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-2">Phone Number</label>
+          <input
+            type="number"
+            value={phoneNo}
+            onChange={(e) => setPhoneNo(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Phone Number"
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-2">Department</label>
+          <input
+            type="text"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Department"
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-2">Designation</label>
+          <input
+            type="text"
+            value={designation}
+            onChange={(e) => setDesignation(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Designation"
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-4">Role Name</label>
+          <input
+            type="text"
+            value={roleName}
+            onChange={(e) => setRoleName(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Role Name"
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-2">Description</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Role Description"
+          ></textarea>
+        </div>
+
+        {/* Permissions Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-300 p-2 w-1/5">Routes</th>
+                <th className="border border-gray-300 p-2 w-2/5" colSpan={4}>
+                  Permissions
+                </th>
+                <th className="border border-gray-300 p-2 w-2/5" colSpan={4}>
+                  Actions
+                </th>
+                {/* <th className="border border-gray-300 p-2 w-[10%]">Edit</th>
+                <th className="border border-gray-300 p-2 w-[10%]">Delete</th> */}
+              </tr>
+              <tr className="bg-gray-50">
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2 w-[17%]">Create</th>
+                <th className="border border-gray-300 p-2 w-[17%]">View</th>
+                <th className="border border-gray-300 p-2 w-[17%]">Update</th>
+                <th className="border border-gray-300 p-2 w-[17%]">Delete</th>
+                <th className="border border-gray-300 p-2 w-[6%]">Edit</th>
+                <th className="border border-gray-300 p-2 w-[10%]">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {permissions.map((rp, index) => (
+                <tr key={index} className="border border-gray-300">
+                  <td className="border border-gray-300 p-2 font-medium">
+                    {rp.isEditing ? (
+                      <input
+                        type="text"
+                        value={rp.routeName}
+                        onChange={(e) =>
+                          handleRouteNameChange(index, e.target.value)
+                        }
+                        onBlur={() => handleRouteBlur(index)}
+                        className="w-full p-1 border rounded"
+                        placeholder="Enter route name"
+                        autoFocus
+                      />
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <span>{rp.routeName}</span>
+                      </div>
+                    )}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={rp.permissions.create}
+                      onChange={() => handlePermissionChange(index, "create")}
+                    />
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={rp.permissions.view}
+                      onChange={() => handlePermissionChange(index, "view")}
+                    />
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={rp.permissions.update}
+                      onChange={() => handlePermissionChange(index, "update")}
+                    />
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={rp.permissions.delete}
+                      onChange={() => handlePermissionChange(index, "delete")}
+                    />
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    <button
+                      type="button"
+                      className="text-orange-500 hover:underline"
+                      onClick={() => handleEditClick(index)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">
+                    <button
+                      type="button"
+                      className="text-red-500 hover:underline"
+                      onClick={() => handleDeleteRoute(index)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button
+            type="button"
+            className="mt-4 flex items-center px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            onClick={handleAddNewRoute}
+          >
+            <FaPlus className="mr-2" /> Add New Route
+          </button>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            className="flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+          >
+            <FaSave className="mr-2" /> Save Role
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
 
-export default Roles;
+export default AddRoles;
