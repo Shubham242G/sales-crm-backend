@@ -8,7 +8,10 @@ import {
 import { toastError, toastSuccess } from "@/utils/toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { Autocomplete, TextField } from "@mui/material";
-
+import { useUser, useUserById, useUserForSelect } from "@/services/user.service";
+import Select from 'react-select';
+import { customReactStylesSmall } from "@/utils/ReactSelectStyle";
+import { useDepartmentMaster, useDepartmentMasterForSelect } from "@/services/departmentMaster.service";
 // Permission types
 interface Permissions {
   create: boolean;
@@ -48,10 +51,12 @@ function AddRoles() {
   const [roleName, setRoleName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [name, setName] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phoneNo, setPhoneNo] = useState<string>("");
   const [designation, setDesignation] = useState<string>("");
   const [department, setDepartment] = useState<string>("");
+  const [departmentId, setDepartmentId] = useState<string>("");
   const [permissions, setPermissions] = useState<RoutePermission[]>([
     {
       routeName: "Customers",
@@ -80,6 +85,9 @@ function AddRoles() {
   const { mutateAsync: addRoles } = useAddRoles();
   const { mutateAsync: updateRoles } = useUpdateRolesById();
   const { data: roleDataById } = useRolesById(id || "");
+  const { data: userData } = useUserForSelect();
+  const { data: userDataById } = useUserById(userId || "", userId ? true : false);
+  const {data: departmentData} = useDepartmentMasterForSelect();
 
   useEffect(() => {
     if (roleDataById) {
@@ -93,6 +101,15 @@ function AddRoles() {
       setPermissions(roleDataById?.data?.routePermissions);
     }
   }, [roleDataById]);
+
+  useEffect(() => {
+    if (userDataById && userId) {
+      setEmail(userDataById?.email || "");
+      setPhoneNo(userDataById?.phone || "");
+      setDepartment(userDataById?.role || "");
+      setRoleName(userDataById?.role || "");
+    }
+  }, [userDataById && userId])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,12 +191,12 @@ function AddRoles() {
       prevPermissions.map((rp, i) =>
         i === index
           ? {
-              ...rp,
-              permissions: {
-                ...rp.permissions,
-                [permissionType]: !rp.permissions[permissionType],
-              },
-            }
+            ...rp,
+            permissions: {
+              ...rp.permissions,
+              [permissionType]: !rp.permissions[permissionType],
+            },
+          }
           : rp
       )
     );
@@ -192,13 +209,12 @@ function AddRoles() {
       </h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block font-medium mb-2">Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
-            placeholder="Enter Name"
+          <label className="block font-medium mb-4">User Name</label>
+          <Select
+            value={userData?.data.find((el) => el?.value === userId) || { label: "", value: "" }}
+            options={userData?.data}
+            onChange={(e: any) => { setName(e?.label); setUserId(e?.value) }}
+            styles={customReactStylesSmall}
           />
         </div>
         <div>
@@ -222,16 +238,6 @@ function AddRoles() {
           />
         </div>
         <div>
-          <label className="block font-medium mb-2">Department</label>
-          <input
-            type="text"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
-            placeholder="Enter Department"
-          />
-        </div>
-        <div>
           <label className="block font-medium mb-2">Designation</label>
           <input
             type="text"
@@ -241,7 +247,27 @@ function AddRoles() {
             placeholder="Enter Designation"
           />
         </div>
+        {/* <div>
+          <label className="block font-medium mb-2">Designation</label>
+          <input
+            type="text"
+            value={designation}
+            onChange={(e) => setDesignation(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Designation"
+          />
+        </div> */}
+
         <div>
+          <label className="block font-medium mb-4">Department</label>
+          <Select
+            value={departmentData?.data.find((el) => el?.value === departmentId) || { label: "", value: "" }}
+            options={departmentData?.data}
+            onChange={(e: any) => { setDepartment(e?.label); setDepartmentId(e?.value) }}
+            styles={customReactStylesSmall}
+          />
+        </div>
+        {/* <div>
           <label className="block font-medium mb-4">Role Name</label>
           <Autocomplete
             value={roleName}
@@ -256,7 +282,7 @@ function AddRoles() {
               />
             )}
           />
-        </div>
+        </div> */}
         <div>
           <label className="block font-medium mb-2">Description</label>
           <textarea

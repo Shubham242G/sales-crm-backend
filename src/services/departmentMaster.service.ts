@@ -2,8 +2,9 @@ import useAxiosAuth from "../libs/hooks/axios";
 import { usePagination } from "../libs/hooks/usePagination";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PaginationState } from "@tanstack/react-table";
-import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination } from "./urls.service";
-import axios from "../libs/hooks/axios";
+import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination, ReactSelectFormat } from "./urls.service";
+import axios from "axios";
+import axiosAuth from "./axios.service";
 import { CHARGE_TYPE } from "@/common/constant.common";
 
 const prefix = "/departmentMaster";
@@ -39,12 +40,25 @@ export const useDepartmentMasterApiHook = () => {
         return axios.get<GeneralApiResponsePagination<IDepartmentMaster>>(`${BASE_URL}${prefix}/?${query}`);
     };
 
+    const getDepartmentMasterForSelect = async (
+        searchObj: Record<string, boolean | unknown> = {}
+    ) => {
+        const query = new URLSearchParams({
+            isForSelectInput: "true",
+            ...searchObj,
+        }).toString();
+        return axiosAuth.get<GeneralApiResponsePagination<ReactSelectFormat>>(
+            `${BASE_URL}${prefix}/getAllDepartmentMaster?${query}`
+        );
+    };
+
     return {
         addDepartmentMaster,
         updateDepartmentMasterById,
         deleteDepartmentMasterById,
         getDepartmentMasterById,
         getAllDepartmentMaster,
+        getDepartmentMasterForSelect
     };
 };
 
@@ -109,3 +123,18 @@ export const useUpdateDepartmentMasterById = () => {
         },
     });
 };
+
+export const useDepartmentMasterForSelect = (searchObj: Record<string, unknown> = {}) => {
+    const apis = useDepartmentMasterApiHook();
+    return useQuery({
+        queryKey: ["Department_Master_for_select", searchObj],
+        queryFn: () => apis.getDepartmentMasterForSelect(searchObj).then((res) => res.data),
+        initialData: {
+            data: [],
+            total: 0,
+            message: "",
+        },
+    });
+};
+
+
