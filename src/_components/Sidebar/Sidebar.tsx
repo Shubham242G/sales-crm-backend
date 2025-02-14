@@ -235,7 +235,7 @@ function Sidebar() {
           />
         </div>
         <ul className="main-list w-full">
-          {filteredSidebarArr.map((el, index) => (
+          {sidebarArr.map((el, index) => (
             <li className="relative" key={index}>
               {el?.dropArr ? (
                 <button

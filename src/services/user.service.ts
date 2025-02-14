@@ -87,11 +87,11 @@ export const useUserApiHook = () => {
         searchObj: Record<string, boolean | unknown> = {}
     ) => {
         const query = new URLSearchParams({
-            forSelect: "true",
+            isForSelectInput: "true",
             ...searchObj,
         }).toString();
-        return axios.get<GeneralApiResponsePagination<ReactSelectFormat>>(
-            `${BASE_URL}${prefix}/?${query}`
+        return axiosAuth.get<GeneralApiResponsePagination<ReactSelectFormat>>(
+            `${BASE_URL}${prefix}/getAllUsers?${query}`
         );
     };
 
