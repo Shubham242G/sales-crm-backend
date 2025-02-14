@@ -209,7 +209,15 @@ export const convertToContact = async (id: any) => {
   };
 
 
+  export const getExel = async () => {
+    return axios.get(`${BASE_URL}${prefix}/getExel`);
+};
 
+
+export const addLeadExel = async (obj: any,) => {
+
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadLeads`, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
+};
 
 
 

@@ -39,14 +39,6 @@ interface RoutePermission {
   isEditing?: boolean;
 }
 
-const roleOptions = [
-  "Customer",
-  "Operations",
-  "Moderators",
-  "Marketing",
-  "Sub-Admin",
-];
-
 function AddRoles() {
   const [roleName, setRoleName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -269,18 +261,12 @@ function AddRoles() {
         </div>
         {/* <div>
           <label className="block font-medium mb-4">Role Name</label>
-          <Autocomplete
+          <input
+            type="text"
             value={roleName}
-            onChange={(event, newValue) => setRoleName(newValue || "")}
-            options={roleOptions}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Role Name"
-                variant="outlined"
-                className="w-full"
-              />
-            )}
+            onChange={(e) => setRoleName(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            placeholder="Enter Role Name"
           />
         </div> */}
         <div>

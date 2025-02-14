@@ -53,9 +53,16 @@ export const useRolesApiHook = () => {
       `${BASE_URL}${prefix}/deleteById/${id}`
     );
   };
-  const getContactById = async (id: any) => {
+  const getRolesById = async (id: any) => {
     return axios.get<GeneralApiResponse<IRoles>>(
       `${BASE_URL}${prefix}/getById/${id}`
+    );
+  };
+
+
+  const getRolesByRole = async (role: any) => {
+    return axios.get<GeneralApiResponse<IRoles>>(
+      `${BASE_URL}${prefix}/getByRole/${role}`
     );
   };
 
@@ -74,8 +81,9 @@ export const useRolesApiHook = () => {
     getAllRoles,
     updateRolesById,
     deleteRolesById,
-    getContactById,
+    getRolesById,
     addRoles,
+    getRolesByRole
   };
 };
 
@@ -95,8 +103,19 @@ export const useRolesById = (id: string) => {
 
   return useQuery({
     queryKey: ["Roles_id", id],
-    queryFn: () => api.getContactById(id).then((res) => res.data),
+    queryFn: () => api.getRolesById(id).then((res) => res.data),
     enabled: !!id,
+  });
+};
+
+
+export const useRolesByRole = (role: string) => {
+  const api = useRolesApiHook();
+
+  return useQuery({
+    queryKey: ["Roles_id", role],
+    queryFn: () => api.getRolesByRole(role).then((res) => res.data),
+    enabled: !!role,
   });
 };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdChevronRight } from "react-icons/md";
 import home from "../../assets/sidebar/home.webp";
 import homew from "../../assets/sidebar/homew.webp";
@@ -9,10 +9,19 @@ import ledgerw from "../../assets/sidebar/ledgerw.png";
 import { useSidebar } from "../../provider/SidebarContext";
 import { Link } from "react-router-dom";
 import mainlogo from "../../assets/mainlogo/logo.png";
+import { getAuth } from "@/utils/auth";
+import { useRolesById, useRolesByRole } from "@/services/roles.service";
+import { RoutePermission } from "@/utils/permission";
 
 // import { IoChevronDown } from 'react-icons/io5'
+
 function Sidebar() {
   // const [isHovered, setIsHovered] = useState(false);
+
+  // console.log(
+  //   RoutePermission("sales", "true"),
+  //   "check permissions routes for sales"
+  // );
   const [sidebarArr] = useState([
     {
       mainlink: "/",
@@ -197,6 +206,23 @@ function Sidebar() {
     setShowDrop(showdrop === index ? null : index);
   };
 
+  const filteredSidebarArr = sidebarArr
+    .map((item) => {
+      const filteredDropArr = item.dropArr
+        ? item.dropArr.filter((dropItem) => RoutePermission(dropItem.dropHead))
+        : null;
+
+      const hasMainPermission = RoutePermission(item.mainlink);
+      const hasValidDropItems = filteredDropArr && filteredDropArr.length > 0;
+
+      return hasMainPermission || hasValidDropItems
+        ? { ...item, dropArr: filteredDropArr }
+        : null;
+    })
+    .filter(Boolean);
+
+  console.log(filteredSidebarArr, "filtered sidebar array");
+
   return (
     <>
       <div className="bg-[#0B2F46] h-full lg:h-[100vh] w-64 fixed">
@@ -208,9 +234,9 @@ function Sidebar() {
           />
         </div>
         <ul className="main-list w-full">
-          {sidebarArr.map((el, index) => (
+          {filteredSidebarArr.map((el, index) => (
             <li className="relative" key={index}>
-              {el.dropArr ? (
+              {el?.dropArr ? (
                 <button
                   type="button"
                   className="flex items-center p-3 w-full bg-transparent hover:bg-orange-600 transition-colors justify-between"
@@ -233,43 +259,48 @@ function Sidebar() {
                 </button>
               ) : (
                 <Link
-                  to={el.mainlink}
+                  to={el?.mainlink ? el.mainlink : ""}
                   className="flex items-center p-3 w-full bg-transparent hover:bg-orange-600 transition-colors"
                 >
                   <div className="icon w-6 h-6 mr-4">
-                    <img src={el.icon} alt={el.heading} />
+                    <img src={el?.icon} alt={el?.heading} />
                   </div>
-                  <h6 className="text-sidebartext flex-1">{el.heading}</h6>
+                  <h6 className="text-sidebartext flex-1">{el?.heading}</h6>
                 </Link>
               )}
 
-              {el.dropArr && showdrop === index && (
+              {el?.dropArr && showdrop === index && (
                 <div className="dropdown_list max-h-40 overflow-y-auto">
                   <ul className="pl-6">
-                    {el.dropArr.map((ele, idx) => (
-                      <li key={idx} className="py-1">
-                        {/* Add group container */}
-                        <div className="flex justify-between items-center group">
-                          <Link
-                            to={ele.link}
-                            className="text-sm text-sidebartext hover:text-sidebartexthover"
-                          >
-                            {ele.dropHead}
-                          </Link>
-                          {ele.plusLink && (
+                    {el.dropArr.map(
+                      (ele, idx) => (
+                        // RoutePermission(ele.dropHead, "true") && (
+                        <li key={idx} className="py-1">
+                          {/* Add group container */}
+                          <div className="flex justify-between items-center group">
+                            {/* <p>{RoutePermission(ele.dropHead, "true")} </p> */}
                             <Link
-                              to={ele.plusLink}
-                              // Add opacity and group-hover classes
-                              className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
+                              to={ele.link}
+                              className="text-sm text-sidebartext hover:text-sidebartexthover"
                             >
-                              <span className="bg-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-medium leading-none">
-                                +
-                              </span>
+                              {ele.dropHead}
                             </Link>
-                          )}
-                        </div>
-                      </li>
-                    ))}
+                            {ele.plusLink && (
+                              <Link
+                                to={ele.plusLink}
+                                // Add opacity and group-hover classes
+                                className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
+                              >
+                                <span className="bg-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-medium leading-none">
+                                  +
+                                </span>
+                              </Link>
+                            )}
+                          </div>
+                        </li>
+                      )
+                      // )
+                    )}
                   </ul>
                 </div>
               )}
