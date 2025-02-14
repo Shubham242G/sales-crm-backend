@@ -212,7 +212,8 @@ function Sidebar() {
         ? item.dropArr.filter((dropItem) => RoutePermission(dropItem.dropHead))
         : null;
 
-      const hasMainPermission = RoutePermission(item.mainlink);
+      const hasMainPermission =
+        item.heading === "Dashboard" ? true : RoutePermission(item.heading);
       const hasValidDropItems = filteredDropArr && filteredDropArr.length > 0;
 
       return hasMainPermission || hasValidDropItems

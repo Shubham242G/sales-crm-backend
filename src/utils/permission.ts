@@ -21,7 +21,8 @@ export const getPermissions =() =>  {
       const [role, setRole] = useState("");
       const [permissions, setPermissions] = useState<RoutePermission[]>([]);
 
-
+     
+      console.log(role, "check role set")
       const getRole = async () => {
         const decodedToken = await getAuth();
         console.log(decodedToken, "check decode toke for side bar role");
@@ -38,7 +39,24 @@ export const getPermissions =() =>  {
       useEffect(() => {
         if (roleDataByRole) {
           console.log(roleDataByRole, "check roleDataById");
-          setPermissions(roleDataByRole?.data?.routePermissions as RoutePermission[])
+          if(role === "ADMIN"){
+            setPermissions(
+              [
+                {
+                  routeName: "User",
+                  permissions: { create: true, view: true, update: true, delete: true },
+                },
+                {
+                  routeName: "Roles",
+                  permissions: { create: true, view: true, update: true, delete: true },
+                },
+              ]);
+          }
+          else{
+            setPermissions(roleDataByRole?.data?.routePermissions as RoutePermission[])
+
+
+          }
           // setPermissions(roleDataById?.data?);
         }
       }, [roleDataByRole]);
@@ -51,8 +69,13 @@ return permissions;
 
 export const RoutePermission = (route: string)=> {
 
-    
+   
    const permissionsData  = getPermissions()
+
+
+   console.log(permissionsData, "check permissions data from")
+
+
 console.log(permissionsData,route,"permissions")
    const result = permissionsData?.some((item) => item.routeName === route);
 
