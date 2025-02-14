@@ -1,5 +1,5 @@
 import { toastError, toastSuccess } from "@/utils/toast";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import {
@@ -8,6 +8,7 @@ import {
   useUpdateUser,
 } from "@/services/user.service";
 import { generatePassword } from "@/utils/passwordGenerator";
+import { useRoles } from "@/services/roles.service";
 
 const AddNewUser = () => {
   const [formData, setFormData] = useState({
@@ -24,6 +25,19 @@ const AddNewUser = () => {
   const { mutateAsync: addUser } = useAddUser();
   const { mutateAsync: updateUser } = useUpdateUser();
   const { data: UserDataById } = useUserById(id);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(100);
+  const [query, setQuery] = useState("");
+  const searchObj = useMemo(
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
+
+  const { data: rolesResponse } = useRoles(searchObj);
 
   useEffect(() => {
     if (id && UserDataById) {
@@ -41,13 +55,21 @@ const AddNewUser = () => {
     }
   }, [UserDataById, id]);
 
-  const roleOptions = [
-    { value: "Customer", label: "Customer" },
-    { value: "Operations", label: "Operations" },
-    { value: "Moderators", label: "Moderators" },
-    { value: "Marketing", label: "Marketing" },
-    { value: "Sub-Admin", label: "Sub-Admin" },
-  ];
+  // const roleOptions = [
+  //   { value: "Customer", label: "Customer" },
+  //   { value: "Operations", label: "Operations" },
+  //   { value: "Moderators", label: "Moderators" },
+  //   { value: "Marketing", label: "Marketing" },
+  //   { value: "Sub-Admin", label: "Sub-Admin" },
+  // ];
+
+  console.log(rolesResponse, "checking the roles response");
+
+  const roleOptions =
+    rolesResponse?.data?.map((role: any) => ({
+      value: role.roleName,
+      label: role.roleName,
+    })) || [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -151,7 +173,7 @@ const AddNewUser = () => {
                 <option value="" disabled hidden>
                   Select a Role
                 </option>
-                {roleOptions.map((option) => (
+                {roleOptions.map((option: any) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>

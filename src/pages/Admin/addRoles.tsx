@@ -50,19 +50,19 @@ function AddRoles() {
       permissions: { create: false, view: false, update: false, delete: false },
     },
     {
-      routeName: "Operations",
+      routeName: "Vendors",
       permissions: { create: false, view: false, update: false, delete: false },
     },
     {
-      routeName: "Moderators",
+      routeName: "RFPS",
       permissions: { create: false, view: false, update: false, delete: false },
     },
     {
-      routeName: "Marketing",
+      routeName: "Add Department",
       permissions: { create: false, view: false, update: false, delete: false },
     },
     {
-      routeName: "Sub-Admin",
+      routeName: "Add Category",
       permissions: { create: false, view: false, update: false, delete: false },
     },
   ]);
@@ -238,7 +238,7 @@ function AddRoles() {
           <input
             type="text"
             value={roleName}
-            onChange={(e) => setRoleName(e.target.value)}
+            onChange={(e) => setRoleName(e.target.value.toUpperCase())}
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
             placeholder="Enter Role Name"
           />

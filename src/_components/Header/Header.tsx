@@ -107,30 +107,58 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoChevronDown } from "react-icons/io5";
 import { FaUserCircle, FaBell } from "react-icons/fa";
 import userimg from "../../assets/header/userimg.webp";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CreateCustomer from "../ReuseableComponents/Modals/CreateCustomer";
 import { AuthContext } from "@/context/AuthProvider";
+import { getAuth } from "@/utils/auth";
+import { useUserById } from "@/services/user.service";
 
 function Header() {
   const { showSlim, toggleSlim } = useSidebar();
   const [loginDrop, setLoginDrop] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { isAuthorized, setIsAuthorized } = useContext(AuthContext);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    role: "",
+  });
+
+  const [userId, setUserId] = useState("");
+
+  const { data: UserDataById } = useUserById(userId);
   const navigate = useNavigate();
 
   const handleLogut = () => {
     localStorage.removeItem("token");
     setIsAuthorized(false);
     navigate("/");
+  };
 
-  }
+  const getUser = async () => {
+    const decodedToken = await getAuth();
+    setUserId(decodedToken.user._id);
+
+    console.log(userId, "check userId", decodedToken);
+    console.log(UserDataById, "check user data by Id ");
+
+    setFormData({
+      name: UserDataById?.name || "",
+      email: UserDataById?.email || "",
+      role: UserDataById?.role || "",
+    });
+  };
+
+  useEffect(() => {
+    getUser();
+  }, [UserDataById]);
+
   return (
     <>
       <header className="w-full h-full">
         <div className="flex flex-row">
           <div className="w-full">
             <div className="right_header flex justify-end shadow-lg bg-white px-5 py-4 h-full border-b border-white">
-
               <div className="button_group flex gap-4 items-center">
                 {/* Notification Button */}
                 <button
@@ -152,15 +180,15 @@ function Header() {
                       alt="user profile"
                       className="w-8 h-8 rounded-full"
                     />
-                    <span className="text-sm font-semibold">John Doe</span>
+                    <span className="text-sm font-semibold">
+                      {formData?.name}
+                    </span>
                     <IoChevronDown className="text-lg text-gray-500" />
                   </button>
-                  
+
                   {/* Dropdown Menu */}
                   {loginDrop && (
-                    <div
-                      className="w-[200px] min-h-[110px] bg-[#f9f9f9] border border-[#e3e3e3] dropdown_list shadow-xl absolute -bottom-[115px] -left-28"
-                    >
+                    <div className="w-[200px] min-h-[110px] bg-[#f9f9f9] border border-[#e3e3e3] dropdown_list shadow-xl absolute -bottom-[115px] -left-28">
                       <ul className="flex gap-[10px] border-b border-[#e3e3e3] p-3">
                         <li>
                           <img
@@ -171,10 +199,13 @@ function Header() {
                         </li>
                         <li>
                           <h6 className="text-secondarycolor font-semibold text-left">
-                            John Doe
+                            {formData?.name}
                           </h6>
                           <p className="text-paracolor uppercase text-sm text-left">
-                            Admin Assistant
+                            {formData?.email}
+                          </p>
+                          <p className="text-paracolor uppercase text-sm text-left">
+                            {formData?.role}
                           </p>
                         </li>
                       </ul>

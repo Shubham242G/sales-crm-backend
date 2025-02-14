@@ -10,7 +10,7 @@ import { loginUser } from "@/utils/auth";
 import { AuthContext } from "@/context/AuthProvider";
 
 export default function LoginPage() {
-     const { isAuthorized, setIsAuthorized } = useContext(AuthContext);
+  const { isAuthorized, setIsAuthorized } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ export default function LoginPage() {
       };
       let response = await loginUser(obj);
       if (response?.success) {
-        console.log(response, "123456123456123456123456");
+        // console.log(response, "123456123456123456123456");
         setIsAuthorized(true);
         navigate("/");
       } else {
