@@ -59,6 +59,13 @@ export const useRolesApiHook = () => {
     );
   };
 
+
+  const getRolesByRole = async (role: any) => {
+    return axios.get<GeneralApiResponse<IRoles>>(
+      `${BASE_URL}${prefix}/getByRole/${role}`
+    );
+  };
+
   const getAllRoles = async (pagination: PaginationState, searchObj: any) => {
     const query = new URLSearchParams({
       pageIndex: String(pagination.pageIndex),
@@ -76,6 +83,7 @@ export const useRolesApiHook = () => {
     deleteRolesById,
     getRolesById,
     addRoles,
+    getRolesByRole
   };
 };
 
@@ -97,6 +105,17 @@ export const useRolesById = (id: string) => {
     queryKey: ["Roles_id", id],
     queryFn: () => api.getRolesById(id).then((res) => res.data),
     enabled: !!id,
+  });
+};
+
+
+export const useRolesByRole = (role: string) => {
+  const api = useRolesApiHook();
+
+  return useQuery({
+    queryKey: ["Roles_id", role],
+    queryFn: () => api.getRolesByRole(role).then((res) => res.data),
+    enabled: !!role,
   });
 };
 
