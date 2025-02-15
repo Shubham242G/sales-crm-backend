@@ -378,7 +378,7 @@ function EnquiryLIst() {
     if (item.name === "Delete") {
       return canDelete;
     } else if (item.name === "Edit") {
-      return canView || canUpdate;
+      return canView || (canView && canUpdate);
     } else {
       return true;
     }

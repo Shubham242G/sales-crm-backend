@@ -18,6 +18,7 @@ import {
 } from "@/services/lead.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { generateFilePath } from "@/services/urls.service";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 function Leads() {
   const navigate = useNavigate();
@@ -34,6 +35,9 @@ function Leads() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
+
+  const { canCreate, canDelete, canUpdate, canView } =
+    checkPermissionsForButtons("Leads");
 
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -232,6 +236,16 @@ function Leads() {
     },
   ];
 
+  const filterColumns = columns.filter((item) => {
+    if (item.name === "Delete") {
+      return canDelete;
+    } else if (item.name === "Edit") {
+      return canView || (canView && canUpdate);
+    } else {
+      return true;
+    }
+  });
+
   return (
     <>
       {/* <Breadcrumb
@@ -297,19 +311,21 @@ function Leads() {
                 {isUploading ? "Importing..." : "Import"}
               </button>
 
-              <button
-                onClick={() => navigate("/add-leads")}
-                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
-              >
-                <FaPlus />
-                <span>New Lead</span>
-              </button>
+              {canCreate && (
+                <button
+                  onClick={() => navigate("/add-leads")}
+                  className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                >
+                  <FaPlus />
+                  <span>New Lead</span>
+                </button>
+              )}
             </div>
           </div>
           {/* React Table */}
           <ReactTable
             data={LeadData?.data}
-            columns={columns}
+            columns={filterColumns}
             loading={false}
             totalRows={LeadData?.total}
             onChangeRowsPerPage={setPageSize}

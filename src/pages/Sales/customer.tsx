@@ -236,6 +236,16 @@ function CustomerSales() {
   //   },
   // ];
 
+  const filterColumns = columns.filter((item) => {
+    if (item.name === "Delete") {
+      return canDelete;
+    } else if (item.name === "Edit") {
+      return canView || (canView && canUpdate);
+    } else {
+      return true;
+    }
+  });
+
   return (
     <>
       {/* <Breadcrumb
@@ -290,7 +300,7 @@ function CustomerSales() {
           {/* React Table */}
           <ReactTable
             data={CustomerData?.data}
-            columns={columns}
+            columns={filterColumns}
             loading={false}
             totalRows={CustomerData?.total}
             // loading={loading}

@@ -27,6 +27,7 @@ import {
   MessageCircle,
   Facebook,
 } from "lucide-react";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 interface IVendor {
   salutation: string;
@@ -104,6 +105,9 @@ const AddVendorForm = () => {
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
+
+  const { canCreate, canDelete, canUpdate, canView } =
+    checkPermissionsForButtons("Vendors");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -2983,12 +2987,14 @@ const AddVendorForm = () => {
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
-            >
-              Save
-            </button>
+            {((!id && canCreate) || (id && canUpdate)) && (
+              <button
+                type="submit"
+                className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+              >
+                Save
+              </button>
+            )}
           </div>
         </form>
       </div>

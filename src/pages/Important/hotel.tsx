@@ -7,7 +7,12 @@ import {
 } from "@/services/category.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import MultiFileUpload from "@/utils/multiFileUpload";
-import { useAddHotel, useHotelById, useUpdateHotelById } from "@/services/hotel.service";
+import {
+  useAddHotel,
+  useHotelById,
+  useUpdateHotelById,
+} from "@/services/hotel.service";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 const AddHotel = () => {
   const [name, setName] = useState("");
@@ -19,6 +24,8 @@ const AddHotel = () => {
   const { data: hotelDataById, isLoading } = useHotelById(id || "");
   //   const [images, setImages] = useState("");
   const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
+  const { canCreate, canUpdate, canDelete, canView } =
+    checkPermissionsForButtons("Add Hotel");
   useEffect(() => {
     // Prefill form when editing
     if (hotelDataById) {
@@ -34,35 +41,23 @@ const AddHotel = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-
     try {
-
       const obj = { name, imagesArr: images };
       if (id) {
-
-        const { data: res } = await updateHotel({ id, obj })
+        const { data: res } = await updateHotel({ id, obj });
         if (res) {
-          toastSuccess(res.message)
-          navigate("/hotelList")
+          toastSuccess(res.message);
+          navigate("/hotelList");
         }
-
-
-
-
-
-
-      }
-      else {
-        const res: any = await addHotel(obj)
+      } else {
+        const res: any = await addHotel(obj);
         if (res) {
-          toastSuccess(res.message)
-          navigate("/hotelList")
+          toastSuccess(res.message);
+          navigate("/hotelList");
         }
       }
-    }
-    catch (error) {
-      toastError(error)
-
+    } catch (error) {
+      toastError(error);
     }
 
     // if (id) {
@@ -129,12 +124,14 @@ const AddHotel = () => {
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-orange-500 text-white rounded-md"
-              >
-                {id ? "Update" : "Save"}
-              </button>
+              {((!id && canCreate) || (id && canUpdate)) && (
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-orange-500 text-white rounded-md"
+                >
+                  {id ? "Update" : "Save"}
+                </button>
+              )}
             </div>
             {/* <Grid item lg={12} className={styles.mb_3}> */}
             {/* <h2>Upload Multiple Images</h2> */}
@@ -143,8 +140,8 @@ const AddHotel = () => {
               value={
                 images && images.length > 0
                   ? images
-                    .filter((el) => el.image != "")
-                    .map((el) => ({ value: el.image }))
+                      .filter((el) => el.image != "")
+                      .map((el) => ({ value: el.image }))
                   : []
               }
               onFileChange={handleImageUpload}

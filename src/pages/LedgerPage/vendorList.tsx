@@ -5,80 +5,88 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
-import { useVendorById , useVendor, usedeleteVendorById, useUpdateVendorById} from "@/services/vendor.service";
+import {
+  useVendorById,
+  useVendor,
+  usedeleteVendorById,
+  useUpdateVendorById,
+} from "@/services/vendor.service";
 import { toastError, toastSuccess } from "@/utils/toast";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 function VendorList() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [rowsPerPage, setRowsPerPage] = useState(10);
- 
+
   // ledger details modal
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
 
-
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
-  const searchObj = useMemo(() => ({
-    ...(query && { query }),
-    pageIndex: pageIndex - 1,
-    pageSize
-  }), [pageIndex, pageSize, query]);
+  const searchObj = useMemo(
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
 
   const { data: VendorData } = useVendor(searchObj);
-  console.log(VendorData, "check leadData")
+  console.log(VendorData, "check leadData");
   const { mutateAsync: deleteVendor } = usedeleteVendorById();
-  const {mutateAsync: updateVendor} = useUpdateVendorById();
+  const { mutateAsync: updateVendor } = useUpdateVendorById();
+
+  const { canCreate, canDelete, canUpdate, canView } =
+    checkPermissionsForButtons("Vendors");
 
   const handleDelete = async (id: string) => {
     try {
-        if (window.confirm("Are you sure you want to delete this contact?")) {
-            const { data: res } = await deleteVendor(id);
-            if (res) {
-                toastSuccess(res.message);
-                // Optionally refresh the data
-            }
+      if (window.confirm("Are you sure you want to delete this contact?")) {
+        const { data: res } = await deleteVendor(id);
+        if (res) {
+          toastSuccess(res.message);
+          // Optionally refresh the data
         }
+      }
     } catch (error) {
-        toastError(error);
-    }
-};
-
-// useEffect(()=>{
-//     if(VendorData){
-//         setVendorList(VendorData?.data)
-//     } 
-// },[VendorList])
-
-const handleUpdate = async (id: string, data: any) => {
-  try {
-          const { data: res } = await updateVendor({
-              id: id,
-              obj: data // Add the required object data here
-          });
-          if (res) {
-              toastSuccess(res.message);
-              // Optionally refresh the data
-          }
-      
-  } catch (error) {
       toastError(error);
-  }
-};
+    }
+  };
 
+  // useEffect(()=>{
+  //     if(VendorData){
+  //         setVendorList(VendorData?.data)
+  //     }
+  // },[VendorList])
 
+  const handleUpdate = async (id: string, data: any) => {
+    try {
+      const { data: res } = await updateVendor({
+        id: id,
+        obj: data, // Add the required object data here
+      });
+      if (res) {
+        toastSuccess(res.message);
+        // Optionally refresh the data
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  };
 
   const columns = [
     {
-      name: "Vendor Name", 
+      name: "Vendor Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.vendor?.firstName}</h6> 
+          <h6>{row.vendor?.firstName}</h6>
         </div>
       ),
       width: "20%",
@@ -111,7 +119,7 @@ const handleUpdate = async (id: string, data: any) => {
       width: "20%",
     },
     {
-      name: "Action",
+      name: "Edit",
       width: "10%",
       selector: (row: any) => (
         <div className="flex items-center gap-3">
@@ -143,9 +151,17 @@ const handleUpdate = async (id: string, data: any) => {
     },
   ];
 
-  // Sample data
- 
+  const filterColumns = columns.filter((item) => {
+    if (item.name === "Delete") {
+      return canDelete;
+    } else if (item.name === "Edit") {
+      return canView || (canView && canUpdate);
+    } else {
+      return true;
+    }
+  });
 
+  // Sample data
 
   return (
     <>
@@ -186,20 +202,25 @@ const handleUpdate = async (id: string, data: any) => {
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
-          
-              <button onClick={()=> navigate("/add-vendor")} className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
-                <FaPlus />
-                <span>New Vendor</span>
-              </button>
+
+              {canCreate && (
+                <button
+                  onClick={() => navigate("/add-vendor")}
+                  className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                >
+                  <FaPlus />
+                  <span>New Vendor</span>
+                </button>
+              )}
             </div>
           </div>
           {/* React Table */}
           <ReactTable
-           data={VendorData?.data}
-           columns={columns}
-           loading={false}
-           totalRows={VendorData?.total}
-         // loading={loading}
+            data={VendorData?.data}
+            columns={filterColumns}
+            loading={false}
+            totalRows={VendorData?.total}
+            // loading={loading}
           />
         </div>
       </div>

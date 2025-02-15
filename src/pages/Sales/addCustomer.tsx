@@ -19,6 +19,7 @@ import {
   MessageCircle,
   Facebook,
 } from "lucide-react";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 interface ICustomerForm {
   customerType: string;
@@ -543,6 +544,10 @@ const AddCustomer = () => {
       shippingFaxNumber: formData.faxNumber,
     });
   };
+
+  const { canView, canUpdate, canCreate } =
+    checkPermissionsForButtons("Customers");
+  console.log(canUpdate, "checking can update");
 
   // console.log(formData.openingBalance, "checking the opening balance");
 
@@ -3282,12 +3287,14 @@ const AddCustomer = () => {
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
-            >
-              Save
-            </button>
+            {((!id && canCreate) || (id && canUpdate)) && (
+              <button
+                type="submit"
+                className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+              >
+                Save
+              </button>
+            )}
           </div>
         </form>
       </div>
