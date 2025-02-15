@@ -26,11 +26,15 @@ import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { Switch } from "@mui/material";
 import { SiConvertio } from "react-icons/si";
 import { useConvertRfpById } from "@/services/rfp.service";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 function EnquiryLIst() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
+
+  const { canCreate, canDelete, canUpdate, canView } =
+    checkPermissionsForButtons("Enquiry");
 
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -266,29 +270,31 @@ function EnquiryLIst() {
     {
       name: "Edit",
       width: "6%",
-      selector: (row: any) => (
-        <div className="flex items-center gap-3">
-          <Link
-            to={`/addEnquiry/${row?._id}`}
-            className="p-[6px] text-black-400 text-lg flex items-center"
-            onClick={() => handleUpdate(row._id, row.data)}
-          >
-            <FaEye />
-          </Link>
-        </div>
-      ),
+      selector: (row: any) =>
+        (canView || canUpdate) && (
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/addEnquiry/${row?._id}`}
+              className="p-[6px] text-black-400 text-lg flex items-center"
+              onClick={() => handleUpdate(row._id, row.data)}
+            >
+              <FaEye />
+            </Link>
+          </div>
+        ),
     },
     {
       name: "Delete",
       width: "6%", // Adjusted width
-      selector: (row: any) => (
-        <button
-          className="p-[6px] text-black-400 text-lg"
-          onClick={() => handleDelete(row._id)}
-        >
-          <RiDeleteBin6Line />
-        </button>
-      ),
+      selector: (row: any) =>
+        canDelete && (
+          <button
+            className="p-[6px] text-black-400 text-lg"
+            onClick={() => handleDelete(row._id)}
+          >
+            <RiDeleteBin6Line />
+          </button>
+        ),
     },
     {
       name: "Convert to Enquiry",
@@ -368,6 +374,16 @@ function EnquiryLIst() {
     </div>
   );
 
+  const filterColumns = columns.filter((item) => {
+    if (item.name === "Delete") {
+      return canDelete;
+    } else if (item.name === "Edit") {
+      return canView || canUpdate;
+    } else {
+      return true;
+    }
+  });
+
   return (
     <div className="container px-6">
       <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
@@ -418,19 +434,21 @@ function EnquiryLIst() {
               {isUploading ? "Importing..." : "Import"}
             </button>
 
-            <button
-              onClick={() => navigate("/addEnquiry")}
-              className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
-            >
-              <FaPlus />
-              <span>New Enquiry</span>
-            </button>
+            {canCreate && (
+              <button
+                onClick={() => navigate("/addEnquiry")}
+                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+              >
+                <FaPlus />
+                <span>New Enquiry</span>
+              </button>
+            )}
           </div>
         </div>
 
         <ReactTable
           data={EnquiryData?.data}
-          columns={columns}
+          columns={filterColumns}
           loading={false}
           totalRows={EnquiryData?.total}
           onChangeRowsPerPage={setPageSize}

@@ -16,6 +16,25 @@
 //     billingAddress: string;
 // }
 
+import { toastError, toastSuccess } from "@/utils/toast";
+import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  useAddEnquiry,
+  useEnquiryById,
+  useUpdateEnquiryById,
+} from "@/services/enquiry.service";
+import moment from "moment";
+// import { useContact, useContactById } from "@/services/contactUs.service";
+import { set } from "lodash";
+import Select from "react-select";
+import { pageIndex } from "@/common/constant.common";
+import { ReactSelectFormat } from "@/services/urls.service";
+import { eventNames } from "node:process";
+import { Autocomplete, TextField } from "@mui/material";
+import { checkPermissionsForButtons } from "@/utils/permission";
+
 interface Room {
   date: string;
   roomCategory: string;
@@ -69,27 +88,11 @@ interface AirTickets {
   multiDepartureDate: string;
 }
 
-import { toastError, toastSuccess } from "@/utils/toast";
-import React, { useState, useEffect } from "react";
-import toast from "react-hot-toast";
-import { useParams, useNavigate } from "react-router-dom";
-import {
-  useAddEnquiry,
-  useEnquiryById,
-  useUpdateEnquiryById,
-} from "@/services/enquiry.service";
-import moment from "moment";
-// import { useContact, useContactById } from "@/services/contactUs.service";
-import { set } from "lodash";
-import Select from "react-select";
-import { pageIndex } from "@/common/constant.common";
-import { ReactSelectFormat } from "@/services/urls.service";
-import { eventNames } from "node:process";
-import { Autocomplete, TextField } from "@mui/material";
-
 const AddEnquiryForm = () => {
   // State for User Details
   const [nameObj, setNameObj] = useState<ReactSelectFormat | null>(null);
+
+  const { canView, canUpdate } = checkPermissionsForButtons("Enquiry");
 
   const [companyName, setCompanyName] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -1998,12 +2001,24 @@ const AddEnquiryForm = () => {
               ></textarea>
             </div>
 
-            <button
-              type="submit"
-              className="bg-green-500 text-white px-6 py-2 mt-6 rounded hover:bg-green-600"
-            >
-              Submit
-            </button>
+            <div className="flex justify-end space-x-4 mt-6">
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+              >
+                Cancel
+              </button>
+
+              {canUpdate && (
+                <button
+                  type="submit"
+                  className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
+                >
+                  Submit
+                </button>
+              )}
+            </div>
           </div>
         </form>
       </div>

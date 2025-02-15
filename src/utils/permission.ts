@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAuth } from "./auth";
 import { useRolesByRole } from "@/services/roles.service";
+import { useMemo } from "react";
 
 interface Permissions {
   create: boolean;
@@ -60,6 +61,25 @@ export const RoutePermission = (route: string) => {
   }
 };
 
-// export const PermissionForButton = () => {
+export const checkPermissionsForButtons = (routeName: string) => {
+  const permissions = getPermissions();
+  const routePermissions = useMemo(() => {
+    const permissionsFound = permissions.find(
+      (Permission) => Permission.routeName === routeName
+    );
+    return permissionsFound?.permissions || {
+      create: false, 
+      view: false,
+      update: false,
+      delete: false,
+    }
+  }, [permissions,  routeName]);
 
-// }
+  return {
+    canCreate: routePermissions?.create,
+    canView: routePermissions?.view,
+    canUpdate: routePermissions?.update,
+    canDelete: routePermissions?.delete,
+    hasAnyPermission: Object.values(routePermissions).some(Boolean)
+  }
+}
