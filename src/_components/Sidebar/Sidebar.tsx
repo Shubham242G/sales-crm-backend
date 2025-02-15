@@ -11,7 +11,10 @@ import { Link } from "react-router-dom";
 import mainlogo from "../../assets/mainlogo/logo.png";
 import { getAuth } from "@/utils/auth";
 import { useRolesById, useRolesByRole } from "@/services/roles.service";
-import { RoutePermission } from "@/utils/permission";
+import {
+  checkPermissionsForButtons,
+  RoutePermission,
+} from "@/utils/permission";
 
 // import { IoChevronDown } from 'react-icons/io5'
 
@@ -22,6 +25,7 @@ function Sidebar() {
   //   RoutePermission("sales", "true"),
   //   "check permissions routes for sales"
   // );
+
   const [sidebarArr] = useState([
     {
       mainlink: "/",
@@ -81,7 +85,7 @@ function Sidebar() {
         },
         {
           dropHead: "Purchase Contacts",
-          link: "add-purchase-contact",
+          link: "/purchaseContact",
         },
       ],
     },
