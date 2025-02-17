@@ -40,6 +40,13 @@ export const useQuotesFromVendorsApiHook = () => {
       obj
     );
   };
+
+ const convertToQuotesFromVendors = async (id: any) => {
+    return axios.post<GeneralApiResponse<IQuotesFromVendors>>(
+      `${BASE_URL}${prefix}/convert/${id}`
+    );
+  };
+
   const deleteQuotesFromVendorsById = async (id: any) => {
     return axios.delete<GeneralApiResponse>(
       `${BASE_URL}${prefix}/deleteById/${id}`
@@ -67,6 +74,7 @@ export const useQuotesFromVendorsApiHook = () => {
     updateQuotesFromVendorsById,
     getQuotesFromVendorsById,
     getAllQuotesFromVendors,
+    convertToQuotesFromVendors
   };
 };
 
@@ -135,3 +143,17 @@ export const useUpdateQuotesFromVendorsById = () => {
     },
   });
 };
+export const useConvertQuotesFromVendors = () => {
+  const api = useQuotesFromVendorsApiHook();
+
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: api.convertToQuotesFromVendors,
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ["convertToQuotesFromVendors"] });
+    },
+  });
+};
+
+
+// console.log("check")

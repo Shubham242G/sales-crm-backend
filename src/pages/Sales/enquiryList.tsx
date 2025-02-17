@@ -17,7 +17,8 @@ import {
   usedeleteEnquiryById,
   useUpdateEnquiryById,
   useEnquiryById,
-  useConvert,
+ 
+  convertToRfp,
 } from "@/services/enquiry.service";
 import { toastSuccess, toastError } from "@/utils/toast";
 import { generateFilePath } from "@/services/urls.service";
@@ -25,7 +26,7 @@ import moment from "moment";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { Switch } from "@mui/material";
 import { SiConvertio } from "react-icons/si";
-import { useConvertRfpById } from "@/services/rfp.service";
+
 
 function EnquiryLIst() {
   const navigate = useNavigate();
@@ -72,8 +73,8 @@ function EnquiryLIst() {
 
   const { mutateAsync: deleteEnquiry } = usedeleteEnquiryById();
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
-  const { mutateAsync: convertEnquiry } = useConvert();
-  const { mutateAsync: convertRfq } = useConvertRfpById();
+ 
+
 
   // Handle triggering file input click
   const handleImportClick = () => {
@@ -176,9 +177,9 @@ function EnquiryLIst() {
       toastError(error);
     }
   };
-  const handleConvertEnquery = async (id: any) => {
+ const handleConvertRpf = async (id: any) => {
     try {
-      const { data: res } = await convertRfq(id);
+      const { data: res } = await convertToRfp(id);
       if (res) {
         toastSuccess(res.message);
       }
@@ -194,7 +195,7 @@ function EnquiryLIst() {
           <h6>{row.firstName + " " + row.lastName}</h6>
         </div>
       ),
-      width: "13%",
+      width: "10%",
     },
     {
       name: "Enquiry Type",
@@ -203,7 +204,7 @@ function EnquiryLIst() {
           <h6>{row.enquiryType}</h6>
         </div>
       ),
-      width: "13%",
+      width: "10%",
     },
     {
       name: "Loaction",
@@ -212,7 +213,7 @@ function EnquiryLIst() {
           <h6>{row.city}</h6>
         </div>
       ),
-      width: "13%",
+      width: "10%",
     },
     {
       name: "Level of Enquiry",
@@ -229,7 +230,7 @@ function EnquiryLIst() {
           <h6>{row.levelOfEnquiry}</h6>
         </div>
       ),
-      width: "12%",
+      width: "10%",
     },
     {
       name: "Check-In",
@@ -252,7 +253,7 @@ function EnquiryLIst() {
     {
       name: "Number of Rooms",
       selector: (row: any) => row.noOfRooms,
-      width: "12%",
+      width: "10%",
     },
     {
       name: "Status",
@@ -301,7 +302,7 @@ function EnquiryLIst() {
           ></Link>
           <button
             className="p-[6px] text-black-400 text-lg"
-            onClick={() => handleConvertEnquery(row._id)}
+            onClick={() => handleConvertRpf(row._id)}
           >
             <SiConvertio />
           </button>

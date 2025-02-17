@@ -8,8 +8,10 @@ import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 
 
 
-import { useRfp, usedeleteRfpById, useAddRfp, useUpdateRfpById } from "@/services/rfp.service";
+import { useRfp, usedeleteRfpById, useAddRfp, useUpdateRfpById, useRfpById } from "@/services/rfp.service";
 import { toastError, toastSuccess } from "@/utils/toast";
+import { SiConvertio } from "react-icons/si";
+import { useConvertQuotesFromVendors } from "@/services/quotesFromVendors.service";
 
 function CustomerLedger() {
   const navigate = useNavigate();
@@ -37,6 +39,7 @@ function CustomerLedger() {
   console.log(RfpData, "check RfpData")
   const { mutateAsync: deleteRfp } = usedeleteRfpById();
   const {mutateAsync: updateRfp} = useUpdateRfpById();
+  const {mutateAsync: convertToQuotesFromVendors} = useConvertQuotesFromVendors();
 
   const handleUpdate = async (id: string, data: any) => {
     try {
@@ -105,6 +108,8 @@ function CustomerLedger() {
   //   }
   // };
 
+  //
+
   const handleDelete = async (id: string) => {
     try {
       if (window.confirm("Are you sure you want to delete this enquiry?")) {
@@ -117,8 +122,19 @@ function CustomerLedger() {
     } catch (error) {
       toastError(error);
     }
-  };
+  }; 
 
+  
+   const handleConvertQuotesFromVendor = async (id: any) => {
+      try {
+        const { data: res } = await convertToQuotesFromVendors(id);
+        if (res) {
+          toastSuccess(res.message);
+        }
+      } catch (error) {
+        toastError(error);
+      }
+    };
 
   const columns = [
     {
@@ -205,6 +221,24 @@ function CustomerLedger() {
         </div>
       ),
     },
+      {
+          name: "Convert to Quotes From Vendor",
+          width: "10%",
+          selector: (row: any) => (
+            <div className="flex items-center gap-3">
+              <Link
+                to={`/add-sales-contact/${row?._id}`}
+                className="p-[6px] text-black-400 text-lg flex items-center"
+              ></Link>
+              <button
+                className="p-[6px] text-black-400 text-lg"
+                onClick={() => handleConvertQuotesFromVendor(row._id)}
+              >
+                <SiConvertio />
+              </button>
+            </div>
+          ),
+        },
   ];
 
   

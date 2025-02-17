@@ -12,7 +12,9 @@ const AddRfpsForm = () => {
     //new fields 
     rfpId: '',
     serviceType: [] as string[],
-    eventDate: '',
+    eventDates: [{
+      startDate: '',
+    }],
     eventDetails: '',
     deadlineOfProposal: '',
     vendorList: [] as string[],
@@ -41,7 +43,7 @@ const AddRfpsForm = () => {
       setFormData({
         rfpId: rfpDataById?.data?.rfpId || "",
         serviceType: rfpDataById?.data?.serviceType || [],
-        eventDate: rfpDataById?.data?.eventDate || "",
+        eventDates: rfpDataById?.data?.eventDates || [],
         eventDetails: rfpDataById?.data?.eventDetails || "",
         deadlineOfProposal: rfpDataById?.data?.deadlineOfProposal || "",
         vendorList: rfpDataById?.data?.vendorList || [],
@@ -185,21 +187,28 @@ const AddRfpsForm = () => {
                 <option>Transport</option>
               </select> */}
             </div>
-            <div>
+
+            {
+              formData.eventDates.length && formData.eventDates.map((el: any, index: number) => (
+                <div key={index}>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Event Date
               </label>
               <input
                 name={"eventDate"}
-                value={formData.eventDate}
+                value={el.startDate}
                 onChange={handleInputChange}
                 type="date"
                 className="w-full border border-gray-300 rounded-md p-2"
               />
             </div>
+              ))
+            
+
+            }
           </div>
 
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               RFP ID
             </label>
@@ -210,7 +219,7 @@ const AddRfpsForm = () => {
               type="text"
               className="w-full border border-gray-300 rounded-md p-2"
             />
-          </div>
+          </div> */}
 
           {/* Event Details and Deadline */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">

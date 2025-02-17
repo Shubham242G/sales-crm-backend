@@ -1,27 +1,33 @@
 import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
+import { useQuotesFromVendors, useQuotesFromVendorsById } from "@/services/quotesFromVendors.service";
 
 function CustomerLedger() {
-  // const [loading, setLoading] = useState(false);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const {data: quotesFromVendors, isLoading} = useQuotesFromVendors();  
+  // const {data: quotesFromVendorsIdData,} = useQuotesFromVendorsById(); 
+
 
   // ledger details modal
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
+
+  const navigate = useNavigate();
   const columns = [
     {
       name: "Quotes Id",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.quotesId}</h6>
+          <h6>{row? console.log(row, "row") : row.quotesId}</h6>
         </div>
       ),
       width: "10%",
@@ -30,7 +36,7 @@ function CustomerLedger() {
       name: "Vendor Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.name}</h6>
+          <h6>{row.vendorName}</h6>
         </div>
       ),
       width: "10%",
@@ -39,7 +45,7 @@ function CustomerLedger() {
       name: "RPFs Id",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.rpfId}</h6>
+          <h6>{row.rfqId}</h6>
         </div>
       ),
       width: "10%",
@@ -49,12 +55,13 @@ function CustomerLedger() {
       selector: (row: any) => (
         <>
           <div className="flex justify-around">
-            {row.service.map((e: any, index: number) => (
+            {row.serviceType
+.map((e: any, index: number) => (
               <div
                 key={index}
                 className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
               >
-                {e.name}
+                {e}
               </div>
             ))}
           </div>
@@ -121,92 +128,7 @@ function CustomerLedger() {
   ];
 
   // Sample data
-  const data = [
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Pending",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Rejected",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Reviewed",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Pending",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Rejected",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Reviewed",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-  ];
+  
 
   return (
     <>
@@ -247,15 +169,17 @@ function CustomerLedger() {
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
-              {/* <button className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
+              <button 
+              onClick={() => navigate("/addQuotesFromVendors")}
+              className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
                 <FaPlus />
-                <span>New RFPs</span>
-              </button> */}
+                <span>New quotes for vendors</span>
+              </button>
             </div>
           </div>
           {/* React Table */}
           <ReactTable
-            data={data}
+            data={quotesFromVendors.data}
             columns={columns}
             loading={false}
             totalRows={0}
