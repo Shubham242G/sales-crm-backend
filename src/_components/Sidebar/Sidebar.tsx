@@ -13,6 +13,7 @@ import { getAuth } from "@/utils/auth";
 import { useRolesById, useRolesByRole } from "@/services/roles.service";
 import {
   checkPermissionsForButtons,
+  CreateRoutePermission,
   RoutePermission,
 } from "@/utils/permission";
 
@@ -170,6 +171,14 @@ function Sidebar() {
       activeIcon: ledgerw,
       isActive: false,
       isArrow: true,
+
+      dropArr: [
+        {
+          dropHead: "Task",
+          link: "taskManagement",
+          plusLink: "/add-TaskManagement",
+        },
+      ],
     },
     {
       mainlink: "/Important",
@@ -212,10 +221,20 @@ function Sidebar() {
 
   const filteredSidebarArr = sidebarArr
     .map((item) => {
-      const filteredDropArr = item.dropArr
-        ? item.dropArr.filter((dropItem) => RoutePermission(dropItem.dropHead))
+      let filteredDropArr = item.dropArr
+        ? item.dropArr
+            .map((dropItem) => {
+              let response = CreateRoutePermission(dropItem.dropHead, dropItem);
+              if (response.view) {
+                dropItem.plusLink = response.create ? dropItem.plusLink : "";
+                return dropItem;
+              }
+              return null;
+            })
+            .filter(Boolean)
         : null;
 
+      console.log(filteredDropArr, "drop");
       const hasMainPermission =
         item.heading === "Dashboard" ? true : RoutePermission(item.heading);
       const hasValidDropItems = filteredDropArr && filteredDropArr.length > 0;
@@ -252,7 +271,7 @@ function Sidebar() {
                       src={showdrop === index ? el.activeIcon : el.icon}
                       alt={el.heading}
                     />
-                    <h6 className="text-sidebartext flex-1 group-hover:text-white">
+                    <h6 className="text-sidebartext flex-1 group-hover:text-white whitespace-nowrap">
                       {el.heading}
                     </h6>
                   </div>
@@ -270,7 +289,9 @@ function Sidebar() {
                   <div className="icon w-6 h-6 mr-4">
                     <img src={el?.icon} alt={el?.heading} />
                   </div>
-                  <h6 className="text-sidebartext flex-1">{el?.heading}</h6>
+                  <h6 className="text-sidebartext flex-1 whitespace-nowrap">
+                    {el?.heading}
+                  </h6>
                 </Link>
               )}
 
@@ -284,22 +305,26 @@ function Sidebar() {
                           {/* Add group container */}
                           <div className="flex justify-between items-center group">
                             {/* <p>{RoutePermission(ele.dropHead, "true")} </p> */}
-                            <Link
-                              to={ele.link}
-                              className="text-sm text-sidebartext hover:text-sidebartexthover"
-                            >
-                              {ele.dropHead}
-                            </Link>
-                            {ele.plusLink && (
-                              <Link
-                                to={ele.plusLink}
-                                // Add opacity and group-hover classes
-                                className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
-                              >
-                                <span className="bg-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-medium leading-none">
-                                  +
-                                </span>
-                              </Link>
+                            {ele && (
+                              <>
+                                <Link
+                                  to={ele.link}
+                                  className="text-sm text-sidebartext hover:text-sidebartexthover"
+                                >
+                                  {ele.dropHead}
+                                </Link>
+                                {ele.plusLink && (
+                                  <Link
+                                    to={ele.plusLink}
+                                    // Add opacity and group-hover classes
+                                    className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
+                                  >
+                                    <span className="bg-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-medium leading-none">
+                                      +
+                                    </span>
+                                  </Link>
+                                )}
+                              </>
                             )}
                           </div>
                         </li>

@@ -83,3 +83,25 @@ export const checkPermissionsForButtons = (routeName: string) => {
     hasAnyPermission: Object.values(routePermissions).some(Boolean)
   }
 }
+
+
+export const CreateRoutePermission =  (route: string,item:any) => {
+  const permissionsData =  getPermissions();
+
+  console.log(permissionsData, "check permissions data from");
+
+  
+  const result = permissionsData?.find((item) => item.routeName === route);
+  console.log(result, "permissions-------",item);
+  if(result &&result?.permissions ){
+    return {
+      view: result.permissions.create || result.permissions.view ,
+      create: result.permissions.create 
+    }
+  }
+
+    return {
+      view: false,
+      create: false 
+    };
+};

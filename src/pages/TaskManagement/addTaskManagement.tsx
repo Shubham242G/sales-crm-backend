@@ -3,6 +3,7 @@ import {
   useTaskManagementById,
   useUpdateTaskManagementById,
 } from "@/services/tastManagement.service";
+import { useUser } from "@/services/user.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
@@ -27,6 +28,13 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
   const { mutateAsync: addTaskManagement } = useAddTaskManagement();
   const { mutateAsync: updateTaskManagement } = useUpdateTaskManagementById();
   const { data: TaskManagementDataById } = useTaskManagementById(id || "");
+
+  const { data: userData } = useUser();
+  const usersOptions =
+    userData?.data.map((user: any) => ({
+      label: user.name,
+      value: user._id,
+    })) || [];
 
   // Populate initial state when taskData is available
   useEffect(() => {
@@ -151,11 +159,12 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
                 value={formData.assignedTo}
                 onChange={handleChange("assignedTo")}
               >
-                <option value="">Name of Employee</option>
-                <option value="Anurag">Anurag</option>
-                <option value="Vivek">Vivek</option>
-                <option value="Bhawna">Bhawna</option>
-                <option value="Tushar">Tushar</option>
+                <option value="">Selet Employee</option>
+                {usersOptions.map((user) => (
+                  <option key={user.value} value={user.value}>
+                    {user.label}
+                  </option>
+                ))}
               </select>
             </div>
 
