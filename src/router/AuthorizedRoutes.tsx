@@ -50,6 +50,7 @@ import DailyActivityReport from "../pages/DailyActivityReport/DailyActivityProje
 import AddDailyActivityReport from "../pages/DailyActivityReport/addDailyActivityProject";
 import TaskManagement from "../pages/TaskManagement/TaskManagement";
 import AddTaskManagement from "../pages/TaskManagement/addTaskManagement";
+import AddReassignTask from "@/pages/TaskManagement/reassignTask";
 import AddCategory from "../pages/Important/category";
 import CategoryList from "../pages/Important/categoryList";
 import HotelAdd from "../pages/Important/hotel";
@@ -109,8 +110,14 @@ export default function AuthorizedRoutes() {
           <Route path="/CategoryList" element={<CategoryList />}></Route>
           <Route path="/HotelList" element={<HotelList />}></Route>
           <Route path="/departmentMaster" element={<AddDepartment />}></Route>
-          <Route path="/addQuotesFromVendors" element={<AddQuotesFromVendorsForm />}></Route>
-          <Route path="/addQuotesFromVendors/:id" element={<AddQuotesFromVendorsForm />}></Route>
+          <Route
+            path="/addQuotesFromVendors"
+            element={<AddQuotesFromVendorsForm />}
+          ></Route>
+          <Route
+            path="/addQuotesFromVendors/:id"
+            element={<AddQuotesFromVendorsForm />}
+          ></Route>
 
           <Route
             path="/departmentMaster/:id"
@@ -144,6 +151,10 @@ export default function AuthorizedRoutes() {
           <Route
             path="/add-TaskManagement/:id"
             element={<AddTaskManagement />}
+          ></Route>
+          <Route
+            path="/reassign-task/:id"
+            element={<AddReassignTask />}
           ></Route>
           <Route
             path="/add-DailyActivityReport"

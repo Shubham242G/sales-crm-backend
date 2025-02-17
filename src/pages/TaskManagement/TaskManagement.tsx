@@ -96,6 +96,20 @@ function TaskManagement() {
     },
 
     {
+      name: "Reassign",
+      width: "10%",
+      selector: (row: any) => (
+        <button
+          type="button"
+          onClick={() => navigate(`/reassign-task/${row._id}`)}
+          className="text-blue-500 text-lg p-[6px]"
+        >
+          Reassign
+        </button>
+      ),
+    },
+
+    {
       name: "Edit",
       width: "5%",
       selector: (row: any) => (
