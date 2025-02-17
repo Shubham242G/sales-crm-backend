@@ -213,6 +213,8 @@ function Sidebar() {
     },
   ]);
 
+  //console.log("sidebar arr", sidebarArr);
+
   const [showdrop, setShowDrop] = useState<number | null>(null);
 
   const handleDropShow = (index: number) => {
