@@ -63,7 +63,7 @@ const AddQuotesFromVendors= () => {
   
   const [serviceTypeArr, setServiceTypeArr] = useState<any>([]);
   const [selectedServiceType , setSelectedServiceType] = useState<any>([]);
- 
+ const [selectedOption, setSelectedOption] = useState<{label: string, value: string}>({label: "", value: ""});
 
   useEffect(() => {
     // Prefill form when editing
