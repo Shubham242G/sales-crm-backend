@@ -2,10 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toastError, toastSuccess } from "@/utils/toast";
 import MultiFileUpload from "@/utils/multiFileUpload";
-import { useAddHotel, useHotelById, useUpdateHotelById } from "@/services/hotel.service";
-import { useAddBanquet, useBanquetById, useUpdateBanquetById } from "@/services/banquet.service";
-import { useAddResturant, useUpdateResturantById, useResturantById } from "@/services/resturant.service";
+import {
+  useAddHotel,
+  useHotelById,
+  useUpdateHotelById,
+} from "@/services/hotel.service";
+import {
+  useAddBanquet,
+  useBanquetById,
+  useUpdateBanquetById,
+} from "@/services/banquet.service";
+import {
+  useAddResturant,
+  useUpdateResturantById,
+  useResturantById,
+} from "@/services/resturant.service";
 import { floor } from "lodash";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 const AddResturant = () => {
   const [banquetName, setBanquetName] = useState("");
@@ -16,6 +29,8 @@ const AddResturant = () => {
   const { mutateAsync: addResturant } = useAddResturant();
   const { mutateAsync: updateResturant } = useUpdateResturantById();
   const { data: resturantDataById, isLoading } = useResturantById(id || "");
+  const { canCreate, canUpdate, canDelete, canView } =
+    checkPermissionsForButtons("Add Resturant");
   //   const [images, setImages] = useState("");
   const [images, setImages] = useState<{ image: string }[]>([{ image: "" }]);
   useEffect(() => {
@@ -36,32 +51,22 @@ const AddResturant = () => {
     try {
       const obj = { floor, imagesArr: images };
 
-
       if (id) {
-
-        const { data: res } = await updateResturant({ id, obj })
+        const { data: res } = await updateResturant({ id, obj });
         if (res) {
-          toastSuccess(res.message)
-          navigate("/ResturantList")
+          toastSuccess(res.message);
+          navigate("/ResturantList");
+        }
+      } else {
+        const { data: res } = await addResturant(obj);
+        if (res) {
+          toastSuccess(res.message);
+          navigate("/ResturantList");
         }
       }
-      else {
-        const { data: res } = await addResturant(obj)
-        if (res) {
-          toastSuccess(res.message)
-          navigate("/ResturantList")
-        }
-      }
-
-
+    } catch (error) {
+      toastError(error);
     }
-    catch (error) {
-      toastError(error)
-
-
-    }
-
-
 
     // if (id) {
     //     updateResturant(
@@ -127,12 +132,14 @@ const AddResturant = () => {
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-orange-500 text-white rounded-md"
-              >
-                {id ? "Update" : "Save"}
-              </button>
+              {((!id && canCreate) || (id && canUpdate)) && (
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-orange-500 text-white rounded-md"
+                >
+                  {id ? "Update" : "Save"}
+                </button>
+              )}
             </div>
             {/* <Grid item lg={12} className={styles.mb_3}> */}
             {/* <h2>Upload Multiple Images</h2> */}
@@ -141,8 +148,8 @@ const AddResturant = () => {
               value={
                 images && images.length > 0
                   ? images
-                    .filter((el) => el.image != "")
-                    .map((el) => ({ value: el.image }))
+                      .filter((el) => el.image != "")
+                      .map((el) => ({ value: el.image }))
                   : []
               }
               onFileChange={handleImageUpload}

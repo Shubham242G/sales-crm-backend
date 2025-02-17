@@ -72,6 +72,7 @@ import DepartmentMasterListView from "@/pages/Important/departmentMasterListView
 import Users from "@/pages/Admin/users";
 import AddUser from "@/pages/Admin/addUsers";
 import AddQuotesFromVendorsForm from "@/pages/LedgerPage/addQuotesFromVendors";
+import PurchaseContactView from "@/pages/LedgerPage/purchaseContactView";
 
 export default function AuthorizedRoutes() {
   return (
@@ -84,6 +85,10 @@ export default function AuthorizedRoutes() {
           <Route path="/admin" element={<Admin />}></Route>
           <Route path="/vendorList" element={<VendorList />}></Route>
           <Route path="/rfps" element={<Rfps />}></Route>
+          <Route
+            path="/purchaseContact"
+            element={<PurchaseContactView />}
+          ></Route>
           <Route path="/leads" element={<Leads />}></Route>
           <Route path="/users" element={<Users />}></Route>
           <Route path="/add-users" element={<AddUser />}></Route>

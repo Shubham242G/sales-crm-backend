@@ -12,6 +12,8 @@ import {
   useUpdateCustomerById,
 } from "@/services/customer.service";
 import { toastError, toastSuccess } from "@/utils/toast";
+// import { getPermissions } from "@/utils/permission";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 function CustomerSales() {
   const navigate = useNavigate();
@@ -20,6 +22,16 @@ function CustomerSales() {
   // const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // ledger details modal
+
+  // const permissions = getPermissions();
+  // const canCreateCustomer = permissions.some(
+  //   (Permission) =>
+  //     Permission.routeName === "Customers" && Permission.permissions.create
+  // );
+
+  const { canCreate, canDelete, canUpdate, canView } =
+    checkPermissionsForButtons("Customers");
+
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
@@ -144,35 +156,37 @@ function CustomerSales() {
     //   width: "20%",
     // },
     {
-      name: "Action",
+      name: "Edit",
       width: "10%",
-      selector: (row: any) => (
-        <div className="flex items-center gap-3">
-          <Link
-            to={`/add-customer/${row?._id}`}
-            className="p-[6px] text-black-400 text-lg flex items-center"
-            onClick={() => handleUpdate(row._id, row.data)}
-          >
-            <FaEye />
-          </Link>
-        </div>
-      ),
+      selector: (row: any) =>
+        (canView || canUpdate) && (
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/add-customer/${row?._id}`}
+              className="p-[6px] text-black-400 text-lg flex items-center"
+              onClick={() => handleUpdate(row._id, row.data)}
+            >
+              <FaEye />
+            </Link>
+          </div>
+        ),
     },
     {
       name: "Delete",
       width: "10%",
-      selector: (row: any) => (
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => handleDelete(row._id)}
-            className="p-[6px] text-black-400 text-lg"
-            title="Delete Customer"
-          >
-            <RiDeleteBin6Line />
-          </button>
-        </div>
-      ),
+      selector: (row: any) =>
+        canDelete && (
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => handleDelete(row._id)}
+              className="p-[6px] text-black-400 text-lg"
+              title="Delete Customer"
+            >
+              <RiDeleteBin6Line />
+            </button>
+          </div>
+        ),
     },
   ];
 
@@ -222,6 +236,16 @@ function CustomerSales() {
   //   },
   // ];
 
+  const filterColumns = columns.filter((item) => {
+    if (item.name === "Delete") {
+      return canDelete;
+    } else if (item.name === "Edit") {
+      return canView || (canView && canUpdate);
+    } else {
+      return true;
+    }
+  });
+
   return (
     <>
       {/* <Breadcrumb
@@ -262,19 +286,21 @@ function CustomerSales() {
                 <FaFileExport /> Export
               </button>
 
-              <button
-                onClick={() => navigate("/add-customer")}
-                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
-              >
-                <FaPlus />
-                <span>New Customer</span>
-              </button>
+              {canCreate && (
+                <button
+                  onClick={() => navigate("/add-customer")}
+                  className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                >
+                  <FaPlus />
+                  <span>New Customer</span>
+                </button>
+              )}
             </div>
           </div>
           {/* React Table */}
           <ReactTable
             data={CustomerData?.data}
-            columns={columns}
+            columns={filterColumns}
             loading={false}
             totalRows={CustomerData?.total}
             // loading={loading}

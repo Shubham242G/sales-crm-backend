@@ -6,12 +6,14 @@ import { useMemo, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 
-
-
-import { useRfp, usedeleteRfpById, useAddRfp, useUpdateRfpById, useRfpById } from "@/services/rfp.service";
+import {
+  useRfp,
+  usedeleteRfpById,
+  useAddRfp,
+  useUpdateRfpById,
+} from "@/services/rfp.service";
 import { toastError, toastSuccess } from "@/utils/toast";
-import { SiConvertio } from "react-icons/si";
-import { useConvertQuotesFromVendors } from "@/services/quotesFromVendors.service";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 function CustomerLedger() {
   const navigate = useNavigate();
@@ -29,35 +31,37 @@ function CustomerLedger() {
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
 
-  const searchObj = useMemo(() => ({
-    ...(query && { query }),
-    pageIndex: pageIndex - 1,
-    pageSize
-  }), [pageIndex, pageSize, query]);
+  const searchObj = useMemo(
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
 
   const { data: RfpData } = useRfp(searchObj);
-  console.log(RfpData, "check RfpData")
+  console.log(RfpData, "check RfpData");
   const { mutateAsync: deleteRfp } = usedeleteRfpById();
-  const {mutateAsync: updateRfp} = useUpdateRfpById();
-  const {mutateAsync: convertToQuotesFromVendors} = useConvertQuotesFromVendors();
+  const { mutateAsync: updateRfp } = useUpdateRfpById();
+
+  const { canCreate, canDelete, canUpdate, canView } =
+    checkPermissionsForButtons("RFPS");
 
   const handleUpdate = async (id: string, data: any) => {
     try {
-            const { data: res } = await updateRfp({
-                id: id,
-                obj: data // Add the required object data here
-            });
-            if (res) {
-                toastSuccess(res.message);
-                // Optionally refresh the data
-            }
-        
+      const { data: res } = await updateRfp({
+        id: id,
+        obj: data, // Add the required object data here
+      });
+      if (res) {
+        toastSuccess(res.message);
+        // Optionally refresh the data
+      }
     } catch (error) {
-        toastError(error);
+      toastError(error);
     }
   };
-
-
 
   // Handle file selection and upload
   // const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,19 +126,7 @@ function CustomerLedger() {
     } catch (error) {
       toastError(error);
     }
-  }; 
-
-  
-   const handleConvertQuotesFromVendor = async (id: any) => {
-      try {
-        const { data: res } = await convertToQuotesFromVendors(id);
-        if (res) {
-          toastSuccess(res.message);
-        }
-      } catch (error) {
-        toastError(error);
-      }
-    };
+  };
 
   const columns = [
     {
@@ -150,7 +142,11 @@ function CustomerLedger() {
       name: "Event Date",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.eventDates?.length > 0  ? new Date(row.eventDates[0].startDate).toDateString() :  "No Dates"}</h6>
+          <h6>
+            {row.eventDates?.length > 0
+              ? new Date(row.eventDates[0].startDate).toDateString()
+              : "No Dates"}
+          </h6>
         </div>
       ),
       width: "10%",
@@ -164,84 +160,50 @@ function CustomerLedger() {
       ),
       width: "15%",
     },
-    // {
-    //   name: "Status",
-    //   selector: (row: any) => (
-    //     <div
-    //       className={`flex gap-1 flex-col p-2 rounded-md text-white ${row.status === "Pending"
-    //         ? "bg-yellow-200 text-yellow-500"
-    //         : row.status === "Reviewed"
-    //           ? "bg-green-300 text-green-600"
-    //           : "bg-red-200 text-red-600"
-    //         }`}
-    //     >
-    //       <h6>{row.status}</h6>
-    //     </div>
-    //   ),
-    //   width: "20%",
-    // },
-
     {
       name: "Services",
       selector: (row: any) => (
-        <>
-          <div className="flex justify-around">
-            {row.serviceType}           {/* {row.serviceType.map((e: any, index: number) => (
-              <div
-                key={index}
-                className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
-              >
-                {e.name}
-              </div>
-            ))} */}
-          </div>
-        </>
+        <div className="flex justify-around">{row.serviceType}</div>
       ),
-      width: "30%",
+      width: "10%",
     },
     {
-      name: "Action",
-      width: "10%",
-      selector: (row:any) => (
-        <div className="flex items-center gap-3">
-          <Link
-            to={`/add-rfps/${row._id}`}
-            className="p-[6px] text-black-400 text-lg flex items-center"
-            onClick={() => handleUpdate(row._id, row.data)}
-          >
-            <FaEye />
-          </Link>
-          {/* </button> */}
-          <Link
-            to="/rfps"
-            className=" p-[6px] text-Black-400 text-lg"
-          >
-            <RiDeleteBin6Line onClick={()=>handleDelete(row._id)}/>
-          </Link>
-        </div>
+      name: "Edit",
+      width: "8%",
+      selector: (row: any) => (
+        <Link
+          to={`/add-rfps/${row._id}`}
+          className="p-[6px] text-black-400 text-lg flex items-center"
+          onClick={() => handleUpdate(row._id, row.data)}
+        >
+          <FaEye />
+        </Link>
       ),
     },
-      {
-          name: "Convert to Quotes From Vendor",
-          width: "10%",
-          selector: (row: any) => (
-            <div className="flex items-center gap-3">
-              <Link
-                to={`/add-sales-contact/${row?._id}`}
-                className="p-[6px] text-black-400 text-lg flex items-center"
-              ></Link>
-              <button
-                className="p-[6px] text-black-400 text-lg"
-                onClick={() => handleConvertQuotesFromVendor(row._id)}
-              >
-                <SiConvertio />
-              </button>
-            </div>
-          ),
-        },
+    {
+      name: "Delete",
+      width: "10%",
+      selector: (row: any) => (
+        <Link
+          to="/rfps"
+          className="p-[6px] text-black-400 text-lg"
+          onClick={() => handleDelete(row._id)}
+        >
+          <RiDeleteBin6Line />
+        </Link>
+      ),
+    },
   ];
 
-  
+  const filterColumns = columns.filter((item) => {
+    if (item.name === "Delete") {
+      return canDelete;
+    } else if (item.name === "Edit") {
+      return canView || (canView && canUpdate);
+    } else {
+      return true;
+    }
+  });
 
   return (
     <>
@@ -294,17 +256,15 @@ function CustomerLedger() {
           {/* React Table */}
           <ReactTable
             data={RfpData.data}
-            columns={columns}
+            columns={filterColumns}
             loading={false}
-
-
             // loading={loading}
             totalRows={RfpData?.total}
-          // onChangePage={handlePageChange}
-          // onChangeRowsPerPage={handleRowsPerPageChange}
-          // pagination
-          // paginationPerPage={rowsPerPage}
-          // paginationRowsPerPageOptions={[5, 10, 20]}
+            // onChangePage={handlePageChange}
+            // onChangeRowsPerPage={handleRowsPerPageChange}
+            // pagination
+            // paginationPerPage={rowsPerPage}
+            // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

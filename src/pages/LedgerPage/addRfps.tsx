@@ -1,32 +1,35 @@
 import { toastError, toastSuccess } from "@/utils/toast";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAddRfp, useUpdateRfpById, useRfpById } from "@/services/rfp.service";
+import {
+  useAddRfp,
+  useUpdateRfpById,
+  useRfpById,
+} from "@/services/rfp.service";
 import { useVendor } from "@/services/vendor.service";
-import Select from 'react-select';
+import Select from "react-select";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 const AddRfpsForm = () => {
-
   const [formData, setFormData] = useState({
-
-    //new fields 
-    rfpId: '',
+    //new fields
+    rfpId: "",
     serviceType: [] as string[],
     eventDates: [{
-      startDate: '',
+      startDate: "",
     }],
-    eventDetails: '',
-    deadlineOfProposal: '',
+    eventDetails: "",
+    deadlineOfProposal: "",
     vendorList: [] as string[],
-    additionalInstructions: '',
-  })
+    additionalInstructions: "",
+  });
 
   const serviceTypeOptions = ["Hotel", "Banquet", "Event", "Transport"];
 
-
-
-
   const { id } = useParams();
+
+  const { canCreate, canDelete, canUpdate, canView } =
+    checkPermissionsForButtons("RFPS");
 
   const navigate = useNavigate();
   const { mutateAsync: addRfp } = useAddRfp();
@@ -34,12 +37,11 @@ const AddRfpsForm = () => {
   const { data: rfpDataById, isLoading } = useRfpById(id || "");
   const { data: vendorData } = useVendor();
   const [vendorArr, setVendorArr] = useState<any>([]);
-  const [selectedVendors , setSelectedVendors] = useState<any>([]);
+  const [selectedVendors, setSelectedVendors] = useState<any>([]);
 
   useEffect(() => {
     // Prefill form when editing
     if (rfpDataById && rfpDataById?.data) {
-
       setFormData({
         rfpId: rfpDataById?.data?.rfpId || "",
         serviceType: rfpDataById?.data?.serviceType || [],
@@ -48,74 +50,69 @@ const AddRfpsForm = () => {
         deadlineOfProposal: rfpDataById?.data?.deadlineOfProposal || "",
         vendorList: rfpDataById?.data?.vendorList || [],
         additionalInstructions: rfpDataById?.data?.additionalInstructions || "",
-      })
+      });
     }
-
   }, [rfpDataById]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-
-
-      const obj = {...formData, vendorList:selectedVendors};
+      const obj = { ...formData, vendorList: selectedVendors };
 
       if (id) {
-
         const { data: res } = await updateRfp({ id, obj });
         if (res?.message) {
           toastSuccess(res.message);
-          navigate("/rfps")
+          navigate("/rfps");
           console.log(obj, "<<<<<<<check obj");
-          console.log("Thisssss---->",selectedVendors)
-
+          console.log("Thisssss---->", selectedVendors);
         }
       } else {
-
         const { data: res } = await addRfp(obj);
         if (res?.message) {
           toastSuccess(res.message);
-          navigate("/rfps")
-
+          navigate("/rfps");
         }
-
-        
       }
-     
     } catch (error) {
       toastError(error);
     }
   };
 
-
-
-
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValues = Array.from(event.target.selectedOptions, (option) => option.value);
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
     setFormData((prev) => ({
       ...prev,
-      serviceType: Array.from(new Set([...prev.serviceType, ...selectedValues])), // Prevent duplicates
+      serviceType: Array.from(
+        new Set([...prev.serviceType, ...selectedValues])
+      ), // Prevent duplicates
     }));
   };
 
   const removeOption = (optionToRemove: string) => {
     setFormData((prev) => ({
       ...prev,
-      serviceType: prev.serviceType.filter((option) => option !== optionToRemove),
+      serviceType: prev.serviceType.filter(
+        (option) => option !== optionToRemove
+      ),
     }));
   };
 
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
-
-  const handleChange = (selected: string [] | null) => {
+  const handleChange = (selected: string[] | null) => {
     setFormData((prevData) => ({ ...prevData, vendorList: selected || [] }));
   };
   // const handleSelectChange = (name: string, value: any) => {
@@ -127,18 +124,19 @@ const AddRfpsForm = () => {
 
   console.log(vendorData.data, "vendorData");
   useEffect(() => {
-      if(vendorData && vendorData.data){
-        setVendorArr(vendorData.data.map((el: any) => ({
+    if (vendorData && vendorData.data) {
+      setVendorArr(
+        vendorData.data.map((el: any) => ({
           value: el._id,
-          label: el.vendor?.firstName + " " + el.vendor?.lastName
-        })));
-      }
-  },[vendorData])
+          label: el.vendor?.firstName + " " + el.vendor?.lastName,
+        }))
+      );
+    }
+  }, [vendorData]);
   const optionConvertor = (firstName: string, lastname: string) => {
-
     console.log("firstname", firstName, "lastname", lastname);
-    return `${firstName} ${lastname}`
-  }
+    return `${firstName} ${lastname}`;
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -148,14 +146,22 @@ const AddRfpsForm = () => {
           {/* Service Type and Event Date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
-              <label className="block text-gray-700 font-medium">Service Type</label>
+              <label className="block text-gray-700 font-medium">
+                Service Type
+              </label>
 
               {/* Selected Options as Tags */}
               <div className="flex flex-wrap gap-2 mt-2">
                 {formData.serviceType.map((option) => (
-                  <span key={option} className="bg-gray-200 px-2 py-1 rounded-md text-sm flex items-center">
+                  <span
+                    key={option}
+                    className="bg-gray-200 px-2 py-1 rounded-md text-sm flex items-center"
+                  >
                     {option}
-                    <button className="ml-2 text-red-500 hover:text-red-700" onClick={() => removeOption(option)}>
+                    <button
+                      className="ml-2 text-red-500 hover:text-red-700"
+                      onClick={() => removeOption(option)}
+                    >
                       ✖
                     </button>
                   </span>
@@ -163,7 +169,11 @@ const AddRfpsForm = () => {
               </div>
 
               {/* Dropdown */}
-              <select multiple onChange={handleSelectChange} className="w-full mt-2 border px-2 py-2 rounded-md">
+              <select
+                multiple
+                onChange={handleSelectChange}
+                className="w-full mt-2 border px-2 py-2 rounded-md"
+              >
                 {serviceTypeOptions
                   .filter((option) => !formData.serviceType.includes(option)) // Hide already selected options
                   .map((option) => (
@@ -187,7 +197,7 @@ const AddRfpsForm = () => {
                 <option>Transport</option>
               </select> */}
             </div>
-
+{/* 
             {
               formData.eventDates.length && formData.eventDates.map((el: any, index: number) => (
                 <div key={index}>
@@ -195,7 +205,7 @@ const AddRfpsForm = () => {
                 Event Date
               </label>
               <input
-                name={"eventDate"}
+                name={"eventDates"}
                 value={el.startDate}
                 onChange={handleInputChange}
                 type="date"
@@ -205,7 +215,7 @@ const AddRfpsForm = () => {
               ))
             
 
-            }
+            } */}
           </div>
 
           {/* <div>
@@ -252,18 +262,16 @@ const AddRfpsForm = () => {
 
           {/* Vendor List */}
           <div className="w-96">
-
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Vendor List
             </label>
             <Select
-                className="w-full border "
-                isMulti
-                // defaultValue={selectedOption}
-                value={selectedVendors}
-                options={vendorArr}
-                onChange={(val)=>setSelectedVendors(val)}
-        
+              className="w-full border "
+              isMulti
+              // defaultValue={selectedOption}
+              value={selectedVendors}
+              options={vendorArr}
+              onChange={(val) => setSelectedVendors(val)}
             />
           </div>
 
@@ -275,7 +283,12 @@ const AddRfpsForm = () => {
             <textarea
               name={"additionalInstructions"}
               value={formData.additionalInstructions}
-              onChange={(e) => setFormData({ ...formData, additionalInstructions: e.target.value })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  additionalInstructions: e.target.value,
+                })
+              }
               className="w-full border border-gray-300 rounded-md p-2"
               placeholder="Enter additional instructions"
               rows={4}
@@ -290,12 +303,14 @@ const AddRfpsForm = () => {
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-md"
-            >
-              Submit
-            </button>
+            {((!id && canCreate) || (id && canUpdate)) && (
+              <button
+                type="submit"
+                className="px-4 py-2 bg-orange-500 text-white rounded-md"
+              >
+                Submit
+              </button>
+            )}
           </div>
         </form>
       </div>

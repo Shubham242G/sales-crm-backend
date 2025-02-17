@@ -5,13 +5,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
-
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 function QuotesForCustomer() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const { canCreate, canDelete, canUpdate, canView } =
+    checkPermissionsForButtons("Quotes for Customer");
 
   // ledger details modal
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
@@ -86,22 +89,23 @@ function QuotesForCustomer() {
       name: "Status",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col p-2 rounded-md text-white ${row.status === "Pending"
-            ? "bg-yellow-200 text-yellow-500"
-            : row.status === "Reviewed"
+          className={`flex gap-1 flex-col p-2 rounded-md text-white ${
+            row.status === "Pending"
+              ? "bg-yellow-200 text-yellow-500"
+              : row.status === "Reviewed"
               ? "bg-green-300 text-green-600"
               : "bg-red-200 text-red-600"
-            }`}
+          }`}
         >
           <h6>{row.status}</h6>
         </div>
       ),
-      width: "15%",
+      width: "12%",
     },
 
     {
-      name: "Action",
-      width: "10%",
+      name: "Edit",
+      width: "6%",
       selector: () => (
         <div className="flex items-center gap-3">
           <Link
@@ -110,7 +114,14 @@ function QuotesForCustomer() {
           >
             <FaEye />
           </Link>
-
+        </div>
+      ),
+    },
+    {
+      name: "Delete",
+      width: "6%",
+      selector: () => (
+        <div className="flex items-center gap-3">
           <Link
             to="/update-ledger/id=1234"
             className="  p-[6px] text-black-400 text-lg"
@@ -123,92 +134,17 @@ function QuotesForCustomer() {
   ];
 
   // Sample data
-  const data = [
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Pending",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Rejected",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Reviewed",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Pending",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Rejected",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Reviewed",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-  ];
+ 
+
+  const filterColumns = columns.filter((item) => {
+    if (item.name === "Delete") {
+      return canDelete;
+    } else if (item.name === "Edit") {
+      return canView || (canView && canUpdate);
+    } else {
+      return true;
+    }
+  });
 
   return (
     <>
@@ -250,10 +186,15 @@ function QuotesForCustomer() {
                 <FaFileExport /> Export
               </button>
 
-              <button onClick={() => navigate("/quotesForCustomerView")} className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
-                <FaPlus />
-                <span>New Quotes</span>
-              </button>
+              {canCreate && (
+                <button
+                  onClick={() => navigate("/quotesForCustomerView")}
+                  className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                >
+                  <FaPlus />
+                  <span>New Quotes</span>
+                </button>
+              )}
               {/* <button className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
                 <FaPlus />
                 <span>New RFPs</span>
@@ -263,16 +204,16 @@ function QuotesForCustomer() {
           {/* React Table */}
           <ReactTable
             data={data}
-            columns={columns}
+            columns={filterColumns}
             loading={false}
             totalRows={0}
-          // loading={loading}
-          // totalRows={data.length}
-          // onChangePage={handlePageChange}
-          // onChangeRowsPerPage={handleRowsPerPageChange}
-          // pagination
-          // paginationPerPage={rowsPerPage}
-          // paginationRowsPerPageOptions={[5, 10, 20]}
+            // loading={loading}
+            // totalRows={data.length}
+            // onChangePage={handlePageChange}
+            // onChangeRowsPerPage={handleRowsPerPageChange}
+            // pagination
+            // paginationPerPage={rowsPerPage}
+            // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

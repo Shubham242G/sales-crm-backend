@@ -1,7 +1,7 @@
 import { toastError, toastSuccess } from "@/utils/toast";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAddQuotesFromVendors, useUpdateQuotesFromVendorsById, useQuotesFromVendorsById } from "@/services/quotesFromVendors.service";
+import { useAddQuotesFromVendors, useUpdateQuotesFromVendorsById, useQuotesFromVendorsById, useQuotesFromVendors } from "@/services/quotesFromVendors.service";
 import { useVendor } from "@/services/vendor.service";
 import Select from 'react-select';
 import { useRfp } from "@/services/rfp.service";
@@ -56,7 +56,10 @@ const AddQuotesFromVendors= () => {
   const { mutateAsync: updateQuotesFromVendors } = useUpdateQuotesFromVendorsById();
   const { data: quotesFromVendorsDataById, isLoading } = useQuotesFromVendorsById(id || "");
   const { data: vendorData } = useVendor();
-  const { data: rfpData} = useRfp ();
+   const {data: quotesFromVendors} = useQuotesFromVendors();  
+
+
+   console.log("quotesFromVendors", quotesFromVendors)
   
   const [serviceTypeArr, setServiceTypeArr] = useState<any>([]);
   const [selectedServiceType , setSelectedServiceType] = useState<any>([]);
@@ -153,7 +156,7 @@ const AddQuotesFromVendors= () => {
   //   }));
   // };
 
-  console.log(rfpData.data, "rfpData");
+
 //   useEffect(() => {
 //       if(rfpData && rfpData.data){
 //         setServiceTypeArr(rfpData.data.map((el: any) => ({
@@ -167,6 +170,22 @@ const AddQuotesFromVendors= () => {
     console.log("firstname", firstName, "lastname", lastname);
     return `${firstName} ${lastname}`
   }
+
+
+
+  const rfpOptions = quotesFromVendors?.data?.map((el: any) => ({
+    value: el.rfpId,
+
+    label: el.rfpId
+  }))
+
+
+ 
+  const handleChangeRfp = (selected: any) => {
+    setSelectedOption(selected);
+    console.log("Selected option:", selected);
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -229,18 +248,14 @@ const AddQuotesFromVendors= () => {
             </div> */}
           </div>
 
-          {/* <div>
+          <div>
+
+
             <label className="block text-sm font-medium text-gray-700 mb-1">
               RFP ID
             </label>
-            <input
-              name={"quotesFromVendorsId"}
-              value={rfpData.data}
-              onChange={handleInputChange}
-              type="text"
-              className="w-full border border-gray-300 rounded-md p-2"
-            />
-          </div> */}
+            <Select options={rfpOptions} onChange={handleChangeRfp} isMulti={false} />
+          </div>
 
           {/* Event Details and Deadline */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">

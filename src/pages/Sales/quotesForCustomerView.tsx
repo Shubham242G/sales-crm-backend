@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import logo from "@/assets/mainlogo/logo.png";
 import { useNavigate, useParams } from "react-router-dom";
 function QuotesForCustomerView() {
-
-
   const [formData, setFormData] = useState({
-
-
-
-
     contactName: "",
     contactOwner: "",
     companyName: "",
@@ -53,13 +47,7 @@ function QuotesForCustomerView() {
     contactPersonName: "",
     contactPersonEmail: "",
     contactPersonPhoneNumber: "",
-
-
-
-
-
   });
-
 
   const { id } = useParams();
 
@@ -67,7 +55,6 @@ function QuotesForCustomerView() {
   // const { mutateAsync: AddCustomer } = useAddCustomer();
   // const { mutateAsync: updateCustomer } = useUpdateCustomerById();
   // const { data: customerDataById, isLoading } = useCustomerById(id || "");
-
 
   // useEffect(() => {
   //   // Prefill form when editing
@@ -105,12 +92,6 @@ function QuotesForCustomerView() {
   //     toastError(error);
   //   }
   // };
-
-
-
-
-
-
 
   return (
     <div className="bg-gray-100 min-h-screen w-full ">
@@ -188,6 +169,5 @@ function QuotesForCustomerView() {
     </div>
   );
 }
-
 
 export default QuotesForCustomerView;

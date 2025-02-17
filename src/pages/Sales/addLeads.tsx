@@ -8,7 +8,7 @@ import {
   useLeadById,
   useUpdateLeadById,
 } from "@/services/lead.service";
-
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 const AddNewLead = () => {
   const [formData, setFormData] = useState({
@@ -26,13 +26,13 @@ const AddNewLead = () => {
   const navigate = useNavigate();
   const { mutateAsync: addLead } = useAddLead();
   const { mutateAsync: updateLead } = useUpdateLeadById();
-  const { data: leadDataById} = useLeadById(id || "");
+  const { data: leadDataById } = useLeadById(id || "");
+
+  const { canCreate, canView, canUpdate } = checkPermissionsForButtons("Leads");
 
   useEffect(() => {
-
-    
     if (leadDataById && leadDataById.data) {
-      console.log(leadDataById.data.company , "check company")
+      console.log(leadDataById.data.company, "check company");
       setFormData({
         salutation: leadDataById.data.salutation || "",
         firstName: leadDataById.data.firstName || "",
@@ -43,7 +43,6 @@ const AddNewLead = () => {
       });
     }
   }, [leadDataById]);
-  
 
   const salutationOptions = [
     { value: "Mr", label: "Mr" },
@@ -51,9 +50,8 @@ const AddNewLead = () => {
     { value: "Mrs", label: "Mrs" },
   ];
 
-
-  console.log(formData,"check form data")
-  console.log(leadDataById,"check lead by data id")
+  console.log(formData, "check form data");
+  console.log(leadDataById, "check lead by data id");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,8 +87,8 @@ const AddNewLead = () => {
           navigate("/leads");
         }
       }
-      console.log(obj ,"check obj");
-      console.log(formData,"check form data")
+      console.log(obj, "check obj");
+      console.log(formData, "check form data");
     } catch (error) {
       toastError(error);
     }
@@ -239,12 +237,14 @@ const AddNewLead = () => {
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="px-6 py-3 bg-orange-500 text-white rounded-md"
-            >
-              Save
-            </button>
+            {((!id && canCreate) || (id && canUpdate)) && (
+              <button
+                type="submit"
+                className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+              >
+                Save
+              </button>
+            )}
           </div>
         </form>
       </div>
