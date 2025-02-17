@@ -21,6 +21,93 @@ function QuotesForCustomer() {
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
+
+  const data = [
+    {
+      quotesId: "QUT126789",
+      amount: "500000",
+      rpfId: "RPF123456",
+      name: "Ajay Kumar",
+      submissionDate: "27-10-2024",
+      status: "Pending",
+      service: [
+        { name: "hotel" },
+        { name: "banquet" },
+        { name: "Event" },
+        { name: "Transport" },
+      ],
+    },
+    {
+      quotesId: "QUT126789",
+      amount: "500000",
+      rpfId: "RPF123456",
+      name: "Ajay Kumar",
+      submissionDate: "27-10-2024",
+      status: "Rejected",
+      service: [
+        { name: "hotel" },
+        { name: "banquet" },
+        { name: "Event" },
+        { name: "Transport" },
+      ],
+    },
+    {
+      quotesId: "QUT126789",
+      amount: "500000",
+      rpfId: "RPF123456",
+      name: "Ajay Kumar",
+      submissionDate: "27-10-2024",
+      status: "Reviewed",
+      service: [
+        { name: "hotel" },
+        { name: "banquet" },
+        { name: "Event" },
+        { name: "Transport" },
+      ],
+    },
+    {
+      quotesId: "QUT126789",
+      amount: "500000",
+      rpfId: "RPF123456",
+      name: "Ajay Kumar",
+      submissionDate: "27-10-2024",
+      status: "Pending",
+      service: [
+        { name: "hotel" },
+        { name: "banquet" },
+        { name: "Event" },
+        { name: "Transport" },
+      ],
+    },
+    {
+      quotesId: "QUT126789",
+      amount: "500000",
+      rpfId: "RPF123456",
+      name: "Ajay Kumar",
+      submissionDate: "27-10-2024",
+      status: "Rejected",
+      service: [
+        { name: "hotel" },
+        { name: "banquet" },
+        { name: "Event" },
+        { name: "Transport" },
+      ],
+    },
+    {
+      quotesId: "QUT126789",
+      amount: "500000",
+      rpfId: "RPF123456",
+      name: "Ajay Kumar",
+      submissionDate: "27-10-2024",
+      status: "Reviewed",
+      service: [
+        { name: "hotel" },
+        { name: "banquet" },
+        { name: "Event" },
+        { name: "Transport" },
+      ],
+    },
+  ];
   const columns = [
     {
       name: "Quotes Id",
@@ -134,92 +221,7 @@ function QuotesForCustomer() {
   ];
 
   // Sample data
-  const data = [
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Pending",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Rejected",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Reviewed",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Pending",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Rejected",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-    {
-      quotesId: "QUT126789",
-      amount: "500000",
-      rpfId: "RPF123456",
-      name: "Ajay Kumar",
-      submissionDate: "27-10-2024",
-      status: "Reviewed",
-      service: [
-        { name: "hotel" },
-        { name: "banquet" },
-        { name: "Event" },
-        { name: "Transport" },
-      ],
-    },
-  ];
+ 
 
   const filterColumns = columns.filter((item) => {
     if (item.name === "Delete") {

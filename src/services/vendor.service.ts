@@ -108,7 +108,7 @@ export const useVendorApiHook = () => {
   };
 
   const getAllVendor = async (pagination: PaginationState, searchObj: any) => {
-    console.log(`${BASE_URL}${prefix}/`, "test c");
+    console.log(`${BASE_URL}${prefix}/quotesFromVendors`, "test c");
     // const query = new URLSearchParams({
     //     pageIndex: String(pagination.pageIndex),
     //     pageSize: String(pagination.pageSize),

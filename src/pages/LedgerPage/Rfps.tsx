@@ -112,6 +112,8 @@ function CustomerLedger() {
   //   }
   // };
 
+  //
+
   const handleDelete = async (id: string) => {
     try {
       if (window.confirm("Are you sure you want to delete this enquiry?")) {

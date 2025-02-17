@@ -193,17 +193,11 @@ export const useUpdateEnquiryById = () => {
     });
 };
 
-export const useConvert = () => {
-    const api = useEnquiryApiHook();
-    const queryClient = useQueryClient();
-
-    return useMutation({
-        mutationFn: api.convertToRfp,
-        onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["enquiry"] });
-        },
-    });
-};
+export const convertToRfp = async (id: any) => {
+    return axios.post<GeneralApiResponse<IEnqiry>>(
+      `${BASE_URL}${prefix}/convert/${id}`
+    );
+  };
 
 export const getExel = async () => {
     return axios.get(`${BASE_URL}${prefix}/getExel`);

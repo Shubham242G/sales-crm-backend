@@ -71,6 +71,7 @@ import AddDepartment from "@/pages/Important/departmentMaster";
 import DepartmentMasterListView from "@/pages/Important/departmentMasterListView";
 import Users from "@/pages/Admin/users";
 import AddUser from "@/pages/Admin/addUsers";
+import AddQuotesFromVendorsForm from "@/pages/LedgerPage/addQuotesFromVendors";
 import PurchaseContactView from "@/pages/LedgerPage/purchaseContactView";
 
 export default function AuthorizedRoutes() {
@@ -108,6 +109,9 @@ export default function AuthorizedRoutes() {
           <Route path="/CategoryList" element={<CategoryList />}></Route>
           <Route path="/HotelList" element={<HotelList />}></Route>
           <Route path="/departmentMaster" element={<AddDepartment />}></Route>
+          <Route path="/addQuotesFromVendors" element={<AddQuotesFromVendorsForm />}></Route>
+          <Route path="/addQuotesFromVendors/:id" element={<AddQuotesFromVendorsForm />}></Route>
+
           <Route
             path="/departmentMaster/:id"
             element={<AddDepartment />}

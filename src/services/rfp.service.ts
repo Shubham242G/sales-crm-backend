@@ -14,7 +14,10 @@ export interface IRPF {
     _id: string; // Unique identifier
     rfpId: string;
     serviceType: [],
-    eventDate: string,
+    eventDates: [
+        {
+        startDate: string
+    }],
     eventDetails: string,
     deadlineOfProposal: string,
     vendorList: [],
@@ -127,17 +130,11 @@ export const useUpdateRfpById = () => {
         },
     });
 };
-export const useConvertRfpById = () => {
-    const api = useRfpApiHook();
-
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: api.convertRfp,
-        onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["rfp"] });
-        },
-    });
-};
+export const convertToQuotesFromVendors= async (id: any) => {
+    return axios.post<GeneralApiResponse<IRPF>>(
+      `${BASE_URL}${prefix}/convert/${id}`
+    );
+  };
 
 export const getExel = async () => {
     return axios.get(`${BASE_URL}${prefix}/getExel`);
