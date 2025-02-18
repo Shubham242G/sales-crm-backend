@@ -12,6 +12,14 @@ import { ICustomer } from "./customer.service";
 
 
 const prefix = "/task";
+
+export interface IReassignment {
+    reAssignedTo: string;
+    remark: string;
+    previousAssignee: string;
+    reAssignmentDate: string;
+  }
+
 export interface ITaskManagement {
     id?: string;
     assignedTo: string;
@@ -25,6 +33,7 @@ export interface ITaskManagement {
     timeValue: number | "";
     completionTime: string;
     options: number[];
+    reassignments?: IReassignment[];
 }
 
 
