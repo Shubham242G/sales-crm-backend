@@ -638,6 +638,8 @@ const AddEnquiryForm = () => {
       console.log("airTickets:", obj.airTickets);
 
       if (id) {
+
+        console.log(obj, "<<<<<<<check obj");
         const { data: res } = await updateEnquiryById({ id, obj });
 
         if (res?.message) {
@@ -645,6 +647,7 @@ const AddEnquiryForm = () => {
           navigate("/enquiryList");
         }
       } else {
+        console.log(obj, "<<<<<<<check obj");
         const { data: res } = await addEnquiry(obj);
         if (res?.message) {
           toastSuccess(res.message);

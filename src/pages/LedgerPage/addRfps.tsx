@@ -9,7 +9,13 @@ import {
 import { useVendor } from "@/services/vendor.service";
 import Select from "react-select";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import moment from "moment";
 
+
+interface IVendorList {
+  label: string;
+  value: string;
+}
 const AddRfpsForm = () => {
   const [formData, setFormData] = useState({
     //new fields
@@ -20,7 +26,7 @@ const AddRfpsForm = () => {
     }],
     eventDetails: "",
     deadlineOfProposal: "",
-    vendorList: [] as string[],
+    vendorList: [] as IVendorList[] ,
     additionalInstructions: "",
   });
 
@@ -40,27 +46,52 @@ const AddRfpsForm = () => {
   const [selectedVendors, setSelectedVendors] = useState<any>([]);
 
   useEffect(() => {
-    // Prefill form when editing
-    if (rfpDataById && rfpDataById?.data) {
-      setFormData({
-        rfpId: rfpDataById?.data?.rfpId || "",
-        serviceType: rfpDataById?.data?.serviceType || [],
-        eventDates: rfpDataById?.data?.eventDates || [],
-        eventDetails: rfpDataById?.data?.eventDetails || "",
-        deadlineOfProposal: rfpDataById?.data?.deadlineOfProposal || "",
-        vendorList: rfpDataById?.data?.vendorList || [],
-        additionalInstructions: rfpDataById?.data?.additionalInstructions || "",
-      });
+    if (vendorData && vendorData.data) {
+      const formattedVendors = vendorData.data.map((el: any) => ({
+        value: el._id,
+        label: `${el.vendor?.firstName} ${el.vendor?.lastName}`,
+      }));
+      setVendorArr(formattedVendors);
     }
-  }, [rfpDataById]);
+  }, [vendorData]);
 
+  useEffect(() => {
+    if (!isLoading && rfpDataById?.data) {
+      console.log(rfpDataById, "<<-------rfpDataById");
+      setFormData({
+        rfpId: rfpDataById.data.rfpId || "",
+        serviceType: rfpDataById.data.serviceType || [],
+        eventDates: rfpDataById.data.eventDates || [{ startDate: "" }],
+        eventDetails: rfpDataById.data.eventDetails || "",
+        deadlineOfProposal: rfpDataById.data.deadlineOfProposal || "",
+        vendorList: [...rfpDataById.data.vendorList],
+        additionalInstructions: rfpDataById.data.additionalInstructions || "",
+      });
+
+      console.log(rfpDataById?.data?.vendorList, "check rfpDataById fgsdfffgdsgg")
+
+    setSelectedVendors(rfpDataById?.data?.vendorList)
+  
+      // const prefilledVendors = (rfpDataById.data.vendorList || []).map(
+      //   (vendorId: string) => vendorArr.find((v: any) => v.value === vendorId)
+      // ).filter(Boolean); // Remove any undefined values
+    
+      // setSelectedVendors(prefilledVendors);
+    }
+  }, [rfpDataById, isLoading, vendorArr]);
+  
+ 
+
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const obj = { ...formData, vendorList: selectedVendors };
+      const obj = { ...formData };
 
       if (id) {
         const { data: res } = await updateRfp({ id, obj });
+
+        console.log(formData.vendorList, "check vendor List dddddddddddddddddddddddddddd")
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/rfps");
@@ -112,9 +143,22 @@ const AddRfpsForm = () => {
     }));
   };
 
-  const handleChange = (selected: string[] | null) => {
-    setFormData((prevData) => ({ ...prevData, vendorList: selected || [] }));
+
+
+  const handleInputChangeEventDates = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const { name, value } = e.target;
+  
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      eventDates: prevFormData.eventDates.map((el, i) =>
+        i === index ? { ...el, startDate: value } : el
+      ),
+    }));
   };
+
+  // const handleChange = (selected: string[] | null) => {
+  //   setFormData((prevData) => ({ ...prevData, vendorList: selected || [] }));
+  // };
   // const handleSelectChange = (name: string, value: any) => {
   //   setFormData(prev => ({
   //     ...prev,
@@ -137,6 +181,10 @@ const AddRfpsForm = () => {
     console.log("firstname", firstName, "lastname", lastname);
     return `${firstName} ${lastname}`;
   };
+
+
+
+  console.log(selectedVendors, "selectedVendors checkddddddddddddddddddddddddddddddddddddddddddddddddddddd");
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -197,25 +245,40 @@ const AddRfpsForm = () => {
                 <option>Transport</option>
               </select> */}
             </div>
-{/* 
-            {
-              formData.eventDates.length && formData.eventDates.map((el: any, index: number) => (
-                <div key={index}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Event Date
-              </label>
-              <input
-                name={"eventDates"}
-                value={el.startDate}
-                onChange={handleInputChange}
-                type="date"
-                className="w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-              ))
-            
 
-            } */}
+            {Array.isArray(formData.eventDates) &&
+  formData.eventDates.map((el: any, index: number) => (
+    <div key={index}>
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Event Date
+      </label>
+      <input
+        name="eventDates"
+        value={moment(el.startDate).format("YYYY-MM-DD") || el.startDate || ""}
+        onChange={(e)=> handleInputChangeEventDates(e,index)}
+        type="date"
+        className="w-full border border-gray-300 rounded-md p-2"
+      />
+    </div>
+  ))
+}
+
+            {/* {
+  (formData.eventDates?.length ? formData.eventDates : []).map((el: any, index: number) => (
+    <div key={index}>
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Event Date
+      </label>
+      <input
+        name="eventDates"
+        value={el.startDate || ""}
+        onChange={handleInputChange}
+        type="date"
+        className="w-full border border-gray-300 rounded-md p-2"
+      />
+    </div>
+  ))
+}  */}
           </div>
 
           {/* <div>
@@ -266,13 +329,18 @@ const AddRfpsForm = () => {
               Vendor List
             </label>
             <Select
-              className="w-full border "
-              isMulti
-              // defaultValue={selectedOption}
-              value={selectedVendors}
-              options={vendorArr}
-              onChange={(val) => setSelectedVendors(val)}
-            />
+  className="w-full border"
+  isMulti
+  value={formData?.vendorList}
+  options={vendorArr}
+  onChange={(val) => {
+
+    setFormData((prev: any) => ({
+      ...prev,
+      vendorList: val,
+    }));
+  }}
+/>
           </div>
 
           {/* Additional Instructions */}

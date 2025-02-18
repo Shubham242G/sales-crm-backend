@@ -11,9 +11,11 @@ import {
   usedeleteRfpById,
   useAddRfp,
   useUpdateRfpById,
+  convertToQuotesFromVendors,
 } from "@/services/rfp.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import { SiConvertio } from "react-icons/si";
 
 function CustomerLedger() {
   const navigate = useNavigate();
@@ -128,6 +130,12 @@ function CustomerLedger() {
     }
   };
 
+
+  const handleConvertToQuotes = (id: string) => {
+    convertToQuotesFromVendors(id)
+    toastSuccess("Converted to Quotes from vendor successfully!");
+  }
+
   const columns = [
     {
       name: "RFPID",
@@ -193,6 +201,24 @@ function CustomerLedger() {
         </Link>
       ),
     },
+    {
+          name: "Convert to Enquiry",
+          width: "10%",
+          selector: (row: any) => (
+            <div className="flex items-center gap-3">
+              <Link
+                to={`/add-sales-contact/${row?._id}`}
+                className="p-[6px] text-black-400 text-lg flex items-center"
+              ></Link>
+              <button
+                className="p-[6px] text-black-400 text-lg"
+                onClick={() => handleConvertToQuotes(row.id)  } 
+              >
+                <SiConvertio />
+              </button>
+            </div>
+          ),
+        },
   ];
 
   const filterColumns = columns.filter((item) => {
