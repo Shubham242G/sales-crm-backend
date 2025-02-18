@@ -8,6 +8,11 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 
 
+interface IvendorList {
+    label: string, 
+    value: string
+}
+
 const prefix = "/rfp";
 export interface IRPF {
     // Basic Details
@@ -20,7 +25,7 @@ export interface IRPF {
     }],
     eventDetails: string,
     deadlineOfProposal: string,
-    vendorList: [],
+    vendorList: IvendorList[],
     additionalInstructions: string,
     
 }
