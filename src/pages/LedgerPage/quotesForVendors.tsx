@@ -1,27 +1,46 @@
 import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
-import { useQuotesFromVendors, useQuotesFromVendorsById } from "@/services/quotesFromVendors.service";
+import { usedeleteQuotesFromVendorsById, useQuotesFromVendors, useQuotesFromVendorsById } from "@/services/quotesFromVendors.service";
+import { toastError, toastSuccess } from "@/utils/toast";
 
 function CustomerLedger() {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const {data: quotesFromVendors, isLoading} = useQuotesFromVendors();  
+  const {mutateAsync: deleteQuotesFromVendors} = usedeleteQuotesFromVendorsById();
+  console.log('quotesVendorData ---->', quotesFromVendors.data)
   // const {data: quotesFromVendorsIdData,} = useQuotesFromVendorsById(); 
-
-
+ 
   // ledger details modal
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
 
+  
   const navigate = useNavigate();
+  
+    const handleDelete = async (id: string) => {
+      try {
+        if (window.confirm("Are you sure you want to delete this enquiry?")) {
+          const { data: res } = await deleteQuotesFromVendors(id);
+          if (res) {
+            toastSuccess(res.message);
+            // navigate("/quotesFromVendors")
+            // Optionally refresh the data
+          }
+        }
+      } catch (error) {
+        toastError(error);
+      }
+    };
+
   const columns = [
     {
       name: "Quotes Id",
@@ -107,7 +126,7 @@ function CustomerLedger() {
     {
       name: "Action",
       width: "10%",
-      selector: () => (
+      selector: (row:any) => (
         <div className="flex items-center gap-3">
           <Link
             to="/view-quotesFromVendor"
@@ -116,12 +135,9 @@ function CustomerLedger() {
             <FaEye />
           </Link>
 
-          <Link
-            to="/update-ledger/id=1234"
-            className="  p-[6px] text-black-400 text-lg"
-          >
-            <RiDeleteBin6Line />
-          </Link>
+        
+            <RiDeleteBin6Line onClick={()=>handleDelete(row._id)}/>
+        
         </div>
       ),
     },

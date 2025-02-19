@@ -169,10 +169,18 @@ export default function AuthorizedRoutes() {
             path="/quotesFromVendors"
             element={<QuotesForVendors />}
           ></Route>
+          <Route
+            path="/quotesFromVendors/:id"
+            element={<QuotesForVendors />}
+          ></Route>
           <Route path="/confirmedQuotes" element={<ConfirmedQuotes />}></Route>
           <Route path="/ledger-group" element={<LedgerGroup />}></Route>
           <Route
             path="/view-quotesFromVendor"
+            element={<QuotesForVendorsView />}
+          ></Route>
+          <Route
+            path="/view-quotesFromVendor/:id"
             element={<QuotesForVendorsView />}
           ></Route>
           <Route path="/sales-ledger" element={<SalesLedger />}></Route>
