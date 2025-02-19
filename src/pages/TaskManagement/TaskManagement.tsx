@@ -101,7 +101,7 @@ function TaskManagement() {
       selector: (row: any) => (
         <button
           type="button"
-          onClick={() => navigate(`/reassign-task/${row._id}`)}
+          onClick={() => navigate(`/add-TaskManagement/${row._id}`)}
           className="text-blue-500 text-lg p-[6px]"
         >
           Reassign
