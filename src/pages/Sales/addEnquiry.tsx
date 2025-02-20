@@ -89,7 +89,6 @@ interface AirTickets {
 }
 
 const AddEnquiryForm = () => {
-  // State for User Details
   const [nameObj, setNameObj] = useState<ReactSelectFormat | null>(null);
 
   const { canView, canUpdate, canCreate } =
@@ -138,7 +137,6 @@ const AddEnquiryForm = () => {
   // const [occupancy, setOccupancy] = useState([]);
   const [billingAddress, setBillingAddress] = useState("");
 
-  // State for Tables
   const [room, setRoom] = useState<Room[]>([]);
   const [banquet, setBanquet] = useState<Banquet[]>([]);
   const [cab, setCab] = useState<Cab[]>([]);
@@ -159,7 +157,6 @@ const AddEnquiryForm = () => {
   //     console.log(nameObj, "<----nameObj");
   //   }
   // }, [contactById?.data]);
-  // Meal Plan Options
   const mealPlanOptions = [
     "Breakfast Only",
     "Half Board",
@@ -167,7 +164,6 @@ const AddEnquiryForm = () => {
     "All Inclusive",
   ];
 
-  // State for Event Setup
   const [eventSetup, setEventSetup] = useState<EventSetup>({
     functionType: "",
     setupRequired: "",
@@ -198,21 +194,17 @@ const AddEnquiryForm = () => {
 
   const { id } = useParams();
   const { data: enquiryDataById, isLoading } = useEnquiryById(id || "");
-  // Generate Rows for Room, Banquet, and Cab Tables Based on Check-In and Check-Out Dates
   useEffect(() => {
     if (checkIn && checkOut) {
       const start = new Date(checkIn);
       const end = new Date(checkOut);
       const dates = [];
 
-      // Create dates between checkIn and checkOut
       let currentDate = start;
       while (currentDate <= end) {
         dates.push({ date: currentDate.toISOString().split("T")[0] });
         currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
       }
-
-      // Update room, banquet, and cab states
 
       console.log("Check dates ", dates);
       setRoom(
@@ -249,7 +241,7 @@ const AddEnquiryForm = () => {
         }))
       );
     }
-  }, [checkIn, checkOut, noOfRooms]); // Make sure you're using correct state variables here (e.g., checkIn, checkOut)
+  }, [checkIn, checkOut, noOfRooms]);
 
   useEffect(() => {
     setRoom(
@@ -289,8 +281,6 @@ const AddEnquiryForm = () => {
     );
   }, [enquiryDataById]);
 
-  // Add Meal Plan to Input and Remove from Dropdown
-
   const handleMealPlanChange = (
     table: Room[] | Cab[],
     setTable: any,
@@ -325,7 +315,6 @@ const AddEnquiryForm = () => {
     setTable(updatedTable);
   };
 
-  // Add a Row to the Cab Table
   const addCabRow = () => {
     setCab((prev) => [
       ...prev,
@@ -341,9 +330,6 @@ const AddEnquiryForm = () => {
     ]);
   };
 
-  // Handle Input Changes
-
-  // Handle Checkbox for Cab Type
   const handleCabTypeChange = () => {
     setIsOutOfStation(!isOutOfStation);
   };
@@ -380,7 +366,7 @@ const AddEnquiryForm = () => {
 
   const handleDateChange = (
     index: number,
-    field: keyof EventSetup["eventDates"][0], // Ensures that field is either "startDate" or "endDate"
+    field: keyof EventSetup["eventDates"][0],
     value: string
   ): void => {
     const updatedDates = [...eventSetup.eventDates];
@@ -541,7 +527,7 @@ const AddEnquiryForm = () => {
         banquet: banquet,
         room: room,
         eventSetup: {
-          ...restEventSetup, // Spread the rest of the eventSetup properties
+          ...restEventSetup,
           setupRequired: eventSetup.setupRequired || "",
           eventDates: eventSetup.eventDates.map((date) => ({
             startDate: date?.startDate,
@@ -556,7 +542,6 @@ const AddEnquiryForm = () => {
 
       console.log(obj, "obj check");
 
-      // Log each section of the object in detail
       console.log("User Details:", {
         firstName: obj.firstName,
         lastName: obj.lastName,
@@ -638,7 +623,6 @@ const AddEnquiryForm = () => {
       console.log("airTickets:", obj.airTickets);
 
       if (id) {
-
         console.log(obj, "<<<<<<<check obj");
         const { data: res } = await updateEnquiryById({ id, obj });
 

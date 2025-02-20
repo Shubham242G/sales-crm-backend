@@ -1,4 +1,5 @@
 import {
+  IReassignment,
   useAddTaskManagement,
   useTaskManagementById,
   useUpdateTaskManagementById,
@@ -8,13 +9,7 @@ import { getAuth } from "@/utils/auth";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-
-type Reassignment = {
-  reAssignedTo: string;
-  remark: string;
-  previousAssignee: string;
-  reAssignmentDate: string;
-};
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
   // Declare initial state for all form fields
@@ -29,17 +24,28 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
     timeType: "",
     completionTime: "",
     options: [] as number[],
-    reassignments: [] as Reassignment[],
+    reassignments: [] as IReassignment[],
   });
 
-  const [newReassignment, setNewReassignment] = useState<Reassignment>({
+  const [newReassignment, setNewReassignment] = useState<IReassignment>({
     reAssignedTo: "",
     remark: "",
     previousAssignee: "",
     reAssignmentDate: new Date().toISOString().split("T")[0],
+    assignedName: "",
+    previousAssigneeName: "",
   });
 
   const [value, setValue] = useState(Boolean);
+
+  let { canView, canUpdate, canCreate } = checkPermissionsForButtons("Task");
+
+  let {
+    canView: canVieweMyTask,
+    canUpdate: canUpdateMyTask,
+    canCreate: canCreateMyTask,
+    canDelete: canDeleteMyTask,
+  } = checkPermissionsForButtons("My Tasks");
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -51,14 +57,49 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
   const usersOptions =
     userData?.data.map((user: any) => ({
       label: user.name,
-      value: user.name,
+      value: user._id,
     })) || [];
+
+  const previousAssigneeArr = formData.reassignments.map(
+    (item) => item.previousAssignee
+  );
+
+  console.log(formData.reassignments, "reassignments");
+
+  const reassigningOptions = usersOptions.filter(
+    (user) =>
+      user.value !== formData.assignedTo &&
+      !previousAssigneeArr.includes(user.value)
+  );
+
+  console.log(reassigningOptions, "reassigningOptions");
+
+  // const reassigningOptions = usersOptions.filter((user) => {
+  //   const isAssigned =
+  //     user.value === formData.assignedTo &&
+  //     user.value === newReassignment.previousAssignee;
+
+  //   return !isAssigned;
+  // });
 
   // Populate initial state when taskData is available
   useEffect(() => {
     if (TaskManagementDataById && TaskManagementDataById?.data) {
-      setFormData((prev) => ({
-        ...TaskManagementDataById.data,
+      console.log("TaskManagementDataById", TaskManagementDataById);
+      setFormData((prev: any) => ({
+        ...prev,
+
+        department: TaskManagementDataById.data.department || "",
+        assignedTo: TaskManagementDataById.data.assignedTo,
+        taskType: TaskManagementDataById.data.taskType || "",
+        taskTitle: TaskManagementDataById.data.taskTitle || "",
+        description: TaskManagementDataById.data.description || "",
+        startDate: TaskManagementDataById.data.startDate || "",
+        startTime: TaskManagementDataById.data.startTime || "",
+        timeType: TaskManagementDataById.data.timeType || "",
+        timeValue: TaskManagementDataById.data.timeValue || "",
+        completionTime: TaskManagementDataById.data.completionTime || "",
+        options: [],
         reassignments: TaskManagementDataById.data.reassignments || [],
       }));
 
@@ -112,7 +153,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
     };
 
   const handleReassignChange =
-    (field: keyof Reassignment) =>
+    (field: keyof IReassignment) =>
     (
       event: React.ChangeEvent<
         HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -204,6 +245,8 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
 
   console.log(value, "value check ");
 
+  console.log(formData.reassignments, "check reassignments data");
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
@@ -233,7 +276,6 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
               <select
                 className="input mb-6"
                 value={formData.assignedTo}
-                disabled={!value}
                 onChange={handleChange("assignedTo")}
               >
                 <option value="">Selet Employee</option>
@@ -357,12 +399,14 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-orange-500 text-white rounded-md"
-              >
-                Submit
-              </button>
+              {((!id && canCreate) || (id && canUpdate)) && (
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-orange-500 text-white rounded-md"
+                >
+                  Submit
+                </button>
+              )}
             </div>
           )}
         </form>
@@ -373,86 +417,99 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
           <h1 className="text-2xl font-bold mb-6">{"Reassign Task"}</h1>
           <form onSubmit={handleSubmit}>
             {id && (
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-4">
-                  Reassignment History
-                </h2>
-                {/* List previous   reassignments */}
-                {formData.reassignments.length > 0 ? (
-                  formData.reassignments.map((item, index) => (
-                    <div
-                      key={index}
-                      className="border p-4 rounded-md mb-2 bg-gray-100"
-                    >
-                      <p>
-                        <strong>Reassigned To:</strong> {item.reAssignedTo}
-                      </p>
-                      <p>
-                        <strong>Remark:</strong> {item.remark}
-                      </p>
-                      <p>
-                        <strong>Previous Assignee:</strong>{" "}
-                        {item.previousAssignee}
-                      </p>
-                      <p>
-                        <strong>Reassignment Date:</strong>{" "}
-                        {item.reAssignmentDate}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500">No reassignments yet.</p>
-                )}
-
-                {/* Allow new reassignment only if less than 3 have been done */}
-                {formData.reassignments.length < 3 ? (
-                  <div className="border p-4 rounded-md mt-4">
-                    <h3 className="text-lg font-semibold mb-2">
-                      New Reassignment
-                    </h3>
-                    <div className="mb-3">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Reassign To
-                      </label>
-                      <select
-                        className="w-full border border-gray-300 rounded-md p-2"
-                        value={newReassignment.reAssignedTo}
-                        onChange={handleReassignChange("reAssignedTo")}
-                      >
-                        <option value="">Select Employee</option>
-                        {usersOptions.map((user) => (
-                          <option key={user.value} value={user.value}>
-                            {user.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="mb-3">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Remark
-                      </label>
-                      <textarea
-                        className="w-full border border-gray-300 rounded-md p-2"
-                        placeholder="Enter remark for reassignment"
-                        rows={3}
-                        value={newReassignment.remark}
-                        onChange={handleReassignChange("remark")}
-                      ></textarea>
-                    </div>
-                    {/* Note: previousAssignee is auto-filled and date is auto-set */}
-                    <p className="text-sm text-gray-500">
-                      <strong>Previous Assignee:</strong> {formData.assignedTo}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      <strong>Reassignment Date:</strong>{" "}
-                      {new Date().toISOString().split("T")[0]}
-                    </p>
+              <div className="border p-4 rounded-md mt-4 mb-10">
+                <div className="mb-14">
+                  <h2 className="text-xl font-semibold mb-4">
+                    Reassignment History
+                  </h2>
+                  {/* List previous   reassignments */}
+                  <div className="mb-10">
+                    {formData.reassignments.length > 0 ? (
+                      formData.reassignments.map((item, index) => (
+                        <div
+                          key={index}
+                          className="border p-4 rounded-md mb-2 bg-gray-100"
+                        >
+                          <p>
+                            <strong>Reassigned To:</strong> {item.assignedName}
+                          </p>
+                          <p>
+                            <strong>Remark:</strong> {item.remark}
+                          </p>
+                          <p>
+                            <strong>Previous Assignee:</strong>{" "}
+                            {item.previousAssigneeName}
+                          </p>
+                          <p>
+                            <strong>Reassignment Date:</strong>{" "}
+                            {item.reAssignmentDate}
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-500">No reassignments yet.</p>
+                    )}
                   </div>
-                ) : (
-                  <p className="text-red-600 mt-4">
-                    This task has reached the maximum number of reassignments.
-                  </p>
-                )}
+
+                  {/* new reassignment*/}
+                  {canUpdateMyTask && formData.reassignments.length < 3 ? (
+                    <div className="border p-4 rounded-md mt-4">
+                      <h3 className="text-lg font-semibold mb-2">
+                        New Reassignment
+                      </h3>
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Reassign To
+                        </label>
+                        <select
+                          className="w-full border border-gray-300 rounded-md p-2"
+                          value={newReassignment.reAssignedTo}
+                          onChange={handleReassignChange("reAssignedTo")}
+                        >
+                          <option value="">Select Employee</option>
+                          {reassigningOptions.map((user) => (
+                            <option key={user.value} value={user.value}>
+                              {user.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Remark
+                        </label>
+                        <textarea
+                          className="w-full border border-gray-300 rounded-md p-2"
+                          placeholder="Enter remark for reassignment"
+                          rows={3}
+                          value={newReassignment.remark}
+                          onChange={handleReassignChange("remark")}
+                        ></textarea>
+                      </div>
+
+                      <p className="text-sm text-gray-500">
+                        <strong>Previous Assignee:</strong>{" "}
+                        {TaskManagementDataById &&
+                          TaskManagementDataById.data?.reassignments &&
+                          TaskManagementDataById.data.reassignments.length >
+                            0 &&
+                          TaskManagementDataById.data.reassignments[
+                            TaskManagementDataById.data.reassignments.length - 1
+                          ].previousAssigneeName}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        <strong>Reassignment Date:</strong>{" "}
+                        {new Date().toISOString().split("T")[0]}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-red-600 mt-4">
+                      {formData.reassignments.length >= 3
+                        ? "This task has reached the maximum number of reassignments."
+                        : "You do not have permission to reassign this task."}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
 
@@ -463,12 +520,14 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-orange-500 text-white rounded-md"
-              >
-                Submit
-              </button>
+              {((!id && canCreate) || (id && canUpdateMyTask)) && (
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-orange-500 text-white rounded-md"
+                >
+                  Submit
+                </button>
+              )}
             </div>
           </form>
         </div>
@@ -478,216 +537,3 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
 };
 
 export default AddTaskManagement;
-
-// import { useState } from "react";
-
-// const AddTaskManagement = () => {
-//   const [department, setDepartment] = useState("");
-
-//   const [timeType, setTimeType] = useState(""); // Tracks whether "days" or "hours" is selected.
-//   const [options, setOptions] = useState<number[]>([]); // Tracks the options to display.
-
-//   // Handle the change in the time type (Days/Hours).
-//   const handleTimeTypeChange = (
-//     e: React.ChangeEvent<HTMLSelectElement>
-//   ): void => {
-//     const value: string = e.target.value; // Ensure `value` is typed as string.
-//     setTimeType(value); // Update state for time type.
-
-//     if (value === "days") {
-//       const days: number[] = Array.from({ length: 31 }, (_, i) => i + 1); // Generate array [1, 2, ..., 31].
-//       setOptions(days); // Update state with days options.
-//     } else if (value === "hours") {
-//       const hours: number[] = Array.from({ length: 24 }, (_, i) => i); // Generate array [0, 1, ..., 23].
-//       setOptions(hours); // Update state with hours options.
-//     } else {
-//       setOptions([]); // Clear options if no valid selection.
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gray-100 p-8">
-//       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
-//         <h1 className="text-2xl font-bold mb-6">Add New Task </h1>
-//         <form>
-//           {/* Service Type and Event Date */}
-//           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Assigned To
-//               </label>
-//               <select className="input mb-6">
-//                 <option value="">Name of Employee</option>
-//                 <option>Anurag</option>
-//                 <option>Vivek</option>
-//                 <option>Bhawna</option>
-//                 <option>Tushar</option>
-//               </select>
-//               {/* <input
-//                 placeholder="Contact Person"
-//                 type="date"
-//                 className="input"
-//               /> */}
-//               {/* <select
-//                 className="w-full border border-gray-300 rounded-md p-2"
-//                 multiple
-//               >
-//                 <option>Hotel</option>
-//                 <option>Banquet</option>
-//                 <option>Event</option>
-//                 <option>Transport</option>
-//               </select> */}
-//             </div>
-
-//             {/* this field is auto populated from the Assigned to field */}
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Department
-//               </label>
-//               <input
-//                 type="text"
-//                 className="w-full border border-gray-300 rounded-md p-2"
-//                 placeholder="Enter Department"
-//                 value={department}
-//               />
-//             </div>
-
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Type of Task
-//               </label>
-//               <select className="input mb-6">
-//                 <option value="">Type of Task</option>
-//                 {/* this field will be filled by given client */}
-//                 <option>Purpose of Visit</option>
-//               </select>
-//             </div>
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Task Title
-//               </label>
-//               <input
-//                 type="text"
-//                 className="w-full border border-gray-300 rounded-md p-2"
-//                 placeholder="Enter Task Title"
-//               />
-//             </div>
-//           </div>
-//           <div className="mb-4">
-//             <label className="block text-sm font-medium text-gray-700 mb-1">
-//               Description
-//             </label>
-//             <textarea
-//               className="w-full border border-gray-300 rounded-md p-2"
-//               placeholder="Enter additional instructions"
-//               rows={4}
-//             ></textarea>
-//           </div>
-//           {/* Event Details and Deadline */}
-//           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Start Date
-//               </label>
-//               <input
-//                 type="date"
-//                 className="w-full border border-gray-300 rounded-md p-2"
-//               />
-//             </div>
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Start Time
-//               </label>
-//               <input
-//                 type="date"
-//                 className="w-full border border-gray-300 rounded-md p-2"
-//               />
-//             </div>
-//           </div>
-
-//           {/* if this is not complete in this time then it has folloup reminder to complete the task */}
-
-//           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Task to be completed in
-//               </label>
-//               <select
-//                 className="input mb-3"
-//                 value={timeType}
-//                 onChange={handleTimeTypeChange}
-//               >
-//                 <option value="">Select Type</option>
-//                 <option value="hours">Hours</option>
-//                 <option value="days">Days</option>
-//               </select>
-
-//               {timeType && (
-//                 <select className="input">
-//                   <option value="">Select {timeType}</option>
-//                   {options.map((option, index) => (
-//                     <option key={index} value={option}>
-//                       {option}
-//                     </option>
-//                   ))}
-//                 </select>
-//               )}
-//             </div>
-//             {/* <div>
-//                             <label className="block text-sm font-medium text-gray-700 mb-1">
-//                                 End Time
-//                             </label>
-//                             <input
-//                                 type="date"
-//                                 className="w-full border border-gray-300 rounded-md p-2"
-//                             />
-//                         </div> */}
-//           </div>
-//           {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-//                         <div>
-//                             <label className="block text-sm font-medium text-gray-700 mb-1">
-//                                 End Date
-//                             </label>
-//                             <input
-//                                 type="date"
-//                                 className="w-full border border-gray-300 rounded-md p-2"
-//                             />
-//                         </div>
-//                         <div>
-//                             <label className="block text-sm font-medium text-gray-700 mb-1">
-//                                 End Time
-//                             </label>
-//                             <input
-//                                 type="date"
-//                                 className="w-full border border-gray-300 rounded-md p-2"
-//                             />
-//                         </div>
-
-//                     </div> */}
-
-//           {/* Vendor List */}
-
-//           {/* Additional Instructions */}
-
-//           {/* Buttons */}
-//           <div className="flex justify-end gap-4">
-//             <button
-//               type="button"
-//               className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
-//             >
-//               Cancel
-//             </button>
-//             <button
-//               type="submit"
-//               className="px-4 py-2 bg-orange-500 text-white rounded-md"
-//             >
-//               Submit
-//             </button>
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AddTaskManagement;

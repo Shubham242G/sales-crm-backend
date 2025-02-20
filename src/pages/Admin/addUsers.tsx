@@ -9,6 +9,7 @@ import {
 } from "@/services/user.service";
 import { generatePassword } from "@/utils/passwordGenerator";
 import { useRoles } from "@/services/roles.service";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 const AddNewUser = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,8 @@ const AddNewUser = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const { canView, canUpdate, canCreate } = checkPermissionsForButtons("User");
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -45,7 +48,7 @@ const AddNewUser = () => {
         name: UserDataById.name || "",
         email: UserDataById.email || "",
         role: UserDataById.role || "",
-        password: UserDataById.password || "", // Pre-fill existing password
+        password: UserDataById.password || "",
       });
     } else {
       setFormData((prev) => ({
@@ -54,6 +57,8 @@ const AddNewUser = () => {
       }));
     }
   }, [UserDataById, id]);
+
+  console.log(formData.password, "user's password");
 
   // const roleOptions = [
   //   { value: "Customer", label: "Customer" },
@@ -76,7 +81,7 @@ const AddNewUser = () => {
     try {
       const obj = formData;
       if (id) {
-        const { data: res } = await updateUser({ id });
+        const { data: res } = await updateUser({ id, ...obj });
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/users");
@@ -139,7 +144,7 @@ const AddNewUser = () => {
               />
             </div>
 
-            <div className="relative">
+            {/* <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
@@ -158,7 +163,7 @@ const AddNewUser = () => {
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </div>
-            </div>
+            </div> */}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -190,12 +195,14 @@ const AddNewUser = () => {
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="px-6 py-3 bg-orange-500 text-white rounded-md"
-            >
-              Save
-            </button>
+            {((!id && canCreate) || (id && canUpdate)) && (
+              <button
+                type="submit"
+                className="px-6 py-3 bg-orange-500 text-white rounded-md"
+              >
+                Save
+              </button>
+            )}
           </div>
         </form>
       </div>

@@ -17,7 +17,6 @@ import {
   usedeleteEnquiryById,
   useUpdateEnquiryById,
   useEnquiryById,
- 
   convertToRfp,
 } from "@/services/enquiry.service";
 import { toastSuccess, toastError } from "@/utils/toast";
@@ -77,8 +76,6 @@ function EnquiryLIst() {
 
   const { mutateAsync: deleteEnquiry } = usedeleteEnquiryById();
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
- 
-
 
   // Handle triggering file input click
   const handleImportClick = () => {
@@ -181,7 +178,7 @@ function EnquiryLIst() {
       toastError(error);
     }
   };
- const handleConvertRpf = async (id: any) => {
+  const handleConvertRpf = async (id: any) => {
     try {
       const { data: res } = await convertToRfp(id);
       if (res) {
@@ -286,7 +283,7 @@ function EnquiryLIst() {
     },
     {
       name: "Delete",
-      width: "6%", // Adjusted width
+      width: "6%",
       selector: (row: any) =>
         canDelete && (
           <button

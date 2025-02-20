@@ -130,7 +130,7 @@ function Header() {
   const navigate = useNavigate();
 
   const handleLogut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("AUTH_TOKEN");
     setIsAuthorized(false);
     navigate("/");
   };

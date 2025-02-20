@@ -6,14 +6,21 @@ import { useState, useMemo } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
-import { useUser, useDeleteUser } from "@/services/user.service";
+import { useUser, useDeleteUser, useUpdateUser } from "@/services/user.service";
 import { toastError, toastSuccess } from "@/utils/toast";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 function Users() {
   const navigate = useNavigate();
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
+
+  const { canCreate, canDelete, canUpdate, canView } =
+    checkPermissionsForButtons("User");
+
+  const { mutateAsync: updateUser } = useUpdateUser();
+
   const searchObj = useMemo(
     () => ({
       ...(query && { query }),
@@ -40,6 +47,18 @@ function Users() {
     }
   };
 
+  const handleUpdate = async (id: string, data: any) => {
+    try {
+      const { data: res } = await updateUser({ id, ...data });
+      if (res) {
+        toastSuccess(res.message);
+        // Optionally refresh the data
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  };
+
   const columns = [
     {
       name: "Name",
@@ -59,28 +78,30 @@ function Users() {
     {
       name: "Edit",
       width: "15%",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => navigate(`/add-users/${row._id}`)}
-          className="text-black-500 text-lg p-[6px]"
-        >
-          <FaEye />
-        </button>
-      ),
+      selector: (row: any) =>
+        (canView || canUpdate) && (
+          <Link
+            to={`/add-users/${row._id}`}
+            onClick={() => handleUpdate(row._id, row.data)}
+            className="text-black-500 text-lg p-[6px]"
+          >
+            <FaEye />
+          </Link>
+        ),
     },
     {
       name: "Delete",
       width: "15%",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => handleDelete(row._id)}
-          className="p-[6px] text-black-400 text-lg"
-        >
-          <RiDeleteBin6Line />
-        </button>
-      ),
+      selector: (row: any) =>
+        canDelete && (
+          <button
+            type="button"
+            onClick={() => handleDelete(row._id)}
+            className="p-[6px] text-black-400 text-lg"
+          >
+            <RiDeleteBin6Line />
+          </button>
+        ),
     },
   ];
 
