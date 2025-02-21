@@ -51,7 +51,7 @@ export const useUserApiHook = () => {
     };
 
     const updateUser = async (obj: IUser) => {
-        return axios.patch<GeneralApiResponse>(
+        return axiosAuth.patch<GeneralApiResponse>(
             `${BASE_URL}${prefix}/updateById/${obj.id}`,
             obj
         );

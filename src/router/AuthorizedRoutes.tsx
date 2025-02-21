@@ -73,6 +73,7 @@ import Users from "@/pages/Admin/users";
 import AddUser from "@/pages/Admin/addUsers";
 import AddQuotesFromVendorsForm from "@/pages/LedgerPage/addQuotesFromVendors";
 import PurchaseContactView from "@/pages/LedgerPage/purchaseContactView";
+import MyTask from "@/pages/TaskManagement/MyTask";
 
 export default function AuthorizedRoutes() {
   return (
@@ -143,6 +144,7 @@ export default function AuthorizedRoutes() {
             element={<DailyActivityReport />}
           ></Route>
           <Route path="/TaskManagement" element={<TaskManagement />}></Route>
+          <Route path="/MyTask" element={<MyTask />}></Route>
           <Route
             path="/add-TaskManagement"
             element={<AddTaskManagement />}

@@ -8,6 +8,7 @@ import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination } from "./ur
 import axios from "../libs/hooks/axios";
 import { CHARGE_TYPE } from "@/common/constant.common";
 import { ICustomer } from "./customer.service";
+import axiosAuth from "./axios.service";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 
 
@@ -18,11 +19,20 @@ export interface IReassignment {
     remark: string;
     previousAssignee: string;
     reAssignmentDate: string;
+    assignedName: string;
+    previousAssigneeName: string
+  }
+
+  export interface AssignedTo {
+    label: string;
+    value: string;
   }
 
 export interface ITaskManagement {
     id?: string;
-    assignedTo: string;
+    userId: string;
+    assignedTo:string;
+    assignedToName:string;
     department: string;
     taskType: string;
     taskTitle: string;
@@ -43,7 +53,7 @@ export const useTaskManagementApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addTaskManagement = async (obj: any) => {
 
-        return axios.post<GeneralApiResponse<ITaskManagement>>(`${BASE_URL}${prefix}/`, obj);
+        return axiosAuth.post<GeneralApiResponse<ITaskManagement>>(`${BASE_URL}${prefix}/`, obj);
     };
     const updateTaskManagementById = async ({ id, obj }: { id: string; obj: any }) => {
         return axios.patch<GeneralApiResponse>(`${BASE_URL}${prefix}/updateById/${id}`, obj);
@@ -63,6 +73,14 @@ export const useTaskManagementApiHook = () => {
         }).toString();
         return axios.get<GeneralApiResponsePagination<ITaskManagement>>(`${BASE_URL}${prefix}/?${query}`);
     };
+    const getMyTask = async (pagination: PaginationState, searchObj: any) => {
+        const query = new URLSearchParams({
+            pageIndex: String(pagination.pageIndex),
+            pageSize: String(pagination.pageSize),
+            ...searchObj,
+        }).toString();
+        return axiosAuth.get<GeneralApiResponsePagination<ITaskManagement>>(`${BASE_URL}${prefix}/my-task?${query}`);
+    };
 
     const convertToContact = async (id: any) => {
         return axios.post<GeneralApiResponse<ITaskManagement>>(`${BASE_URL}${prefix}/convert/${id}`);
@@ -74,7 +92,8 @@ export const useTaskManagementApiHook = () => {
         deleteTaskManagementById,
         getContactById,
         addTaskManagement,
-        convertToContact
+        convertToContact,
+        getMyTask
 
     };
 };
@@ -109,6 +128,23 @@ export const useTaskManagement = (searchObj: Record<string, any> = {}, getPagina
     return useQuery({
         queryKey: ["TaskManagement", pagination, searchObj],
         queryFn: () => api.getAllTaskManagement(pagination, searchObj).then((res: any) => res?.data),
+        initialData: {
+            data: [],
+            total: 0,
+            message: "",
+        } as unknown as GeneralApiResponsePagination<ITaskManagement>,
+    });
+};
+
+export const useMyTask = (searchObj: Record<string, any> = {}, getPaginationFromParams = true) => {
+    const pagination = usePagination(getPaginationFromParams);
+
+    const api = useTaskManagementApiHook();
+
+
+    return useQuery({
+        queryKey: ["MyTask", pagination, searchObj],
+        queryFn: () => api.getMyTask(pagination, searchObj).then((res: any) => res?.data),
         initialData: {
             data: [],
             total: 0,

@@ -11,13 +11,13 @@ import {
   useAddTaskManagement,
   useUpdateTaskManagementById,
   usedeleteTaskManagementById,
-  useTaskManagement,
+  useMyTask,
 } from "@/services/tastManagement.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { getAuth } from "@/utils/auth";
 
-function TaskManagement() {
+function MyTask() {
   const navigate = useNavigate();
 
   // const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ function TaskManagement() {
   };
 
   const { canCreate, canDelete, canUpdate, canView } =
-    checkPermissionsForButtons("Task");
+    checkPermissionsForButtons("My Tasks");
 
   const [userId, setUserId] = useState("");
   const [role, setRole] = useState("");
@@ -48,7 +48,7 @@ function TaskManagement() {
     [pageIndex, pageSize, query]
   );
 
-  const { data: TaskManagementData } = useTaskManagement(searchObj);
+  const { data: TaskManagementData } = useMyTask(searchObj);
   console.log(TaskManagementData, "check TaskManagementData");
   const { mutateAsync: deleteTaskManagement } = usedeleteTaskManagementById();
   const { mutateAsync: updateTaskManagement } = useUpdateTaskManagementById();
@@ -145,31 +145,32 @@ function TaskManagement() {
     {
       name: "Reassign",
       width: "10%",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => navigate(`/add-TaskManagement/${row._id}`)}
-          className="text-blue-500 text-lg p-[6px]"
-        >
-          Reassign
-        </button>
-      ),
-    },
-
-    {
-      name: "Edit",
-      width: "5%",
       selector: (row: any) =>
         (canView || canUpdate) && (
-          <Link
-            to={`/add-TaskManagement/${row._id}`}
-            onClick={() => handleUpdate(row._id, row.data)}
-            className="text-black-500 text-lg p-[6px]"
+          <button
+            type="button"
+            onClick={() => navigate(`/add-TaskManagement/${row._id}`)}
+            className="text-blue-500 text-lg p-[6px]"
           >
-            <FaEye />
-          </Link>
+            Reassign
+          </button>
         ),
     },
+
+    // {
+    //   name: "Edit",
+    //   width: "5%",
+    //   selector: (row: any) =>
+    //     (canView || canUpdate) && (
+    //       <Link
+    //         to={`/add-TaskManagement/${row._id}`}
+    //         onClick={() => handleUpdate(row._id, row.data)}
+    //         className="text-black-500 text-lg p-[6px]"
+    //       >
+    //         <FaEye />
+    //       </Link>
+    //     ),
+    // },
     {
       name: "Delete",
       width: "8%",
@@ -189,7 +190,7 @@ function TaskManagement() {
   const filterColumns = columns.filter((item) => {
     if (item.name === "Delete") {
       return canDelete;
-    } else if (item.name === "Edit") {
+    } else if (item.name === "Reassign") {
       return canView || (canView && canUpdate);
     } else {
       return true;
@@ -206,7 +207,6 @@ function TaskManagement() {
             </h2>
 
             <div className="flex items-center justify-start gap-2">
-              {/* Search Box */}
               <div className="w-full flex items-center ">
                 <input
                   type="search"
@@ -233,7 +233,6 @@ function TaskManagement() {
               )}
             </div>
           </div>
-
           <ReactTable
             data={TaskManagementData.data}
             columns={filterColumns}
@@ -251,4 +250,4 @@ function TaskManagement() {
   );
 }
 
-export default TaskManagement;
+export default MyTask;
