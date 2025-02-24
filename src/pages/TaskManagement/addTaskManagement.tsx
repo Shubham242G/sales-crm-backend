@@ -27,6 +27,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
     reassignments: [] as IReassignment[],
   });
 
+  console.log(formData.reassignments, "check reassignments  for changes ");
   const [newReassignment, setNewReassignment] = useState<IReassignment>({
     reAssignedTo: "",
     remark: "",
@@ -86,6 +87,11 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
   useEffect(() => {
     if (TaskManagementDataById && TaskManagementDataById?.data) {
       console.log("TaskManagementDataById", TaskManagementDataById);
+
+      console.log(
+        TaskManagementDataById.data.reassignments,
+        "reassignmentssssssss"
+      );
       setFormData((prev: any) => ({
         ...prev,
 
@@ -118,6 +124,11 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
       //   });
     }
   }, [TaskManagementDataById]);
+
+  console.log(
+    TaskManagementDataById,
+    "ckecking the task management data......"
+  );
 
   // Update timeType options when timeType changes
   useEffect(() => {

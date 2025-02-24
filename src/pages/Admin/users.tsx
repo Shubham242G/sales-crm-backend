@@ -52,7 +52,6 @@ function Users() {
       const { data: res } = await updateUser({ id, ...data });
       if (res) {
         toastSuccess(res.message);
-        // Optionally refresh the data
       }
     } catch (error) {
       toastError(error);
