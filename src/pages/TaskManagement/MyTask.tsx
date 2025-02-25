@@ -157,20 +157,20 @@ function MyTask() {
         ),
     },
 
-    // {
-    //   name: "Edit",
-    //   width: "5%",
-    //   selector: (row: any) =>
-    //     (canView || canUpdate) && (
-    //       <Link
-    //         to={`/add-TaskManagement/${row._id}`}
-    //         onClick={() => handleUpdate(row._id, row.data)}
-    //         className="text-black-500 text-lg p-[6px]"
-    //       >
-    //         <FaEye />
-    //       </Link>
-    //     ),
-    // },
+    {
+      name: "Edit",
+      width: "5%",
+      selector: (row: any) =>
+        (canView || canUpdate) && (
+          <Link
+            to={`/add-TaskManagement/${row._id}`}
+            onClick={() => handleUpdate(row._id, row.data)}
+            className="text-black-500 text-lg p-[6px]"
+          >
+            <FaEye />
+          </Link>
+        ),
+    },
     {
       name: "Delete",
       width: "8%",
@@ -203,7 +203,7 @@ function MyTask() {
         <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
           <div className="search_boxes flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-800">
-              Task Management List
+              My Tasks List
             </h2>
 
             <div className="flex items-center justify-start gap-2">

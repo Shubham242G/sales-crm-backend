@@ -61,7 +61,7 @@ export const useTaskManagementApiHook = () => {
     const deleteTaskManagementById = async (id: any) => {
         return axios.delete<GeneralApiResponse>(`${BASE_URL}${prefix}/deleteById/${id}`);
     };
-    const getContactById = async (id: any) => {
+    const getTaskManagementById = async (id: any) => {
         return axios.get<GeneralApiResponse<ITaskManagement>>(`${BASE_URL}${prefix}/getById/${id}`);
     };
 
@@ -82,17 +82,13 @@ export const useTaskManagementApiHook = () => {
         return axiosAuth.get<GeneralApiResponsePagination<ITaskManagement>>(`${BASE_URL}${prefix}/my-task?${query}`);
     };
 
-    const convertToContact = async (id: any) => {
-        return axios.post<GeneralApiResponse<ITaskManagement>>(`${BASE_URL}${prefix}/convert/${id}`);
-    }
 
     return {
         getAllTaskManagement,
         updateTaskManagementById,
         deleteTaskManagementById,
-        getContactById,
+        getTaskManagementById,
         addTaskManagement,
-        convertToContact,
         getMyTask
 
     };
@@ -114,7 +110,7 @@ export const useTaskManagementById = (id: string) => {
 
     return useQuery({
         queryKey: ["TaskManagement_id", id],
-        queryFn: () => api.getContactById(id).then((res) => res.data),
+        queryFn: () => api.getTaskManagementById(id).then((res) => res.data),
         enabled: !!id,
     });
 };
