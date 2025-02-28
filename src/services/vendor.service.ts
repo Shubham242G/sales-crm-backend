@@ -16,9 +16,100 @@ export interface IVendor {
     lastName: string;
     email: string;
     companyName: string;
+    contactName: string;
+    contactOwner: string;
+    panNumber: string;
+    gst: string;
+    vendorType: string[];
     landLine: string;
     phoneNumber: string;
     displayName: string;
+  };
+
+  location: {
+    state: string;
+    city: string;
+    area: string;
+    address: string;
+  };
+
+  category: {
+    categoryType: string;
+  };
+
+  rooms: {
+    roomCategory: string;
+    numberOfRooms: number;
+    roomSize: string;
+    roomImageUpload: string[];
+    prices: { 
+      roomType: string;
+      roomPrice: string;
+    }[];
+  }[];
+
+  
+  isBanquetDetailsVisible: boolean;
+  isRestaurantDetailsVisible: boolean;
+  
+
+  banquets: {
+    numberOfBanquests: string;
+    banquetCategory: string;
+    banquetSize: string;
+    banquetImageUpload: string[];
+    banquetName: string;
+    banquetSetup: string;
+    banquetVegPrice: string;
+    banquetNonVegPrice: string;
+    banquetFloor: string;
+    prefuntionAreaSize: string;
+  }[];
+
+  restaurant: {
+    restaurantMenuType: string[];
+    restaurantImageUpload: string[];
+    restaurantCovers: string;
+    restaurantFloor: string;
+    restaurantSwimmingPool: string;
+  };
+
+  bankDetails: {
+    bankName: string;
+    bankAccountNumber: string;
+    ifsc: string;
+    pointOfContact: string;
+    email: string;
+    phoneNumber: string;
+    billingAddress: string;
+  };
+
+  eventServices: { 
+    services: string;
+    rate: string;
+  }[];
+
+  eventLocation: {
+    state: string;
+    city: string;
+    area: string;
+    serviceAreas: string[];
+  };
+
+  transportLocation: {
+    state: string;
+    city: string;
+    travelLocal: boolean;
+    travelOutStation: boolean;
+    serviceAreas: string[];
+    carDetails: {
+      carType: string;
+      numberOfCars: number;
+      fourHr40Km: string;
+      eightHr80Km: string;
+      fullDay100Km: string;
+      airportTransfer: string;
+    }[];
   };
 
   otherDetails: {
@@ -109,12 +200,18 @@ export const useVendorApiHook = () => {
 
   const getAllVendor = async (pagination: PaginationState, searchObj: any) => {
     console.log(`${BASE_URL}${prefix}/quotesFromVendors`, "test c");
-    // const query = new URLSearchParams({
-    //     pageIndex: String(pagination.pageIndex),
-    //     pageSize: String(pagination.pageSize),
-    //     ...searchObj,
-    // }).toString();
-    return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}`);
+    const query = new URLSearchParams({
+      pageIndex: String(pagination.pageIndex),
+      pageSize: String(pagination.pageSize),
+      ...searchObj,
+  }).toString();
+    return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}?${query}`);
+  };
+
+  const convertVendorToSalesContact = async (id: string) => {
+    return axios.post<GeneralApiResponse<any>>(
+      `${BASE_URL}${prefix}/convert-to-sales-contact/${id}`
+    );
   };
 
   return {
@@ -123,6 +220,7 @@ export const useVendorApiHook = () => {
     updateVendorById,
     getVendorById,
     getAllVendor,
+    convertVendorToSalesContact,
   };
 };
 
@@ -188,6 +286,18 @@ export const useUpdateVendorById = () => {
     mutationFn: api.updateVendorById,
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ["vendor"] });
+    },
+  });
+};
+
+export const useConvertVendorToSalesContact = () => {
+  const api = useVendorApiHook();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: api.convertVendorToSalesContact,
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ["Sales Contact"] }); 
+      queryClient.invalidateQueries({ queryKey: ["Vendor"] }); 
     },
   });
 };

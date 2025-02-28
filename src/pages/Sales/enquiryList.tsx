@@ -17,7 +17,7 @@ import {
   usedeleteEnquiryById,
   useUpdateEnquiryById,
   useEnquiryById,
-  convertToRfp,
+  useConvertEnquiryToRfp,
 } from "@/services/enquiry.service";
 import { toastSuccess, toastError } from "@/utils/toast";
 import { generateFilePath } from "@/services/urls.service";
@@ -43,6 +43,7 @@ function EnquiryLIst() {
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const { mutateAsync: convertEnquiryToRfp } = useConvertEnquiryToRfp();
 
   const searchObj = useMemo(
     () => ({
@@ -178,14 +179,12 @@ function EnquiryLIst() {
       toastError(error);
     }
   };
-  const handleConvertRpf = async (id: any) => {
+  const handleConvertToRfp = async (enquiryId: string) => {
     try {
-      const { data: res } = await convertToRfp(id);
-      if (res) {
-        toastSuccess(res.message);
-      }
+      const { data: res } = await convertEnquiryToRfp(enquiryId);
+      toastSuccess(res.message);
     } catch (error) {
-      toastError(error);
+      toastError("Failed to convert to RFP.");
     }
   };
   const columns = [
@@ -305,7 +304,7 @@ function EnquiryLIst() {
           ></Link>
           <button
             className="p-[6px] text-black-400 text-lg"
-            onClick={() => handleConvertRpf(row._id)}
+            onClick={() => handleConvertToRfp(row._id)}
           >
             <SiConvertio />
           </button>

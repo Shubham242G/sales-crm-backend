@@ -16,7 +16,7 @@ export interface IEnqiry {
     salutation: string;
     firstName: string;
     lastName: string;
-    phone: string;
+    phoneNumber: string;
     email: string;
     companyName: string
     levelOfEnquiry:string;
@@ -193,10 +193,16 @@ export const useUpdateEnquiryById = () => {
     });
 };
 
-export const convertToRfp = async (id: any) => {
-    return axios.post<GeneralApiResponse<IEnqiry>>(
-      `${BASE_URL}${prefix}/convert/${id}`
-    );
+export const useConvertEnquiryToRfp = () => {
+    const api = useEnquiryApiHook();
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: api.convertToRfp,
+      onSuccess: (res) => {
+        queryClient.invalidateQueries({ queryKey: ["Rfp"] }); 
+        queryClient.invalidateQueries({ queryKey: ["Enquiry"] });
+      },
+    });
   };
 
 export const getExel = async () => {

@@ -130,11 +130,10 @@ function CustomerLedger() {
     }
   };
 
-
   const handleConvertToQuotes = (id: string) => {
-    convertToQuotesFromVendors(id)
+    convertToQuotesFromVendors(id);
     toastSuccess("Converted to Quotes from vendor successfully!");
-  }
+  };
 
   const columns = [
     {
@@ -163,7 +162,12 @@ function CustomerLedger() {
       name: "Deadline for proposal",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.deadlineOfProposal}</h6>
+          <h6>
+            {" "}
+            {row.eventDates?.length > 0
+              ? new Date(row.eventDates[0].endDate).toDateString()
+              : "No Dates"}
+          </h6>
         </div>
       ),
       width: "15%",
@@ -202,23 +206,23 @@ function CustomerLedger() {
       ),
     },
     {
-          name: "Convert to Enquiry",
-          width: "10%",
-          selector: (row: any) => (
-            <div className="flex items-center gap-3">
-              <Link
-                to={`/add-sales-contact/${row?._id}`}
-                className="p-[6px] text-black-400 text-lg flex items-center"
-              ></Link>
-              <button
-                className="p-[6px] text-black-400 text-lg"
-                onClick={() => handleConvertToQuotes(row.id)  } 
-              >
-                <SiConvertio />
-              </button>
-            </div>
-          ),
-        },
+      name: "Convert to Enquiry",
+      width: "10%",
+      selector: (row: any) => (
+        <div className="flex items-center gap-3">
+          <Link
+            to={`/add-sales-contact/${row?._id}`}
+            className="p-[6px] text-black-400 text-lg flex items-center"
+          ></Link>
+          <button
+            className="p-[6px] text-black-400 text-lg"
+            onClick={() => handleConvertToQuotes(row.id)}
+          >
+            <SiConvertio />
+          </button>
+        </div>
+      ),
+    },
   ];
 
   const filterColumns = columns.filter((item) => {

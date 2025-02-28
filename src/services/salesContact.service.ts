@@ -10,14 +10,21 @@ import { CHARGE_TYPE } from "@/common/constant.common";
 
 const prefix = "/salesContact";
 export interface ISalesContact {
-    // Basic Details
-        firstName: '',
-        lastName:'',
-        phone: '',
-        email: '',
-        salutation:"",
-        company:"",
 
+    
+    // Basic Details
+    leadId: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    company:string;
+    salutation:string;
+    vendorId?: string;
+    state: string;
+    city: string;
+    area: string;
+    phoneNumber: string;
     
 }
 

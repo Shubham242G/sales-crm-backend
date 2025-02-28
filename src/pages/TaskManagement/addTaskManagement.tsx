@@ -194,6 +194,8 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
       //     return;
       //   }
 
+      console.log(formData, "check form data");
+
       let obj = { ...formData };
 
       if (newReassignment.reAssignedTo && formData.reassignments.length < 3) {
@@ -257,6 +259,8 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
   console.log(value, "value check ");
 
   console.log(formData.reassignments, "check reassignments data");
+
+  console.log(formData, "formdata check");
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">

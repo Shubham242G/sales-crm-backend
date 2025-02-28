@@ -21,7 +21,8 @@ export interface IRPF {
     serviceType: [],
     eventDates: [
         {
-        startDate: string
+        startDate: string,
+        endDate: string,
     }],
     eventDetails: string,
     deadlineOfProposal: string,
