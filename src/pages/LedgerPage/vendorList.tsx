@@ -10,9 +10,11 @@ import {
   useVendor,
   usedeleteVendorById,
   useUpdateVendorById,
+  useConvertVendorToSalesContact,
 } from "@/services/vendor.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import { SiConvertio } from "react-icons/si";
 
 function VendorList() {
   const navigate = useNavigate();
@@ -38,10 +40,12 @@ function VendorList() {
     [pageIndex, pageSize, query]
   );
 
-  const { data: VendorData } = useVendor(searchObj);
+  const { data: VendorData, refetch } = useVendor(searchObj);
   console.log(VendorData, "check leadData");
   const { mutateAsync: deleteVendor } = usedeleteVendorById();
   const { mutateAsync: updateVendor } = useUpdateVendorById();
+  const { mutateAsync: convertVendorToSalesContact } =
+    useConvertVendorToSalesContact();
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Vendors");
@@ -52,7 +56,6 @@ function VendorList() {
         const { data: res } = await deleteVendor(id);
         if (res) {
           toastSuccess(res.message);
-          // Optionally refresh the data
         }
       }
     } catch (error) {
@@ -60,24 +63,29 @@ function VendorList() {
     }
   };
 
-  // useEffect(()=>{
-  //     if(VendorData){
-  //         setVendorList(VendorData?.data)
-  //     }
-  // },[VendorList])
-
   const handleUpdate = async (id: string, data: any) => {
     try {
       const { data: res } = await updateVendor({
         id: id,
-        obj: data, // Add the required object data here
+        obj: data,
       });
       if (res) {
         toastSuccess(res.message);
-        // Optionally refresh the data
       }
     } catch (error) {
       toastError(error);
+    }
+  };
+
+  const handleConvertToSalesContact = async (id: string) => {
+    try {
+      const { data: res } = await convertVendorToSalesContact(id);
+      if (res?.message) {
+        toastSuccess(res.message);
+      }
+    } catch (error) {
+      toastError("Failed to convert vendor to Sales Contact.");
+      console.error("Conversion Error:", error);
     }
   };
 
@@ -91,13 +99,23 @@ function VendorList() {
       ),
       width: "20%",
     },
-
     {
       name: "Company",
       selector: (row: any) => (
         <div className="flex gap-1">
-          <FaMobileScreenButton className=" text-[#938d8d]" />
+          <FaMobileScreenButton className="text-[#938d8d]" />
           {row.vendor?.companyName}
+        </div>
+      ),
+      width: "20%",
+    },
+
+    {
+      name: "Location",
+      selector: (row: any) => (
+        <div className="flex gap-1">
+          <FaMobileScreenButton className="text-[#938d8d]" />
+          {row?.location?.state}
         </div>
       ),
       width: "20%",
@@ -106,13 +124,12 @@ function VendorList() {
       name: "Phone Number",
       selector: (row: any) => (
         <div className="flex gap-1">
-          <FaMobileScreenButton className=" text-[#938d8d]" />
+          <FaMobileScreenButton className="text-[#938d8d]" />
           {row.vendor?.phoneNumber}
         </div>
       ),
       width: "10%",
     },
-
     {
       name: "Email",
       selector: (row: any) => row.vendor?.email,
@@ -126,7 +143,6 @@ function VendorList() {
           <Link
             to={`/add-vendor/${row?._id}`}
             className="p-[6px] text-black-400 text-lg flex items-center"
-            onClick={() => handleUpdate(row._id, row.data)}
           >
             <FaEye />
           </Link>
@@ -142,9 +158,25 @@ function VendorList() {
             type="button"
             onClick={() => handleDelete(row._id)}
             className="p-[6px] text-black-400 text-lg"
-            title="Delete Customer"
+            title="Delete Vendor"
           >
             <RiDeleteBin6Line />
+          </button>
+        </div>
+      ),
+    },
+    {
+      name: "Convert to Sales Contact",
+      width: "15%",
+      selector: (row: any) => (
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => handleConvertToSalesContact(row._id)}
+            className="p-[6px] text-black-400 text-lg"
+            title="Convert to Sales Contact"
+          >
+            <SiConvertio />
           </button>
         </div>
       ),
@@ -161,6 +193,11 @@ function VendorList() {
     }
   });
 
+  useEffect(() => {
+    refetch();
+  }, [searchObj, refetch]);
+
+  console.log(query, searchObj, "check this data ");
   // Sample data
 
   return (
@@ -187,12 +224,14 @@ function VendorList() {
 
             {/* Search and Buttons on the Right */}
             <div className="flex items-center justify-start gap-2">
-              {/* Search Box */}
+              {/* Search Box (updated to filter by location.state) */}
               <div className="w-full">
                 <input
                   type="search"
-                  className="rounded-sm w-full border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                  placeholder="Search..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="rounded-sm w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  placeholder="Search by Location (State)..."
                 />
               </div>
               {/* Buttons */}

@@ -28,6 +28,7 @@ import {
   Facebook,
 } from "lucide-react";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import moment from "moment";
 
 interface IVendor {
   salutation: string;
@@ -35,9 +36,99 @@ interface IVendor {
   lastName: string;
   email: string;
   companyName: string;
+  contactName: string;
+  contactOwner: string;
+  panNumber: string;
+  gst: string;
+  vendorType: string[];
   landLine: string;
   phoneNumber: string;
   displayName: string;
+}
+
+interface ILocation {
+  state: string;
+  city: string;
+  area: string;
+  address: string;
+}
+
+interface ICategory {
+  categoryType: string;
+}
+
+interface IRoomPrice {
+  roomType: string;
+  roomPrice: string;
+}
+
+interface IRoom {
+  roomCategory: string;
+  numberOfRooms: number;
+  roomSize: string;
+  roomImageUpload: string[];
+  prices: IRoomPrice[];
+}
+
+interface IBanquet {
+  numberOfBanquests: string;
+  banquetCategory: string;
+  banquetSize: string;
+  banquetImageUpload: string[];
+  banquetName: string;
+  banquetSetup: string;
+  banquetVegPrice: string;
+  banquetNonVegPrice: string;
+  banquetFloor: string;
+  prefuntionAreaSize: string;
+}
+
+interface IEventServices {
+  services: string;
+  rate: string;
+}
+
+interface IEventLocation {
+  state: string;
+  city: string;
+  area: string;
+  serviceAreas: string[];
+}
+
+interface IRestaurant {
+  restaurantMenuType: string[];
+  restaurantImageUpload: string[];
+  restaurantCovers: string;
+  restaurantFloor: string;
+  restaurantSwimmingPool: string;
+}
+
+interface ICarDetails {
+  carType: string;
+  numberOfCars: number;
+  fourHr40Km: string;
+  eightHr80Km: string;
+  fullDay100Km: string;
+  airportTransfer: string;
+}
+
+interface ITransportLocation {
+  state: string;
+  city: string;
+  travelLocal: boolean;
+  travelOutStation: boolean;
+  serviceAreas: string[];
+  carDetails: ICarDetails[];
+}
+
+interface IBankDetails {
+  bankName: string;
+  bankAccountNumber: string;
+  ifsc: string;
+  pointOfContact: string;
+  email: string;
+  phoneNumber: string;
+  billingAddress: string;
 }
 
 interface IOtherDetails {
@@ -116,6 +207,12 @@ const AddVendorForm = () => {
   const { mutateAsync: createVendor } = useAddVendor();
   const { mutateAsync: updateVendor } = useUpdateVendorById();
   const [isExpanded, setIsExpanded] = useState(false);
+  // const [isRoomDetailsVisible, setIsRoomDetailsVisible] = useState(false);
+  const [isBanquetDetailsVisible, setIsBanquetDetailsVisible] = useState(false);
+  const [isRestaurantDetailsVisible, setIsRestaurantDetailsVisible] =
+    useState(false);
+  const [isPrefunctionAreaVisible, setIsPrefunctionAreaVisible] =
+    useState(false);
   const { data: vendorDataById, isLoading: vendorLoading } = useVendorById(
     id || ""
   );
@@ -124,11 +221,103 @@ const AddVendorForm = () => {
     salutation: "",
     firstName: "",
     lastName: "",
+    contactName: "",
+    contactOwner: "",
+    panNumber: "",
+    gst: "",
+    vendorType: [],
     landLine: "",
     email: "",
     companyName: "",
     phoneNumber: "",
     displayName: "",
+  });
+
+  const [location, setLocation] = useState<ILocation>({
+    state: "",
+    city: "",
+    area: "",
+    address: "",
+  });
+
+  const [category, setCategory] = useState<ICategory>({
+    categoryType: "",
+  });
+
+  const [rooms, setRooms] = useState<IRoom[]>([
+    {
+      roomCategory: "",
+      numberOfRooms: 0,
+      roomSize: "",
+      roomImageUpload: [],
+      prices: [{ roomType: "", roomPrice: "" }],
+    },
+  ]);
+
+  const [banquets, setBanquets] = useState<IBanquet[]>([
+    {
+      numberOfBanquests: "",
+      banquetCategory: "",
+      banquetSize: "",
+      banquetImageUpload: [],
+      banquetName: "",
+      banquetSetup: "",
+      banquetVegPrice: "",
+      banquetNonVegPrice: "",
+      banquetFloor: "",
+      prefuntionAreaSize: "",
+    },
+  ]);
+
+  const [eventServices, setEventServices] = useState<IEventServices[]>([
+    {
+      services: "",
+      rate: "",
+    },
+  ]);
+
+  const [eventLocation, setEventLocation] = useState<IEventLocation>({
+    state: "",
+    city: "",
+    area: "",
+    serviceAreas: [],
+  });
+
+  const [restaurant, setRestaurant] = useState<IRestaurant>({
+    restaurantMenuType: [],
+    restaurantImageUpload: [],
+    restaurantCovers: "",
+    restaurantFloor: "",
+    restaurantSwimmingPool: "",
+  });
+
+  const [transportLocation, setTransportLocation] =
+    useState<ITransportLocation>({
+      state: "",
+      city: "",
+      travelLocal: false,
+      travelOutStation: false,
+      serviceAreas: [],
+      carDetails: [
+        {
+          carType: "",
+          numberOfCars: 0,
+          fourHr40Km: "",
+          eightHr80Km: "",
+          fullDay100Km: "",
+          airportTransfer: "",
+        },
+      ],
+    });
+
+  const [bankDetails, setBankDetails] = useState<IBankDetails>({
+    bankName: "",
+    bankAccountNumber: "",
+    ifsc: "",
+    pointOfContact: "",
+    email: "",
+    phoneNumber: "",
+    billingAddress: "",
   });
 
   const [otherDetails, setOtherDetails] = useState<IOtherDetails>({
@@ -192,77 +381,357 @@ const AddVendorForm = () => {
     },
   ]);
 
+  const populateDemoData = () => {
+    setVendor({
+      salutation: "Mr.",
+      firstName: "John",
+      lastName: "Doe",
+      contactName: "John Doe",
+      contactOwner: "Jane Smith",
+      panNumber: "ABCDE1234F",
+      gst: "27ABCDE1234F1Z5",
+      vendorType: ["Hotel"],
+      landLine: "022-12345678",
+      email: "john.doe@example.com",
+      companyName: "Luxury Hotels Ltd.",
+      phoneNumber: "+919876543210",
+      displayName: "company",
+    });
+
+    setLocation({
+      state: "Maharashtra",
+      city: "Mumbai",
+      area: "Bandra",
+      address: "123 Luxury Lane, Bandra West",
+    });
+
+    setCategory({
+      categoryType: "4 star",
+    });
+
+    setRooms([
+      {
+        roomCategory: "deluxe room (head)",
+        numberOfRooms: 10,
+        roomSize: "300 sq ft",
+        roomImageUpload: [],
+        prices: [{ roomType: "deluxe", roomPrice: "5000" }],
+      },
+    ]);
+
+    setBanquets([
+      {
+        numberOfBanquests: "2",
+        banquetCategory: "banquet",
+        banquetSize: "500 sq ft",
+        banquetImageUpload: [],
+        banquetName: "Grand Hall",
+        banquetSetup: "theater",
+        banquetVegPrice: "1500",
+        banquetNonVegPrice: "2000",
+        banquetFloor: "1st",
+        prefuntionAreaSize: "medium (200 sq ft)",
+      },
+    ]);
+
+    setRestaurant({
+      restaurantMenuType: ["indian", "continental"],
+      restaurantImageUpload: [],
+      restaurantCovers: "50",
+      restaurantFloor: "2nd",
+      restaurantSwimmingPool: "Yes",
+    });
+
+    setBankDetails({
+      bankName: "HDFC Bank",
+      bankAccountNumber: "123456789012",
+      ifsc: "HDFC0001234",
+      pointOfContact: "Rahul Sharma",
+      email: "rahul.sharma@hdfc.com",
+      phoneNumber: "+919876543211",
+      billingAddress: "456 Bank Street, Mumbai",
+    });
+
+    setOtherDetails({
+      sourceOfSupply: "Local",
+      gstTreatment: "Registered",
+      gstin: "27ABCDE1234F1Z5",
+      pan: "ABCDE1234F",
+      msmeRegistered: true,
+      currency: "INR - Indian Rupee",
+      openingBalanceState: "Credit",
+      openingBalance: "10000",
+      creditLimit: "50000",
+      paymentTerms: "Due on Receipt",
+      tds: "TDS1",
+      priceList: "PL1",
+      enablePortal: true,
+      portalLanguage: "English",
+      documents: [],
+      websiteUrl: "www.luxuryhotels.com",
+      department: "Sales",
+      designation: "Manager",
+      skype: "john.doe.skype",
+      facebook: "john.doe.fb",
+      twitter: "john_doe",
+    });
+
+    setBillingAddress({
+      addressId: "1",
+      billingCountry: "IN - India",
+      billingAddressStreet1: "123 Luxury Lane",
+      billingAddressStreet2: "Bandra West",
+      billingCity: "Mumbai",
+      billingState: "[MH] - Maharashtra",
+      billingPincode: "400050",
+      billingPhone: "+919876543210",
+      billingFaxNumber: "022-98765432",
+    });
+
+    setShippingAddress({
+      shippingCountry: "IN - India",
+      shippingAddressStreet1: "123 Luxury Lane",
+      shippingAddressStreet2: "Bandra West",
+      shippingCity: "Mumbai",
+      shippingState: "[MH] - Maharashtra",
+      shippingPincode: "400050",
+      shippingPhone: "+919876543210",
+      shippingFaxNumber: "022-98765432",
+    });
+
+    setContactPersons([
+      {
+        salutation: "Mr.",
+        contactPersonFirstName: "Rahul",
+        contactPersonLastName: "Sharma",
+        contactPersonEmail: "rahul.sharma@example.com",
+        contactPersonWorkPhone: "022-12345678",
+        contactPersonMobilePhone: "+919876543211",
+        contactPersonMobile: "+919876543211",
+      },
+    ]);
+
+    setIsBanquetDetailsVisible(true);
+    setIsRestaurantDetailsVisible(true);
+    toastSuccess("Demo data has been populated!");
+  };
+
   useEffect(() => {
     console.log(vendorDataById, "vendorDataById");
     if (vendorDataById) {
       const apiData = vendorDataById.data;
       console.log(apiData, "check for api data");
+
       setVendor((prev) => ({
         ...prev,
-        salutation: apiData?.vendor?.salutation,
-        firstName: apiData?.vendor?.firstName,
-        lastName: apiData?.vendor?.lastName,
-        email: apiData?.vendor?.email,
-        landLine: apiData?.vendor?.landLine,
-        phoneNumber: apiData?.vendor?.phoneNumber,
-        displayName: apiData?.vendor?.displayName,
-        companyName: apiData?.vendor?.companyName,
+        salutation: apiData?.vendor?.salutation || "",
+        firstName: apiData?.vendor?.firstName || "",
+        lastName: apiData?.vendor?.lastName || "",
+        email: apiData?.vendor?.email || "",
+        landLine: apiData?.vendor?.landLine || "",
+        phoneNumber: apiData?.vendor?.phoneNumber || "",
+        displayName: apiData?.vendor?.displayName || "",
+        companyName: apiData?.vendor?.companyName || "",
+        contactName: apiData?.vendor?.contactName || "",
+        contactOwner: apiData?.vendor?.contactOwner || "",
+        panNumber: apiData?.vendor?.panNumber || "",
+        gst: apiData?.vendor?.gst || "",
+        vendorType: apiData?.vendor?.vendorType || [],
       }));
+
+      setIsBanquetDetailsVisible(apiData?.isBanquetDetailsVisible || false);
+      setIsRestaurantDetailsVisible(
+        apiData?.isRestaurantDetailsVisible || false
+      );
 
       setBillingAddress((prev) => ({
         ...prev,
-        billingAddressStreet1: apiData?.billingAddress?.billingAddressStreet1,
-        // attention: apiData?.billingAddress?.attention,
-        billingCountry: apiData?.billingAddress?.billingCountry,
-        billingAddressStreet2: apiData?.billingAddress?.billingAddressStreet2,
-        billingCity: apiData?.billingAddress?.billingCity,
-        billingState: apiData?.billingAddress?.billingState,
-        billingPincode: apiData?.billingAddress?.billingPincode,
-        billingPhone: apiData?.billingAddress?.billingPhone,
-        billingFaxNumber: apiData?.billingAddress?.billingFaxNumber,
+        billingAddressStreet1:
+          apiData?.billingAddress?.billingAddressStreet1 || "",
+        billingCountry: apiData?.billingAddress?.billingCountry || "",
+        billingAddressStreet2:
+          apiData?.billingAddress?.billingAddressStreet2 || "",
+        billingCity: apiData?.billingAddress?.billingCity || "",
+        billingState: apiData?.billingAddress?.billingState || "",
+        billingPincode: apiData?.billingAddress?.billingPincode || "",
+        billingPhone: apiData?.billingAddress?.billingPhone || "",
+        billingFaxNumber: apiData?.billingAddress?.billingFaxNumber || "",
       }));
 
       setShippingAddress((prev) => ({
         ...prev,
         shippingAddressStreet1:
-          apiData?.shippingAddress?.shippingAddressStreet1,
+          apiData?.shippingAddress?.shippingAddressStreet1 || "",
         shippingAddressStreet2:
-          apiData?.shippingAddress?.shippingAddressStreet2,
-        // attention: apiData?.shippingAddress?.attention,
-        shippingCountry: apiData?.shippingAddress?.shippingCountry,
-        shippingCity: apiData?.shippingAddress?.shippingCity,
-        shippingState: apiData?.shippingAddress?.shippingState,
-        shippingPincode: apiData?.shippingAddress?.shippingPincode,
-        shippingPhone: apiData?.shippingAddress?.shippingPhone,
-        shippingFaxNumber: apiData?.shippingAddress?.shippingFaxNumber,
+          apiData?.shippingAddress?.shippingAddressStreet2 || "",
+        shippingCountry: apiData?.shippingAddress?.shippingCountry || "",
+        shippingCity: apiData?.shippingAddress?.shippingCity || "",
+        shippingState: apiData?.shippingAddress?.shippingState || "",
+        shippingPincode: apiData?.shippingAddress?.shippingPincode || "",
+        shippingPhone: apiData?.shippingAddress?.shippingPhone || "",
+        shippingFaxNumber: apiData?.shippingAddress?.shippingFaxNumber || "",
       }));
+
+      setLocation((prev) => ({
+        ...prev,
+        state: apiData?.location?.state || "",
+        city: apiData?.location?.city || "",
+        area: apiData?.location?.area || "",
+        address: apiData?.location?.address || "",
+      }));
+
+      setCategory((prev) => ({
+        ...prev,
+        categoryType: apiData?.category?.categoryType || "",
+      }));
+
+      setRooms(
+        apiData?.rooms?.map((room: any) => ({
+          roomCategory: room.roomCategory || "",
+          numberOfRooms: room.numberOfRooms || 0,
+          roomSize: room.roomSize || "",
+          roomImageUpload: room.roomImageUpload || [],
+          prices: room.prices?.map((price: any) => ({
+            roomType: price.roomType || "",
+            roomPrice: price.roomPrice || "",
+          })) || [{ roomType: "", roomPrice: "" }],
+        })) || [
+          {
+            roomCategory: "",
+            numberOfRooms: 0,
+            roomSize: "",
+            roomImageUpload: [],
+            prices: [{ roomType: "", roomPrice: "" }],
+          },
+        ]
+      );
+
+      setBanquets(
+        apiData?.banquets?.map((banquet: any) => ({
+          numberOfBanquests: banquet.numberOfBanquests || "",
+          banquetCategory: banquet.banquetCategory || "",
+          banquetSize: banquet.banquetSize || "",
+          banquetImageUpload: banquet.banquetImageUpload || [],
+          banquetName: banquet.banquetName || "",
+          banquetSetup: banquet.banquetSetup || "",
+          banquetVegPrice: banquet.banquetVegPrice || "",
+          banquetNonVegPrice: banquet.banquetNonVegPrice || "",
+          banquetFloor: banquet.banquetFloor || "",
+          prefuntionAreaSize: banquet.prefuntionAreaSize || "",
+        })) || [
+          {
+            numberOfBanquests: "",
+            banquetCategory: "",
+            banquetSize: "",
+            banquetImageUpload: [],
+            banquetName: "",
+            banquetSetup: "",
+            banquetVegPrice: "",
+            banquetNonVegPrice: "",
+            banquetFloor: "",
+            prefuntionAreaSize: "",
+          },
+        ]
+      );
+
+      setEventServices(
+        apiData?.eventServices?.map((service: any) => ({
+          services: service.services || "",
+          rate: service.rate || "",
+        })) || [{ services: "", rate: "" }]
+      );
+
+      setEventLocation({
+        state: apiData?.eventLocation?.state || "",
+        city: apiData?.eventLocation?.city || "",
+        area: apiData?.eventLocation?.area || "",
+        serviceAreas: apiData?.eventLocation?.serviceAreas || [],
+      });
+
+      setRestaurant((prev) => ({
+        ...prev,
+        restaurantMenuType: apiData?.restaurant?.restaurantMenuType || [],
+        restaurantImageUpload: apiData?.restaurant?.restaurantImageUpload || [],
+        restaurantCovers: apiData?.restaurant?.restaurantCovers || "",
+        restaurantFloor: apiData?.restaurant?.restaurantFloor || "",
+        restaurantSwimmingPool:
+          apiData?.restaurant?.restaurantSwimmingPool || "",
+      }));
+
+      setBankDetails((prev) => ({
+        ...prev,
+        bankName: apiData?.bankDetails?.bankName || "",
+        bankAccountNumber: apiData?.bankDetails?.bankAccountNumber || "",
+        ifsc: apiData?.bankDetails?.ifsc || "",
+        pointOfContact: apiData?.bankDetails?.pointOfContact || "",
+        email: apiData?.bankDetails?.email || "",
+        phoneNumber: apiData?.bankDetails?.phoneNumber || "",
+        billingAddress: apiData?.bankDetails?.billingAddress || "",
+      }));
+
+      setTransportLocation({
+        state: apiData?.transportLocation?.state || "",
+        city: apiData?.transportLocation?.city || "",
+        travelLocal: apiData?.transportLocation?.travelLocal || false,
+        travelOutStation: apiData?.transportLocation?.travelOutStation || false,
+        serviceAreas: apiData?.transportLocation?.serviceAreas || [],
+        carDetails: apiData?.transportLocation?.carDetails?.map((car: any) => ({
+          carType: car.carType || "",
+          numberOfCars: car.numberOfCars || 0,
+          fourHr40Km: car.fourHr40Km || "",
+          eightHr80Km: car.eightHr80Km || "",
+          fullDay100Km: car.fullDay100Km || "",
+          airportTransfer: car.airportTransfer || "",
+        })) || [
+          {
+            carType: "",
+            numberOfCars: 0,
+            fourHr40Km: "",
+            eightHr80Km: "",
+            fullDay100Km: "",
+            airportTransfer: "",
+          },
+        ],
+      });
 
       setOtherDetails((prev) => ({
         ...prev,
-        sourceOfSupply: apiData?.otherDetails?.sourceOfSupply,
-        gstTreatment: apiData?.otherDetails?.gstTreatment,
-        gstin: apiData?.otherDetails?.gstin,
-        pan: apiData?.otherDetails?.pan,
-        msmeRegistered: apiData?.otherDetails?.msmeRegistered,
-        currency: apiData?.otherDetails?.currency,
-        openingBalanceState: apiData?.otherDetails?.openingBalanceState,
-        openingBalance: apiData?.otherDetails?.openingBalance,
-        creditLimit: apiData?.otherDetails?.creditLimit,
-        paymentTerms: apiData?.otherDetails?.paymentTerms,
-        tds: apiData?.otherDetails?.tds,
-        priceList: apiData?.otherDetails?.priceList,
-        enablePortal: apiData?.otherDetails?.enablePortal,
-        portalLanguage: apiData?.otherDetails?.portalLanguage,
-        documents: apiData?.otherDetails?.documents,
-        websiteUrl: apiData?.otherDetails?.websiteUrl,
-        department: apiData?.otherDetails?.department,
-        designation: apiData?.otherDetails?.designation,
-        skype: apiData?.otherDetails?.skype,
-        twitter: apiData?.otherDetails?.twitter,
-        facebook: apiData?.otherDetails?.facebook,
+        sourceOfSupply: apiData?.otherDetails?.sourceOfSupply || "",
+        gstTreatment: apiData?.otherDetails?.gstTreatment || "",
+        gstin: apiData?.otherDetails?.gstin || "",
+        pan: apiData?.otherDetails?.pan || "",
+        msmeRegistered: apiData?.otherDetails?.msmeRegistered || false,
+        currency: apiData?.otherDetails?.currency || "",
+        openingBalanceState: apiData?.otherDetails?.openingBalanceState || "",
+        openingBalance: apiData?.otherDetails?.openingBalance || "",
+        creditLimit: apiData?.otherDetails?.creditLimit || "",
+        paymentTerms: apiData?.otherDetails?.paymentTerms || "",
+        tds: apiData?.otherDetails?.tds || "",
+        priceList: apiData?.otherDetails?.priceList || "",
+        enablePortal: apiData?.otherDetails?.enablePortal || false,
+        portalLanguage: apiData?.otherDetails?.portalLanguage || "",
+        documents: apiData?.otherDetails?.documents || [],
+        websiteUrl: apiData?.otherDetails?.websiteUrl || "",
+        department: apiData?.otherDetails?.department || "",
+        designation: apiData?.otherDetails?.designation || "",
+        skype: apiData?.otherDetails?.skype || "",
+        twitter: apiData?.otherDetails?.twitter || "",
+        facebook: apiData?.otherDetails?.facebook || "",
       }));
 
-      setContactPersons(apiData?.contactPersons);
+      setContactPersons(
+        apiData?.contactPersons || [
+          {
+            salutation: "",
+            contactPersonFirstName: "",
+            contactPersonLastName: "",
+            contactPersonEmail: "",
+            contactPersonWorkPhone: "",
+            contactPersonMobilePhone: "",
+            contactPersonMobile: "",
+          },
+        ]
+      );
     }
   }, [vendorDataById]);
 
@@ -283,6 +752,17 @@ const AddVendorForm = () => {
         billingAddress,
         shippingAddress,
         otherDetails,
+        location,
+        category,
+        rooms,
+        banquets,
+        eventServices,
+        eventLocation,
+        transportLocation,
+        restaurant,
+        bankDetails,
+        isBanquetDetailsVisible,
+        isRestaurantDetailsVisible,
       };
 
       console.log(obj, "check obj");
@@ -300,6 +780,17 @@ const AddVendorForm = () => {
           setBillingAddress(billingAddress);
           setShippingAddress(shippingAddress);
           setVendor(vendor);
+          setLocation(location);
+          setCategory(category);
+          setRooms(rooms);
+          setBanquets(banquets);
+          setEventServices(eventServices);
+          setEventLocation(eventLocation);
+          setTransportLocation(transportLocation);
+          setIsBanquetDetailsVisible(isBanquetDetailsVisible);
+          setIsRestaurantDetailsVisible(isRestaurantDetailsVisible);
+          setRestaurant(restaurant);
+          setBankDetails(bankDetails);
           setOtherDetails(otherDetails);
           toastSuccess(res.message);
           navigate("/vendorList");
@@ -313,6 +804,123 @@ const AddVendorForm = () => {
     console.log(billingAddress, "billing address check");
     console.log(shippingAddress, "shipping address check");
     console.log(contactPersons, "contact persons check");
+  };
+
+  const handleAddRoom = () => {
+    setRooms([
+      ...rooms,
+      {
+        roomCategory: "",
+        numberOfRooms: 0,
+        roomSize: "",
+        roomImageUpload: [],
+        prices: [{ roomType: "", roomPrice: "" }],
+      },
+    ]);
+  };
+
+  const handleAddBanquet = () => {
+    setBanquets([
+      ...banquets,
+      {
+        numberOfBanquests: "",
+        banquetCategory: "",
+        banquetSize: "",
+        banquetImageUpload: [],
+        banquetName: "",
+        banquetSetup: "",
+        banquetVegPrice: "",
+        banquetNonVegPrice: "",
+        banquetFloor: "",
+        prefuntionAreaSize: "",
+      },
+    ]);
+  };
+
+  const handleAddPrice = (roomIndex: number) => {
+    const newRooms = [...rooms];
+    newRooms[roomIndex].prices.push({ roomType: "", roomPrice: "" });
+    setRooms(newRooms);
+  };
+
+  const handleRemovePrice = (roomIndex: number, priceIndex: number) => {
+    const newRooms = [...rooms];
+    newRooms[roomIndex].prices = newRooms[roomIndex].prices.filter(
+      (_, i) => i !== priceIndex
+    );
+    setRooms(newRooms);
+  };
+
+  const ImageUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+    array: any[],
+    setArray: React.Dispatch<React.SetStateAction<any[]>>,
+    fieldName: "roomImageUpload" | "banquetImageUpload"
+  ) => {
+    const files = e.target.files;
+    if (files) {
+      const validFiles = Array.from(files).filter((file) => {
+        const validTypes = [
+          "image/jpeg",
+          "image/png",
+          "application/vnd.ms-excel",
+        ];
+        if (!validTypes.includes(file.type)) {
+          toastError(
+            `${file.name} is not a valid file type (XLS, JPG, PNG only)`
+          );
+          return false;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+          toastError(`${file.name} exceeds 10MB size limit`);
+          return false;
+        }
+        return true;
+      });
+
+      if (validFiles.length > 0) {
+        const fileReaders: Promise<string>[] = validFiles.map((file) => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              if (reader.result) resolve(reader.result as string);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+        });
+
+        Promise.all(fileReaders)
+          .then((base64Images) => {
+            const newArray = [...array];
+            newArray[index][fieldName] = [
+              ...newArray[index][fieldName],
+              ...base64Images,
+            ];
+            setArray(newArray);
+            toastSuccess(`${validFiles.length} image(s) uploaded successfully`);
+          })
+          .catch((error) => {
+            console.error("Error reading files:", error);
+            toastError("Error uploading images");
+          });
+      }
+    }
+  };
+
+  const RemoveImage = (
+    index: number,
+    imageIndex: number,
+    array: any[],
+    setArray: React.Dispatch<React.SetStateAction<any[]>>,
+    fieldName: "roomImageUpload" | "banquetImageUpload"
+  ) => {
+    const newArray = [...array];
+    newArray[index][fieldName] = newArray[index][fieldName].filter(
+      (_: any, i: any) => i !== imageIndex
+    );
+    setArray(newArray);
   };
 
   const [isEmailValid, setIsEmailValid] = useState(true);
@@ -330,10 +938,8 @@ const AddVendorForm = () => {
     if (files) {
       const newFiles = Array.from(files);
 
-      // Validate file size and total count
       const validFiles = newFiles.filter((file) => {
         if (file.size > 10 * 1024 * 1024) {
-          // 10MB in bytes
           toastError(`File ${file.name} is larger than 10MB`);
           return false;
         }
@@ -353,37 +959,36 @@ const AddVendorForm = () => {
     setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleFileUpload = async () => {
-    if (selectedFiles.length === 0) {
-      toastError("Please select files to upload");
-      return;
-    }
+  // const handleFileUpload = async () => {
+  //   if (selectedFiles.length === 0) {
+  //     toastError("Please select files to upload");
+  //     return;
+  //   }
 
-    setUploading(true);
-    try {
-      const formData = new FormData();
-      selectedFiles.forEach((file, index) => {
-        formData.append(`file${index}`, file);
-      });
+  //   setUploading(true);
+  //   try {
+  //     const formData = new FormData();
+  //     selectedFiles.forEach((file, index) => {
+  //       formData.append(`file${index}`, file);
+  //     });
 
-      // Replace this URL with your actual upload endpoint
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+  //     const response = await fetch("/api/upload", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
 
-      if (response.ok) {
-        toastSuccess("Files uploaded successfully");
-        setSelectedFiles([]);
-      } else {
-        throw new Error("Upload failed");
-      }
-    } catch (error) {
-      toastError("Error uploading files");
-    } finally {
-      setUploading(false);
-    }
-  };
+  //     if (response.ok) {
+  //       toastSuccess("Files uploaded successfully");
+  //       setSelectedFiles([]);
+  //     } else {
+  //       throw new Error("Upload failed");
+  //     }
+  //   } catch (error) {
+  //     toastError("Error uploading files");
+  //   } finally {
+  //     setUploading(false);
+  //   }
+  // };
 
   const handleContactPersonChange = (
     index: number,
@@ -422,6 +1027,75 @@ const AddVendorForm = () => {
     }
   };
 
+  const handleImageUploadForRestaurant = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setImageState: React.Dispatch<React.SetStateAction<IRestaurant>>
+  ) => {
+    const files = e.target.files;
+    if (files) {
+      const validFiles = Array.from(files).filter((file) => {
+        const validTypes = [
+          "image/jpeg",
+          "image/png",
+          "application/vnd.ms-excel",
+        ];
+        if (!validTypes.includes(file.type)) {
+          toastError(
+            `${file.name} is not a valid file type (XLS, JPG, PNG only)`
+          );
+          return false;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+          toastError(`${file.name} exceeds 10MB size limit`);
+          return false;
+        }
+        return true;
+      });
+
+      if (validFiles.length > 0) {
+        const fileReaders: Promise<string>[] = validFiles.map(
+          (file) =>
+            new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                if (reader.result) resolve(reader.result as string);
+              };
+              reader.onerror = reject;
+              reader.readAsDataURL(file);
+            })
+        );
+
+        Promise.all(fileReaders)
+          .then((base64Images) => {
+            setImageState((prev) => ({
+              ...prev,
+              restaurantImageUpload: [
+                ...prev.restaurantImageUpload, // Append new images instead of overwriting
+                ...base64Images,
+              ],
+            }));
+            toastSuccess(`${validFiles.length} image(s) uploaded successfully`);
+          })
+          .catch((error) => {
+            console.error("Error reading files:", error);
+            toastError("Error uploading images");
+          });
+      }
+    }
+  };
+
+  const handleRemoveImageForRestaurant = (
+    imageIndex: number,
+    setImageState: React.Dispatch<React.SetStateAction<IRestaurant>>
+  ) => {
+    setImageState((prev) => ({
+      ...prev,
+      restaurantImageUpload: prev.restaurantImageUpload.filter(
+        (_, i) => i !== imageIndex
+      ),
+    }));
+  };
+
   const handleAddContactPerson = () => {
     setContactPersons([
       ...contactPersons,
@@ -447,6 +1121,25 @@ const AddVendorForm = () => {
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     setIsEmailValid(isValid);
   };
+
+  const handleRoomDetailChange = (field: keyof IRoom, value: string) => {
+    setRooms((prevState) => ({
+      ...prevState,
+      [field]: value,
+    }));
+  };
+
+  const categoryOptions = ["Banquet", "3 Star", "4 Star", "5 Star"];
+  const floorOptions = ["1st", "2nd", "3rd", "4th"];
+  const roomCategoryOptions = ["Deluxe Room (Head)", "Standard Room", "Suite"];
+  const banquetSetupOptions = ["Theater", "Classroom", "Banquet", "U-Shape"];
+  const pfaSizeOptions = [
+    "Small (100 sq ft)",
+    "Medium (200 sq ft)",
+    "Large (300 sq ft)",
+  ];
+  const menuTypeOptions = ["Indian", "Continental", "Chinese", "Multi-Cuisine"];
+  const numberOfBanquetsOptions = ["1", "2", "3", "4", "5"];
 
   const salutationOptions = ["Mr.", "Ms.", "Dr.", "Mrs."];
   const currencyOptions = [
@@ -480,131 +1173,11 @@ const AddVendorForm = () => {
   const tdsOptions = ["TDS1", "TDS2.", "TDS3"]; //change these options
   const priceListOptions = ["PL1", "PL2", "PL3"]; //change these options
   const languageOptions = ["English", "Hindi", "Espanyol"]; //change these options
-  // const [contactName, setContactName] = useState("");
-  // const [phoneNumber, setPhoneNumber] = useState("");
-  // const [alternateContact, setAlternateContact] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [Website, setWebsite] = useState("");
-  // const [landLine, setLandLine] = useState("");
-  // const [billingCity, setBillingCity] = useState("");
-  // const [billingState, setBillingState] = useState("");
-  // const [billingCountry, setBillingCountry] = useState("");
-  // const [billingCode, setBillingCode] = useState("");
-  // const [Pincode, setPincode] = useState("");
-  // const [bankName, setBankName] = useState("");
-  // const [accountNumber, setAccountNumber] = useState("");
-  // const [billingPhoneNumber, setBillingPhoneNumber] = useState("");
-  // const [billingFax, setBillingFax] = useState("");
-  // const [ifscCode, setIfscCode] = useState("");
-  // const [pointOfContact, setPointOfContact] = useState("");
-  // const [billingAddress, setBillingAddress] = useState("");
-  // const [vendorBankName, setVendorBankName] = useState("");
-  // const [vendorIfscCode, setVendorIfscCode] = useState("");
 
   const { mutateAsync: addVendor } = useAddVendor();
-  // const { data: categoryData } = useCategory();
-  // const [selectedCategory, setSelectedCategory] = useState("");
-  // const { data: getHotelForSelect } = useHotel({ forSelect: true })
-  // const { data: getBanquetForSelect } = useBanquet({ forSelect: true })
-  // const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setSelectedCategory(e.target.value);
-  // };
-
-  // const addContactPersons = (contactPersonsIndex:  number) => {
-  //   // Create the new room object to add
-  //   let ContactPersonsObj = {
-  //     salutation: "",
-  //     contactPersonFirstName: "",
-  //     contactPersonLastName: "",
-  //     contactPersonEmail: "",
-  //     contactPersonWorkPhone: "",
-  //     contactPersonMobile: "",
-  //   };
-
-  //   let tempArr = [...contactPersons];
-  //   tempArr[hotelIndex] = {
-  //     ...tempArr[hotelIndex],
-  //     roomsArr: temprRoomArr,
-  //   };
-  //   console.log(tempArr, "tempArr")
-  //   setHotelArr(tempArr);
-  // };
-
-  // const addMoreHotels = () => {
-  //   let tempArr = [...hotelArr];
-  //   let obj = {
-  //     hotelId: "",
-  //     roomsArr: [
-  //       {
-  //         category: "",
-  //         noOfRooms: 0,
-  //         price: 0,
-  //         size: "",
-  //         imagesArr: [
-  //         ],
-  //       },
-  //     ],
-  //   };
-  //   console.log(tempArr, "tempArr")
-  //   setHotelArr([...tempArr, obj]);
-  // };
-
-  // const deleteHotels = (hotelIndex: number) => {
-  //   let tempArr = hotelArr.filter((_, i) => i !== hotelIndex);
-  //   setHotelArr(tempArr);
-  // };
-  // const handleChangeSelect = (hotelIndex: number, event: ReactSelectFormat) => {
-  //   let tempArr = [...hotelArr]
-  //   tempArr[hotelIndex].hotelId = event.value
-  //   setHotelArr(tempArr)
-  // }
-
-  // const [banquets, setBanquets] = useState([
-  //   {
-  //     category: "",
-  //     name: "",
-  //     size: "",
-  //     setup: "",
-  //     vegPrice: "",
-  //     nonVegPrice: "",
-  //     floor: "",
-  //     pfaSize: "",
-  //     images: [] as string[],
-  //   },
-  // ]);
 
   const [hasBanquet, setHasBanquet] = useState(false);
   const [hasRestaurant, setHasRestaurant] = useState(false);
-
-  // Handle image upload for rooms and banquets
-  // const handleImageUpload = (
-  //   mainIndex: number,
-  //   roomIndex: number,
-  //   files: { value: string }[],
-  //   section: string
-  // ) => {
-  //   if (section === "room") {
-  //     const tempArr = [...hotelArr];
-  //     const tempRoomArr = [...tempArr[mainIndex].roomsArr];
-  //     const tempImageArr = tempRoomArr[roomIndex].imagesArr.filter(
-  //       (img) => img.image // Filter out empty images
-  //     );
-
-  //     files.forEach((file) => {
-  //       if (file.value) {
-  //         tempImageArr.push({ image: file.value });
-  //       }
-  //     });
-
-  //     tempRoomArr[roomIndex] = {
-  //       ...tempRoomArr[roomIndex],
-  //       imagesArr: tempImageArr,
-  //     };
-
-  //     tempArr[mainIndex] = { ...tempArr[mainIndex], roomsArr: tempRoomArr };
-  //     setHotelArr(tempArr);
-  //   }
-  // };
 
   const countryOptions = [
     { value: "US - United States", label: "US - United States" },
@@ -721,6 +1294,8 @@ const AddVendorForm = () => {
     });
   };
 
+  console.log(location, "checking the location");
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
@@ -787,8 +1362,6 @@ const AddVendorForm = () => {
                     Company Name:
                   </span>
                   <div className="w-96">
-                    {" "}
-                    {/* Ensures consistent width */}
                     <input
                       type="text"
                       value={vendor.companyName}
@@ -801,6 +1374,40 @@ const AddVendorForm = () => {
                   </div>
                 </div>
 
+                <div className="flex items-center gap-6">
+                  <span className="text-base font-medium text-gray-700 mt-2">
+                    Contact Name:
+                  </span>
+                  <div className="w-96">
+                    <input
+                      type="text"
+                      value={vendor.contactName}
+                      onChange={(e) =>
+                        setVendor({ ...vendor, contactName: e.target.value })
+                      }
+                      placeholder="Enter contact name"
+                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <span className="text-base font-medium text-gray-700 mt-2">
+                    Contact Owner:
+                  </span>
+                  <div className="w-96">
+                    <input
+                      type="text"
+                      value={vendor.contactOwner}
+                      onChange={(e) =>
+                        setVendor({ ...vendor, contactOwner: e.target.value })
+                      }
+                      placeholder="Enter contact owner"
+                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                    />
+                  </div>
+                </div>
+
                 {/* Display Name */}
                 <div className="flex items-center gap-6">
                   <span className="text-base font-medium text-gray-700 mt-2">
@@ -808,7 +1415,6 @@ const AddVendorForm = () => {
                   </span>
                   <div className="w-96 ml-4">
                     {" "}
-                    {/* Consistent width for dropdown */}
                     <select
                       value={vendor.displayName}
                       onChange={(e) =>
@@ -914,6 +1520,1912 @@ const AddVendorForm = () => {
                         <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                       </svg>
                     </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <span className="text-base font-medium text-gray-700 mt-2">
+                    PAN Number:
+                  </span>
+                  <div className="w-96">
+                    <input
+                      type="text"
+                      value={vendor.panNumber}
+                      onChange={(e) =>
+                        setVendor({ ...vendor, panNumber: e.target.value })
+                      }
+                      placeholder="Enter PAN number"
+                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <span className="text-base font-medium text-gray-700 mt-2">
+                    GST:
+                  </span>
+                  <div className="w-96">
+                    <input
+                      type="text"
+                      value={vendor.gst}
+                      onChange={(e) =>
+                        setVendor({ ...vendor, gst: e.target.value })
+                      }
+                      placeholder="Enter company name"
+                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <span className="text-base font-medium text-gray-700 mt-2">
+                    Vendor Type:
+                  </span>
+                  <div className="w-96 ml-4">
+                    <Select
+                      isMulti
+                      options={[
+                        { value: "Hotel", label: "Hotel" },
+                        { value: "Banquet", label: "Banquet" },
+                        { value: "Event Companies", label: "Event Companies" },
+                        {
+                          value: "Transport Service",
+                          label: "Transport Service",
+                        },
+                        { value: "Gifting", label: "Gifting" },
+                      ]}
+                      value={vendor.vendorType.map((type) => ({
+                        value: type,
+                        label: type,
+                      }))}
+                      onChange={(selectedOptions) => {
+                        const newVendorTypes = selectedOptions
+                          ? selectedOptions.map((option) => option.value)
+                          : [];
+                        setVendor({ ...vendor, vendorType: newVendorTypes });
+                      }}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      placeholder="Select vendor types"
+                      styles={customReactStylesSmall}
+                    />
+                  </div>
+                </div>
+
+                {vendor.vendorType.includes("Hotel") && (
+                  <div>
+                    <div className="bg-white p-6 rounded-lg shadow mb-6 mt-6">
+                      <h2 className="font-bold text-lg mb-4">Location</h2>
+                      <div className="grid grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            State
+                          </label>
+                          <input
+                            type="text"
+                            value={location.state}
+                            onChange={(e) =>
+                              setLocation({
+                                ...location,
+                                state: e.target.value,
+                              })
+                            }
+                            className="w-full border border-gray-300 rounded-md p-2"
+                            placeholder="Enter state"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            City
+                          </label>
+                          <input
+                            type="text"
+                            value={location.city}
+                            onChange={(e) =>
+                              setLocation({ ...location, city: e.target.value })
+                            }
+                            className="w-full border border-gray-300 rounded-md p-2"
+                            placeholder="Enter city"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Area
+                          </label>
+                          <input
+                            type="text"
+                            value={location.area}
+                            onChange={(e) =>
+                              setLocation({ ...location, area: e.target.value })
+                            }
+                            className="w-full border border-gray-300 rounded-md p-2"
+                            placeholder="Enter area"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Address
+                          </label>
+                          <input
+                            type="text"
+                            value={location.address}
+                            onChange={(e) =>
+                              setLocation({
+                                ...location,
+                                address: e.target.value,
+                              })
+                            }
+                            className="w-full border border-gray-300 rounded-md p-2"
+                            placeholder="Enter address"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-white p-6 rounded-lg shadow mb-6">
+                      <h2 className="font-bold text-lg mb-4">Category</h2>
+                      <div className="w-96">
+                        <select
+                          className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                          value={category.categoryType}
+                          onChange={(e) =>
+                            setCategory({
+                              ...category,
+                              categoryType: e.target.value,
+                            })
+                          }
+                        >
+                          <option value="">Select Category</option>
+                          {categoryOptions.map((option) => (
+                            <option key={option} value={option.toLowerCase()}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="mb-4 mt-8">
+                      {/* <label className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={isRoomDetailsVisible}
+                          onChange={() =>
+                            setIsRoomDetailsVisible(!isRoomDetailsVisible)
+                          }
+                          className="form-checkbox"
+                        />
+                        <span className="ml-2">Room Details</span>
+                      </label> */}
+
+                      {/* {isRoomDetailsVisible && ( */}
+                      <div className="border rounded-lg mt-8 p-6 shadow">
+                        <div className="flex justify-between items-center mb-4">
+                          <h2 className="text-lg font-bold">Room Details</h2>
+                          <button
+                            type="button"
+                            onClick={handleAddRoom}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                          >
+                            Add New Room
+                          </button>
+                        </div>
+
+                        {rooms.map((room, index) => (
+                          <div key={index} className="mb-6 border-b pb-4">
+                            <div className="grid grid-cols-3 gap-4">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Room Category
+                                </label>
+                                <select
+                                  value={room.roomCategory}
+                                  onChange={(e) => {
+                                    const newRooms = [...rooms];
+                                    newRooms[index].roomCategory =
+                                      e.target.value;
+                                    setRooms(newRooms);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                >
+                                  <option value="">Select Category</option>
+                                  {categoryOptions.map((option) => (
+                                    <option
+                                      key={option}
+                                      value={option.toLowerCase()}
+                                    >
+                                      {option}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Number of Rooms
+                                </label>
+                                <input
+                                  type="number"
+                                  placeholder="Enter number of rooms"
+                                  value={room.numberOfRooms}
+                                  onChange={(e) => {
+                                    const newRooms = [...rooms];
+                                    newRooms[index].numberOfRooms =
+                                      parseInt(e.target.value) || 0;
+                                    setRooms(newRooms);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Size
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter size"
+                                  value={room.roomSize}
+                                  onChange={(e) => {
+                                    const newRooms = [...rooms];
+                                    newRooms[index].roomSize = e.target.value;
+                                    setRooms(newRooms);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Image Upload Section */}
+                            <div className="mt-4 col-span-3">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Room Images (XLS, JPG, PNG only, max 10MB)
+                              </label>
+                              <div className="flex items-center gap-4">
+                                <input
+                                  type="file"
+                                  accept=".xls,.jpg,.png"
+                                  multiple
+                                  onChange={(e) =>
+                                    ImageUpload(
+                                      e,
+                                      index,
+                                      rooms,
+                                      setRooms,
+                                      "roomImageUpload"
+                                    )
+                                  }
+                                  className="hidden"
+                                  id={`room-image-upload-${index}`}
+                                />
+                                <label
+                                  htmlFor={`room-image-upload-${index}`}
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
+                                >
+                                  Upload Images
+                                </label>
+                                <span className="text-sm text-gray-500">
+                                  {room.roomImageUpload.length} file(s) uploaded
+                                </span>
+                              </div>
+
+                              {/* Display uploaded images */}
+                              {room.roomImageUpload.length > 0 && (
+                                <div className="mt-4 flex flex-wrap gap-4">
+                                  {room.roomImageUpload.map(
+                                    (image, imgIndex) => (
+                                      <div key={imgIndex} className="relative">
+                                        <img
+                                          src={
+                                            image.includes("base64")
+                                              ? image
+                                              : generateFilePath(image)
+                                          }
+                                          alt={`Room Image ${imgIndex + 1}`}
+                                          style={{
+                                            height: 100,
+                                            width: 100,
+                                            objectFit: "cover",
+                                            border: "1px solid #ddd",
+                                            borderRadius: "5px",
+                                          }}
+                                          onError={(e) => {
+                                            console.error(
+                                              "Image failed to load:",
+                                              image
+                                            );
+                                            (e.target as HTMLImageElement).src =
+                                              "path/to/placeholder-image.jpg"; // Fallback image
+                                          }}
+                                        />
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            RemoveImage(
+                                              index,
+                                              imgIndex,
+                                              rooms,
+                                              setRooms,
+                                              "roomImageUpload"
+                                            )
+                                          }
+                                          className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                                        >
+                                          X
+                                        </button>
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Price Section */}
+                            <div className="mt-4">
+                              <h3 className="text-md font-semibold mb-2">
+                                Price Details
+                              </h3>
+                              {room.prices.map((price, priceIndex) => (
+                                <div
+                                  key={priceIndex}
+                                  className="flex items-center gap-4 mb-2"
+                                >
+                                  <select
+                                    value={price.roomType}
+                                    onChange={(e) => {
+                                      const newRooms = [...rooms];
+                                      newRooms[index].prices[
+                                        priceIndex
+                                      ].roomType = e.target.value;
+                                      setRooms(newRooms);
+                                    }}
+                                    className="border border-gray-300 p-2 rounded-md w-1/3"
+                                  >
+                                    <option value="">Select Room Type</option>
+                                    {roomCategoryOptions.map((option) => (
+                                      <option
+                                        key={option}
+                                        value={option.toLowerCase()}
+                                      >
+                                        {option}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <input
+                                    type="number"
+                                    placeholder="Enter price"
+                                    value={price.roomPrice}
+                                    onChange={(e) => {
+                                      const newRooms = [...rooms];
+                                      newRooms[index].prices[
+                                        priceIndex
+                                      ].roomPrice = e.target.value;
+                                      setRooms(newRooms);
+                                    }}
+                                    className="border border-gray-300 p-2 rounded-md w-1/3"
+                                  />
+                                  {room.prices.length > 1 && (
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleRemovePrice(index, priceIndex)
+                                      }
+                                      className="text-red-500 hover:text-red-700"
+                                    >
+                                      Remove
+                                    </button>
+                                  )}
+                                </div>
+                              ))}
+                              <button
+                                type="button"
+                                onClick={() => handleAddPrice(index)}
+                                className="mt-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                              >
+                                Add Price
+                              </button>
+                            </div>
+
+                            {/* Remove Room Button */}
+                            {rooms.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newRooms = rooms.filter(
+                                    (_, i) => i !== index
+                                  );
+                                  setRooms(newRooms);
+                                }}
+                                className="mt-2 text-red-500 hover:text-red-700"
+                              >
+                                Remove Room
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      {/* )} */}
+                    </div>
+
+                    <div className="mb-4 mt-8">
+                      <label className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={isBanquetDetailsVisible}
+                          onChange={(e) =>
+                            setIsBanquetDetailsVisible(e.target.checked)
+                          }
+                          className="form-checkbox"
+                        />
+                        <span className="ml-2">Do you have Banquet</span>
+                      </label>
+
+                      {isBanquetDetailsVisible && (
+                        <div className="border rounded-lg mt-8 p-6 shadow">
+                          <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-lg font-bold">
+                              Banquet Details
+                            </h2>
+                            <button
+                              type="button"
+                              onClick={handleAddBanquet}
+                              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                            >
+                              Add New Banquet
+                            </button>
+                          </div>
+
+                          {banquets.map((banquet, index) => (
+                            <div key={index} className="mb-6 border-b pb-4">
+                              <div className="grid grid-cols-3 gap-4">
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Banquet Category
+                                  </label>
+                                  <select
+                                    value={banquet.banquetCategory}
+                                    onChange={(e) => {
+                                      const newBanquet = [...banquets];
+                                      newBanquet[index].banquetCategory =
+                                        e.target.value;
+                                      setBanquets(newBanquet);
+                                    }}
+                                    className="border border-gray-300 p-2 rounded-md w-full"
+                                  >
+                                    <option value="">Select Category</option>
+                                    {categoryOptions.map((option) => (
+                                      <option
+                                        key={option}
+                                        value={option.toLowerCase()}
+                                      >
+                                        {option}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Name
+                                  </label>
+                                  <input
+                                    type="text"
+                                    placeholder="Enter Name"
+                                    value={banquet.banquetName}
+                                    onChange={(e) => {
+                                      const newBanquet = [...banquets];
+                                      newBanquet[index].banquetName =
+                                        e.target.value;
+                                      setBanquets(newBanquet);
+                                    }}
+                                    className="border border-gray-300 p-2 rounded-md w-full"
+                                  />
+                                </div>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Size
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter size"
+                                  value={banquet.banquetSize}
+                                  onChange={(e) => {
+                                    const newBanquet = [...banquets];
+                                    newBanquet[index].banquetSize =
+                                      e.target.value;
+                                    setBanquets(newBanquet);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Setup
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter setup"
+                                  value={banquet.banquetSetup}
+                                  onChange={(e) => {
+                                    const newBanquet = [...banquets];
+                                    newBanquet[index].banquetSetup =
+                                      e.target.value;
+                                    setBanquets(newBanquet);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Veg Price
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter veg price per plate"
+                                  value={banquet.banquetVegPrice}
+                                  onChange={(e) => {
+                                    const newBanquet = [...banquets];
+                                    newBanquet[index].banquetVegPrice =
+                                      e.target.value;
+                                    setBanquets(newBanquet);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Non Veg Price
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter non veg price per plate"
+                                  value={banquet.banquetNonVegPrice}
+                                  onChange={(e) => {
+                                    const newBanquet = [...banquets];
+                                    newBanquet[index].banquetNonVegPrice =
+                                      e.target.value;
+                                    setBanquets(newBanquet);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Floor
+                                </label>
+                                <select
+                                  value={banquet.banquetFloor}
+                                  onChange={(e) => {
+                                    const newBanquet = [...banquets];
+                                    newBanquet[index].banquetFloor =
+                                      e.target.value;
+                                    setBanquets(newBanquet);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                >
+                                  <option value="">Select Floor</option>
+                                  {floorOptions.map((option) => (
+                                    <option
+                                      key={option}
+                                      value={option.toLowerCase()}
+                                    >
+                                      {option}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+
+                              {/* Image Upload Section */}
+                              <div className="mt-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Banquet Images (XLS, JPG, PNG only, max 10MB)
+                                </label>
+                                <div className="flex items-center gap-4">
+                                  <input
+                                    type="file"
+                                    accept=".xls,.jpg,.png"
+                                    multiple
+                                    onChange={(e) =>
+                                      ImageUpload(
+                                        e,
+                                        index,
+                                        banquets,
+                                        setBanquets,
+                                        "banquetImageUpload"
+                                      )
+                                    }
+                                    className="hidden"
+                                    id={`banquet-image-upload-${index}`}
+                                  />
+                                  <label
+                                    htmlFor={`banquet-image-upload-${index}`}
+                                    className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
+                                  >
+                                    Upload Images
+                                  </label>
+                                  <span className="text-sm text-gray-500">
+                                    {banquet.banquetImageUpload.length} file(s)
+                                    uploaded
+                                  </span>
+                                </div>
+
+                                {/* Display uploaded image names */}
+                                {banquet.banquetImageUpload.length > 0 && (
+                                  <div className="mt-4 flex flex-wrap gap-4">
+                                    {banquet.banquetImageUpload.map(
+                                      (image, imgIndex) => (
+                                        <div
+                                          key={imgIndex}
+                                          className="relative"
+                                        >
+                                          <img
+                                            src={
+                                              image.includes("base64")
+                                                ? image
+                                                : generateFilePath(image)
+                                            }
+                                            alt={`Banquet Image ${
+                                              imgIndex + 1
+                                            }`}
+                                            style={{
+                                              height: 100,
+                                              width: 100,
+                                              objectFit: "cover",
+                                              border: "1px solid #ddd",
+                                              borderRadius: "5px",
+                                            }}
+                                          />
+                                          <button
+                                            type="button"
+                                            onClick={() =>
+                                              RemoveImage(
+                                                index,
+                                                imgIndex,
+                                                banquets,
+                                                setBanquets,
+                                                "banquetImageUpload"
+                                              )
+                                            }
+                                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                                          >
+                                            X
+                                          </button>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+
+                              <div className="mb-4 mt-8">
+                                <label className="inline-flex items-center">
+                                  <input
+                                    type="checkbox"
+                                    checked={isPrefunctionAreaVisible}
+                                    onChange={() =>
+                                      setIsPrefunctionAreaVisible(
+                                        !isPrefunctionAreaVisible
+                                      )
+                                    }
+                                    className="form-checkbox"
+                                  />
+                                  <span className="ml-2">
+                                    "Do you have PFA (prefunction area)"
+                                  </span>
+                                </label>
+
+                                {isPrefunctionAreaVisible && (
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                      Size LXBXH
+                                    </label>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter size"
+                                      value={banquet.prefuntionAreaSize}
+                                      onChange={(e) => {
+                                        const newBanquet = [...banquets];
+                                        newBanquet[index].prefuntionAreaSize =
+                                          e.target.value;
+                                        setBanquets(newBanquet);
+                                      }}
+                                      className="border border-gray-300 p-2 rounded-md w-full"
+                                    />
+                                  </div>
+                                )}
+                              </div>
+
+                              {banquets.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newBanquets = banquets.filter(
+                                      (_, i) => i !== index
+                                    );
+                                    setBanquets(newBanquets);
+                                  }}
+                                  className="mt-2 text-red-500 hover:text-red-700"
+                                >
+                                  Remove Banquet
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mb-4 mt-8">
+                      <label className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={isRestaurantDetailsVisible}
+                          onChange={(e) =>
+                            setIsRestaurantDetailsVisible(e.target.checked)
+                          }
+                          className="form-checkbox"
+                        />
+                        <span className="ml-2">Do you have Restaurant</span>
+                      </label>
+
+                      {isRestaurantDetailsVisible && (
+                        <div className="border rounded-lg mt-8 p-6 shadow">
+                          <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-lg font-bold">
+                              Restaurant Details
+                            </h2>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            {/* Menu Type (Multi-select Dropdown) */}
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Menu Type
+                              </label>
+                              <Select
+                                isMulti
+                                options={[
+                                  { value: "veg", label: "Veg" },
+                                  { value: "non-veg", label: "Non-Veg" },
+                                ]}
+                                value={restaurant.restaurantMenuType.map(
+                                  (type) => ({
+                                    value: type,
+                                    label:
+                                      type.charAt(0).toUpperCase() +
+                                      type.slice(1),
+                                  })
+                                )}
+                                onChange={(selectedOptions) => {
+                                  const newMenuTypes = selectedOptions
+                                    ? selectedOptions.map(
+                                        (option) => option.value
+                                      )
+                                    : [];
+                                  setRestaurant({
+                                    ...restaurant,
+                                    restaurantMenuType: newMenuTypes,
+                                  });
+                                }}
+                                className="basic-multi-select"
+                                classNamePrefix="select"
+                                placeholder="Select menu types"
+                                styles={customReactStylesSmall}
+                              />
+                            </div>
+
+                            {/* Covers (Number of Occupancy) */}
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Covers (No. of Occupancy)
+                              </label>
+                              <input
+                                type="number"
+                                placeholder="Enter number of covers"
+                                value={restaurant.restaurantCovers}
+                                onChange={(e) =>
+                                  setRestaurant({
+                                    ...restaurant,
+                                    restaurantCovers: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
+
+                            {/* Floor Dropdown */}
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Floor
+                              </label>
+                              <select
+                                value={restaurant.restaurantFloor}
+                                onChange={(e) =>
+                                  setRestaurant({
+                                    ...restaurant,
+                                    restaurantFloor: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Floor</option>
+                                {floorOptions.map((option) => (
+                                  <option
+                                    key={option}
+                                    value={option.toLowerCase()}
+                                  >
+                                    {option}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            {/* Swimming Pool Dropdown */}
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Swimming Pool
+                              </label>
+                              <select
+                                value={restaurant.restaurantSwimmingPool}
+                                onChange={(e) =>
+                                  setRestaurant({
+                                    ...restaurant,
+                                    restaurantSwimmingPool: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Option</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          {/* Image Upload Section */}
+                          <div className="mt-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Restaurant Images (XLS, JPG, PNG only, max 10MB)
+                            </label>
+                            <div className="flex items-center gap-4">
+                              <input
+                                type="file"
+                                accept=".xls,.jpg,.png"
+                                multiple
+                                onChange={(e) =>
+                                  handleImageUploadForRestaurant(
+                                    e,
+                                    setRestaurant
+                                  )
+                                }
+                                className="hidden"
+                                id="restaurant-image-upload"
+                              />
+                              <label
+                                htmlFor="restaurant-image-upload"
+                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
+                              >
+                                Upload Images
+                              </label>
+                              <span className="text-sm text-gray-500">
+                                {restaurant.restaurantImageUpload.length}{" "}
+                                file(s) uploaded
+                              </span>
+                            </div>
+
+                            {/* Display uploaded images */}
+                            {restaurant.restaurantImageUpload.length > 0 && (
+                              <div className="mt-4 flex flex-wrap gap-4">
+                                {restaurant.restaurantImageUpload.map(
+                                  (image, imgIndex) => (
+                                    <div key={imgIndex} className="relative">
+                                      <img
+                                        src={
+                                          image.includes("base64")
+                                            ? image
+                                            : generateFilePath(image)
+                                        }
+                                        alt={`Restaurant Image ${imgIndex + 1}`}
+                                        style={{
+                                          height: 100,
+                                          width: 100,
+                                          objectFit: "cover",
+                                          border: "1px solid #ddd",
+                                          borderRadius: "5px",
+                                        }}
+                                      />
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          handleRemoveImageForRestaurant(
+                                            imgIndex,
+                                            setRestaurant
+                                          )
+                                        }
+                                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                                      >
+                                        X
+                                      </button>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {vendor.vendorType.includes("Banquet") && (
+                  <div>
+                    <div className="mb-4 mt-8">
+                      <label className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={isBanquetDetailsVisible}
+                          onChange={(e) =>
+                            setIsBanquetDetailsVisible(e.target.checked)
+                          }
+                          className="form-checkbox"
+                        />
+                        <span className="ml-2">Do you have Banquet</span>
+                      </label>
+
+                      {isBanquetDetailsVisible && (
+                        <div className="border rounded-lg mt-8 p-6 shadow">
+                          <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-lg font-bold">
+                              Banquet Details
+                            </h2>
+                            <button
+                              type="button"
+                              onClick={handleAddBanquet}
+                              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                            >
+                              Add New Banquet
+                            </button>
+                          </div>
+
+                          {banquets.map((banquet, index) => (
+                            <div key={index} className="mb-6 border-b pb-4">
+                              <div className="grid grid-cols-3 gap-4">
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Banquet Category
+                                  </label>
+                                  <select
+                                    value={banquet.banquetCategory}
+                                    onChange={(e) => {
+                                      const newBanquet = [...banquets];
+                                      newBanquet[index].banquetCategory =
+                                        e.target.value;
+                                      setBanquets(newBanquet);
+                                    }}
+                                    className="border border-gray-300 p-2 rounded-md w-full"
+                                  >
+                                    <option value="">Select Category</option>
+                                    {categoryOptions.map((option) => (
+                                      <option
+                                        key={option}
+                                        value={option.toLowerCase()}
+                                      >
+                                        {option}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Name
+                                  </label>
+                                  <input
+                                    type="text"
+                                    placeholder="Enter Name"
+                                    value={banquet.banquetName}
+                                    onChange={(e) => {
+                                      const newBanquet = [...banquets];
+                                      newBanquet[index].banquetName =
+                                        e.target.value;
+                                      setBanquets(newBanquet);
+                                    }}
+                                    className="border border-gray-300 p-2 rounded-md w-full"
+                                  />
+                                </div>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Size
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter size"
+                                  value={banquet.banquetSize}
+                                  onChange={(e) => {
+                                    const newBanquet = [...banquets];
+                                    newBanquet[index].banquetSize =
+                                      e.target.value;
+                                    setBanquets(newBanquet);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Setup
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter setup"
+                                  value={banquet.banquetSetup}
+                                  onChange={(e) => {
+                                    const newBanquet = [...banquets];
+                                    newBanquet[index].banquetSetup =
+                                      e.target.value;
+                                    setBanquets(newBanquet);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Veg Price
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter veg price per plate"
+                                  value={banquet.banquetVegPrice}
+                                  onChange={(e) => {
+                                    const newBanquet = [...banquets];
+                                    newBanquet[index].banquetVegPrice =
+                                      e.target.value;
+                                    setBanquets(newBanquet);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Non Veg Price
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter non veg price per plate"
+                                  value={banquet.banquetNonVegPrice}
+                                  onChange={(e) => {
+                                    const newBanquet = [...banquets];
+                                    newBanquet[index].banquetNonVegPrice =
+                                      e.target.value;
+                                    setBanquets(newBanquet);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Floor
+                                </label>
+                                <select
+                                  value={banquet.banquetFloor}
+                                  onChange={(e) => {
+                                    const newBanquet = [...banquets];
+                                    newBanquet[index].banquetFloor =
+                                      e.target.value;
+                                    setBanquets(newBanquet);
+                                  }}
+                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                >
+                                  <option value="">Select Floor</option>
+                                  {floorOptions.map((option) => (
+                                    <option
+                                      key={option}
+                                      value={option.toLowerCase()}
+                                    >
+                                      {option}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+
+                              {/* Image Upload Section */}
+                              <div className="mt-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Banquet Images (XLS, JPG, PNG only, max 10MB)
+                                </label>
+                                <div className="flex items-center gap-4">
+                                  <input
+                                    type="file"
+                                    accept=".xls,.jpg,.png"
+                                    multiple
+                                    onChange={(e) =>
+                                      ImageUpload(
+                                        e,
+                                        index,
+                                        banquets,
+                                        setBanquets,
+                                        "banquetImageUpload"
+                                      )
+                                    }
+                                    className="hidden"
+                                    id={`banquet-image-upload-${index}`}
+                                  />
+                                  <label
+                                    htmlFor={`banquet-image-upload-${index}`}
+                                    className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
+                                  >
+                                    Upload Images
+                                  </label>
+                                  <span className="text-sm text-gray-500">
+                                    {banquet.banquetImageUpload.length} file(s)
+                                    uploaded
+                                  </span>
+                                </div>
+
+                                {/* Display uploaded image names */}
+                                {banquet.banquetImageUpload.length > 0 && (
+                                  <div className="mt-4 flex flex-wrap gap-4">
+                                    {banquet.banquetImageUpload.map(
+                                      (image, imgIndex) => (
+                                        <div
+                                          key={imgIndex}
+                                          className="relative"
+                                        >
+                                          <img
+                                            src={
+                                              image.includes("base64")
+                                                ? image
+                                                : generateFilePath(image)
+                                            }
+                                            alt={`Banquet Image ${
+                                              imgIndex + 1
+                                            }`}
+                                            style={{
+                                              height: 100,
+                                              width: 100,
+                                              objectFit: "cover",
+                                              border: "1px solid #ddd",
+                                              borderRadius: "5px",
+                                            }}
+                                          />
+                                          <button
+                                            type="button"
+                                            onClick={() =>
+                                              RemoveImage(
+                                                index,
+                                                imgIndex,
+                                                banquets,
+                                                setBanquets,
+                                                "banquetImageUpload"
+                                              )
+                                            }
+                                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                                          >
+                                            X
+                                          </button>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+
+                              <div className="mb-4 mt-8">
+                                <label className="inline-flex items-center">
+                                  <input
+                                    type="checkbox"
+                                    checked={isPrefunctionAreaVisible}
+                                    onChange={() =>
+                                      setIsPrefunctionAreaVisible(
+                                        !isPrefunctionAreaVisible
+                                      )
+                                    }
+                                    className="form-checkbox"
+                                  />
+                                  <span className="ml-2">
+                                    "Do you have PFA (prefunction area)"
+                                  </span>
+                                </label>
+
+                                {isPrefunctionAreaVisible && (
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                      Size LXBXH
+                                    </label>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter size"
+                                      value={banquet.prefuntionAreaSize}
+                                      onChange={(e) => {
+                                        const newBanquet = [...banquets];
+                                        newBanquet[index].prefuntionAreaSize =
+                                          e.target.value;
+                                        setBanquets(newBanquet);
+                                      }}
+                                      className="border border-gray-300 p-2 rounded-md w-full"
+                                    />
+                                  </div>
+                                )}
+                              </div>
+
+                              {banquets.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newBanquets = banquets.filter(
+                                      (_, i) => i !== index
+                                    );
+                                    setBanquets(newBanquets);
+                                  }}
+                                  className="mt-2 text-red-500 hover:text-red-700"
+                                >
+                                  Remove Banquet
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {vendor.vendorType.includes("Event Companies") && (
+                  <div>
+                    {/* Services Section */}
+                    <div className="mb-4 mt-8">
+                      <div className="border rounded-lg mt-8 p-6 shadow">
+                        <div className="flex justify-between items-center mb-4">
+                          <h2 className="text-lg font-bold">Event Services</h2>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setEventServices([
+                                ...eventServices,
+                                { services: "", rate: "" },
+                              ])
+                            }
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                          >
+                            Add Services
+                          </button>
+                        </div>
+
+                        {eventServices.map((service, index) => (
+                          <div
+                            key={index}
+                            className="mb-4 flex items-center gap-4"
+                          >
+                            {/* Services Dropdown */}
+                            <div className="flex-1">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Services
+                              </label>
+                              <select
+                                value={service.services}
+                                onChange={(e) => {
+                                  const newServices = [...eventServices];
+                                  newServices[index].services = e.target.value;
+                                  setEventServices(newServices);
+                                }}
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Service</option>
+                                <option value="catering">Catering</option>
+                                <option value="decoration">Decoration</option>
+                                <option value="photography">Photography</option>
+                                <option value="entertainment">
+                                  Entertainment
+                                </option>
+                                <option value="venue">Venue</option>
+                              </select>
+                            </div>
+
+                            {/* Rate Input */}
+                            <div className="flex-1">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Rate
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Enter rate"
+                                value={service.rate}
+                                onChange={(e) => {
+                                  const newServices = [...eventServices];
+                                  newServices[index].rate = e.target.value;
+                                  setEventServices(newServices);
+                                }}
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
+
+                            {/* Remove Button */}
+                            {eventServices.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newServices = eventServices.filter(
+                                    (_, i) => i !== index
+                                  );
+                                  setEventServices(newServices);
+                                }}
+                                className="text-red-500 hover:text-red-700 mt-6"
+                              >
+                                Remove
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Location Section */}
+                    <div className="mb-4 mt-8">
+                      <div className="border rounded-lg mt-8 p-6 shadow">
+                        <h2 className="text-lg font-bold mb-4">Location</h2>
+                        <div className="grid grid-cols-2 gap-6">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              State
+                            </label>
+                            <input
+                              type="text"
+                              value={eventLocation.state}
+                              onChange={(e) =>
+                                setEventLocation({
+                                  ...eventLocation,
+                                  state: e.target.value,
+                                })
+                              }
+                              className="w-full border border-gray-300 rounded-md p-2"
+                              placeholder="Enter state"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              City
+                            </label>
+                            <input
+                              type="text"
+                              value={eventLocation.city}
+                              onChange={(e) =>
+                                setEventLocation({
+                                  ...eventLocation,
+                                  city: e.target.value,
+                                })
+                              }
+                              className="w-full border border-gray-300 rounded-md p-2"
+                              placeholder="Enter city"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Area
+                            </label>
+                            <input
+                              type="text"
+                              value={eventLocation.area}
+                              onChange={(e) =>
+                                setEventLocation({
+                                  ...eventLocation,
+                                  area: e.target.value,
+                                })
+                              }
+                              className="w-full border border-gray-300 rounded-md p-2"
+                              placeholder="Enter area"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Service Areas
+                            </label>
+                            <Select
+                              isMulti
+                              options={stateOptions}
+                              value={eventLocation.serviceAreas.map((area) => ({
+                                value: area,
+                                label:
+                                  stateOptions.find((opt) => opt.value === area)
+                                    ?.label || area,
+                              }))}
+                              onChange={(selectedOptions) => {
+                                const newServiceAreas = selectedOptions
+                                  ? selectedOptions.map(
+                                      (option) => option.value
+                                    )
+                                  : [];
+                                setEventLocation({
+                                  ...eventLocation,
+                                  serviceAreas: newServiceAreas,
+                                });
+                              }}
+                              className="basic-multi-select"
+                              classNamePrefix="select"
+                              placeholder="Select service areas"
+                              styles={customReactStylesSmall}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {vendor.vendorType.includes("Transport Service") && (
+                  <div className="mb-4 mt-8">
+                    <div className="border rounded-lg mt-8 p-6 shadow">
+                      <h2 className="text-lg font-bold mb-4">
+                        Location Details
+                      </h2>
+                      <div className="grid grid-cols-2 gap-6">
+                        {/* State Dropdown */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            State
+                          </label>
+                          <select
+                            value={transportLocation.state}
+                            onChange={(e) =>
+                              setTransportLocation({
+                                ...transportLocation,
+                                state: e.target.value,
+                              })
+                            }
+                            className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                          >
+                            <option value="">Select State</option>
+                            {stateOptions.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* City Dropdown */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            City
+                          </label>
+                          <select
+                            value={transportLocation.city}
+                            onChange={(e) =>
+                              setTransportLocation({
+                                ...transportLocation,
+                                city: e.target.value,
+                              })
+                            }
+                            className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                          >
+                            <option value="">Select City</option>
+                            <option value="mumbai">Mumbai</option>
+                            <option value="delhi">Delhi</option>
+                            <option value="bangalore">Bangalore</option>
+                            <option value="chennai">Chennai</option>
+                            <option value="kolkata">Kolkata</option>
+                          </select>
+                        </div>
+
+                        {/* How do you travel Checkboxes */}
+                        <div className="col-span-2">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            How do you travel?
+                          </label>
+                          <div className="flex gap-6">
+                            <label className="inline-flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={transportLocation.travelLocal}
+                                onChange={(e) =>
+                                  setTransportLocation({
+                                    ...transportLocation,
+                                    travelLocal: e.target.checked,
+                                  })
+                                }
+                                className="form-checkbox"
+                              />
+                              <span className="ml-2">Local</span>
+                            </label>
+                            <label className="inline-flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={transportLocation.travelOutStation}
+                                onChange={(e) =>
+                                  setTransportLocation({
+                                    ...transportLocation,
+                                    travelOutStation: e.target.checked,
+                                  })
+                                }
+                                className="form-checkbox"
+                              />
+                              <span className="ml-2">Out-station</span>
+                            </label>
+                          </div>
+                        </div>
+
+                        {/* Service Areas Multi-Select */}
+                        <div className="col-span-2">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Service Areas
+                          </label>
+                          <Select
+                            isMulti
+                            options={stateOptions}
+                            value={transportLocation.serviceAreas.map(
+                              (area) => ({
+                                value: area,
+                                label:
+                                  stateOptions.find((opt) => opt.value === area)
+                                    ?.label || area,
+                              })
+                            )}
+                            onChange={(selectedOptions) => {
+                              const newServiceAreas = selectedOptions
+                                ? selectedOptions.map((option) => option.value)
+                                : [];
+                              setTransportLocation({
+                                ...transportLocation,
+                                serviceAreas: newServiceAreas,
+                              });
+                            }}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            placeholder="Select service areas"
+                            styles={customReactStylesSmall}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Car Details Block */}
+                {(transportLocation.travelLocal ||
+                  transportLocation.travelOutStation) && (
+                  <div className="border rounded-lg mt-8 p-6 shadow">
+                    <div className="mt-6">
+                      <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-bold">Car Details</h2>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setTransportLocation({
+                              ...transportLocation,
+                              carDetails: [
+                                ...transportLocation.carDetails,
+                                {
+                                  carType: "",
+                                  numberOfCars: 0,
+                                  fourHr40Km: "",
+                                  eightHr80Km: "",
+                                  fullDay100Km: "",
+                                  airportTransfer: "",
+                                },
+                              ],
+                            })
+                          }
+                          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                        >
+                          Add Car
+                        </button>
+                      </div>
+
+                      {transportLocation.carDetails.map((car, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-4 mb-4"
+                        >
+                          {/* Car Type Dropdown */}
+                          <div className="flex-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Car Type
+                            </label>
+                            <select
+                              value={car.carType}
+                              onChange={(e) => {
+                                const newCarDetails = [
+                                  ...transportLocation.carDetails,
+                                ];
+                                newCarDetails[index].carType = e.target.value;
+                                setTransportLocation({
+                                  ...transportLocation,
+                                  carDetails: newCarDetails,
+                                });
+                              }}
+                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                            >
+                              <option value="">Select Car Type</option>
+                              <option value="sedan">Sedan</option>
+                              <option value="suv">SUV</option>
+                              <option value="van">Van</option>
+                              <option value="luxury">Luxury</option>
+                            </select>
+                          </div>
+
+                          {/* Number of Cars Input */}
+                          <div className="flex-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              No. of Cars
+                            </label>
+                            <input
+                              type="number"
+                              value={car.numberOfCars}
+                              onChange={(e) => {
+                                const newCarDetails = [
+                                  ...transportLocation.carDetails,
+                                ];
+                                newCarDetails[index].numberOfCars =
+                                  parseInt(e.target.value) || 0;
+                                setTransportLocation({
+                                  ...transportLocation,
+                                  carDetails: newCarDetails,
+                                });
+                              }}
+                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              placeholder="No. of Cars"
+                            />
+                          </div>
+
+                          {/* 4hr 40km Input */}
+                          <div className="flex-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              4hr 40km
+                            </label>
+                            <input
+                              type="text"
+                              value={car.fourHr40Km}
+                              onChange={(e) => {
+                                const newCarDetails = [
+                                  ...transportLocation.carDetails,
+                                ];
+                                newCarDetails[index].fourHr40Km =
+                                  e.target.value;
+                                setTransportLocation({
+                                  ...transportLocation,
+                                  carDetails: newCarDetails,
+                                });
+                              }}
+                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              placeholder="4hr 40km Rate"
+                            />
+                          </div>
+
+                          {/* 8hr 80km Input */}
+                          <div className="flex-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              8hr 80km
+                            </label>
+                            <input
+                              type="text"
+                              value={car.eightHr80Km}
+                              onChange={(e) => {
+                                const newCarDetails = [
+                                  ...transportLocation.carDetails,
+                                ];
+                                newCarDetails[index].eightHr80Km =
+                                  e.target.value;
+                                setTransportLocation({
+                                  ...transportLocation,
+                                  carDetails: newCarDetails,
+                                });
+                              }}
+                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              placeholder="8hr 80km Rate"
+                            />
+                          </div>
+
+                          {/* Full Day 100km Input */}
+                          <div className="flex-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Full Day 100km
+                            </label>
+                            <input
+                              type="text"
+                              value={car.fullDay100Km}
+                              onChange={(e) => {
+                                const newCarDetails = [
+                                  ...transportLocation.carDetails,
+                                ];
+                                newCarDetails[index].fullDay100Km =
+                                  e.target.value;
+                                setTransportLocation({
+                                  ...transportLocation,
+                                  carDetails: newCarDetails,
+                                });
+                              }}
+                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              placeholder="Full Day 100km Rate"
+                            />
+                          </div>
+
+                          {/* Airport Transfer Input */}
+                          <div className="flex-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Airport Transfer
+                            </label>
+                            <input
+                              type="text"
+                              value={car.airportTransfer}
+                              onChange={(e) => {
+                                const newCarDetails = [
+                                  ...transportLocation.carDetails,
+                                ];
+                                newCarDetails[index].airportTransfer =
+                                  e.target.value;
+                                setTransportLocation({
+                                  ...transportLocation,
+                                  carDetails: newCarDetails,
+                                });
+                              }}
+                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              placeholder="Airport Transfer Rate"
+                            />
+                          </div>
+
+                          {/* Remove Button */}
+                          {transportLocation.carDetails.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newCarDetails =
+                                  transportLocation.carDetails.filter(
+                                    (_, i) => i !== index
+                                  );
+                                setTransportLocation({
+                                  ...transportLocation,
+                                  carDetails: newCarDetails,
+                                });
+                              }}
+                              className="text-red-500 hover:text-red-700 mt-6"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="border rounded-lg mt-8 p-6 shadow">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-lg font-bold">Bank Details</h2>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Bank Name
+                    </label>
+                    <input
+                      type="text"
+                      name="bankName"
+                      value={bankDetails.bankName}
+                      onChange={(e) =>
+                        setBankDetails({
+                          ...bankDetails,
+                          bankName: e.target.value,
+                        })
+                      }
+                      placeholder="Bank Name"
+                      className="w-full border border-gray-300 rounded-md p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Bank Account Number
+                    </label>
+                    <input
+                      type="number"
+                      name="bankAccountNumber"
+                      value={bankDetails.bankAccountNumber}
+                      onChange={(e) =>
+                        setBankDetails({
+                          ...bankDetails,
+                          bankAccountNumber: e.target.value,
+                        })
+                      }
+                      placeholder="Bank Account Number"
+                      className="w-full border border-gray-300 rounded-md p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      IFSC Code
+                    </label>
+                    <input
+                      type="text"
+                      name="ifsc"
+                      value={bankDetails.ifsc}
+                      onChange={(e) =>
+                        setBankDetails({
+                          ...bankDetails,
+                          ifsc: e.target.value,
+                        })
+                      }
+                      placeholder="IFSC Code"
+                      className="w-full border border-gray-300 rounded-md p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Point of Contact
+                    </label>
+                    <input
+                      type="text"
+                      name="pointOfContact"
+                      value={bankDetails.pointOfContact}
+                      onChange={(e) =>
+                        setBankDetails({
+                          ...bankDetails,
+                          pointOfContact: e.target.value,
+                        })
+                      }
+                      placeholder="Point of Contact"
+                      className="w-full border border-gray-300 rounded-md p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={bankDetails.email}
+                      onChange={(e) =>
+                        setBankDetails({
+                          ...bankDetails,
+                          email: e.target.value,
+                        })
+                      }
+                      placeholder="Email"
+                      className="w-full border border-gray-300 rounded-md p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="text"
+                      name="phoneNumber"
+                      value={bankDetails.phoneNumber}
+                      onChange={(e) =>
+                        setBankDetails({
+                          ...bankDetails,
+                          phoneNumber: e.target.value,
+                        })
+                      }
+                      placeholder="Phone Number"
+                      className="w-full border border-gray-300 rounded-md p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Billing Address
+                    </label>
+                    <input
+                      type="text"
+                      name="billingAddress"
+                      value={bankDetails.billingAddress}
+                      onChange={(e) =>
+                        setBankDetails({
+                          ...bankDetails,
+                          billingAddress: e.target.value,
+                        })
+                      }
+                      placeholder="Billing Address"
+                      className="w-full border border-gray-300 rounded-md p-2"
+                    />
                   </div>
                 </div>
 
@@ -1506,7 +4018,6 @@ const AddVendorForm = () => {
                                 onChange={(e) => {
                                   const files = e.target.files;
                                   if (files) {
-                                    // Filter for only PDF and JPEG files
                                     const validFiles = Array.from(files).filter(
                                       (file) =>
                                         file.type === "application/pdf" ||
@@ -1519,12 +4030,11 @@ const AddVendorForm = () => {
                                       );
                                     }
 
-                                    // Update selectedFiles with only valid files
                                     setSelectedFiles((prev) => [
                                       ...prev,
                                       ...validFiles,
                                     ]);
-                                    handleImageUpload(e, setUploadFiles); // Your existing upload logic
+                                    handleImageUpload(e, setUploadFiles);
                                   }
                                 }}
                                 className="hidden"
@@ -1590,32 +4100,49 @@ const AddVendorForm = () => {
                               </div>
                             </div>
                           )}
-                          <div
-                            style={{ display: "flex", flexWrap: "wrap" }}
-                            className="gap-4 mt-4"
-                          >
-                            {otherDetails &&
-                              otherDetails.documents.length > 0 &&
-                              otherDetails.documents.map((image, index) => (
-                                <img
-                                  key={index}
-                                  style={{
-                                    height: 100,
-                                    width: 100,
-                                    objectFit: "cover",
-                                    border: "1px solid #ddd",
-                                    borderRadius: "5px",
-                                    marginTop: "10px",
-                                  }}
-                                  src={
-                                    image?.includes("base64")
-                                      ? image
-                                      : generateFilePath(image)
-                                  }
-                                  alt={`Image Preview ${index + 1}`}
-                                />
-                              ))}
-                          </div>
+                          {otherDetails.documents &&
+                            otherDetails.documents.length > 0 && (
+                              <div
+                                style={{ display: "flex", flexWrap: "wrap" }}
+                                className="gap-4 mt-4"
+                              >
+                                {otherDetails.documents.map((doc, index) => (
+                                  <div key={index} className="relative">
+                                    <a
+                                      href={
+                                        doc.includes("base64")
+                                          ? doc
+                                          : generateFilePath(doc)
+                                      }
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-blue-500 hover:underline"
+                                    >
+                                      Document {index + 1} (Preview)
+                                    </a>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const newDocuments = [
+                                          ...otherDetails.documents,
+                                        ];
+                                        newDocuments.splice(index, 1);
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          documents: newDocuments,
+                                        });
+                                        toastSuccess(
+                                          "Document removed successfully"
+                                        );
+                                      }}
+                                      className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600 ml-2"
+                                    >
+                                      X
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                         </div>
                         {/* Add More Details Section */}
                         <div className="mt-6">
@@ -2363,130 +4890,6 @@ const AddVendorForm = () => {
                               <span className="min-w-32 text-base font-medium text-gray-700">
                                 Country / Region:
                               </span>
-                              {/* <select
-                                value={formData.shippingCountryRegion}
-                                onChange={(e) =>
-                                  setFormData({
-                                    ...formData,
-                                    shippingCountryRegion: e.target.value,
-                                  })
-                                }
-                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                              >
-                                <option value="">Select Country/Region</option>
-                                <option value="US - United States">
-                                  US - United States
-                                </option>
-                                <option value="CA - Canada">CA - Canada</option>
-                                <option value="GB - United Kingdom">
-                                  GB - United Kingdom
-                                </option>
-                                <option value="AU - Australia">
-                                  AU - Australia
-                                </option>
-                                <option value="IN - India">IN - India</option>
-                                <option value="CN - China">CN - China</option>
-                                <option value="JP - Japan">JP - Japan</option>
-                                <option value="DE - Germany">
-                                  DE - Germany
-                                </option>
-                                <option value="FR - France">FR - France</option>
-                                <option value="IT - Italy">IT - Italy</option>
-                                <option value="ES - Spain">ES - Spain</option>
-                                <option value="BR - Brazil">BR - Brazil</option>
-                                <option value="MX - Mexico">MX - Mexico</option>
-                                <option value="ZA - South Africa">
-                                  ZA - South Africa
-                                </option>
-                                <option value="RU - Russia">RU - Russia</option>
-                                <option value="KR - South Korea">
-                                  KR - South Korea
-                                </option>
-                                <option value="AR - Argentina">
-                                  AR - Argentina
-                                </option>
-                                <option value="NG - Nigeria">
-                                  NG - Nigeria
-                                </option>
-                                <option value="EG - Egypt">EG - Egypt</option>
-                                <option value="SE - Sweden">SE - Sweden</option>
-                                <option value="NO - Norway">NO - Norway</option>
-                                <option value="FI - Finland">
-                                  FI - Finland
-                                </option>
-                                <option value="PL - Poland">PL - Poland</option>
-                                <option value="GR - Greece">GR - Greece</option>
-                                <option value="TR - Turkey">TR - Turkey</option>
-                                <option value="PH - Philippines">
-                                  PH - Philippines
-                                </option>
-                                <option value="TH - Thailand">
-                                  TH - Thailand
-                                </option>
-                                <option value="SG - Singapore">
-                                  SG - Singapore
-                                </option>
-                                <option value="HK - Hong Kong">
-                                  HK - Hong Kong
-                                </option>
-                                <option value="MY - Malaysia">
-                                  MY - Malaysia
-                                </option>
-                                <option value="KR - South Korea">
-                                  KR - South Korea
-                                </option>
-                                <option value="CH - Switzerland">
-                                  CH - Switzerland
-                                </option>
-                                <option value="BE - Belgium">
-                                  BE - Belgium
-                                </option>
-                                <option value="NL - Netherlands">
-                                  NL - Netherlands
-                                </option>
-                                <option value="PL - Poland">PL - Poland</option>
-                                <option value="UA - Ukraine">
-                                  UA - Ukraine
-                                </option>
-                                <option value="CZ - Czech Republic">
-                                  CZ - Czech Republic
-                                </option>
-                                <option value="SK - Slovakia">
-                                  SK - Slovakia
-                                </option>
-                                <option value="RO - Romania">
-                                  RO - Romania
-                                </option>
-                                <option value="BG - Bulgaria">
-                                  BG - Bulgaria
-                                </option>
-                                <option value="PT - Portugal">
-                                  PT - Portugal
-                                </option>
-                                <option value="AT - Austria">
-                                  AT - Austria
-                                </option>
-                                <option value="KE - Kenya">KE - Kenya</option>
-                                <option value="AE - United Arab Emirates">
-                                  AE - United Arab Emirates
-                                </option>
-                                <option value="SA - Saudi Arabia">
-                                  SA - Saudi Arabia
-                                </option>
-                                <option value="KW - Kuwait">KW - Kuwait</option>
-                                <option value="IQ - Iraq">IQ - Iraq</option>
-                                <option value="ID - Indonesia">
-                                  ID - Indonesia
-                                </option>
-                                <option value="VN - Vietnam">
-                                  VN - Vietnam
-                                </option>
-                                <option value="PE - Peru">PE - Peru</option>
-                                <option value="CO - Colombia">
-                                  CO - Colombia
-                                </option>
-                                <option value="CL - Chile">CL - Chile</option>
-                              </select> */}
                               <Autocomplete
                                 disablePortal
                                 options={countryOptions}
@@ -2595,111 +4998,6 @@ const AddVendorForm = () => {
                               <span className="min-w-32 text-base font-medium text-gray-700">
                                 State:
                               </span>
-                              {/* <select
-                                value={formData.shippingState}
-                                onChange={(e) =>
-                                  setFormData({
-                                    ...formData,
-                                    shippingState: e.target.value,
-                                  })
-                                }
-                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                              >
-                                <option value="">Select State</option>
-                                <option value="AP - Andhra Pradesh">
-                                  AP - Andhra Pradesh
-                                </option>
-                                <option value="AR - Arunachal Pradesh">
-                                  AR - Arunachal Pradesh
-                                </option>
-                                <option value="AS - Assam">AS - Assam</option>
-                                <option value="BR - Bihar">BR - Bihar</option>
-                                <option value="CT - Chhattisgarh">
-                                  CT - Chhattisgarh
-                                </option>
-                                <option value="GA - Goa">GA - Goa</option>
-                                <option value="GJ - Gujarat">
-                                  GJ - Gujarat
-                                </option>
-                                <option value="HR - Haryana">
-                                  HR - Haryana
-                                </option>
-                                <option value="HP - Himachal Pradesh">
-                                  HP - Himachal Pradesh
-                                </option>
-                                <option value="JK - Jammu and Kashmir">
-                                  JK - Jammu and Kashmir
-                                </option>
-                                <option value="JH - Jharkhand">
-                                  JH - Jharkhand
-                                </option>
-                                <option value="KA - Karnataka">
-                                  KA - Karnataka
-                                </option>
-                                <option value="KL - Kerala">KL - Kerala</option>
-                                <option value="MP - Madhya Pradesh">
-                                  MP - Madhya Pradesh
-                                </option>
-                                <option value="MH - Maharashtra">
-                                  MH - Maharashtra
-                                </option>
-                                <option value="MN - Manipur">
-                                  MN - Manipur
-                                </option>
-                                <option value="ML - Meghalaya">
-                                  ML - Meghalaya
-                                </option>
-                                <option value="MZ - Mizoram">
-                                  MZ - Mizoram
-                                </option>
-                                <option value="NL - Nagaland">
-                                  NL - Nagaland
-                                </option>
-                                <option value="OD - Odisha">OD - Odisha</option>
-                                <option value="PB - Punjab">PB - Punjab</option>
-                                <option value="RJ - Rajasthan">
-                                  RJ - Rajasthan
-                                </option>
-                                <option value="SK - Sikkim">SK - Sikkim</option>
-                                <option value="TN - Tamil Nadu">
-                                  TN - Tamil Nadu
-                                </option>
-                                <option value="TS - Telangana">
-                                  TS - Telangana
-                                </option>
-                                <option value="UP - Uttar Pradesh">
-                                  UP - Uttar Pradesh
-                                </option>
-                                <option value="UK - Uttarakhand">
-                                  UK - Uttarakhand
-                                </option>
-                                <option value="WB - West Bengal">
-                                  WB - West Bengal
-                                </option>
-                                <option value="AN - Andaman and Nicobar Islands">
-                                  AN - Andaman and Nicobar Islands
-                                </option>
-                                <option value="CH - Chandigarh">
-                                  CH - Chandigarh
-                                </option>
-                                <option value="DN - Dadra and Nagar Haveli and Daman and Diu">
-                                  DN - Dadra and Nagar Haveli and Daman and Diu
-                                </option>
-                                <option value="DD - Lakshadweep">
-                                  DD - Lakshadweep
-                                </option>
-                                <option value="DL - Delhi">DL - Delhi</option>
-                                <option value="PY - Puducherry">
-                                  PY - Puducherry
-                                </option>
-                                <option value="LD - Ladakh">LD - Ladakh</option>
-                                <option value="LC - Lakshadweep">
-                                  LC - Lakshadweep
-                                </option>
-                                <option value="TN - Tamil Nadu">
-                                  TN - Tamil Nadu
-                                </option>
-                              </select> */}
                               <Autocomplete
                                 disablePortal
                                 options={stateOptions}
@@ -2980,6 +5278,13 @@ const AddVendorForm = () => {
 
           {/* Buttons */}
           <div className="flex justify-end gap-4 mt-8">
+            <button
+              type="button"
+              onClick={populateDemoData}
+              className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+            >
+              Populate Demo Data
+            </button>
             <button
               type="button"
               onClick={() => navigate(-1)}

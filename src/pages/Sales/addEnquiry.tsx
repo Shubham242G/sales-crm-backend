@@ -98,7 +98,7 @@ const AddEnquiryForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [salutation, setSalutation] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [enquiryType, setEnquiryType] = useState("");
   const [levelOfEnquiry, setLevelOfEnquiry] = useState("");
@@ -391,7 +391,7 @@ const AddEnquiryForm = () => {
         setCompanyName(value);
         break;
       case "phoneNumber":
-        setPhone(value);
+        setPhoneNumber(value);
         break;
       case "email":
         setEmail(value);
@@ -444,7 +444,7 @@ const AddEnquiryForm = () => {
         "event start data: ",
         enquiryDataById.data.eventSetup.eventEndDate
       );
-      setAirTickets(enquiryDataById?.data?.airTickets);
+      setAirTickets(enquiryDataById?.data?.airTickets || airTickets);
       console.log("Fetched eventSetup:", eventSetup);
       setEventSetup({
         functionType: eventSetup.functionType || "",
@@ -467,7 +467,7 @@ const AddEnquiryForm = () => {
         "room category",
         enquiryDataById?.data?.room[0]?.roomCategory
       );
-      setPhone(enquiryDataById?.data?.phone);
+      setPhoneNumber(enquiryDataById?.data?.phoneNumber);
       setHotelName(enquiryDataById?.data?.hotelName);
       setApproxPassengers(enquiryDataById?.data?.approxPassengers);
       setOthersPreference(enquiryDataById?.data?.othersPreference);
@@ -486,8 +486,14 @@ const AddEnquiryForm = () => {
       setLastName(enquiryDataById?.data?.lastName);
       setSalutation(enquiryDataById?.data?.salutation);
 
+      setIsOutOfStation(
+        !!enquiryDataById?.data?.cab?.some((c: Cab) => c.fromCity && c.toCity)
+      );
+
       setCab(enquiryDataById?.data?.cab);
       //  setUser(enquiryDataById?.data)
+      setIsEventSetupVisible(!!enquiryDataById.data.eventSetup?.functionType);
+      setIsAirTicketVisible(!!enquiryDataById.data.airTickets?.tripType);
     }
   }, [enquiryDataById]);
 
@@ -509,7 +515,7 @@ const AddEnquiryForm = () => {
         salutation: salutation,
         firstName: firstName,
         lastName: lastName,
-        phone: phone,
+        phoneNumber: phoneNumber,
         email: email,
         companyName: companyName,
         levelOfEnquiry,
@@ -545,7 +551,7 @@ const AddEnquiryForm = () => {
       console.log("User Details:", {
         firstName: obj.firstName,
         lastName: obj.lastName,
-        phone: obj.phone,
+        phoneNumber: obj.phoneNumber,
         email: obj.email,
         companyName: obj.companyName,
         levelOfEnquiry: obj.levelOfEnquiry,
@@ -769,10 +775,10 @@ const AddEnquiryForm = () => {
                 Phone Number
               </label>
               <input
-                type="number"
+                type="text"
                 name="phoneNumber"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="Phone Number"
                 className="w-full border border-gray-300 rounded-md p-2"
               />
