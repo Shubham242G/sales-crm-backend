@@ -1,7 +1,7 @@
 import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
@@ -36,6 +36,8 @@ function CustomerLedger() {
         const { data: res } = await deleteQuotesFromVendors(id);
         if (res) {
           toastSuccess(res.message);
+          // navigate("/quotesFromVendors")
+          // Optionally refresh the data
         }
       }
     } catch (error) {
