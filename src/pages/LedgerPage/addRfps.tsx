@@ -6,10 +6,12 @@ import {
   useUpdateRfpById,
   useRfpById,
 } from "@/services/rfp.service";
-import { useVendor } from "@/services/vendor.service";
+import { useVendor, useVendorName } from "@/services/vendor.service";
 import Select from "react-select";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import moment from "moment";
+import { AiOutlineConsoleSql } from "react-icons/ai";
+import { PiCornersOutFill } from "react-icons/pi";
 
 interface IVendorList {
   label: string;
@@ -52,15 +54,29 @@ const AddRfpsForm = () => {
   const [vendorArr, setVendorArr] = useState<any>([]);
   const [selectedVendors, setSelectedVendors] = useState<any>([]);
 
-  useEffect(() => {
-    if (vendorData && vendorData.data) {
-      const formattedVendors = vendorData.data.map((el: any) => ({
-        value: el._id,
-        label: `${el.vendor?.firstName} ${el.vendor?.lastName}`,
-      }));
-      setVendorArr(formattedVendors);
-    }
-  }, [vendorData]);
+  const { data: vendorNames } = useVendorName();
+
+  // console.log(res, "check the data of vendor Names");
+  // useEffect(() => {
+  //   if (vendorNames?.data?.length  > 0) {
+  //     console.log(vendorNames.data[1]?.fullName || "No second vendor found");
+
+  //     const formattedVendors = vendorNames.data.map((el: any) => ({
+  //       value: el.fullName,
+  //       label: el.fullName,
+  //     }));
+
+  //     console.log(formattedVendors, "check formatted");
+  //     setVendorArr(formattedVendors);
+  //   }
+  // }, [vendorNames]);
+
+  const option = vendorNames.data.map((el: any) => ({
+    value: el.fullName,
+    label: el.fullName,
+  }));
+
+  console.log(vendorArr, "check vendorArr");
 
   useEffect(() => {
     if (!isLoading && rfpDataById?.data) {
@@ -322,7 +338,7 @@ const AddRfpsForm = () => {
               className="w-full border"
               isMulti
               value={formData?.vendorList}
-              options={vendorArr}
+              options={option}
               onChange={(val) => {
                 setFormData((prev: any) => ({
                   ...prev,

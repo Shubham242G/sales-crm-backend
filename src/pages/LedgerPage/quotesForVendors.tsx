@@ -5,15 +5,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
-import { useQuotesFromVendors, useQuotesFromVendorsById } from "@/services/quotesFromVendors.service";
+import {
+  useQuotesFromVendors,
+  useQuotesFromVendorsById,
+  usedeleteQuotesFromVendorsById,
+} from "@/services/quotesFromVendors.service";
+import { toastError, toastSuccess } from "@/utils/toast";
 
 function CustomerLedger() {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const {data: quotesFromVendors, isLoading} = useQuotesFromVendors();  
-  // const {data: quotesFromVendorsIdData,} = useQuotesFromVendorsById(); 
+  const { data: quotesFromVendors, isLoading } = useQuotesFromVendors();
 
+  const { mutateAsync: deleteQuotesFromVendors } =
+    usedeleteQuotesFromVendorsById();
+  // const {data: quotesFromVendorsIdData,} = useQuotesFromVendorsById();
 
   // ledger details modal
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
@@ -22,12 +29,26 @@ function CustomerLedger() {
   };
 
   const navigate = useNavigate();
+
+  const handleDelete = async (id: string) => {
+    try {
+      if (window.confirm("Are you sure you want to delete this enquiry?")) {
+        const { data: res } = await deleteQuotesFromVendors(id);
+        if (res) {
+          toastSuccess(res.message);
+        }
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  };
+
   const columns = [
     {
       name: "Quotes Id",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row? console.log(row, "row") : row.quotesId}</h6>
+          <h6>{row.quotesId}</h6>
         </div>
       ),
       width: "10%",
@@ -36,7 +57,7 @@ function CustomerLedger() {
       name: "Vendor Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.vendorName}</h6>
+          <h6>{row.vendorList.label}</h6>
         </div>
       ),
       width: "10%",
@@ -45,7 +66,7 @@ function CustomerLedger() {
       name: "RPFs Id",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.rfqId}</h6>
+          <h6>{row.rfpId}</h6>
         </div>
       ),
       width: "10%",
@@ -55,8 +76,7 @@ function CustomerLedger() {
       selector: (row: any) => (
         <>
           <div className="flex justify-around">
-            {row.serviceType
-.map((e: any, index: number) => (
+            {row.serviceType.map((e: any, index: number) => (
               <div
                 key={index}
                 className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
@@ -91,12 +111,13 @@ function CustomerLedger() {
       name: "Status",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col p-2 rounded-md text-white ${row.status === "Pending"
-            ? "bg-yellow-200 text-yellow-500"
-            : row.status === "Reviewed"
+          className={`flex gap-1 flex-col p-2 rounded-md text-white ${
+            row.status === "Pending"
+              ? "bg-yellow-200 text-yellow-500"
+              : row.status === "Reviewed"
               ? "bg-green-300 text-green-600"
               : "bg-red-200 text-red-600"
-            }`}
+          }`}
         >
           <h6>{row.status}</h6>
         </div>
@@ -107,18 +128,19 @@ function CustomerLedger() {
     {
       name: "Action",
       width: "10%",
-      selector: () => (
+      selector: (row: any) => (
         <div className="flex items-center gap-3">
           <Link
-            to="/view-quotesFromVendor"
+            to={`/addQuotesFromVendors/${row._id}`}
             className="  p-[6px] text-black-400 text-lg"
           >
             <FaEye />
           </Link>
 
           <Link
-            to="/update-ledger/id=1234"
+            to="/quotesFromVendors"
             className="  p-[6px] text-black-400 text-lg"
+            onClick={() => handleDelete(row._id)}
           >
             <RiDeleteBin6Line />
           </Link>
@@ -128,7 +150,6 @@ function CustomerLedger() {
   ];
 
   // Sample data
-  
 
   return (
     <>
@@ -149,7 +170,7 @@ function CustomerLedger() {
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
-              Quotes from  Vendor
+              Quotes from Vendor
             </h2>
 
             {/* Search and Buttons on the Right */}
@@ -169,9 +190,10 @@ function CustomerLedger() {
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
-              <button 
-              onClick={() => navigate("/addQuotesFromVendors")}
-              className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
+              <button
+                onClick={() => navigate("/addQuotesFromVendors")}
+                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+              >
                 <FaPlus />
                 <span>New quotes for vendors</span>
               </button>
@@ -183,13 +205,13 @@ function CustomerLedger() {
             columns={columns}
             loading={false}
             totalRows={0}
-          // loading={loading}
-          // totalRows={data.length}
-          // onChangePage={handlePageChange}
-          // onChangeRowsPerPage={handleRowsPerPageChange}
-          // pagination
-          // paginationPerPage={rowsPerPage}
-          // paginationRowsPerPageOptions={[5, 10, 20]}
+            // loading={loading}
+            // totalRows={data.length}
+            // onChangePage={handlePageChange}
+            // onChangeRowsPerPage={handleRowsPerPageChange}
+            // pagination
+            // paginationPerPage={rowsPerPage}
+            // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

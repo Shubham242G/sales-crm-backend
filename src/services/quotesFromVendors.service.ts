@@ -9,17 +9,22 @@ import BASE_URL, {
 import axios from "../libs/hooks/axios";
 
 const prefix = "/QuotesFromVendors";
+
+
 export interface IQuotesFromVendors {
 
   
     quotesId:string;
-    vendorName: string;
+    vendorList: {
+      label: string;
+      value: string;
+    }
     serviceType : [];
     rfpId: string;
     amount: string;
     receivedDate: string;
     status: string;
-    attachment: string;
+    attachment: string[];
     eventDates: [{
             startDate: Date;
         }],

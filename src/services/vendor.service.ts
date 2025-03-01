@@ -214,6 +214,13 @@ export const useVendorApiHook = () => {
     );
   };
 
+  const getAllVendorName = async () => {
+   
+  
+    return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}/getAllVendorName`);
+  };
+ 
+
   return {
     addVendor,
     deleteVendorById,
@@ -221,6 +228,7 @@ export const useVendorApiHook = () => {
     getVendorById,
     getAllVendor,
     convertVendorToSalesContact,
+    getAllVendorName
   };
 };
 
@@ -299,5 +307,25 @@ export const useConvertVendorToSalesContact = () => {
       queryClient.invalidateQueries({ queryKey: ["Sales Contact"] }); 
       queryClient.invalidateQueries({ queryKey: ["Vendor"] }); 
     },
+  });
+};
+
+
+export const useVendorName = (
+ 
+) => {
+  
+
+
+  const api = useVendorApiHook();
+  return useQuery({
+    queryKey: ["VendorName"],
+    queryFn: () =>
+      api.getAllVendorName().then((res:any) => res?.data),
+    initialData: {
+      data: [],
+      total: 0,
+      message: "",
+    } as unknown as GeneralApiResponsePagination<any>,
   });
 };

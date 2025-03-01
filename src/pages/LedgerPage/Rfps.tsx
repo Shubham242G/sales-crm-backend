@@ -11,7 +11,7 @@ import {
   usedeleteRfpById,
   useAddRfp,
   useUpdateRfpById,
-  convertToQuotesFromVendors,
+  useConvertRfpToQuotesFromVendor,
 } from "@/services/rfp.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
@@ -28,6 +28,7 @@ function CustomerLedger() {
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
+  const { mutateAsync: convertRfp } = useConvertRfpToQuotesFromVendor();
 
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -116,23 +117,26 @@ function CustomerLedger() {
 
   //
 
+  const handleConvertRfptoQuotesFromVendor = async (id: string) => {
+    try {
+      const { data: res } = await convertRfp(id);
+      toastSuccess(res.message);
+    } catch (error) {
+      toastError("Failed to convert to RFP.");
+    }
+  };
+
   const handleDelete = async (id: string) => {
     try {
       if (window.confirm("Are you sure you want to delete this enquiry?")) {
         const { data: res } = await deleteRfp(id);
         if (res) {
           toastSuccess(res.message);
-          // Optionally refresh the data
         }
       }
     } catch (error) {
       toastError(error);
     }
-  };
-
-  const handleConvertToQuotes = (id: string) => {
-    convertToQuotesFromVendors(id);
-    toastSuccess("Converted to Quotes from vendor successfully!");
   };
 
   const columns = [
@@ -206,7 +210,7 @@ function CustomerLedger() {
       ),
     },
     {
-      name: "Convert to Enquiry",
+      name: "Convert to Quotes from Vendor",
       width: "10%",
       selector: (row: any) => (
         <div className="flex items-center gap-3">
@@ -216,7 +220,7 @@ function CustomerLedger() {
           ></Link>
           <button
             className="p-[6px] text-black-400 text-lg"
-            onClick={() => handleConvertToQuotes(row.id)}
+            onClick={() => handleConvertRfptoQuotesFromVendor(row._id)}
           >
             <SiConvertio />
           </button>

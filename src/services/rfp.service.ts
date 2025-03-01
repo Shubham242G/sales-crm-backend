@@ -135,11 +135,16 @@ export const useUpdateRfpById = () => {
             queryClient.invalidateQueries({ queryKey: ["rfp"] });
         },
     });
-};
-export const convertToQuotesFromVendors= async (id: any) => {
-    return axios.post<GeneralApiResponse<IRPF>>(
-      `${BASE_URL}${prefix}/convert/${id}`
-    );
+};export const useConvertRfpToQuotesFromVendor = () => {
+    const api = useRfpApiHook();
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: api.convertRfp,
+      onSuccess: (res) => {
+      
+        queryClient.invalidateQueries({ queryKey: ["Rfp"] });
+      },
+    });
   };
 
 export const getExel = async () => {

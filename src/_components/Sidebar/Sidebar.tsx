@@ -79,6 +79,7 @@ function Sidebar() {
         {
           dropHead: "Quotes from Vendors",
           link: "quotesFromVendors",
+          pluslink: "/addQuotesFromVendors",
         },
         {
           dropHead: "Confirmed Quotes",

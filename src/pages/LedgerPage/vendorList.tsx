@@ -97,7 +97,7 @@ function VendorList() {
           <h6>{row.vendor?.firstName}</h6>
         </div>
       ),
-      width: "20%",
+      width: "15%",
     },
     {
       name: "Company",
@@ -107,9 +107,8 @@ function VendorList() {
           {row.vendor?.companyName}
         </div>
       ),
-      width: "20%",
+      width: "15%",
     },
-
     {
       name: "Location",
       selector: (row: any) => (
@@ -118,46 +117,35 @@ function VendorList() {
           {row?.location?.state}
         </div>
       ),
-      width: "20%",
+      width: "12%",
     },
     {
-      name: "Phone Number",
+      name: "Phone",
       selector: (row: any) => (
         <div className="flex gap-1">
           <FaMobileScreenButton className="text-[#938d8d]" />
           {row.vendor?.phoneNumber}
         </div>
       ),
-      width: "10%",
+      width: "12%",
     },
     {
       name: "Email",
       selector: (row: any) => row.vendor?.email,
-      width: "20%",
+      width: "18%",
     },
     {
-      name: "Edit",
-      width: "10%",
+      name: "Actions",
+      width: "14%",
       selector: (row: any) => (
-        <div className="flex items-center gap-3">
-          <Link
-            to={`/add-vendor/${row?._id}`}
-            className="p-[6px] text-black-400 text-lg flex items-center"
-          >
-            <FaEye />
+        <div className="flex items-center gap-4">
+          <Link to={`/add-vendor/${row?._id}`} title="View Vendor">
+            <FaEye className="text-lg text-gray-600 hover:text-black" />
           </Link>
-        </div>
-      ),
-    },
-    {
-      name: "Delete",
-      width: "10%",
-      selector: (row: any) => (
-        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => handleDelete(row._id)}
-            className="p-[6px] text-black-400 text-lg"
+            className="text-lg text-red-500 hover:text-red-700"
             title="Delete Vendor"
           >
             <RiDeleteBin6Line />
@@ -167,13 +155,13 @@ function VendorList() {
     },
     {
       name: "Convert to Sales Contact",
-      width: "15%",
+      width: "14%",
       selector: (row: any) => (
-        <div className="flex items-center gap-3">
+        <div className="flex justify-center">
           <button
             type="button"
             onClick={() => handleConvertToSalesContact(row._id)}
-            className="p-[6px] text-black-400 text-lg"
+            className="text-lg text-blue-500 hover:text-blue-700"
             title="Convert to Sales Contact"
           >
             <SiConvertio />

@@ -1002,7 +1002,7 @@ const AddVendorForm = () => {
 
   const handleImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setImageState: React.Dispatch<React.SetStateAction<string[]>>
+    setImageState: React.Dispatch<React.SetStateAction<IOtherDetails>>
   ) => {
     const files = e.target.files;
     if (files) {
@@ -1019,10 +1019,15 @@ const AddVendorForm = () => {
 
       Promise.all(fileReaders)
         .then((base64Images) => {
-          setImageState((prevImages) => [...prevImages, ...base64Images]);
+          setImageState((prev) => ({
+            ...prev,
+            documents: [...prev.documents, ...base64Images],
+          }));
+          toastSuccess(`${files.length} image(s) uploaded successfully`);
         })
         .catch((error) => {
           console.error("Error reading files:", error);
+          toastError("Error uploading images");
         });
     }
   };
@@ -4034,7 +4039,7 @@ const AddVendorForm = () => {
                                       ...prev,
                                       ...validFiles,
                                     ]);
-                                    handleImageUpload(e, setUploadFiles);
+                                    handleImageUpload(e, setOtherDetails);
                                   }
                                 }}
                                 className="hidden"
@@ -4064,50 +4069,83 @@ const AddVendorForm = () => {
                               </p>
                             </div>
                           </div>
+
                           {selectedFiles.length > 0 && (
                             <div className="mt-4">
                               <h4 className="text-sm font-medium text-gray-700 mb-2">
                                 Selected Files:
                               </h4>
-                              <div className="space-y-2">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                                 {selectedFiles.map((file, index) => (
                                   <div
                                     key={index}
-                                    className="flex items-center justify-between bg-gray-50 p-2 rounded"
+                                    className="flex items-center bg-gray-100 p-3 rounded-lg shadow-sm relative"
                                   >
-                                    <span className="text-sm text-gray-600">
-                                      {file.name}
-                                    </span>
-                                    <button
-                                      type="button"
-                                      onClick={() => handleRemoveFile(index)}
-                                      className="text-red-500 hover:text-red-700"
-                                    >
+                                    {file.type === "application/pdf" ? (
                                       <svg
-                                        className="w-4 h-4"
+                                        className="w-6 h-6 text-red-500 mr-2"
                                         fill="currentColor"
                                         viewBox="0 0 20 20"
                                       >
                                         <path
                                           fillRule="evenodd"
-                                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                          d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0013.414 5L10 2.586A2 2 0 008.586 2H6z"
                                           clipRule="evenodd"
                                         />
                                       </svg>
+                                    ) : (
+                                      <img
+                                        src={URL.createObjectURL(file)}
+                                        alt="preview"
+                                        className="w-10 h-10 object-cover rounded mr-2"
+                                      />
+                                    )}
+                                    <span className="text-sm text-gray-700 flex-1 truncate">
+                                      {file.name}
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleRemoveFile(index)}
+                                      className="text-red-500 hover:text-red-700 absolute top-1 right-1"
+                                    >
+                                      ✕
                                     </button>
                                   </div>
                                 ))}
                               </div>
                             </div>
                           )}
-                          {otherDetails.documents &&
-                            otherDetails.documents.length > 0 && (
-                              <div
-                                style={{ display: "flex", flexWrap: "wrap" }}
-                                className="gap-4 mt-4"
-                              >
+
+                          {otherDetails.documents?.length > 0 && (
+                            <div className="mt-4">
+                              <h4 className="text-sm font-medium text-gray-700 mb-2">
+                                Uploaded Files:
+                              </h4>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                                 {otherDetails.documents.map((doc, index) => (
-                                  <div key={index} className="relative">
+                                  <div
+                                    key={index}
+                                    className="relative flex flex-col items-center bg-white shadow-sm p-3 rounded-lg border"
+                                  >
+                                    {doc.includes(".pdf") ? (
+                                      <svg
+                                        className="w-10 h-10 text-red-500 mb-2"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                      >
+                                        <path
+                                          fillRule="evenodd"
+                                          d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0013.414 5L10 2.586A2 2 0 008.586 2H6z"
+                                          clipRule="evenodd"
+                                        />
+                                      </svg>
+                                    ) : (
+                                      <img
+                                        src={generateFilePath(doc)}
+                                        alt="uploaded"
+                                        className="w-16 h-16 object-cover rounded"
+                                      />
+                                    )}
                                     <a
                                       href={
                                         doc.includes("base64")
@@ -4116,9 +4154,11 @@ const AddVendorForm = () => {
                                       }
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="text-blue-500 hover:underline"
+                                      className="text-blue-500 hover:underline text-sm mt-2"
                                     >
-                                      Document {index + 1} (Preview)
+                                      {doc.includes(".pdf")
+                                        ? "View PDF"
+                                        : "View Image"}
                                     </a>
                                     <button
                                       type="button"
@@ -4135,15 +4175,17 @@ const AddVendorForm = () => {
                                           "Document removed successfully"
                                         );
                                       }}
-                                      className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600 ml-2"
+                                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
                                     >
-                                      X
+                                      ✕
                                     </button>
                                   </div>
                                 ))}
                               </div>
-                            )}
+                            </div>
+                          )}
                         </div>
+
                         {/* Add More Details Section */}
                         <div className="mt-6">
                           <button
