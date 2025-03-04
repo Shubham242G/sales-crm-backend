@@ -18,6 +18,7 @@ function CustomerLedger() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { data: quotesFromVendors, isLoading } = useQuotesFromVendors();
 
+  console.log(quotesFromVendors, "Quotes froms");
   const { mutateAsync: deleteQuotesFromVendors } =
     usedeleteQuotesFromVendorsById();
   // const {data: quotesFromVendorsIdData,} = useQuotesFromVendorsById();
@@ -50,7 +51,7 @@ function CustomerLedger() {
       name: "Quotes Id",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.quotesId}</h6>
+          <h6>{row?.quotesId}</h6>
         </div>
       ),
       width: "10%",
@@ -59,7 +60,7 @@ function CustomerLedger() {
       name: "Vendor Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.vendorList.label}</h6>
+          <h6>{row?.vendorList.label}</h6>
         </div>
       ),
       width: "10%",
@@ -68,7 +69,7 @@ function CustomerLedger() {
       name: "RPFs Id",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.rfpId}</h6>
+          <h6>{row?.rfpId}</h6>
         </div>
       ),
       width: "10%",
@@ -78,7 +79,7 @@ function CustomerLedger() {
       selector: (row: any) => (
         <>
           <div className="flex justify-around">
-            {row.serviceType.map((e: any, index: number) => (
+            {row?.serviceType?.map((e: any, index: number) => (
               <div
                 key={index}
                 className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
@@ -95,7 +96,7 @@ function CustomerLedger() {
       name: "Amount",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.amount}</h6>
+          <h6>{row?.amount}</h6>
         </div>
       ),
       width: "10%",
@@ -104,7 +105,7 @@ function CustomerLedger() {
       name: "Date Received",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.submissionDate}</h6>
+          <h6>{row?.submissionDate}</h6>
         </div>
       ),
       width: "10%",
@@ -121,7 +122,7 @@ function CustomerLedger() {
               : "bg-red-200 text-red-600"
           }`}
         >
-          <h6>{row.status}</h6>
+          <h6>{row?.status}</h6>
         </div>
       ),
       width: "15%",

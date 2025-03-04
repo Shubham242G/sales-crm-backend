@@ -78,12 +78,10 @@ function EnquiryLIst() {
   const { mutateAsync: deleteEnquiry } = usedeleteEnquiryById();
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
 
-  // Handle triggering file input click
   const handleImportClick = () => {
     fileInputRef.current?.click();
   };
 
-  // Handle file selection and upload
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -92,9 +90,8 @@ function EnquiryLIst() {
 
     try {
       console.log("Starting upload, setting isUploading to true");
-      setIsUploading(true); // Set uploading state
+      setIsUploading(true);
 
-      // Check for allowed file extensions
       const allowedExtensions = ["xlsx", "csv"];
       const fileExtension = file.name.split(".").pop()?.toLowerCase() || "";
       if (!allowedExtensions.includes(fileExtension)) {
@@ -110,32 +107,29 @@ function EnquiryLIst() {
 
       console.log(response, "check response ");
 
-      // Check if the upload was successful
       if (response.status === 200) {
         console.log("Upload response:", response);
         toastSuccess("Enquiries imported successfully!");
-        refetch(); // Trigger data refetch
+        refetch();
       } else {
         toastError("Error importing file. Please try again.");
       }
 
-      setIsUploading(false); // End uploading state
+      setIsUploading(false);
       console.log("set is uploading false inside try");
     } catch (error: any) {
       console.error("Import Error:", error);
       toastError("An error occurred during import. Please try again.");
     } finally {
       console.log("In finally block, setting isUploading to false");
-      setIsUploading(false); // Always set uploading to false
+      setIsUploading(false);
 
-      // Reset the file input value after upload attempt
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
     }
   };
 
-  // Handle Export Contacts
   const handleExportEnquiries = async () => {
     try {
       const { data: response } = await getExel();
@@ -160,7 +154,6 @@ function EnquiryLIst() {
         const { data: res } = await deleteEnquiry(id);
         if (res) {
           toastSuccess(res.message);
-          // Optionally refresh the data
         }
       }
     } catch (error) {
@@ -173,7 +166,6 @@ function EnquiryLIst() {
       const { data: res } = await updateEnquiry({ id, ...data });
       if (res) {
         toastSuccess(res.message);
-        // Optionally refresh the data
       }
     } catch (error) {
       toastError(error);

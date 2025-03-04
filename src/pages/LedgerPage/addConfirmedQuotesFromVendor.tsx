@@ -253,6 +253,8 @@ const AddConfirmedQuotesFromVendor = () => {
     refetch();
   }, [formData.banquetEventOrders.quotesId]);
 
+  console.log(res, "check the data changes or not");
+
   useEffect(() => {
     if (res && res.data) {
       const apiData = res.data;
