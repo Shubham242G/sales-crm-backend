@@ -60,7 +60,7 @@ function CustomerLedger() {
       name: "Vendor Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row?.vendorList.label}</h6>
+          <h6>{row?.vendorList?.label}</h6>
         </div>
       ),
       width: "10%",
