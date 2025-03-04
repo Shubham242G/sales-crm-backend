@@ -34,7 +34,7 @@ import AddLedger from "../pages/LedgerPage/AddLedger";
 // import UpdateLedger from '../pages/LedgerPage/UpdateLedger'
 import Rfps from "../pages/LedgerPage/Rfps";
 import QuotesForVendors from "../pages/LedgerPage/quotesForVendors";
-import ConfirmedQuotes from "../pages/LedgerPage/confirmedQuotes";
+import ConfirmedQuotes from "../pages/LedgerPage/confirmedQuotesFromVendor";
 import AddVendorForm from "../pages/LedgerPage/addVendor";
 import ConfirmedQuotesView from "../pages/LedgerPage/confirmedQutesView";
 import AddRfpsForm from "../pages/LedgerPage/addRfps";
@@ -74,6 +74,8 @@ import AddUser from "@/pages/Admin/addUsers";
 import AddQuotesFromVendorsForm from "@/pages/LedgerPage/addQuotesFromVendors";
 import PurchaseContactView from "@/pages/LedgerPage/purchaseContactView";
 import MyTask from "@/pages/TaskManagement/MyTask";
+import AddConfirmedQuotesFromVendor from "@/pages/LedgerPage/addConfirmedQuotesFromVendor";
+import ConfirmedQuotestoCustomer from "@/pages/Sales/confirmedQuotestoCustomer";
 
 export default function AuthorizedRoutes() {
   return (
@@ -171,6 +173,10 @@ export default function AuthorizedRoutes() {
             element={<QuotesForVendors />}
           ></Route>
           <Route path="/confirmedQuotes" element={<ConfirmedQuotes />}></Route>
+          <Route
+            path="/confirmedQuotesToCustomer"
+            element={<ConfirmedQuotestoCustomer />}
+          ></Route>
           <Route path="/ledger-group" element={<LedgerGroup />}></Route>
           <Route
             path="/view-quotesFromVendor"
@@ -211,6 +217,14 @@ export default function AuthorizedRoutes() {
           ></Route>
           <Route path="/add-vendor" element={<AddVendorForm />}></Route>
           <Route path="/add-vendor/:id" element={<AddVendorForm />}></Route>
+          <Route
+            path="/add-ConfirmedQuotesFromVendor"
+            element={<AddConfirmedQuotesFromVendor />}
+          ></Route>
+          <Route
+            path="/add-ConfirmedQuotesFromVendor/:id"
+            element={<AddConfirmedQuotesFromVendor />}
+          ></Route>
           <Route path="/add-rfps" element={<AddRfpsForm />}></Route>
           <Route path="/add-rfps/:id" element={<AddRfpsForm />}></Route>
           <Route path="/add-leads" element={<AddLeadsForm />}></Route>

@@ -93,91 +93,51 @@ function ConfirmedQuotesView() {
             <p className="text-xl font-medium text-[#1A1A1A]">
               Event Start Time
             </p>
-            :
-            <p className="text-xl font-medium text-[#888888]">
-              Some text
-            </p>
+            :<p className="text-xl font-medium text-[#888888]">Some text</p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
-            <p className="text-xl font-medium text-[#1A1A1A]">
-              Event End Time
-            </p>
-            :
-            <p className="text-xl font-medium text-[#888888]">
-              Some text
-            </p>
+            <p className="text-xl font-medium text-[#1A1A1A]">Event End Time</p>
+            :<p className="text-xl font-medium text-[#888888]">Some text</p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
-            <p className="text-xl font-medium text-[#1A1A1A]">
-              BTR
-            </p>
-            :
-            <p className="text-xl font-medium text-[#888888]">
-              Some text
-            </p>
+            <p className="text-xl font-medium text-[#1A1A1A]">BTR</p>:
+            <p className="text-xl font-medium text-[#888888]">Some text</p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
-            <p className="text-xl font-medium text-[#1A1A1A]">
-              Venue
-            </p>
-            :
-            <p className="text-xl font-medium text-[#888888]">
-              Some text
-            </p>
+            <p className="text-xl font-medium text-[#1A1A1A]">Venue</p>:
+            <p className="text-xl font-medium text-[#888888]">Some text</p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
-            <p className="text-xl font-medium text-[#1A1A1A]">
-              Setup
-            </p>
-            :
-            <p className="text-xl font-medium text-[#888888]">
-              Some text
-            </p>
+            <p className="text-xl font-medium text-[#1A1A1A]">Setup</p>:
+            <p className="text-xl font-medium text-[#888888]">Some text</p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
               A/V Vendor Name
             </p>
-            :
-            <p className="text-xl font-medium text-[#888888]">
-              Some text
-            </p>
+            :<p className="text-xl font-medium text-[#888888]">Some text</p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
-            <p className="text-xl font-medium text-[#1A1A1A]">
-              Linear Order
-            </p>
-            :
-            <p className="text-xl font-medium text-[#888888]">
-              Some text
-            </p>
+            <p className="text-xl font-medium text-[#1A1A1A]">Linear Order</p>:
+            <p className="text-xl font-medium text-[#888888]">Some text</p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
               Exp Number of Seating
             </p>
-            :
-            <p className="text-xl font-medium text-[#888888]">
-              Some text
-            </p>
+            :<p className="text-xl font-medium text-[#888888]">Some text</p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
               Starters Event Time
             </p>
-            :
-            <p className="text-xl font-medium text-[#888888]">
-              some text
-            </p>
+            :<p className="text-xl font-medium text-[#888888]">some text</p>
           </div>
           <div className="flex flex-row gap-6 text-xl font-medium text-[#1A1A1A]">
             <p className="text-xl font-medium text-[#1A1A1A]">
               Starters Placements
             </p>
-            :
-            <p className="text-xl font-medium text-[#888888]">
-              some text
-            </p>
+            :<p className="text-xl font-medium text-[#888888]">some text</p>
           </div>
         </section>
 
@@ -187,7 +147,9 @@ function ConfirmedQuotesView() {
         </section>
 
         <section>
-          <h4 className="text-lg font-medium text-[#1a1a1a]">Audio / Visuals</h4>
+          <h4 className="text-lg font-medium text-[#1a1a1a]">
+            Audio / Visuals
+          </h4>
           <DataTable data={["Text here", "Text here"]} />
         </section>
 
@@ -232,7 +194,6 @@ function ConfirmedQuotesView() {
 //     </div>
 //   );
 // }
-
 
 function DataTable({ data }: { data: any }) {
   return (
