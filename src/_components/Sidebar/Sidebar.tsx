@@ -124,7 +124,7 @@ function Sidebar() {
 
         {
           dropHead: "Confirmed Quotes",
-          link: "confirmedQuotes",
+          link: "/confirmedQuotesToCustomer",
         },
         {
           dropHead: "Invoices",

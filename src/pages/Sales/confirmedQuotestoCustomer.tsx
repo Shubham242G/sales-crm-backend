@@ -2,12 +2,12 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 
-function CustomerLedger() {
-  const navigate = useNavigate()
+function ConfirmedQuotestoCustomer() {
+  const navigate = useNavigate();
 
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
@@ -18,12 +18,13 @@ function CustomerLedger() {
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
+
   const columns = [
     {
       name: "Quotes Id",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.quotesId}</h6>
+          <h6>{row ? console.log(row) : row.quotesId}</h6>
         </div>
       ),
       width: "10%",
@@ -107,7 +108,7 @@ function CustomerLedger() {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={()=> navigate("/confirmedQuotesView")}
+            onClick={() => navigate("/confirmedQuotesView")}
             className=" text-black-500 text-lg p-[6px]"
           >
             <FaEye />
@@ -250,6 +251,13 @@ function CustomerLedger() {
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
+              <button
+                onClick={() => navigate("/add-ConfirmedQuotesFromVendor")}
+                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+              >
+                <FaPlus />
+                <span>New Confirmed Quotes</span>
+              </button>
               {/* <button className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
                 <FaPlus />
                 <span>New RFPs</span>
@@ -276,4 +284,4 @@ function CustomerLedger() {
   );
 }
 
-export default CustomerLedger;
+export default ConfirmedQuotestoCustomer;
