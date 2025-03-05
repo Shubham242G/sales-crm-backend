@@ -51,6 +51,16 @@ export default {
         fontFamily: {
           playfair: ['var(--font-playfair)', 'serif'],
           libre: ['var(--font-libre)', 'serif'],
+          satoshi: ['var(--font-satoshi)', 'sans-serif'],
+          satoshiItalic: ['var(--font-satoshiItalic)', 'sans-serif'],
+          satoshiBold: 'var(--font-satoshiBold)',
+          satoshiBoldItalic: ['var(--font-satoshiBoldItalic)', 'sans-serif'],
+          satoshiLight: ['var(--font-satoshiLight)', 'sans-serif'],
+          satoshiLightItalic: ['var(--font-satoshiLightItalic)', 'sans-serif'],
+          satoshiMedium: "var(--font-satoshiMedium)",
+
+          newbold:"var(--newbolad)"
+          
         },
   
         boxShadow: {
