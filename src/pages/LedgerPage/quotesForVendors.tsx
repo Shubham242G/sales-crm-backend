@@ -57,17 +57,17 @@ function CustomerLedger() {
     {
       name: "Quotes Id",
       selector: (row: any) => <h6>{row?.quotesId}</h6>,
-      width: "10%",
+      width: "8%",
     },
     {
       name: "Vendor Name",
       selector: (row: any) => <h6>{row?.vendorList?.label}</h6>,
-      width: "10%",
+      width: "12%",
     },
     {
       name: "RPFs Id",
       selector: (row: any) => <h6>{row?.rfpId}</h6>,
-      width: "10%",
+      width: "8%",
     },
     {
       name: "Service",
@@ -83,12 +83,12 @@ function CustomerLedger() {
           ))}
         </div>
       ),
-      width: "25%",
+      width: "20%",
     },
     {
       name: "Amount",
       selector: (row: any) => <h6>{row?.amount}</h6>,
-      width: "10%",
+      width: "8%",
     },
     {
       name: "Date Received",
@@ -110,11 +110,11 @@ function CustomerLedger() {
           <h6>{row?.status}</h6>
         </div>
       ),
-      width: "15%",
+      width: "12%",
     },
     {
       name: "Action",
-      width: "10%",
+      width: "8%",
       selector: (row: any) => (
         <div className="flex items-center gap-3">
           <Link
@@ -134,7 +134,7 @@ function CustomerLedger() {
     },
     {
       name: "Convert to Customer Quote",
-      width: "15%",
+      width: "14%",
       selector: (row: any) => (
         <div className="flex justify-center">
           <button
