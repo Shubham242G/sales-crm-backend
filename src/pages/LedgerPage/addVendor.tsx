@@ -1369,8 +1369,8 @@ const AddVendorForm = () => {
                       </div>
                     </div>
                     {/* Company Name */}
-                    <div className="flex flex-col lg:items-start gap-[8px] md:items-center">
-                      <span className="text-[14px] font-medium text-black ">
+                    <div className="flex flex-col lg:items-start gap-[8px] sm:width-[20px] md:items-center">
+                      <span className="text-[14px] w-sm font-medium text-black ">
                         Company Name:
                       </span>
                       <div className="w-96">
@@ -1481,7 +1481,7 @@ const AddVendorForm = () => {
                     {/* Phone Numbers */}
                     <div className="flex flex-col gap-6 gap-[8px] lg:items-start md:items-center">
                       <h1 className="text-[14px] font-medium text-black font-newbold">
-                      Phone Number
+                        Phone Number
                       </h1>
                       <div className="flex-1 flex gap-4">
                         <div className="relative w-44">
@@ -1608,12 +1608,12 @@ const AddVendorForm = () => {
 
 
                   {vendor.vendorType.includes("Hotel") && (
-                    <div>
+                    <div > 
                       <div className="bg-[#FAFAFA] border-[#D1D1D1] rounded-lg border p-[20px]">
                         <h2 className="font-bold text-lg mb-4">Location</h2>
                         <div className=" grid lg:grid-cols-2 sm:gap-[8px] sm:grid-cols-1  ">
                           <div>
-                          <label className="text-[14px] sm:text-center inline-block lg:text-left font-medium text-black">State</label>
+                            <label className="text-[14px] sm:text-center inline-block lg:text-left font-medium text-black">State</label>
                             <input
                               type="text"
                               value={location.state}
@@ -1628,7 +1628,7 @@ const AddVendorForm = () => {
                             />
                           </div>
                           <div className="lg:items-start md:items-center">
-                            <label className=" font-medium text-sm  text-gray-700 mb-1">
+                            <label className=" font-medium text-sm  text-black mb-1">
                               City
                             </label>
                             <input
@@ -1642,7 +1642,7 @@ const AddVendorForm = () => {
                             />
                           </div>
                           <div>
-                            <label className="block font-semibold text-sm text-gray-700 mb-1">
+                            <label className="block font-medium text-sm text-black mb-1">
                               Area
                             </label>
                             <input
@@ -1656,7 +1656,7 @@ const AddVendorForm = () => {
                             />
                           </div>
                           <div>
-                            <label className="block font-semibold text-sm text-gray-700 mb-1">
+                            <label className="block font-medium text-sm text-black mb-1">
                               Address
                             </label>
                             <input
@@ -1674,11 +1674,12 @@ const AddVendorForm = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="bg-gray-50 p-6 rounded-lg shadow mb-6">
+
+                      <div className="bg-[#FAFAFA]  border-[#D1D1D1] rounded-lg border p-[20px]">
                         <h2 className="font-bold text-lg mb-4">Category</h2>
                         <div className="w-full">
                           <select
-                            className="w-96 border bg-gray-50 border-gray-300 rounded-md p-2 text-sm"
+                            className="w-96 border bg-gray-50 font-satoshiMedium border-gray-300 rounded-md p-2 text-sm"
                             value={category.categoryType}
                             onChange={(e) =>
                               setCategory({
@@ -1696,51 +1697,185 @@ const AddVendorForm = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="mb-4 mt-8">
-                        {/* <label className="inline-flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={isRoomDetailsVisible}
-                          onChange={() =>
-                            setIsRoomDetailsVisible(!isRoomDetailsVisible)
-                          }
-                          className="form-checkbox"
-                        />
-                        <span className="ml-2">Room Details</span>
-                      </label> */}
 
-                        {/* {isRoomDetailsVisible && ( */}
-                        <div className="border bg-gray-50 grid grid-cols-1 rounded-lg mt-8 p-6 shadow">
-                          <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-lg font-bold">Room Details</h2>
-                            <button
-                              type="button"
-                              onClick={handleAddRoom}
-                              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                            >
-                              Add New Room
-                            </button>
-                          </div>
+                      {/* {isRoomDetailsVisible && ( */}
+                      <div className="bg-[#FAFAFA]  border-[#D1D1D1] rounded-lg border p-[20px] ">
+                        <div className="flex justify-between items-center mb-4">
+                          <h2 className="text-lg font-bold">Room Details</h2>
+                        </div>
 
-                          {rooms.map((room, index) => (
-                            <div key={index} className="mb-6 border-b pb-4">
-                              <div className="grid grid-cols-3 gap-4">
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Room Category
-                                  </label>
+                        {rooms.map((room, index) => (
+                          <div key={index} className="mb-6 border-b pb-4">
+                            <div className="grid grid-cols-3 gap-4">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Room Category
+                                </label>
+                                <select
+                                  value={room.roomCategory}
+                                  onChange={(e) => {
+                                    const newRooms = [...rooms];
+                                    newRooms[index].roomCategory =
+                                      e.target.value;
+                                    setRooms(newRooms);
+                                  }}
+                                  className="border bg-gray-50 border-gray-300 p-2 rounded-md w-full"
+                                >
+                                  <option value="">Select Category</option>
+                                  {categoryOptions.map((option) => (
+                                    <option
+                                      key={option}
+                                      value={option.toLowerCase()}
+                                    >
+                                      {option}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Number of Rooms
+                                </label>
+                                <input
+                                  type="number"
+                                  placeholder="Enter number of rooms"
+                                  value={room.numberOfRooms}
+                                  onChange={(e) => {
+                                    const newRooms = [...rooms];
+                                    newRooms[index].numberOfRooms =
+                                      parseInt(e.target.value) || 0;
+                                    setRooms(newRooms);
+                                  }}
+                                  className="border bg-gray-50 border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Size
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Enter size"
+                                  value={room.roomSize}
+                                  onChange={(e) => {
+                                    const newRooms = [...rooms];
+                                    newRooms[index].roomSize = e.target.value;
+                                    setRooms(newRooms);
+                                  }}
+                                  className="border bg-gray-50 border-gray-300 p-2 rounded-md w-full"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Image Upload Section */}
+                            <div className="mt-4 col-span-3">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Room Images (XLS, JPG, PNG only, max 10MB)
+                              </label>
+                              <div className="flex items-center gap-4">
+                                <input
+                                  type="file"
+                                  accept=".xls,.jpg,.png"
+                                  multiple
+                                  onChange={(e) =>
+                                    ImageUpload(
+                                      e,
+                                      index,
+                                      rooms,
+                                      setRooms,
+                                      "roomImageUpload"
+                                    )
+                                  }
+                                  className="hidden"
+                                  id={`room-image-upload-${index}`}
+                                />
+                                <label
+                                  htmlFor={`room-image-upload-${index}`}
+                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
+                                >
+                                  Upload Imagesqww
+                                </label>
+                                <span className="text-sm text-gray-500">
+                                  {room.roomImageUpload.length} file(s) uploaded
+                                </span>
+                              </div>
+
+                              {/* Display uploaded images */}
+                              {room.roomImageUpload.length > 0 && (
+                                <div className="mt-4 flex flex-wrap gap-4">
+                                  {room.roomImageUpload.map(
+                                    (image, imgIndex) => (
+                                      <div key={imgIndex} className="relative">
+                                        <img
+                                          src={
+                                            image.includes("base64")
+                                              ? image
+                                              : generateFilePath(image)
+                                          }
+                                          alt={`Room Image ${imgIndex + 1}`}
+                                          style={{
+                                            height: 100,
+                                            width: 100,
+                                            objectFit: "cover",
+                                            border: "1px solid #ddd",
+                                            borderRadius: "5px",
+                                          }}
+                                          onError={(e) => {
+                                            console.error(
+                                              "Image failed to load:",
+                                              image
+                                            );
+                                            (e.target as HTMLImageElement).src =
+                                              "path/to/placeholder-image.jpg"; // Fallback image
+                                          }}
+                                        />
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            RemoveImage(
+                                              index,
+                                              imgIndex,
+                                              rooms,
+                                              setRooms,
+                                              "roomImageUpload"
+                                            )
+                                          }
+                                          className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
+                                        >
+                                          X
+                                        </button>
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Price Section */}
+                            <div className="mt-4">
+                              <h3 className="text-md font-semibold mb-2">
+                                Price Details
+                              </h3>
+                              {room.prices.map((price, priceIndex) => (
+                                <div
+                                  key={priceIndex}
+                                  className="flex items-center gap-4 mb-2"
+                                >
                                   <select
-                                    value={room.roomCategory}
+                                    value={price.roomType}
                                     onChange={(e) => {
                                       const newRooms = [...rooms];
-                                      newRooms[index].roomCategory =
-                                        e.target.value;
+                                      newRooms[index].prices[
+                                        priceIndex
+                                      ].roomType = e.target.value;
                                       setRooms(newRooms);
                                     }}
-                                    className="border bg-gray-50 border-gray-300 p-2 rounded-md w-full"
+                                    className="border bg-gray-50 border-gray-300 p-2 rounded-md w-1/3"
                                   >
-                                    <option value="">Select Category</option>
-                                    {categoryOptions.map((option) => (
+                                    <option value="">Select Room Type</option>
+                                    {roomCategoryOptions.map((option) => (
                                       <option
                                         key={option}
                                         value={option.toLowerCase()}
@@ -1749,217 +1884,77 @@ const AddVendorForm = () => {
                                       </option>
                                     ))}
                                   </select>
-                                </div>
 
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Number of Rooms
-                                  </label>
                                   <input
                                     type="number"
-                                    placeholder="Enter number of rooms"
-                                    value={room.numberOfRooms}
+                                    placeholder="Enter price"
+                                    value={price.roomPrice}
                                     onChange={(e) => {
                                       const newRooms = [...rooms];
-                                      newRooms[index].numberOfRooms =
-                                        parseInt(e.target.value) || 0;
+                                      newRooms[index].prices[
+                                        priceIndex
+                                      ].roomPrice = e.target.value;
                                       setRooms(newRooms);
                                     }}
-                                    className="border bg-gray-50 border-gray-300 p-2 rounded-md w-full"
+                                    className="border bg-gray-50 border-gray-300 p-2 rounded-md w-1/3"
                                   />
-                                </div>
-
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Size
-                                  </label>
-                                  <input
-                                    type="text"
-                                    placeholder="Enter size"
-                                    value={room.roomSize}
-                                    onChange={(e) => {
-                                      const newRooms = [...rooms];
-                                      newRooms[index].roomSize = e.target.value;
-                                      setRooms(newRooms);
-                                    }}
-                                    className="border bg-gray-50 border-gray-300 p-2 rounded-md w-full"
-                                  />
-                                </div>
-                              </div>
-
-                              {/* Image Upload Section */}
-                              <div className="mt-4 col-span-3">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Room Images (XLS, JPG, PNG only, max 10MB)
-                                </label>
-                                <div className="flex items-center gap-4">
-                                  <input
-                                    type="file"
-                                    accept=".xls,.jpg,.png"
-                                    multiple
-                                    onChange={(e) =>
-                                      ImageUpload(
-                                        e,
-                                        index,
-                                        rooms,
-                                        setRooms,
-                                        "roomImageUpload"
-                                      )
-                                    }
-                                    className="hidden"
-                                    id={`room-image-upload-${index}`}
-                                  />
-                                  <label
-                                    htmlFor={`room-image-upload-${index}`}
-                                    className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
-                                  >
-                                    Upload Images
-                                  </label>
-                                  <span className="text-sm text-gray-500">
-                                    {room.roomImageUpload.length} file(s) uploaded
-                                  </span>
-                                </div>
-
-                                {/* Display uploaded images */}
-                                {room.roomImageUpload.length > 0 && (
-                                  <div className="mt-4 flex flex-wrap gap-4">
-                                    {room.roomImageUpload.map(
-                                      (image, imgIndex) => (
-                                        <div key={imgIndex} className="relative">
-                                          <img
-                                            src={
-                                              image.includes("base64")
-                                                ? image
-                                                : generateFilePath(image)
-                                            }
-                                            alt={`Room Image ${imgIndex + 1}`}
-                                            style={{
-                                              height: 100,
-                                              width: 100,
-                                              objectFit: "cover",
-                                              border: "1px solid #ddd",
-                                              borderRadius: "5px",
-                                            }}
-                                            onError={(e) => {
-                                              console.error(
-                                                "Image failed to load:",
-                                                image
-                                              );
-                                              (e.target as HTMLImageElement).src =
-                                                "path/to/placeholder-image.jpg"; // Fallback image
-                                            }}
-                                          />
-                                          <button
-                                            type="button"
-                                            onClick={() =>
-                                              RemoveImage(
-                                                index,
-                                                imgIndex,
-                                                rooms,
-                                                setRooms,
-                                                "roomImageUpload"
-                                              )
-                                            }
-                                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
-                                          >
-                                            X
-                                          </button>
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-
-                              {/* Price Section */}
-                              <div className="mt-4">
-                                <h3 className="text-md font-semibold mb-2">
-                                  Price Details
-                                </h3>
-                                {room.prices.map((price, priceIndex) => (
-                                  <div
-                                    key={priceIndex}
-                                    className="flex items-center gap-4 mb-2"
-                                  >
-                                    <select
-                                      value={price.roomType}
-                                      onChange={(e) => {
-                                        const newRooms = [...rooms];
-                                        newRooms[index].prices[
-                                          priceIndex
-                                        ].roomType = e.target.value;
-                                        setRooms(newRooms);
-                                      }}
-                                      className="border bg-gray-50 border-gray-300 p-2 rounded-md w-1/3"
+                                  {room.prices.length > 1 && (
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleRemovePrice(index, priceIndex)
+                                      }
+                                      className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
                                     >
-                                      <option value="">Select Room Type</option>
-                                      {roomCategoryOptions.map((option) => (
-                                        <option
-                                          key={option}
-                                          value={option.toLowerCase()}
-                                        >
-                                          {option}
-                                        </option>
-                                      ))}
-                                    </select>
-                                    <input
-                                      type="number"
-                                      placeholder="Enter price"
-                                      value={price.roomPrice}
-                                      onChange={(e) => {
-                                        const newRooms = [...rooms];
-                                        newRooms[index].prices[
-                                          priceIndex
-                                        ].roomPrice = e.target.value;
-                                        setRooms(newRooms);
-                                      }}
-                                      className="border bg-gray-50 border-gray-300 p-2 rounded-md w-1/3"
-                                    />
-                                    {room.prices.length > 1 && (
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          handleRemovePrice(index, priceIndex)
-                                        }
-                                        className="text-red-500 hover:text-red-700"
-                                      >
-                                        Remove
-                                      </button>
-                                    )}
-                                  </div>
-                                ))}
+                                      Remove
+                                    </button>
+                                  )}
+                                </div>
+                              ))}
+                              <div className="flex justify-between">
                                 <button
                                   type="button"
                                   onClick={() => handleAddPrice(index)}
-                                  className="mt-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-                                >
+                                  className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md">
                                   Add Price
                                 </button>
-                              </div>
-
-                              {/* Remove Room Button */}
-                              {rooms.length > 1 && (
+                                
                                 <button
-                                  type="button"
-                                  onClick={() => {
-                                    const newRooms = rooms.filter(
-                                      (_, i) => i !== index
-                                    );
-                                    setRooms(newRooms);
-                                  }}
-                                  className="mt-2 text-red-500 hover:text-red-700"
-                                >
-                                  Remove Room
-                                </button>
-                              )}
+                                    type="button"
+                                    onClick={handleAddRoom}
+                                    className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
+                                  >
+                                    Add New Room
+                                  </button>
+                              </div>
                             </div>
-                          ))}
-                        </div>
-                        {/* )} */}
+
+
+
+                            {/* Remove Room Button */}
+                            {rooms.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newRooms = rooms.filter(
+                                    (_, i) => i !== index
+                                  );
+                                  setRooms(newRooms);
+                                }}
+                                className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
+                              >
+                                Remove Room
+                              </button>
+                            )}
+                          </div>
+                        ))}
                       </div>
+                      {/* )} */}
+
+
 
                       <div className="mb-4 mt-8">
-                        <label className="inline-flex items-center">
+                        {/* <label className="inline-flex items-center">
                           <input
                             type="checkbox"
                             checked={isBanquetDetailsVisible}
@@ -1969,11 +1964,11 @@ const AddVendorForm = () => {
                             className="form-checkbox"
                           />
                           <span className="ml-2">Do you have Banquet</span>
-                        </label>
+                        </label> */}
 
                         {isBanquetDetailsVisible && (
-                          <div className="border rounded-lg mt-8 p-6 shadow">
-                            <div className="flex justify-between items-center mb-4">
+                          <div className="border grid grid-col-3 bg-[#FAFAFA] border-[#D1D1D1] rounded-lg mt-8 p-6 shadow">
+                            <div className=" mb-4">
                               <h2 className="text-lg font-bold">
                                 Banquet Details
                               </h2>
@@ -2272,7 +2267,7 @@ const AddVendorForm = () => {
                       </div>
 
                       <div className="mb-4 mt-8">
-                        <label className="inline-flex items-center">
+                        {/* <label className="inline-flex items-center">
                           <input
                             type="checkbox"
                             checked={isRestaurantDetailsVisible}
@@ -2282,7 +2277,7 @@ const AddVendorForm = () => {
                             className="form-checkbox"
                           />
                           <span className="ml-2">Do you have Restaurant</span>
-                        </label>
+                        </label> */}
 
                         {isRestaurantDetailsVisible && (
                           <div className="border rounded-lg mt-8 p-6 shadow">
@@ -2484,309 +2479,10 @@ const AddVendorForm = () => {
                             onChange={(e) =>
                               setIsBanquetDetailsVisible(e.target.checked)
                             }
-                            className="form-checkbox"
+                          className="form-checkbox"
                           />
                           <span className="ml-2">Do you have Banquet</span>
                         </label>
-
-                        {isBanquetDetailsVisible && (
-                          <div className="border rounded-lg mt-8 p-6 shadow">
-                            <div className="flex justify-between items-center mb-4">
-                              <h2 className="text-lg font-bold">
-                                Banquet Details
-                              </h2>
-                              <button
-                                type="button"
-                                onClick={handleAddBanquet}
-                                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                              >
-                                Add New Banquet
-                              </button>
-                            </div>
-
-                            {banquets.map((banquet, index) => (
-                              <div key={index} className="mb-6 border-b pb-4">
-                                <div className="grid grid-cols-3 gap-4">
-                                  <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                      Banquet Category
-                                    </label>
-                                    <select
-                                      value={banquet.banquetCategory}
-                                      onChange={(e) => {
-                                        const newBanquet = [...banquets];
-                                        newBanquet[index].banquetCategory =
-                                          e.target.value;
-                                        setBanquets(newBanquet);
-                                      }}
-                                      className="border border-gray-300 p-2 rounded-md w-full"
-                                    >
-                                      <option value="">Select Category</option>
-                                      {categoryOptions.map((option) => (
-                                        <option
-                                          key={option}
-                                          value={option.toLowerCase()}
-                                        >
-                                          {option}
-                                        </option>
-                                      ))}
-                                    </select>
-                                  </div>
-
-                                  <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                      Name
-                                    </label>
-                                    <input
-                                      type="text"
-                                      placeholder="Enter Name"
-                                      value={banquet.banquetName}
-                                      onChange={(e) => {
-                                        const newBanquet = [...banquets];
-                                        newBanquet[index].banquetName =
-                                          e.target.value;
-                                        setBanquets(newBanquet);
-                                      }}
-                                      className="border border-gray-300 p-2 rounded-md w-full"
-                                    />
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Size
-                                  </label>
-                                  <input
-                                    type="text"
-                                    placeholder="Enter size"
-                                    value={banquet.banquetSize}
-                                    onChange={(e) => {
-                                      const newBanquet = [...banquets];
-                                      newBanquet[index].banquetSize =
-                                        e.target.value;
-                                      setBanquets(newBanquet);
-                                    }}
-                                    className="border border-gray-300 p-2 rounded-md w-full"
-                                  />
-                                </div>
-
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Setup
-                                  </label>
-                                  <input
-                                    type="text"
-                                    placeholder="Enter setup"
-                                    value={banquet.banquetSetup}
-                                    onChange={(e) => {
-                                      const newBanquet = [...banquets];
-                                      newBanquet[index].banquetSetup =
-                                        e.target.value;
-                                      setBanquets(newBanquet);
-                                    }}
-                                    className="border border-gray-300 p-2 rounded-md w-full"
-                                  />
-                                </div>
-
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Veg Price
-                                  </label>
-                                  <input
-                                    type="text"
-                                    placeholder="Enter veg price per plate"
-                                    value={banquet.banquetVegPrice}
-                                    onChange={(e) => {
-                                      const newBanquet = [...banquets];
-                                      newBanquet[index].banquetVegPrice =
-                                        e.target.value;
-                                      setBanquets(newBanquet);
-                                    }}
-                                    className="border border-gray-300 p-2 rounded-md w-full"
-                                  />
-                                </div>
-
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Non Veg Price
-                                  </label>
-                                  <input
-                                    type="text"
-                                    placeholder="Enter non veg price per plate"
-                                    value={banquet.banquetNonVegPrice}
-                                    onChange={(e) => {
-                                      const newBanquet = [...banquets];
-                                      newBanquet[index].banquetNonVegPrice =
-                                        e.target.value;
-                                      setBanquets(newBanquet);
-                                    }}
-                                    className="border border-gray-300 p-2 rounded-md w-full"
-                                  />
-                                </div>
-
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Floor
-                                  </label>
-                                  <select
-                                    value={banquet.banquetFloor}
-                                    onChange={(e) => {
-                                      const newBanquet = [...banquets];
-                                      newBanquet[index].banquetFloor =
-                                        e.target.value;
-                                      setBanquets(newBanquet);
-                                    }}
-                                    className="border border-gray-300 p-2 rounded-md w-full"
-                                  >
-                                    <option value="">Select Floor</option>
-                                    {floorOptions.map((option) => (
-                                      <option
-                                        key={option}
-                                        value={option.toLowerCase()}
-                                      >
-                                        {option}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </div>
-
-                                {/* Image Upload Section */}
-                                <div className="mt-4">
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Banquet Images (XLS, JPG, PNG only, max 10MB)
-                                  </label>
-                                  <div className="flex items-center gap-4">
-                                    <input
-                                      type="file"
-                                      accept=".xls,.jpg,.png"
-                                      multiple
-                                      onChange={(e) =>
-                                        ImageUpload(
-                                          e,
-                                          index,
-                                          banquets,
-                                          setBanquets,
-                                          "banquetImageUpload"
-                                        )
-                                      }
-                                      className="hidden"
-                                      id={`banquet-image-upload-${index}`}
-                                    />
-                                    <label
-                                      htmlFor={`banquet-image-upload-${index}`}
-                                      className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
-                                    >
-                                      Upload Images
-                                    </label>
-                                    <span className="text-sm text-gray-500">
-                                      {banquet.banquetImageUpload.length} file(s)
-                                      uploaded
-                                    </span>
-                                  </div>
-
-                                  {/* Display uploaded image names */}
-                                  {banquet.banquetImageUpload.length > 0 && (
-                                    <div className="mt-4 flex flex-wrap gap-4">
-                                      {banquet.banquetImageUpload.map(
-                                        (image, imgIndex) => (
-                                          <div
-                                            key={imgIndex}
-                                            className="relative"
-                                          >
-                                            <img
-                                              src={
-                                                image.includes("base64")
-                                                  ? image
-                                                  : generateFilePath(image)
-                                              }
-                                              alt={`Banquet Image ${imgIndex + 1
-                                                }`}
-                                              style={{
-                                                height: 100,
-                                                width: 100,
-                                                objectFit: "cover",
-                                                border: "1px solid #ddd",
-                                                borderRadius: "5px",
-                                              }}
-                                            />
-                                            <button
-                                              type="button"
-                                              onClick={() =>
-                                                RemoveImage(
-                                                  index,
-                                                  imgIndex,
-                                                  banquets,
-                                                  setBanquets,
-                                                  "banquetImageUpload"
-                                                )
-                                              }
-                                              className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
-                                            >
-                                              X
-                                            </button>
-                                          </div>
-                                        )
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-
-                                <div className="mb-4 mt-8">
-                                  <label className="inline-flex items-center">
-                                    <input
-                                      type="checkbox"
-                                      checked={isPrefunctionAreaVisible}
-                                      onChange={() =>
-                                        setIsPrefunctionAreaVisible(
-                                          !isPrefunctionAreaVisible
-                                        )
-                                      }
-                                      className="form-checkbox"
-                                    />
-                                    <span className="ml-2">
-                                      "Do you have PFA (prefunction area)"
-                                    </span>
-                                  </label>
-
-                                  {isPrefunctionAreaVisible && (
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Size LXBXH
-                                      </label>
-                                      <input
-                                        type="text"
-                                        placeholder="Enter size"
-                                        value={banquet.prefuntionAreaSize}
-                                        onChange={(e) => {
-                                          const newBanquet = [...banquets];
-                                          newBanquet[index].prefuntionAreaSize =
-                                            e.target.value;
-                                          setBanquets(newBanquet);
-                                        }}
-                                        className="border border-gray-300 p-2 rounded-md w-full"
-                                      />
-                                    </div>
-                                  )}
-                                </div>
-
-                                {banquets.length > 1 && (
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      const newBanquets = banquets.filter(
-                                        (_, i) => i !== index
-                                      );
-                                      setBanquets(newBanquets);
-                                    }}
-                                    className="mt-2 text-red-500 hover:text-red-700"
-                                  >
-                                    Remove Banquet
-                                  </button>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        )}
                       </div>
                     </div>
                   )}
@@ -2806,7 +2502,7 @@ const AddVendorForm = () => {
                                   { services: "", rate: "" },
                                 ])
                               }
-                              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                              className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
                             >
                               Add Services
                             </button>
