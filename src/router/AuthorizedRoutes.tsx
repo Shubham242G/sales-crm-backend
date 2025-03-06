@@ -44,8 +44,8 @@ import Leads from "../pages/Sales/leads";
 import AddLeadsForm from "../pages/Sales/addLeads";
 import CustomerSales from "../pages/Sales/customer";
 import AddCustomer from "../pages/Sales/addCustomer";
-import QuotesForCustomer from "../pages/Sales/quotesForCustomer";
-import QuotesForCustomerView from "../pages/Sales/quotesForCustomerView";
+import QuotesForCustomer from "../pages/Sales/quotesToCustomer";
+import QuotesForCustomerView from "../pages/Sales/quotesToCustomerView";
 import DailyActivityReport from "../pages/DailyActivityReport/DailyActivityProject";
 import AddDailyActivityReport from "../pages/DailyActivityReport/addDailyActivityProject";
 import TaskManagement from "../pages/TaskManagement/TaskManagement";
@@ -76,6 +76,7 @@ import PurchaseContactView from "@/pages/LedgerPage/purchaseContactView";
 import MyTask from "@/pages/TaskManagement/MyTask";
 import AddConfirmedQuotesFromVendor from "@/pages/LedgerPage/addConfirmedQuotesFromVendor";
 import ConfirmedQuotestoCustomer from "@/pages/Sales/confirmedQuotestoCustomer";
+import AddQuotesToCustomerForm from "@/pages/Sales/addQuotesToCustomer";
 
 export default function AuthorizedRoutes() {
   return (
@@ -119,6 +120,15 @@ export default function AuthorizedRoutes() {
           <Route
             path="/addQuotesFromVendors/:id"
             element={<AddQuotesFromVendorsForm />}
+          ></Route>
+
+          <Route
+            path="/addQuotesToCustomer"
+            element={<AddQuotesToCustomerForm />}
+          ></Route>
+          <Route
+            path="/addQuotesToCustomer/:id"
+            element={<AddQuotesToCustomerForm />}
           ></Route>
 
           <Route
@@ -171,6 +181,14 @@ export default function AuthorizedRoutes() {
           <Route
             path="/quotesFromVendors/:id"
             element={<QuotesForVendors />}
+          ></Route>
+          <Route
+            path="/quotesToCustomer"
+            element={<QuotesForCustomer />}
+          ></Route>
+          <Route
+            path="/quotesToCustomer/:id"
+            element={<QuotesForCustomer />}
           ></Route>
           <Route path="/confirmedQuotes" element={<ConfirmedQuotes />}></Route>
           <Route

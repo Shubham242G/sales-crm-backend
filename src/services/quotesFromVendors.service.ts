@@ -10,28 +10,29 @@ import axios from "../libs/hooks/axios";
 
 const prefix = "/QuotesFromVendors";
 
-
 export interface IQuotesFromVendors {
-
-  
-    quotesId:string;
-    vendorList: {
-      label: string;
-      value: string;
+  quotesId: string;
+  vendorList: {
+    label: string;
+    value: string;
+  };
+  serviceType: [];
+  rfpId: string;
+  amount: string;
+  receivedDate: string;
+  status: string;
+  attachment: string[];
+  eventDates: [
+    {
+      startDate: Date;
     }
-    serviceType : [];
-    rfpId: string;
-    amount: string;
-    receivedDate: string;
-    status: string;
-    attachment: string[];
-    eventDates: [{
-            startDate: Date;
-        }],
-
-
-
-}[]
+  ];
+  markupDetails: {
+    label: string;
+    markupAmount: string;
+  }[];
+}
+[];
 
 export const useQuotesFromVendorsApiHook = () => {
   // const axiosAuth = useAxiosAuth({});
@@ -39,18 +40,24 @@ export const useQuotesFromVendorsApiHook = () => {
     console.log(`${BASE_URL}${prefix}/`, "test");
     return axios.post<GeneralApiResponse<any>>(`${BASE_URL}${prefix}/`, obj);
   };
-  const updateQuotesFromVendorsById = async ({ id, obj }: { id: string; obj: any }) => {
+  const updateQuotesFromVendorsById = async ({
+    id,
+    obj,
+  }: {
+    id: string;
+    obj: any;
+  }) => {
     return axios.patch<GeneralApiResponse>(
       `${BASE_URL}${prefix}/updateById/${id}`,
       obj
     );
   };
 
- const convertToQuotesFromVendors = async (id: any) => {
-    return axios.post<GeneralApiResponse<IQuotesFromVendors>>(
-      `${BASE_URL}${prefix}/convert/${id}`
-    );
-  };
+  // const convertToQuotesFromVendors = async (id: any) => {
+  //   return axios.post<GeneralApiResponse<IQuotesFromVendors>>(
+  //     `${BASE_URL}${prefix}/convert/${id}`
+  //   );
+  // };
 
   const deleteQuotesFromVendorsById = async (id: any) => {
     return axios.delete<GeneralApiResponse>(
@@ -63,7 +70,10 @@ export const useQuotesFromVendorsApiHook = () => {
     );
   };
 
-  const getAllQuotesFromVendors = async (pagination: PaginationState, searchObj: any) => {
+  const getAllQuotesFromVendors = async (
+    pagination: PaginationState,
+    searchObj: any
+  ) => {
     console.log(`${BASE_URL}${prefix}/`, "test c");
     // const query = new URLSearchParams({
     //     pageIndex: String(pagination.pageIndex),
@@ -73,13 +83,20 @@ export const useQuotesFromVendorsApiHook = () => {
     return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}`);
   };
 
+  const convertQuotesFromVendorToQuotesToCustomer = async (id: string) => {
+    return axios.post<GeneralApiResponse<any>>(
+      `${BASE_URL}${prefix}/convert/${id}`
+    );
+  };
+
   return {
     addQuotesFromVendors,
     deleteQuotesFromVendorsById,
     updateQuotesFromVendorsById,
     getQuotesFromVendorsById,
     getAllQuotesFromVendors,
-    convertToQuotesFromVendors
+    // convertToQuotesFromVendors,
+    convertQuotesFromVendorToQuotesToCustomer,
   };
 };
 
@@ -115,7 +132,9 @@ export const useQuotesFromVendors = (
   return useQuery({
     queryKey: ["QuotesFromVendors", pagination, searchObj],
     queryFn: () =>
-      api.getAllQuotesFromVendors(pagination, searchObj).then((res) => res?.data),
+      api
+        .getAllQuotesFromVendors(pagination, searchObj)
+        .then((res) => res?.data),
     initialData: {
       data: [],
       total: 0,
@@ -148,17 +167,32 @@ export const useUpdateQuotesFromVendorsById = () => {
     },
   });
 };
-export const useConvertQuotesFromVendors = () => {
-  const api = useQuotesFromVendorsApiHook();
 
+export const useConvertQuotesFromVendorToQuotesToCustomer = () => {
+  const api = useQuotesFromVendorsApiHook();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: api.convertToQuotesFromVendors,
-    onSuccess: (res) => {
-      queryClient.invalidateQueries({ queryKey: ["convertToQuotesFromVendors"] });
+    mutationFn: api.convertQuotesFromVendorToQuotesToCustomer,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["quotesToCustomer"] });
+      queryClient.invalidateQueries({ queryKey: ["quotesFromVendors"] });
     },
   });
 };
 
+
+// export const useConvertQuotesFromVendors = () => {
+//   const api = useQuotesFromVendorsApiHook();
+
+//   const queryClient = useQueryClient();
+//   return useMutation({
+//     mutationFn: api.convertToQuotesFromVendors,
+//     onSuccess: (res) => {
+//       queryClient.invalidateQueries({
+//         queryKey: ["convertToQuotesFromVendors"],
+//       });
+//     },
+//   });
+// };
 
 // console.log("check")

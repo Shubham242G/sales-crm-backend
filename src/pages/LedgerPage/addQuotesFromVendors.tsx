@@ -11,6 +11,12 @@ import { useVendor } from "@/services/vendor.service";
 import Select from "react-select";
 import { useRfp } from "@/services/rfp.service";
 import { useRfpById } from "@/services/rfp.service";
+import { customReactStylesSmall } from "@/utils/ReactSelectStyle";
+
+interface IMarkupItem {
+  label: string;
+  markupAmount: string;
+}
 
 interface IShipppingAddress {
   // attention: string;
@@ -28,6 +34,7 @@ interface IShipppingAddress {
   eventDates: {
     startDate: string;
   }[];
+  markupDetails: IMarkupItem[];
 }
 
 const AddQuotesFromVendors = () => {
@@ -47,6 +54,12 @@ const AddQuotesFromVendors = () => {
     eventDates: [
       {
         startDate: "",
+      },
+    ],
+    markupDetails: [
+      {
+        label: "",
+        markupAmount: "",
       },
     ],
   });
@@ -84,10 +97,7 @@ const AddQuotesFromVendors = () => {
 
   useEffect(() => {
     if (quotesFromVendorsDataById && quotesFromVendorsDataById?.data) {
-      // console.log(
-      //   quotesFromVendorsDataById.data.vendorList.label,
-      //   "check vendor list label"
-      // );
+      console.log(quotesFromVendorsDataById?.data?.rfpId, "check  label");
       setFormData({
         // quotesFromVendorsId: quotesFromVendorsDataById?.data?.quotesFromVendorsId || "",
         quotesId: quotesFromVendorsDataById?.data?.quotesId || "",
@@ -99,6 +109,10 @@ const AddQuotesFromVendors = () => {
         status: quotesFromVendorsDataById?.data?.status || "",
         attachment: quotesFromVendorsDataById?.data?.attachment || [],
         serviceType: quotesFromVendorsDataById?.data?.serviceType || [],
+        markupDetails:
+          quotesFromVendorsDataById?.data?.markupDetails?.length > 0
+            ? quotesFromVendorsDataById?.data?.markupDetails
+            : [{ label: "", markupAmount: "" }],
       });
     }
   }, [quotesFromVendorsDataById]);
@@ -107,6 +121,15 @@ const AddQuotesFromVendors = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // const invalidMarkup = formData.markupDetails.some((item) => {
+    //   const markupValue = parseFloat(item.markupAmount);
+    //   return isNaN(markupValue) || markupValue > 100 || markupValue < 0;
+    // });
+
+    // if (invalidMarkup) {
+    //   toastError("Markup Amount must be a percentage between 0 and 100.");
+    //   return;
+    // }
     try {
       const obj = { ...formData };
 
@@ -137,6 +160,13 @@ const AddQuotesFromVendors = () => {
     setFormData((prev) => ({
       ...prev,
       serviceType: newServiceTypes,
+    }));
+  };
+
+  const handleRfpChange = (selected: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      rfpId: selected ? selected.value : "",
     }));
   };
 
@@ -193,7 +223,7 @@ const AddQuotesFromVendors = () => {
         });
 
       if (fileInputRef.current) {
-        fileInputRef.current.value = ""; // Reset file input
+        fileInputRef.current.value = "";
       }
     }
   };
@@ -204,6 +234,46 @@ const AddQuotesFromVendors = () => {
       attachment: prev.attachment.filter((_, i) => i !== index),
     }));
     toastSuccess("File removed successfully!");
+  };
+
+  const handleAddMarkupRow = () => {
+    setFormData((prev) => ({
+      ...prev,
+      markupDetails: [...prev.markupDetails, { label: "", markupAmount: "" }],
+    }));
+  };
+
+  const handleRemoveMarkupRow = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      markupDetails: prev.markupDetails.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleMarkupChange = (
+    index: number,
+    field: keyof IMarkupItem,
+    value: string
+  ) => {
+    if (field === "markupAmount") {
+      const markupValue = parseFloat(value);
+      if (!isNaN(markupValue) && (markupValue < 0 || markupValue > 100)) {
+        toastError("Markup Amount must be a percentage between 0 and 100.");
+        return;
+      }
+    }
+
+    setFormData((prev) => {
+      const updatedMarkupDetails = [...prev.markupDetails];
+      updatedMarkupDetails[index] = {
+        ...updatedMarkupDetails[index],
+        [field]: value,
+      };
+      return {
+        ...prev,
+        markupDetails: updatedMarkupDetails,
+      };
+    });
   };
 
   const handleChange = (selected: string[] | null) => {
@@ -299,13 +369,21 @@ const AddQuotesFromVendors = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               RFP ID
             </label>
             <Select
               options={rfpOptions}
-              onChange={handleChangeRfp}
-              isMulti={false}
+              value={
+                rfpOptions.find(
+                  (option: any) => option.value === formData.rfpId
+                ) || null
+              }
+              onChange={handleRfpChange}
+              className="text-gray-600"
+              classNamePrefix="select"
+              placeholder="Select RFP ID"
+              isClearable
             />
           </div>
 
@@ -370,8 +448,106 @@ const AddQuotesFromVendors = () => {
             />
           </div>
 
+          {/*markup table*/}
+          <div className="col-span-2">
+            <div className="flex justify-between items-center mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Markup Details
+              </label>
+              <button
+                type="button"
+                onClick={handleAddMarkupRow}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Add Row
+              </button>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full border border-gray-200 rounded-lg">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                      S.No.
+                    </th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                      Label
+                    </th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                      Markup Amount
+                    </th>
+                    {formData.markupDetails.length > 1 && (
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                        Actions
+                      </th>
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {formData.markupDetails.map((item, index) => (
+                    <tr
+                      key={index}
+                      className="hover:bg-gray-50 transition duration-150"
+                    >
+                      <td className="px-6 py-4 border-b text-gray-600">
+                        {String(index + 1).padStart(2, "0")}
+                      </td>
+                      <td className="px-6 py-4 border-b">
+                        <input
+                          type="text"
+                          value={item.label}
+                          onChange={(e) =>
+                            handleMarkupChange(index, "label", e.target.value)
+                          }
+                          className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                          placeholder="Enter label"
+                        />
+                      </td>
+                      <td className="px-6 py-4 border-b">
+                        <input
+                          type="text"
+                          value={item.markupAmount}
+                          onChange={(e) =>
+                            handleMarkupChange(
+                              index,
+                              "markupAmount",
+                              e.target.value
+                            )
+                          }
+                          className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                          placeholder="Enter markup amount"
+                        />
+                      </td>
+                      {formData.markupDetails.length > 1 && (
+                        <td className="px-6 py-4 border-b">
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveMarkupRow(index)}
+                            className="text-red-500 hover:text-red-700 transition duration-200"
+                          >
+                            Remove
+                          </button>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           {/* File Upload Section */}
-          <div className="mb-4">
+          <div className="mb-4 mt-8">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Upload Files (PDF, Excel, JPEG)
             </label>

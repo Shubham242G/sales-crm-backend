@@ -331,7 +331,7 @@ const AddConfirmedQuotesFromVendor = () => {
 
   const handleRemoveChecklistItem = (index: number) => {
     const newChecklist = formData.checklist.filter((_, i) => i !== index);
-    // Reassign srNo to maintain sequential numbering
+
     const updatedChecklist = newChecklist.map((item, i) => ({
       ...item,
       srNo: String(i + 1).padStart(2, "0"),
