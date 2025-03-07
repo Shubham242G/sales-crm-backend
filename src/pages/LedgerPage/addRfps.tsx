@@ -220,9 +220,11 @@ const AddRfpsForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-2xl font-bold mb-6">Add RPFs</h1>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">Add RPFs</h1>
+
+      {/* Box with required styling */}
+      <div className="mx-auto border border-gray-300 bg-gray-50 shadow-lg rounded-lg p-8">
         <form onSubmit={handleSubmit}>
           {/* Service Type and Event Date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
@@ -230,8 +232,6 @@ const AddRfpsForm = () => {
               <label className="block text-gray-700 font-medium">
                 Service Type
               </label>
-
-              {/*Dropdown for Service Type */}
               <Select
                 isMulti
                 options={serviceTypeOptions}
@@ -239,7 +239,7 @@ const AddRfpsForm = () => {
                   formData.serviceType.includes(option.value)
                 )}
                 onChange={handleServiceTypeChange}
-                className="w-full mt-2 border rounded-md"
+                className="w-full mt-2 border border-gray-300 bg-gray-50 rounded-md"
                 classNamePrefix="select"
                 placeholder="Select service types"
               />
@@ -260,24 +260,11 @@ const AddRfpsForm = () => {
                     }
                     onChange={(e) => handleInputChangeEventDates(e, index)}
                     type="date"
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
                   />
                 </div>
               ))}
           </div>
-
-          {/* <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              RFP ID
-            </label>
-            <input
-              name={"rfpId"}
-              value={formData.rfpId}
-              onChange={handleInputChange}
-              type="text"
-              className="w-full border border-gray-300 rounded-md p-2"
-            />
-          </div> */}
 
           {/* Event Details and Deadline */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
@@ -286,11 +273,11 @@ const AddRfpsForm = () => {
                 Event Details
               </label>
               <input
-                name={"eventDetails"}
+                name="eventDetails"
                 value={formData.eventDetails}
                 onChange={handleInputChange}
                 type="text"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
                 placeholder="Enter event details"
               />
             </div>
@@ -310,32 +297,19 @@ const AddRfpsForm = () => {
                     }
                     onChange={(e) => handleInputChangeEventDates(e, index)}
                     type="date"
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
                   />
                 </div>
               ))}
-
-            {/* <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Deadline for Proposal
-              </label>
-              <input
-                name={"deadlineOfProposal"}
-                value={formData.deadlineOfProposal}
-                onChange={handleInputChange}
-                type="date"
-                className="w-full border border-gray-300 rounded-md p-2"
-              />
-            </div> */}
           </div>
 
           {/* Vendor List */}
-          <div className="w-96">
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Vendor List
             </label>
             <Select
-              className="w-full border"
+              className="w-full border border-gray-300 bg-gray-50 rounded-md shadow-sm"
               isMulti
               value={formData?.vendorList}
               options={option}
@@ -354,7 +328,7 @@ const AddRfpsForm = () => {
               Additional Instructions
             </label>
             <textarea
-              name={"additionalInstructions"}
+              name="additionalInstructions"
               value={formData.additionalInstructions}
               onChange={(e) =>
                 setFormData({
@@ -362,7 +336,7 @@ const AddRfpsForm = () => {
                   additionalInstructions: e.target.value,
                 })
               }
-              className="w-full border border-gray-300 rounded-md p-2"
+              className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
               placeholder="Enter additional instructions"
               rows={4}
             ></textarea>
@@ -372,14 +346,14 @@ const AddRfpsForm = () => {
           <div className="flex justify-end gap-4">
             <button
               type="button"
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-200 transition"
             >
               Cancel
             </button>
             {((!id && canCreate) || (id && canUpdate)) && (
               <button
                 type="submit"
-                className="px-4 py-2 bg-orange-500 text-white rounded-md"
+                className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition"
               >
                 Submit
               </button>

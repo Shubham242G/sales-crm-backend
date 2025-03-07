@@ -704,26 +704,35 @@ const AddEnquiryForm = () => {
 
   console.log(othersPreference, "check other preferences");
 
+  console.log(cab, "cab check ");
   return (
-    <div className="min-h-screen w-full bg-gray-100 p-8">
-      <div className=" mx-auto bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-2xl font-bold mb-6">Enquiry</h1>
+    <div className="bg-white min-h-screen px-4 ">
+      <div>
+        <h1 className="text-2xl font-bold mb-6 px-4">Enquiry</h1>
+      </div>
+      <div className="min-h-screen w-full bg-[#FAFAFA] p-8 border-[1px] border-[#D1D1D1]">
         <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <select
-              onChange={(val) =>
-                handleSelectChange("salutation", val.target.value)
-              }
-              value={salutation}
-              className="border border-gray-300 rounded-md mt-6 px-4 py-2 w-20 mt-1"
-            >
-              {salutationOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {/* Salutation */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Salutation
+              </label>
+              <select
+                onChange={(val) =>
+                  handleSelectChange("salutation", val.target.value)
+                }
+                value={salutation}
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {salutationOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             {/* FirstName */}
             <div>
@@ -736,7 +745,7 @@ const AddEnquiryForm = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="First Name"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
@@ -751,7 +760,7 @@ const AddEnquiryForm = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Last Name"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
@@ -766,10 +775,11 @@ const AddEnquiryForm = () => {
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
                 placeholder="Company Name"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
+            {/* Phone Number */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Phone Number
@@ -780,10 +790,11 @@ const AddEnquiryForm = () => {
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="Phone Number"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email
@@ -793,11 +804,12 @@ const AddEnquiryForm = () => {
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="email"
-                className="w-full border border-gray-300 rounded-md p-2"
+                placeholder="Email"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
+            {/* City */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 City
@@ -808,10 +820,11 @@ const AddEnquiryForm = () => {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="City"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
+            {/* Area */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Area
@@ -825,10 +838,11 @@ const AddEnquiryForm = () => {
                   setArea(e.target.value);
                 }}
                 placeholder="Area"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
+            {/* Number of Rooms */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Number of Rooms
@@ -839,10 +853,11 @@ const AddEnquiryForm = () => {
                 value={noOfRooms}
                 onChange={(e) => setNoOfRooms(e.target.value)}
                 placeholder="Number of Rooms"
-                className="border border-gray-300 p-3 rounded-md focus:ring focus:ring-blue-200"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
+            {/* Enquiry Type */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Enquiry Type
@@ -851,7 +866,7 @@ const AddEnquiryForm = () => {
                 name="enquiryType"
                 value={enquiryType}
                 onChange={(e) => setEnquiryType(e.target.value)}
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">Select Enquiry Type</option>
                 <option value="room">Room</option>
@@ -860,6 +875,7 @@ const AddEnquiryForm = () => {
               </select>
             </div>
 
+            {/* Check In */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Check In
@@ -869,10 +885,11 @@ const AddEnquiryForm = () => {
                 name="checkIn"
                 value={moment(checkIn).format("YYYY-MM-DD")}
                 onChange={(e) => setCheckIn(e.target.value)}
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
+            {/* Check Out */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Check Out
@@ -882,10 +899,11 @@ const AddEnquiryForm = () => {
                 name="checkOut"
                 value={moment(checkOut).format("YYYY-MM-DD")}
                 onChange={(e) => setCheckOut(e.target.value)}
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
+            {/* Level of Enquiry */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Level of Enquiry
@@ -894,7 +912,7 @@ const AddEnquiryForm = () => {
                 name="levelOfEnquiry"
                 value={levelOfEnquiry}
                 onChange={(e) => setLevelOfEnquiry(e.target.value)}
-                className="border border-gray-300 p-3 rounded-md focus:ring focus:ring-blue-200"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">Select Enquiry Type</option>
                 <option value="urgent">Urgent</option>
@@ -902,6 +920,7 @@ const AddEnquiryForm = () => {
                 <option value="not urgent">Not Urgent</option>
               </select>
             </div>
+
             {/* Hotel Preference */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -910,7 +929,7 @@ const AddEnquiryForm = () => {
               <select
                 value={othersPreference}
                 onChange={(e) => setOthersPreference(e.target.value)}
-                className="w-full border border-gray-300 rounded-md p-2 mb-2"
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">Select a Preference</option>
                 <option value="preference1">Preference 1</option>
@@ -923,10 +942,11 @@ const AddEnquiryForm = () => {
                   placeholder="Enter Hotel Name"
                   value={hotelName}
                   onChange={(e) => setHotelName(e.target.value)}
-                  className="w-full border border-gray-300 rounded-md p-2 "
+                  className="w-full border border-gray-300 rounded-md p-2.5 text-sm mt-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               )}
             </div>
+
             {/* Hotel Category */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -949,39 +969,40 @@ const AddEnquiryForm = () => {
                 placeholder="Select Categories..."
               />
             </div>
+
             {/* Rate Required for (Occupancy) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-4 mt-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Rate Required for (Occupancy)
               </label>
-
-              <div className="flex space-x-4 mb-6">
+              <div className="flex space-x-4">
                 <label className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     value="single occupancy"
                     checked={occupancy.includes("single occupancy")}
                     onChange={() => handleCheckboxChange("single occupancy")}
+                    className="form-checkbox h-4 w-4 text-blue-600"
                   />
                   <span>Single Occupancy</span>
                 </label>
-
                 <label className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     value="double occupancy"
                     checked={occupancy.includes("double occupancy")}
                     onChange={() => handleCheckboxChange("double occupancy")}
+                    className="form-checkbox h-4 w-4 text-blue-600"
                   />
                   <span>Double Occupancy</span>
                 </label>
-
                 <label className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     value="extra bed"
                     checked={occupancy.includes("extra bed")}
                     onChange={() => handleCheckboxChange("extra bed")}
+                    className="form-checkbox h-4 w-4 text-blue-600"
                   />
                   <span>Extra Bed</span>
                 </label>
@@ -990,45 +1011,228 @@ const AddEnquiryForm = () => {
           </div>
 
           {/* Room Table */}
-          {(enquiryType === "room" || enquiryType === "both") && (
-            <div className="mt-8">
-              <h2 className="font-bold text-lg mb-4">Room</h2>
-              <table className="table-auto w-full border-collapse border border-gray-300">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="border border-gray-300 px-4 py-2">Date</th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      No. of Rooms
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Room Category
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Occupancy
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Meal Plan
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {room &&
-                    room?.length > 0 &&
-                    room.map((row, index) => (
-                      <tr key={index} className="even:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-2">
-                          {row?.date}
+          <div className="border rounded-lg mt-8 p-6 shadow bg-white">
+            {(enquiryType === "room" || enquiryType === "both") && (
+              <div>
+                <h2 className="font-bold text-lg mb-4">Room</h2>
+                <table className="table-auto w-full border-collapse border border-gray-300">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="border border-gray-300 px-4 py-2">Date</th>
+                      <th className="border border-gray-300 px-4 py-2">
+                        No. of Rooms
+                      </th>
+                      <th className="border border-gray-300 px-4 py-2">
+                        Room Category
+                      </th>
+                      <th className="border border-gray-300 px-4 py-2">
+                        Occupancy
+                      </th>
+                      <th className="border border-gray-300 px-4 py-2">
+                        Meal Plan
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {room &&
+                      room?.length > 0 &&
+                      room.map((row, index) => (
+                        <tr key={index} className="even:bg-white">
+                          <td className="border border-gray-300 px-4 py-2">
+                            {row?.date}
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            <input
+                              type="number"
+                              value={row?.noOfRooms}
+                              onChange={(e) =>
+                                handleTableChange(
+                                  room,
+                                  setRoom,
+                                  index,
+                                  "noOfRooms",
+                                  e.target.value
+                                )
+                              }
+                              className="border border-gray-300 p-2 rounded-md w-full"
+                            />
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            <select
+                              value={row?.roomCategory}
+                              onChange={(e) =>
+                                handleTableChange(
+                                  room,
+                                  setRoom,
+                                  index,
+                                  "roomCategory",
+                                  e.target.value
+                                )
+                              }
+                              className="border border-gray-300 p-2 rounded-md w-full"
+                            >
+                              <option value="">Select Category</option>
+                              <option value="Standard">Standard</option>
+                              <option value="Deluxe">Deluxe</option>
+                              <option value="Suite">Suite</option>
+                            </select>
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            <select
+                              value={row?.occupancy}
+                              onChange={(e) =>
+                                handleTableChange(
+                                  room,
+                                  setRoom,
+                                  index,
+                                  "occupancy",
+                                  e.target.value
+                                )
+                              }
+                              className="border border-gray-300 p-2 rounded-md w-full"
+                            >
+                              <option value="">Select Occupancy</option>
+                              <option value="Single">Single</option>
+                              <option value="Double">Double</option>
+                              <option value="Triple">Triple</option>
+                            </select>
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            <select
+                              onChange={(e) =>
+                                handleMealPlanChange(
+                                  room,
+                                  setRoom,
+                                  index,
+                                  e.target.value
+                                )
+                              }
+                              value={row?.mealPlan}
+                              className="border border-gray-300 p-2 rounded-md w-full"
+                            >
+                              <option value="">Select Meal Plan</option>
+                              {mealPlanOptions.map(
+                                (plan) =>
+                                  !row.mealPlan.includes(plan) && (
+                                    <option key={plan} value={plan}>
+                                      {plan}
+                                    </option>
+                                  )
+                              )}
+                            </select>
+                            <div className="mt-2">
+                              {row &&
+                                row?.mealPlan?.length > 0 &&
+                                row.mealPlan.map((plan) => (
+                                  <span
+                                    key={plan}
+                                    className="inline-block bg-gray-200 px-3 py-1 text-sm rounded-full mr-2"
+                                  >
+                                    {plan}{" "}
+                                    <button
+                                      onClick={() =>
+                                        removeMealPlan(
+                                          room,
+                                          setRoom,
+                                          index,
+                                          plan
+                                        )
+                                      }
+                                      className="text-red-500 font-bold"
+                                    >
+                                      x
+                                    </button>
+                                  </span>
+                                ))}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+                {/* Button for "Same for All Days" */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (room?.length > 0) {
+                      const filledRow = room.find(
+                        (row) =>
+                          (row.noOfRooms && parseInt(row.noOfRooms) > 0) ||
+                          row.roomCategory ||
+                          row.occupancy ||
+                          (row.mealPlan && row.mealPlan.length > 0)
+                      );
+                      if (filledRow) {
+                        setRoom(
+                          room.map((originalRow) => ({
+                            ...filledRow,
+                            date: originalRow.date,
+                          }))
+                        );
+                      } else {
+                        alert(
+                          "Please fill in at least one row before applying to all days."
+                        );
+                      }
+                    } else {
+                      alert("No room data available.");
+                    }
+                  }}
+                  className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
+                >
+                  Same for All Days
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Banquet Table */}
+          <div className="border rounded-lg mt-8 p-6 shadow bg-white">
+            {(enquiryType === "banquet" || enquiryType === "both") && (
+              <div>
+                <h2 className="font-bold text-lg mb-4">Banquet</h2>
+                <table className="table-auto w-full border-collapse border border-gray-300">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="border border-gray-300 px-4 py-2 w-32">
+                        Date
+                      </th>
+                      <th className="border border-gray-300 px-4 py-2">
+                        Session
+                      </th>
+                      <th className="border border-gray-300 px-4 py-2">
+                        Seating Style
+                      </th>
+                      <th className="border border-gray-300 px-4 py-2">
+                        A/V Setup
+                      </th>
+                      <th className="border border-gray-300 px-4 py-2">
+                        Menu Type
+                      </th>
+                      <th className="border border-gray-300 px-4 py-2">
+                        Minimum No. of Pax
+                      </th>
+                      <th className="border border-gray-300 px-4 py-2">
+                        Seating Required
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {banquet.map((row, index) => (
+                      <tr key={index} className="even:bg-white">
+                        <td className="border border-gray-300 px-4 py-2 w-32">
+                          {moment(row.date).format("YYYY-MM-DD")}
                         </td>
                         <td className="border border-gray-300 px-4 py-2">
                           <input
-                            type="number"
-                            value={row?.noOfRooms}
+                            type="text"
+                            value={row?.session}
                             onChange={(e) =>
                               handleTableChange(
-                                room,
-                                setRoom,
+                                banquet,
+                                setBanquet,
                                 index,
-                                "noOfRooms",
+                                "session",
                                 e.target.value
                               )
                             }
@@ -1036,299 +1240,125 @@ const AddEnquiryForm = () => {
                           />
                         </td>
                         <td className="border border-gray-300 px-4 py-2">
-                          <select
-                            value={row?.roomCategory}
+                          <input
+                            type="text"
+                            value={row?.seatingStyle}
                             onChange={(e) =>
                               handleTableChange(
-                                room,
-                                setRoom,
+                                banquet,
+                                setBanquet,
                                 index,
-                                "roomCategory",
+                                "seatingStyle",
                                 e.target.value
                               )
                             }
                             className="border border-gray-300 p-2 rounded-md w-full"
-                          >
-                            <option value="">Select Category</option>
-                            <option value="Standard">Standard</option>
-                            <option value="Deluxe">Deluxe</option>
-                            <option value="Suite">Suite</option>
-                          </select>
+                          />
                         </td>
                         <td className="border border-gray-300 px-4 py-2">
-                          <select
-                            value={row?.occupancy}
+                          <input
+                            type="text"
+                            value={row?.avSetup}
                             onChange={(e) =>
                               handleTableChange(
-                                room,
-                                setRoom,
+                                banquet,
+                                setBanquet,
                                 index,
-                                "occupancy",
+                                "avSetup",
                                 e.target.value
                               )
                             }
                             className="border border-gray-300 p-2 rounded-md w-full"
-                          >
-                            <option value="">Select Occupancy</option>
-                            <option value="Single">Single</option>
-                            <option value="Double">Double</option>
-                            <option value="Triple">Triple</option>
-                          </select>
+                          />
                         </td>
                         <td className="border border-gray-300 px-4 py-2">
-                          <select
+                          <input
+                            type="text"
+                            value={row?.menuType}
                             onChange={(e) =>
-                              handleMealPlanChange(
-                                room,
-                                setRoom,
+                              handleTableChange(
+                                banquet,
+                                setBanquet,
                                 index,
+                                "menuType",
                                 e.target.value
                               )
                             }
-                            value={row?.mealPlan}
                             className="border border-gray-300 p-2 rounded-md w-full"
-                          >
-                            <option value="">Select Meal Plan</option>
-                            {mealPlanOptions.map(
-                              (plan) =>
-                                !row.mealPlan.includes(plan) && (
-                                  <option key={plan} value={plan}>
-                                    {plan}
-                                  </option>
-                                )
-                            )}
-                          </select>
-                          <div className="mt-2">
-                            {row &&
-                              row?.mealPlan?.length > 0 &&
-                              row.mealPlan.map((plan) => (
-                                <span
-                                  key={plan}
-                                  className="inline-block bg-gray-200 px-3 py-1 text-sm rounded-full mr-2"
-                                >
-                                  {plan}{" "}
-                                  <button
-                                    onClick={() =>
-                                      removeMealPlan(room, setRoom, index, plan)
-                                    }
-                                    className="text-red-500 font-bold"
-                                  >
-                                    x
-                                  </button>
-                                </span>
-                              ))}
-                          </div>
+                          />
+                        </td>
+                        <td className="border border-gray-300 px-4 py-2">
+                          <input
+                            type="number"
+                            value={row?.minPax}
+                            onChange={(e) =>
+                              handleTableChange(
+                                banquet,
+                                setBanquet,
+                                index,
+                                "minPax",
+                                e.target.value
+                              )
+                            }
+                            className="border border-gray-300 p-2 rounded-md w-full"
+                          />
+                        </td>
+                        <td className="border border-gray-300 px-4 py-2">
+                          <input
+                            type="text"
+                            value={row?.seatingRequired}
+                            onChange={(e) =>
+                              handleTableChange(
+                                banquet,
+                                setBanquet,
+                                index,
+                                "seatingRequired",
+                                e.target.value
+                              )
+                            }
+                            className="border border-gray-300 p-2 rounded-md w-full"
+                          />
                         </td>
                       </tr>
                     ))}
-                </tbody>
-              </table>
-              {/* Button for "Same for All Days" */}
-              <button
-                type="button"
-                onClick={() => {
-                  if (room?.length > 0) {
-                    const filledRow = room.find(
-                      (row) =>
-                        (row.noOfRooms && parseInt(row.noOfRooms) > 0) ||
-                        row.roomCategory ||
-                        row.occupancy ||
-                        (row.mealPlan && row.mealPlan.length > 0)
-                    );
-                    if (filledRow) {
-                      setRoom(
-                        room.map((originalRow) => ({
-                          ...filledRow,
-                          date: originalRow.date,
-                        }))
+                  </tbody>
+                </table>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (banquet?.length > 0) {
+                      const filledRow = banquet.find(
+                        (row) =>
+                          row.session ||
+                          row.seatingStyle ||
+                          row.avSetup ||
+                          row.menuType ||
+                          (row.minPax && parseInt(row.minPax) > 0) ||
+                          row.seatingRequired
                       );
+                      if (filledRow) {
+                        setBanquet(
+                          banquet.map((originalRow) => ({
+                            ...filledRow,
+                            date: originalRow.date,
+                          }))
+                        );
+                      } else {
+                        alert(
+                          "Please fill in at least one row before applying to all days."
+                        );
+                      }
                     } else {
-                      alert(
-                        "Please fill in at least one row before applying to all days."
-                      );
+                      alert("No banquet data available.");
                     }
-                  } else {
-                    alert("No room data available.");
-                  }
-                }}
-                className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
-              >
-                Same for All Days
-              </button>
-            </div>
-          )}
-
-          {/* Banquet Table */}
-          {(enquiryType === "banquet" || enquiryType === "both") && (
-            <div className="mt-8">
-              <h2 className="font-bold text-lg mb-4">Banquet</h2>
-              <table className="table-auto w-full border-collapse border border-gray-300">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="border border-gray-300 px-4 py-2 w-32">
-                      Date
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Session
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Seating Style
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      A/V Setup
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Menu Type
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Minimum No. of Pax
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Seating Required
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {banquet.map((row, index) => (
-                    <tr key={index} className="even:bg-gray-50">
-                      <td className="border border-gray-300 px-4 py-2 w-32">
-                        {moment(row.date).format("YYYY-MM-DD")}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        <input
-                          type="text"
-                          value={row?.session}
-                          onChange={(e) =>
-                            handleTableChange(
-                              banquet,
-                              setBanquet,
-                              index,
-                              "session",
-                              e.target.value
-                            )
-                          }
-                          className="border border-gray-300 p-2 rounded-md w-full"
-                        />
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        <input
-                          type="text"
-                          value={row?.seatingStyle}
-                          onChange={(e) =>
-                            handleTableChange(
-                              banquet,
-                              setBanquet,
-                              index,
-                              "seatingStyle",
-                              e.target.value
-                            )
-                          }
-                          className="border border-gray-300 p-2 rounded-md w-full"
-                        />
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        <input
-                          type="text"
-                          value={row?.avSetup}
-                          onChange={(e) =>
-                            handleTableChange(
-                              banquet,
-                              setBanquet,
-                              index,
-                              "avSetup",
-                              e.target.value
-                            )
-                          }
-                          className="border border-gray-300 p-2 rounded-md w-full"
-                        />
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        <input
-                          type="text"
-                          value={row?.menuType}
-                          onChange={(e) =>
-                            handleTableChange(
-                              banquet,
-                              setBanquet,
-                              index,
-                              "menuType",
-                              e.target.value
-                            )
-                          }
-                          className="border border-gray-300 p-2 rounded-md w-full"
-                        />
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        <input
-                          type="number"
-                          value={row?.minPax}
-                          onChange={(e) =>
-                            handleTableChange(
-                              banquet,
-                              setBanquet,
-                              index,
-                              "minPax",
-                              e.target.value
-                            )
-                          }
-                          className="border border-gray-300 p-2 rounded-md w-full"
-                        />
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        <input
-                          type="text"
-                          value={row?.seatingRequired}
-                          onChange={(e) =>
-                            handleTableChange(
-                              banquet,
-                              setBanquet,
-                              index,
-                              "seatingRequired",
-                              e.target.value
-                            )
-                          }
-                          className="border border-gray-300 p-2 rounded-md w-full"
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <button
-                type="button"
-                onClick={() => {
-                  if (banquet?.length > 0) {
-                    const filledRow = banquet.find(
-                      (row) =>
-                        row.session ||
-                        row.seatingStyle ||
-                        row.avSetup ||
-                        row.menuType ||
-                        (row.minPax && parseInt(row.minPax) > 0) ||
-                        row.seatingRequired
-                    );
-                    if (filledRow) {
-                      setBanquet(
-                        banquet.map((originalRow) => ({
-                          ...filledRow,
-                          date: originalRow.date,
-                        }))
-                      );
-                    } else {
-                      alert(
-                        "Please fill in at least one row before applying to all days."
-                      );
-                    }
-                  } else {
-                    alert("No banquet data available.");
-                  }
-                }}
-                className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
-              >
-                Same for All Days
-              </button>
-            </div>
-          )}
+                  }}
+                  className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md"
+                >
+                  Same for All Days
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* Checkboxes to toggle visibility */}
           <div className="mb-4 mt-8">
@@ -1353,8 +1383,9 @@ const AddEnquiryForm = () => {
           </div>
 
           {/* Event Setup */}
+
           {isEventSetupVisible && (
-            <div className="border rounded-lg mt-8 p-6 shadow">
+            <div className="border rounded-lg mt-8 p-6 shadow bg-white">
               <h2 className="text-lg font-bold mb-4">Event Setup</h2>
 
               <div className="grid grid-cols-2 gap-4">
@@ -1436,8 +1467,9 @@ const AddEnquiryForm = () => {
           )}
 
           {/* Air Ticket */}
+
           {isAirTicketVisible && (
-            <div className="border rounded-lg mt-8 p-6 shadow">
+            <div className="border rounded-lg mt-8 p-6 shadow bg-white">
               <h2 className="text-lg font-bold mb-4">Air Ticket</h2>
 
               <div className="grid grid-cols-2 gap-4">
@@ -1627,8 +1659,7 @@ const AddEnquiryForm = () => {
           )}
 
           {/* Cab Table */}
-
-          <div className="mt-8">
+          <div className="border rounded-lg mt-8 p-6 shadow bg-white">
             <h2 className="font-bold text-lg">Cab</h2>
             <div className="flex items-center justify-between gap-4 mt-2">
               <div className="flex items-center gap-4">
@@ -1692,7 +1723,9 @@ const AddEnquiryForm = () => {
                     <td className="border px-2 py-2 w-[14.28%]">
                       <input
                         type="date"
-                        value={row?.date}
+                        value={
+                          moment(row?.date).format("YYYY-MM-DD") || row?.date
+                        }
                         onChange={(e) =>
                           handleTableChange(
                             cab,
@@ -1975,44 +2008,38 @@ const AddEnquiryForm = () => {
           </div>
 
           {/* Billing Address and Submit Button */}
-          <div className="mt-8">
-            <h2 className="font-bold text-lg">Billing Address</h2>
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              {/* <input
-                type="text"
-                name="billingAddress"
-                value={billingAddress}
-                onChange={(e) => setBillingAddress(e.target.value)}
-                placeholder="Enter Billing Address"
-                className="border border-gray-300 p-2 rounded-md w-full"
-              /> */}
-              <textarea
-                name="billingAddress"
-                value={billingAddress}
-                onChange={(e) => setBillingAddress(e.target.value)}
-                placeholder="Enter Billing Address"
-                className="border border-gray-300 p-2 rounded-md w-full"
-              ></textarea>
-            </div>
+          <div className="border rounded-lg mt-8 p-6 shadow bg-white">
+            <h2 className="text-xl font-bold mb-4 text-gray-800">
+              Billing Address
+            </h2>
+            <textarea
+              name="billingAddress"
+              value={billingAddress}
+              onChange={(e) => setBillingAddress(e.target.value)}
+              placeholder="Enter Billing Address"
+              className="w-full border border-gray-300 rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              rows={4}
+            ></textarea>
+            {/* </div>
+          </div> */}
+          </div>
+          <div className="flex justify-end space-x-4 mt-6">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+            >
+              Cancel
+            </button>
 
-            <div className="flex justify-end space-x-4 mt-6">
+            {((!id && canCreate) || (id && canUpdate)) && (
               <button
-                type="button"
-                onClick={() => navigate(-1)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+                type="submit"
+                className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
               >
-                Cancel
+                Submit
               </button>
-
-              {((!id && canCreate) || (id && canUpdate)) && (
-                <button
-                  type="submit"
-                  className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
-                >
-                  Submit
-                </button>
-              )}
-            </div>
+            )}
           </div>
         </form>
       </div>
