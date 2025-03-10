@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import moment from "moment";
+import { clippingParents } from "@popperjs/core";
 
 interface IVendor {
   salutation: string;
@@ -381,6 +382,9 @@ const AddVendorForm = () => {
     },
   ]);
 
+  const [isRoomDetailsVisible, setIsRoomDetailsVisible] = useState(false);
+  console.log(isRoomDetailsVisible, "check  value")
+
   const populateDemoData = () => {
     setVendor({
       salutation: "Mr.",
@@ -515,6 +519,18 @@ const AddVendorForm = () => {
     setIsRestaurantDetailsVisible(true);
     toastSuccess("Demo data has been populated!");
   };
+
+  useEffect(() => {
+    if (vendor.vendorType.includes("Banquet")) {
+      setIsBanquetDetailsVisible(true);
+    }
+    else {
+      setIsBanquetDetailsVisible(false);
+    }
+  }, [vendor.vendorType]);
+
+
+  console.log(isBanquetDetailsVisible, "check the visibiltiy")
 
   useEffect(() => {
     console.log(vendorDataById, "vendorDataById");
@@ -1309,11 +1325,12 @@ const AddVendorForm = () => {
 
         <form onSubmit={handleSubmit}>
           <h1 className="text-2xl font-bold mb-6">Add Vendor</h1>
-          {/* Primary Contact Section */}
+
           <div className=" mx-auto  ">
             <div className="mb-8">
-              <div className="flex-1 items-start gap-4">
+              <div className="items-start ">
                 <div className=" space-y-6 rounded-lg ">
+                  {/* Primary Contact Section */}
                   <div className="bg-[#FAFAFA] border-[#D1D1D1] rounded-lg border grid lg:grid-cols-3  sm:gap-[8px] sm:grid-cols-1  p-[20px]">
                     <div className="flex flex-wrap h-[75px] ">
                       <div className="flex flex-col gap-[8px] lg:items-start sm:items-center ">
@@ -1606,514 +1623,547 @@ const AddVendorForm = () => {
                     </div>
                   </div>
 
-
-                  {vendor.vendorType.includes("Hotel") && (
-                    <div > 
-                      <div className="bg-[#FAFAFA] border-[#D1D1D1] rounded-lg border p-[20px]">
-                        <h2 className="font-bold text-lg mb-4">Location</h2>
-                        <div className=" grid lg:grid-cols-2 sm:gap-[8px] sm:grid-cols-1  ">
-                          <div>
-                            <label className="text-[14px] sm:text-center inline-block lg:text-left font-medium text-black">State</label>
-                            <input
-                              type="text"
-                              value={location.state}
-                              onChange={(e) =>
-                                setLocation({
-                                  ...location,
-                                  state: e.target.value,
-                                })
-                              }
-                              className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
-                              placeholder="Enter state"
-                            />
-                          </div>
-                          <div className="lg:items-start md:items-center">
-                            <label className=" font-medium text-sm  text-black mb-1">
-                              City
-                            </label>
-                            <input
-                              type="text"
-                              value={location.city}
-                              onChange={(e) =>
-                                setLocation({ ...location, city: e.target.value })
-                              }
-                              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
-                              placeholder="Enter city"
-                            />
-                          </div>
-                          <div>
-                            <label className="block font-medium text-sm text-black mb-1">
-                              Area
-                            </label>
-                            <input
-                              type="text"
-                              value={location.area}
-                              onChange={(e) =>
-                                setLocation({ ...location, area: e.target.value })
-                              }
-                              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
-                              placeholder="Enter area"
-                            />
-                          </div>
-                          <div>
-                            <label className="block font-medium text-sm text-black mb-1">
-                              Address
-                            </label>
-                            <input
-                              type="text"
-                              value={location.address}
-                              onChange={(e) =>
-                                setLocation({
-                                  ...location,
-                                  address: e.target.value,
-                                })
-                              }
-                              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
-                              placeholder="Enter address"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="bg-[#FAFAFA]  border-[#D1D1D1] rounded-lg border p-[20px]">
-                        <h2 className="font-bold text-lg mb-4">Category</h2>
-                        <div className="w-full">
-                          <select
-                            className="w-96 border bg-gray-50 font-satoshiMedium border-gray-300 rounded-md p-2 text-sm"
-                            value={category.categoryType}
-                            onChange={(e) =>
-                              setCategory({
-                                ...category,
-                                categoryType: e.target.value,
-                              })
-                            }
-                          >
-                            <option value="">Select Category</option>
-                            {categoryOptions.map((option) => (
-                              <option key={option} value={option.toLowerCase()}>
-                                {option}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-
-                      {/* {isRoomDetailsVisible && ( */}
-                      <div className="bg-[#FAFAFA]  border-[#D1D1D1] rounded-lg border p-[20px] ">
-                        <div className="flex justify-between items-center mb-4">
-                          <h2 className="text-lg font-bold">Room Details</h2>
-                        </div>
-
-                        {rooms.map((room, index) => (
-                          <div key={index} className="mb-6 border-b pb-4">
-                            <div className="grid grid-cols-3 gap-4">
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Room Category
-                                </label>
-                                <select
-                                  value={room.roomCategory}
-                                  onChange={(e) => {
-                                    const newRooms = [...rooms];
-                                    newRooms[index].roomCategory =
-                                      e.target.value;
-                                    setRooms(newRooms);
-                                  }}
-                                  className="border bg-gray-50 border-gray-300 p-2 rounded-md w-full"
-                                >
-                                  <option value="">Select Category</option>
-                                  {categoryOptions.map((option) => (
-                                    <option
-                                      key={option}
-                                      value={option.toLowerCase()}
-                                    >
-                                      {option}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Number of Rooms
-                                </label>
-                                <input
-                                  type="number"
-                                  placeholder="Enter number of rooms"
-                                  value={room.numberOfRooms}
-                                  onChange={(e) => {
-                                    const newRooms = [...rooms];
-                                    newRooms[index].numberOfRooms =
-                                      parseInt(e.target.value) || 0;
-                                    setRooms(newRooms);
-                                  }}
-                                  className="border bg-gray-50 border-gray-300 p-2 rounded-md w-full"
-                                />
-                              </div>
-
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Size
-                                </label>
-                                <input
-                                  type="text"
-                                  placeholder="Enter size"
-                                  value={room.roomSize}
-                                  onChange={(e) => {
-                                    const newRooms = [...rooms];
-                                    newRooms[index].roomSize = e.target.value;
-                                    setRooms(newRooms);
-                                  }}
-                                  className="border bg-gray-50 border-gray-300 p-2 rounded-md w-full"
-                                />
-                              </div>
+                  <div >
+                    {vendor.vendorType.includes("Hotel") && (
+                      <div className="grid gap-5">
+                        <div className="bg-[#FAFAFA] border-[#D1D1D1] rounded-lg border p-[20px]">
+                          <h2 className="font-bold text-lg mb-4">Location</h2>
+                          <div className=" grid lg:grid-cols-2 sm:gap-[8px] sm:grid-cols-1  ">
+                            <div>
+                              <label className="text-[14px] sm:text-center inline-block lg:text-left font-medium text-black">State</label>
+                              <input
+                                type="text"
+                                value={location.state}
+                                onChange={(e) =>
+                                  setLocation({
+                                    ...location,
+                                    state: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
+                                placeholder="Enter state"
+                              />
                             </div>
-
-                            {/* Image Upload Section */}
-                            <div className="mt-4 col-span-3">
-                              <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Room Images (XLS, JPG, PNG only, max 10MB)
+                            <div className="lg:items-start md:items-center">
+                              <label className=" font-medium text-sm  text-black mb-1">
+                                City
                               </label>
-                              <div className="flex items-center gap-4">
-                                <input
-                                  type="file"
-                                  accept=".xls,.jpg,.png"
-                                  multiple
-                                  onChange={(e) =>
-                                    ImageUpload(
-                                      e,
-                                      index,
-                                      rooms,
-                                      setRooms,
-                                      "roomImageUpload"
-                                    )
-                                  }
-                                  className="hidden"
-                                  id={`room-image-upload-${index}`}
-                                />
-                                <label
-                                  htmlFor={`room-image-upload-${index}`}
-                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
-                                >
-                                  Upload Imagesqww
-                                </label>
-                                <span className="text-sm text-gray-500">
-                                  {room.roomImageUpload.length} file(s) uploaded
-                                </span>
-                              </div>
-
-                              {/* Display uploaded images */}
-                              {room.roomImageUpload.length > 0 && (
-                                <div className="mt-4 flex flex-wrap gap-4">
-                                  {room.roomImageUpload.map(
-                                    (image, imgIndex) => (
-                                      <div key={imgIndex} className="relative">
-                                        <img
-                                          src={
-                                            image.includes("base64")
-                                              ? image
-                                              : generateFilePath(image)
-                                          }
-                                          alt={`Room Image ${imgIndex + 1}`}
-                                          style={{
-                                            height: 100,
-                                            width: 100,
-                                            objectFit: "cover",
-                                            border: "1px solid #ddd",
-                                            borderRadius: "5px",
-                                          }}
-                                          onError={(e) => {
-                                            console.error(
-                                              "Image failed to load:",
-                                              image
-                                            );
-                                            (e.target as HTMLImageElement).src =
-                                              "path/to/placeholder-image.jpg"; // Fallback image
-                                          }}
-                                        />
-                                        <button
-                                          type="button"
-                                          onClick={() =>
-                                            RemoveImage(
-                                              index,
-                                              imgIndex,
-                                              rooms,
-                                              setRooms,
-                                              "roomImageUpload"
-                                            )
-                                          }
-                                          className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
-                                        >
-                                          X
-                                        </button>
-                                      </div>
-                                    )
-                                  )}
-                                </div>
-                              )}
+                              <input
+                                type="text"
+                                value={location.city}
+                                onChange={(e) =>
+                                  setLocation({ ...location, city: e.target.value })
+                                }
+                                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                                placeholder="Enter city"
+                              />
                             </div>
-
-                            {/* Price Section */}
-                            <div className="mt-4">
-                              <h3 className="text-md font-semibold mb-2">
-                                Price Details
-                              </h3>
-                              {room.prices.map((price, priceIndex) => (
-                                <div
-                                  key={priceIndex}
-                                  className="flex items-center gap-4 mb-2"
-                                >
-                                  <select
-                                    value={price.roomType}
-                                    onChange={(e) => {
-                                      const newRooms = [...rooms];
-                                      newRooms[index].prices[
-                                        priceIndex
-                                      ].roomType = e.target.value;
-                                      setRooms(newRooms);
-                                    }}
-                                    className="border bg-gray-50 border-gray-300 p-2 rounded-md w-1/3"
-                                  >
-                                    <option value="">Select Room Type</option>
-                                    {roomCategoryOptions.map((option) => (
-                                      <option
-                                        key={option}
-                                        value={option.toLowerCase()}
-                                      >
-                                        {option}
-                                      </option>
-                                    ))}
-                                  </select>
-
-                                  <input
-                                    type="number"
-                                    placeholder="Enter price"
-                                    value={price.roomPrice}
-                                    onChange={(e) => {
-                                      const newRooms = [...rooms];
-                                      newRooms[index].prices[
-                                        priceIndex
-                                      ].roomPrice = e.target.value;
-                                      setRooms(newRooms);
-                                    }}
-                                    className="border bg-gray-50 border-gray-300 p-2 rounded-md w-1/3"
-                                  />
-                                  {room.prices.length > 1 && (
-                                    <button
-                                      type="button"
-                                      onClick={() =>
-                                        handleRemovePrice(index, priceIndex)
-                                      }
-                                      className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
-                                    >
-                                      Remove
-                                    </button>
-                                  )}
-                                </div>
-                              ))}
-                              <div className="flex justify-between">
-                                <button
-                                  type="button"
-                                  onClick={() => handleAddPrice(index)}
-                                  className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md">
-                                  Add Price
-                                </button>
-                                
-                                <button
-                                    type="button"
-                                    onClick={handleAddRoom}
-                                    className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
-                                  >
-                                    Add New Room
-                                  </button>
-                              </div>
+                            <div>
+                              <label className="block font-medium text-sm text-black mb-1">
+                                Area
+                              </label>
+                              <input
+                                type="text"
+                                value={location.area}
+                                onChange={(e) =>
+                                  setLocation({ ...location, area: e.target.value })
+                                }
+                                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                                placeholder="Enter area"
+                              />
                             </div>
-
-
-
-                            {/* Remove Room Button */}
-                            {rooms.length > 1 && (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const newRooms = rooms.filter(
-                                    (_, i) => i !== index
-                                  );
-                                  setRooms(newRooms);
-                                }}
-                                className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
-                              >
-                                Remove Room
-                              </button>
-                            )}
+                            <div>
+                              <label className="block font-medium text-sm text-black mb-1">
+                                Address
+                              </label>
+                              <input
+                                type="text"
+                                value={location.address}
+                                onChange={(e) =>
+                                  setLocation({
+                                    ...location,
+                                    address: e.target.value,
+                                  })
+                                }
+                                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                                placeholder="Enter address"
+                              />
+                            </div>
                           </div>
-                        ))}
-                      </div>
-                      {/* )} */}
+                        </div>
 
+                        <div className="bg-[#FAFAFA]  border-[#D1D1D1] rounded-lg border p-[20px]">
+                          <h2 className="font-bold text-lg mb-4">Category</h2>
+                          <div className="w-full">
+                            <select
+                              className="w-96 border bg-gray-50 font-satoshiMedium border-gray-300 rounded-md p-2 text-sm"
+                              value={category.categoryType}
+                              onChange={(e) =>
+                                setCategory({
+                                  ...category,
+                                  categoryType: e.target.value,
+                                })
+                              }
+                            >
+                              <option value="">Select Category</option>
+                              {categoryOptions.map((option) => (
+                                <option key={option} value={option.toLowerCase()}>
+                                  {option}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
 
-
-                      <div className="mb-4 mt-8">
-                        {/* <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={isBanquetDetailsVisible}
-                            onChange={(e) =>
-                              setIsBanquetDetailsVisible(e.target.checked)
-                            }
-                            className="form-checkbox"
-                          />
-                          <span className="ml-2">Do you have Banquet</span>
-                        </label> */}
-
-                        {isBanquetDetailsVisible && (
-                          <div className="border grid grid-col-3 bg-[#FAFAFA] border-[#D1D1D1] rounded-lg mt-8 p-6 shadow">
-                            <div className=" mb-4">
-                              <h2 className="text-lg font-bold">
-                                Banquet Details
-                              </h2>
-                              <button
-                                type="button"
-                                onClick={handleAddBanquet}
-                                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                              >
-                                Add New Banquet
-                              </button>
+                        {/* {isRoomDetailsVisible && ( */}
+                        {!isRoomDetailsVisible && (
+                          <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
+                            <div className="flex justify-between items-center mb-6">
+                              <h2 className="text-xl font-bold">Room Details </h2>
+                              <div>
+                                <label className="inline-flex items-center">
+                                  <input
+                                    type="checkbox"
+                                    checked={isRoomDetailsVisible}
+                                    onChange={() => setIsRoomDetailsVisible(!isRoomDetailsVisible)}
+                                    className="form-checkbox"
+                                  />
+                                  <span className="ml-2 text-sm">Do you have Rooms</span>
+                                </label>
+                              </div>
                             </div>
 
-                            {banquets.map((banquet, index) => (
-                              <div key={index} className="mb-6 border-b pb-4">
-                                <div className="grid grid-cols-3 gap-4">
-                                  <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                      Banquet Category
+                            {/* new room details   */}
+
+
+                            <div className=" bg-gray-50 rounded-lg mt-8 p-6 ">
+
+                              {!isRoomDetailsVisible && (
+                                <>
+                                  {/* Number of Rooms Dropdown */}
+                                  <div className="mb-6">
+                                    <label className="block text-sm font-medium text-black mb-2">
+                                      Number Of Rooms
                                     </label>
                                     <select
-                                      value={banquet.banquetCategory}
+                                      value={rooms.length}
                                       onChange={(e) => {
-                                        const newBanquet = [...banquets];
-                                        newBanquet[index].banquetCategory =
-                                          e.target.value;
-                                        setBanquets(newBanquet);
+                                        const count = parseInt(e.target.value, 10);
+                                        if (isNaN(count)) return;
+
+                                        if (count > rooms.length) {
+                                          setRooms(
+                                            rooms.concat(
+                                              Array.from({ length: count - rooms.length }, () => ({
+                                                roomCategory: "",
+                                                numberOfRooms: 0,
+                                                roomSize: "",
+                                                roomImageUpload: [],
+                                                prices: [{ roomType: "", roomPrice: "" }],
+                                              }))
+                                            )
+                                          );
+                                        } else if (count < rooms.length) {
+                                          setRooms(rooms.slice(0, count));
+                                        }
                                       }}
-                                      className="border border-gray-300 p-2 rounded-md w-full"
+                                      className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
                                     >
-                                      <option value="">Select Category</option>
-                                      {categoryOptions.map((option) => (
-                                        <option
-                                          key={option}
-                                          value={option.toLowerCase()}
-                                        >
-                                          {option}
-                                        </option>
+                                      {[1, 2, 3, 4, 5].map((num) => (
+                                        <option key={num} value={num}>{num}</option>
                                       ))}
                                     </select>
                                   </div>
 
-                                  <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                      Name
-                                    </label>
-                                    <input
-                                      type="text"
-                                      placeholder="Enter Name"
-                                      value={banquet.banquetName}
-                                      onChange={(e) => {
-                                        const newBanquet = [...banquets];
-                                        newBanquet[index].banquetName =
-                                          e.target.value;
-                                        setBanquets(newBanquet);
-                                      }}
-                                      className="border border-gray-300 p-2 rounded-md w-full"
-                                    />
+                                  {rooms.map((room, index) => (
+                                    <div
+                                      key={index}
+                                      className="mb-8 bg-gray-50 pb-6 border-b border-gray-200"
+                                    >
+                                      <div className="flex justify-between items-center mb-4">
+                                        <h3 className="font-medium text-lg">{index + 1}. Room</h3>
+                                        {index > 0 && (
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              const newRooms = rooms.filter((_, i) => i !== index);
+                                              setRooms(newRooms);
+                                            }}
+                                            className="text-red-500 hover:text-red-700 text-sm"
+                                          >
+                                            Remove
+                                          </button>
+                                        )}
+                                      </div>
+
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {/* Left column - Room details */}
+                                        <div>
+                                          <div className="grid grid-cols-2 gap-4 mb-4">
+                                            <div>
+                                              <label className="block text-sm font-medium text-black mb-2">
+                                                Room Category
+                                              </label>
+                                              <select
+                                                value={room.roomCategory}
+                                                onChange={(e) => {
+                                                  const newRooms = [...rooms];
+                                                  newRooms[index].roomCategory = e.target.value;
+                                                  setRooms(newRooms);
+                                                }}
+                                                className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                              >
+                                                <option value="">Select Category</option>
+                                                {categoryOptions.map((option) => (
+                                                  <option key={option} value={option.toLowerCase()}>
+                                                    {option}
+                                                  </option>
+                                                ))}
+                                              </select>
+                                            </div>
+
+                                            <div>
+                                              <label className="block text-sm font-medium text-black mb-2">
+                                                Number of Rooms
+                                              </label>
+                                              <input
+                                                type="number"
+                                                placeholder="Enter number of rooms"
+                                                value={room.numberOfRooms}
+                                                onChange={(e) => {
+                                                  const newRooms = [...rooms];
+                                                  newRooms[index].numberOfRooms =
+                                                    parseInt(e.target.value) || 0;
+                                                  setRooms(newRooms);
+                                                }}
+                                                className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                              />
+                                            </div>
+                                          </div>
+
+                                          <div className="mb-4">
+                                            <label className="block text-sm font-medium text-black mb-2">
+                                              Size (LXBXH)
+                                            </label>
+                                            <input
+                                              type="text"
+                                              placeholder="Enter size"
+                                              value={room.roomSize}
+                                              onChange={(e) => {
+                                                const newRooms = [...rooms];
+                                                newRooms[index].roomSize = e.target.value;
+                                                setRooms(newRooms);
+                                              }}
+                                              className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                            />
+                                          </div>
+
+                                          {/* Price Details Section */}
+                                          <div className="mt-6">
+                                            <h3 className="text-sm font-medium text-black mb-3">
+                                              Price Details
+                                            </h3>
+                                            {room.prices.map((price, priceIndex) => (
+                                              <div
+                                                key={priceIndex}
+                                                className="grid grid-cols-2 gap-4 mb-4"
+                                              >
+                                                <div>
+                                                  <select
+                                                    value={price.roomType}
+                                                    onChange={(e) => {
+                                                      const newRooms = [...rooms];
+                                                      newRooms[index].prices[priceIndex].roomType =
+                                                        e.target.value;
+                                                      setRooms(newRooms);
+                                                    }}
+                                                    className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                                  >
+                                                    <option value="">Select Room Type</option>
+                                                    {roomCategoryOptions.map((option) => (
+                                                      <option key={option} value={option.toLowerCase()}>
+                                                        {option}
+                                                      </option>
+                                                    ))}
+                                                  </select>
+                                                </div>
+
+                                                <div className="flex">
+                                                  <input
+                                                    type="text"
+                                                    placeholder="Enter price"
+                                                    value={price.roomPrice}
+                                                    onChange={(e) => {
+                                                      const newRooms = [...rooms];
+                                                      newRooms[index].prices[priceIndex].roomPrice =
+                                                        e.target.value;
+                                                      setRooms(newRooms);
+                                                    }}
+                                                    className="border border-gray-300 bg-gray-50 p-2 rounded-l-md w-full"
+                                                  />
+                                                  <span className="inline-flex items-center border border-l-0 border-gray-300 bg-gray-100 px-3 rounded-r-md text-sm text-gray-500">
+                                                    per night
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            ))}
+
+                                            <div className="flex items-center mt-2">
+                                              {room.prices.length > 1 && (
+                                                <button
+                                                  type="button"
+                                                  onClick={() =>
+                                                    handleRemovePrice(index, room.prices.length - 1)
+                                                  }
+                                                  className="text-red-500 hover:text-red-700 text-sm mr-4"
+                                                >
+                                                  Remove Price
+                                                </button>
+                                              )}
+                                              <button
+                                                type="button"
+                                                onClick={() => handleAddPrice(index)}
+                                                className="text-blue-500 hover:text-blue-700 text-sm"
+                                              >
+                                                Add Price
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        {/* Right column - Image upload */}
+                                        <div>
+                                          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 h-full">
+                                            <label className="block text-sm font-medium text-black mb-4">
+                                              Upload image
+                                            </label>
+
+                                            <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-8 mb-4 bg-white">
+                                              <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-10 w-10 text-gray-400 mb-2"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                              >
+                                                <path
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                  strokeWidth={2}
+                                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                                                />
+                                              </svg>
+                                              <p className="text-sm text-gray-500 mb-2">
+                                                Maximum upload file size 25 MB, allowed files XLS,JPG,PNG *
+                                              </p>
+
+                                              <input
+                                                type="file"
+                                                accept=".xls,.jpg,.png"
+                                                multiple
+                                                onChange={(e) =>
+                                                  ImageUpload(e, index, rooms, setRooms, "roomImageUpload")
+                                                }
+                                                className="hidden bg-gray-50"
+                                                id={`room-image-upload-${index}`}
+                                              />
+                                              <label
+                                                htmlFor={`room-image-upload-${index}`}
+                                                className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
+                                              >
+                                                Upload Images
+                                              </label>
+                                            </div>
+
+                                            {/* Display uploaded images */}
+                                            {room.roomImageUpload.length > 0 && (
+                                              <div className="grid grid-cols-2 gap-4">
+                                                {room.roomImageUpload.map((image, imgIndex) => (
+                                                  <div key={imgIndex} className="relative">
+                                                    <img
+                                                      src={
+                                                        image.includes("base64")
+                                                          ? image
+                                                          : generateFilePath(image)
+                                                      }
+                                                      alt={`Room Image ${imgIndex + 1}`}
+                                                      className="h-24 w-full object-cover rounded-md border border-gray-200"
+                                                      onError={(e) => {
+                                                        console.error("Image failed to load:", image);
+                                                        (e.target as HTMLImageElement).src =
+                                                          "path/to/placeholder-image.jpg"; // Fallback image
+                                                      }}
+                                                    />
+                                                    <button
+                                                      type="button"
+                                                      onClick={() =>
+                                                        RemoveImage(
+                                                          index,
+                                                          imgIndex,
+                                                          rooms,
+                                                          setRooms,
+                                                          "roomImageUpload"
+                                                        )
+                                                      }
+                                                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                                                    >
+                                                      X
+                                                    </button>
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
+
+                                  <div className="flex justify-end mt-4">
+                                    <button
+                                      type="button"
+                                      onClick={handleAddRoom}
+                                      className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-5 w-5 mr-2"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M12 4v16m8-8H4"
+                                        />
+                                      </svg>
+                                      Add Room
+                                    </button>
                                   </div>
-                                </div>
+                                </>
+                              )}
+                            </div>
 
+                            {/* Number of Rooms Dropdown */}
+
+
+
+
+                          </div>
+                        )}
+                        {/* )} */}
+
+
+
+
+                        {/* <div className="mb-4 mt-8">
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              checked={isBanquetDetailsVisible}
+                              onChange={(e) =>
+                                setIsBanquetDetailsVisible(e.target.checked)
+                              }
+                              className="form-checkbox"
+                            />
+                            <span className="ml-2">Do you have Banquet</span>
+                          </label>
+                        </div> */}
+
+                        <div className="mb-4 mt-8">
+                          {/* <label className="inline-flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={isRestaurantDetailsVisible}
+                            onChange={(e) =>
+                              setIsRestaurantDetailsVisible(e.target.checked)
+                            }
+                            className="form-checkbox"
+                          />
+                          <span className="ml-2">Do you have Restaurant</span>
+                        </label> */}
+
+                          {isRestaurantDetailsVisible && (
+                            <div className="border rounded-lg mt-8 p-6 shadow">
+                              <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-lg font-bold">
+                                  Restaurant Details
+                                </h2>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-4">
+                                {/* Menu Type (Multi-select Dropdown) */}
                                 <div>
                                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Size
+                                    Menu Type
                                   </label>
-                                  <input
-                                    type="text"
-                                    placeholder="Enter size"
-                                    value={banquet.banquetSize}
-                                    onChange={(e) => {
-                                      const newBanquet = [...banquets];
-                                      newBanquet[index].banquetSize =
-                                        e.target.value;
-                                      setBanquets(newBanquet);
+                                  <Select
+                                    isMulti
+                                    options={[
+                                      { value: "veg", label: "Veg" },
+                                      { value: "non-veg", label: "Non-Veg" },
+                                    ]}
+                                    value={restaurant.restaurantMenuType.map(
+                                      (type) => ({
+                                        value: type,
+                                        label:
+                                          type.charAt(0).toUpperCase() +
+                                          type.slice(1),
+                                      })
+                                    )}
+                                    onChange={(selectedOptions) => {
+                                      const newMenuTypes = selectedOptions
+                                        ? selectedOptions.map(
+                                          (option) => option.value
+                                        )
+                                        : [];
+                                      setRestaurant({
+                                        ...restaurant,
+                                        restaurantMenuType: newMenuTypes,
+                                      });
                                     }}
-                                    className="border border-gray-300 p-2 rounded-md w-full"
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    placeholder="Select menu types"
+                                    styles={customReactStylesSmall}
                                   />
                                 </div>
 
+                                {/* Covers (Number of Occupancy) */}
                                 <div>
                                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Setup
+                                    Covers (No. of Occupancy)
                                   </label>
                                   <input
-                                    type="text"
-                                    placeholder="Enter setup"
-                                    value={banquet.banquetSetup}
-                                    onChange={(e) => {
-                                      const newBanquet = [...banquets];
-                                      newBanquet[index].banquetSetup =
-                                        e.target.value;
-                                      setBanquets(newBanquet);
-                                    }}
-                                    className="border border-gray-300 p-2 rounded-md w-full"
+                                    type="number"
+                                    placeholder="Enter number of covers"
+                                    value={restaurant.restaurantCovers}
+                                    onChange={(e) =>
+                                      setRestaurant({
+                                        ...restaurant,
+                                        restaurantCovers: e.target.value,
+                                      })
+                                    }
+                                    className="w-full border border-gray-300 rounded-md p-2 text-sm"
                                   />
                                 </div>
 
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Veg Price
-                                  </label>
-                                  <input
-                                    type="text"
-                                    placeholder="Enter veg price per plate"
-                                    value={banquet.banquetVegPrice}
-                                    onChange={(e) => {
-                                      const newBanquet = [...banquets];
-                                      newBanquet[index].banquetVegPrice =
-                                        e.target.value;
-                                      setBanquets(newBanquet);
-                                    }}
-                                    className="border border-gray-300 p-2 rounded-md w-full"
-                                  />
-                                </div>
-
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Non Veg Price
-                                  </label>
-                                  <input
-                                    type="text"
-                                    placeholder="Enter non veg price per plate"
-                                    value={banquet.banquetNonVegPrice}
-                                    onChange={(e) => {
-                                      const newBanquet = [...banquets];
-                                      newBanquet[index].banquetNonVegPrice =
-                                        e.target.value;
-                                      setBanquets(newBanquet);
-                                    }}
-                                    className="border border-gray-300 p-2 rounded-md w-full"
-                                  />
-                                </div>
-
+                                {/* Floor Dropdown */}
                                 <div>
                                   <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Floor
                                   </label>
                                   <select
-                                    value={banquet.banquetFloor}
-                                    onChange={(e) => {
-                                      const newBanquet = [...banquets];
-                                      newBanquet[index].banquetFloor =
-                                        e.target.value;
-                                      setBanquets(newBanquet);
-                                    }}
-                                    className="border border-gray-300 p-2 rounded-md w-full"
+                                    value={restaurant.restaurantFloor}
+                                    onChange={(e) =>
+                                      setRestaurant({
+                                        ...restaurant,
+                                        restaurantFloor: e.target.value,
+                                      })
+                                    }
+                                    className="w-full border border-gray-300 rounded-md p-2 text-sm"
                                   >
                                     <option value="">Select Floor</option>
                                     {floorOptions.map((option) => (
@@ -2127,536 +2177,744 @@ const AddVendorForm = () => {
                                   </select>
                                 </div>
 
-                                {/* Image Upload Section */}
-                                <div className="mt-4">
+                                {/* Swimming Pool Dropdown */}
+                                <div>
                                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Banquet Images (XLS, JPG, PNG only, max 10MB)
+                                    Swimming Pool
                                   </label>
-                                  <div className="flex items-center gap-4">
-                                    <input
-                                      type="file"
-                                      accept=".xls,.jpg,.png"
-                                      multiple
-                                      onChange={(e) =>
-                                        ImageUpload(
-                                          e,
-                                          index,
-                                          banquets,
-                                          setBanquets,
-                                          "banquetImageUpload"
-                                        )
-                                      }
-                                      className="hidden"
-                                      id={`banquet-image-upload-${index}`}
-                                    />
-                                    <label
-                                      htmlFor={`banquet-image-upload-${index}`}
-                                      className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
-                                    >
-                                      Upload Images
-                                    </label>
-                                    <span className="text-sm text-gray-500">
-                                      {banquet.banquetImageUpload.length} file(s)
-                                      uploaded
-                                    </span>
-                                  </div>
-
-                                  {/* Display uploaded image names */}
-                                  {banquet.banquetImageUpload.length > 0 && (
-                                    <div className="mt-4 flex flex-wrap gap-4">
-                                      {banquet.banquetImageUpload.map(
-                                        (image, imgIndex) => (
-                                          <div
-                                            key={imgIndex}
-                                            className="relative"
-                                          >
-                                            <img
-                                              src={
-                                                image.includes("base64")
-                                                  ? image
-                                                  : generateFilePath(image)
-                                              }
-                                              alt={`Banquet Image ${imgIndex + 1
-                                                }`}
-                                              style={{
-                                                height: 100,
-                                                width: 100,
-                                                objectFit: "cover",
-                                                border: "1px solid #ddd",
-                                                borderRadius: "5px",
-                                              }}
-                                            />
-                                            <button
-                                              type="button"
-                                              onClick={() =>
-                                                RemoveImage(
-                                                  index,
-                                                  imgIndex,
-                                                  banquets,
-                                                  setBanquets,
-                                                  "banquetImageUpload"
-                                                )
-                                              }
-                                              className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
-                                            >
-                                              X
-                                            </button>
-                                          </div>
-                                        )
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-
-                                <div className="mb-4 mt-8">
-                                  <label className="inline-flex items-center">
-                                    <input
-                                      type="checkbox"
-                                      checked={isPrefunctionAreaVisible}
-                                      onChange={() =>
-                                        setIsPrefunctionAreaVisible(
-                                          !isPrefunctionAreaVisible
-                                        )
-                                      }
-                                      className="form-checkbox"
-                                    />
-                                    <span className="ml-2">
-                                      "Do you have PFA (prefunction area)"
-                                    </span>
-                                  </label>
-
-                                  {isPrefunctionAreaVisible && (
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Size LXBXH
-                                      </label>
-                                      <input
-                                        type="text"
-                                        placeholder="Enter size"
-                                        value={banquet.prefuntionAreaSize}
-                                        onChange={(e) => {
-                                          const newBanquet = [...banquets];
-                                          newBanquet[index].prefuntionAreaSize =
-                                            e.target.value;
-                                          setBanquets(newBanquet);
-                                        }}
-                                        className="border border-gray-300 p-2 rounded-md w-full"
-                                      />
-                                    </div>
-                                  )}
-                                </div>
-
-                                {banquets.length > 1 && (
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      const newBanquets = banquets.filter(
-                                        (_, i) => i !== index
-                                      );
-                                      setBanquets(newBanquets);
-                                    }}
-                                    className="mt-2 text-red-500 hover:text-red-700"
+                                  <select
+                                    value={restaurant.restaurantSwimmingPool}
+                                    onChange={(e) =>
+                                      setRestaurant({
+                                        ...restaurant,
+                                        restaurantSwimmingPool: e.target.value,
+                                      })
+                                    }
+                                    className="w-full border border-gray-300 rounded-md p-2 text-sm"
                                   >
-                                    Remove Banquet
-                                  </button>
+                                    <option value="">Select Option</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                  </select>
+                                </div>
+                              </div>
+
+                              {/* Image Upload Section */}
+                              <div className="mt-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Restaurant Images (XLS, JPG, PNG only, max 10MB)
+                                </label>
+                                <div className="flex items-center gap-4">
+                                  <input
+                                    type="file"
+                                    accept=".xls,.jpg,.png"
+                                    multiple
+                                    onChange={(e) =>
+                                      handleImageUploadForRestaurant(
+                                        e,
+                                        setRestaurant
+                                      )
+                                    }
+                                    className="hidden"
+                                    id="restaurant-image-upload"
+                                  />
+                                  <label
+                                    htmlFor="restaurant-image-upload"
+                                    className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
+                                  >
+                                    Upload Images
+                                  </label>
+                                  <span className="text-sm text-gray-500">
+                                    {restaurant.restaurantImageUpload.length}{" "}
+                                    file(s) uploaded
+                                  </span>
+                                </div>
+
+                                {/* Display uploaded images */}
+                                {restaurant.restaurantImageUpload.length > 0 && (
+                                  <div className="mt-4 flex flex-wrap gap-4">
+                                    {restaurant.restaurantImageUpload.map(
+                                      (image, imgIndex) => (
+                                        <div key={imgIndex} className="relative">
+                                          <img
+                                            src={
+                                              image.includes("base64")
+                                                ? image
+                                                : generateFilePath(image)
+                                            }
+                                            alt={`Restaurant Image ${imgIndex + 1}`}
+                                            style={{
+                                              height: 100,
+                                              width: 100,
+                                              objectFit: "cover",
+                                              border: "1px solid #ddd",
+                                              borderRadius: "5px",
+                                            }}
+                                          />
+                                          <button
+                                            type="button"
+                                            onClick={() =>
+                                              handleRemoveImageForRestaurant(
+                                                imgIndex,
+                                                setRestaurant
+                                              )
+                                            }
+                                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                                          >
+                                            X
+                                          </button>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
                                 )}
                               </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="mb-4 mt-8">
-                        {/* <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={isRestaurantDetailsVisible}
-                            onChange={(e) =>
-                              setIsRestaurantDetailsVisible(e.target.checked)
-                            }
-                            className="form-checkbox"
-                          />
-                          <span className="ml-2">Do you have Restaurant</span>
-                        </label> */}
-
-                        {isRestaurantDetailsVisible && (
-                          <div className="border rounded-lg mt-8 p-6 shadow">
-                            <div className="flex justify-between items-center mb-4">
-                              <h2 className="text-lg font-bold">
-                                Restaurant Details
-                              </h2>
                             </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                              {/* Menu Type (Multi-select Dropdown) */}
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Menu Type
-                                </label>
-                                <Select
-                                  isMulti
-                                  options={[
-                                    { value: "veg", label: "Veg" },
-                                    { value: "non-veg", label: "Non-Veg" },
-                                  ]}
-                                  value={restaurant.restaurantMenuType.map(
-                                    (type) => ({
-                                      value: type,
-                                      label:
-                                        type.charAt(0).toUpperCase() +
-                                        type.slice(1),
-                                    })
-                                  )}
-                                  onChange={(selectedOptions) => {
-                                    const newMenuTypes = selectedOptions
-                                      ? selectedOptions.map(
-                                        (option) => option.value
-                                      )
-                                      : [];
-                                    setRestaurant({
-                                      ...restaurant,
-                                      restaurantMenuType: newMenuTypes,
-                                    });
-                                  }}
-                                  className="basic-multi-select"
-                                  classNamePrefix="select"
-                                  placeholder="Select menu types"
-                                  styles={customReactStylesSmall}
-                                />
-                              </div>
-
-                              {/* Covers (Number of Occupancy) */}
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Covers (No. of Occupancy)
-                                </label>
-                                <input
-                                  type="number"
-                                  placeholder="Enter number of covers"
-                                  value={restaurant.restaurantCovers}
-                                  onChange={(e) =>
-                                    setRestaurant({
-                                      ...restaurant,
-                                      restaurantCovers: e.target.value,
-                                    })
-                                  }
-                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                />
-                              </div>
-
-                              {/* Floor Dropdown */}
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Floor
-                                </label>
-                                <select
-                                  value={restaurant.restaurantFloor}
-                                  onChange={(e) =>
-                                    setRestaurant({
-                                      ...restaurant,
-                                      restaurantFloor: e.target.value,
-                                    })
-                                  }
-                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                >
-                                  <option value="">Select Floor</option>
-                                  {floorOptions.map((option) => (
-                                    <option
-                                      key={option}
-                                      value={option.toLowerCase()}
-                                    >
-                                      {option}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-
-                              {/* Swimming Pool Dropdown */}
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Swimming Pool
-                                </label>
-                                <select
-                                  value={restaurant.restaurantSwimmingPool}
-                                  onChange={(e) =>
-                                    setRestaurant({
-                                      ...restaurant,
-                                      restaurantSwimmingPool: e.target.value,
-                                    })
-                                  }
-                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                >
-                                  <option value="">Select Option</option>
-                                  <option value="yes">Yes</option>
-                                  <option value="no">No</option>
-                                </select>
-                              </div>
-                            </div>
-
-                            {/* Image Upload Section */}
-                            <div className="mt-4">
-                              <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Restaurant Images (XLS, JPG, PNG only, max 10MB)
-                              </label>
-                              <div className="flex items-center gap-4">
-                                <input
-                                  type="file"
-                                  accept=".xls,.jpg,.png"
-                                  multiple
-                                  onChange={(e) =>
-                                    handleImageUploadForRestaurant(
-                                      e,
-                                      setRestaurant
-                                    )
-                                  }
-                                  className="hidden"
-                                  id="restaurant-image-upload"
-                                />
-                                <label
-                                  htmlFor="restaurant-image-upload"
-                                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
-                                >
-                                  Upload Images
-                                </label>
-                                <span className="text-sm text-gray-500">
-                                  {restaurant.restaurantImageUpload.length}{" "}
-                                  file(s) uploaded
-                                </span>
-                              </div>
-
-                              {/* Display uploaded images */}
-                              {restaurant.restaurantImageUpload.length > 0 && (
-                                <div className="mt-4 flex flex-wrap gap-4">
-                                  {restaurant.restaurantImageUpload.map(
-                                    (image, imgIndex) => (
-                                      <div key={imgIndex} className="relative">
-                                        <img
-                                          src={
-                                            image.includes("base64")
-                                              ? image
-                                              : generateFilePath(image)
-                                          }
-                                          alt={`Restaurant Image ${imgIndex + 1}`}
-                                          style={{
-                                            height: 100,
-                                            width: 100,
-                                            objectFit: "cover",
-                                            border: "1px solid #ddd",
-                                            borderRadius: "5px",
-                                          }}
-                                        />
-                                        <button
-                                          type="button"
-                                          onClick={() =>
-                                            handleRemoveImageForRestaurant(
-                                              imgIndex,
-                                              setRestaurant
-                                            )
-                                          }
-                                          className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
-                                        >
-                                          X
-                                        </button>
-                                      </div>
-                                    )
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {vendor.vendorType.includes("Banquet") && (
-                    <div>
-                      <div className="mb-4 mt-8">
-                        <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={isBanquetDetailsVisible}
-                            onChange={(e) =>
-                              setIsBanquetDetailsVisible(e.target.checked)
-                            }
-                          className="form-checkbox"
-                          />
-                          <span className="ml-2">Do you have Banquet</span>
-                        </label>
-                      </div>
-                    </div>
-                  )}
-
-                  {vendor.vendorType.includes("Event Companies") && (
-                    <div>
-                      {/* Services Section */}
-                      <div className="mb-4 mt-8">
-                        <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
-                          <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-lg font-bold">Event Services</h2>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setEventServices([
-                                  ...eventServices,
-                                  { services: "", rate: "" },
-                                ])
+                    {/* {vendor.vendorType.includes("Banquet") && (
+                      <div>
+                        <div className="">
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              checked={isBanquetDetailsVisible}
+                              onChange={(e) =>
+                                setIsBanquetDetailsVisible(e.target.checked)
                               }
-                              className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
-                            >
-                              Add Services
-                            </button>
+                              className="form-checkbox"
+                            />
+                            <span className="ml-2">Do you have Banquet</span>
+                          </label>
+                        </div>
+                      </div>
+                    )} */}
+
+                    {isBanquetDetailsVisible && (
+                      <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
+                        <div className="flex justify-between items-center mb-6">
+                          <h2 className="text-xl font-bold">Banquet Details</h2>
+                          <div>
+                            <label className="inline-flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={isBanquetDetailsVisible}
+                                onChange={() => setIsBanquetDetailsVisible(!isBanquetDetailsVisible)}
+                                className="form-checkbox"
+                              />
+                              <span className="ml-2 text-sm">Do you have Banquet</span>
+                            </label>
                           </div>
+                        </div>
 
-                          {eventServices.map((service, index) => (
-                            <div
-                              key={index}
-                              className="mb-4 flex items-center gap-4"
-                            >
-                              {/* Services Dropdown */}
-                              <div className="flex-1">
-                                <label className="block text-sm  font-semibold text-gray-700 mb-2">
-                                  Services
-                                </label>
-                                <select
-                                  value={service.services}
-                                  onChange={(e) => {
-                                    const newServices = [...eventServices];
-                                    newServices[index].services = e.target.value;
-                                    setEventServices(newServices);
-                                  }}
-                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                >
-                                  <option value="">Select Service</option>
-                                  <option value="catering">Catering</option>
-                                  <option value="decoration">Decoration</option>
-                                  <option value="photography">Photography</option>
-                                  <option value="entertainment">
-                                    Entertainment
-                                  </option>
-                                  <option value="venue">Venue</option>
-                                </select>
-                              </div>
+                        {/* Number of Banquets Dropdown */}
+                        <div className="mb-6">
+                          <label className="block text-sm font-medium text-black mb-2">
+                            Number Of Banquet
+                          </label>
+                          <select
+                            value={banquets.length}
+                            onChange={(e) => {
+                              const count = parseInt(e.target.value, 10);
+                              if (isNaN(count)) return;
 
-                              {/* Rate Input */}
-                              <div className="flex-1">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Rate
-                                </label>
-                                <input
-                                  type="text"
-                                  placeholder="Enter rate"
-                                  value={service.rate}
-                                  onChange={(e) => {
-                                    const newServices = [...eventServices];
-                                    newServices[index].rate = e.target.value;
-                                    setEventServices(newServices);
-                                  }}
-                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                />
-                              </div>
+                              if (count > banquets.length) {
+                                setBanquets(banquets.concat(
+                                  Array.from({ length: count - banquets.length }, () => ({
+                                    numberOfBanquests: "",
+                                    banquetCategory: "",
+                                    banquetSize: "",
+                                    banquetImageUpload: [],
+                                    banquetName: "",
+                                    banquetSetup: "",
+                                    banquetVegPrice: "",
+                                    banquetNonVegPrice: "",
+                                    banquetFloor: "",
+                                    prefuntionAreaSize: ""
+                                  }))));
+                              } else if (count < banquets.length) {
+                                setBanquets(banquets.slice(0, count));
+                              }
+                            }}
+                            className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                          >
+                            {[1, 2, 3, 4, 5].map(num => (
+                              <option key={num} value={num}>{num}</option>
+                            ))}
+                          </select>
+                        </div>
 
-                              {/* Remove Button */}
-                              {eventServices.length > 1 && (
+                        {banquets.map((banquet, index) => (
+                          <div key={index} className="mb-8 bg-gray-50 pb-6 border-b border-gray-200">
+                            <div className="flex justify-between items-center mb-4">
+                              <h3 className="font-medium text-lg">{index + 1}. Banquet</h3>
+                              {index > 0 && (
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    const newServices = eventServices.filter(
-                                      (_, i) => i !== index
-                                    );
-                                    setEventServices(newServices);
+                                    const newBanquets = banquets.filter((_, i) => i !== index);
+                                    setBanquets(newBanquets);
                                   }}
-                                  className="text-red-500 hover:text-red-700 mt-6"
+                                  className="text-red-500 hover:text-red-700 text-sm"
                                 >
                                   Remove
                                 </button>
                               )}
                             </div>
-                          ))}
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              {/* Left column - Banquet details */}
+                              <div>
+                                <div className="grid grid-cols-2 gap-4 mb-4">
+                                  <div>
+                                    <label className="block text-sm font-medium text-black mb-2">
+                                      Category
+                                    </label>
+                                    <select
+                                      value={banquet.banquetCategory}
+                                      onChange={(e) => {
+                                        const newBanquet = [...banquets];
+                                        newBanquet[index].banquetCategory = e.target.value;
+                                        setBanquets(newBanquet);
+                                      }}
+                                      className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                    >
+                                      <option value="">Select category (Head)</option>
+                                      {categoryOptions.map((option) => (
+                                        <option key={option} value={option.toLowerCase()}>
+                                          {option}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+
+                                  <div>
+                                    <label className="block text-sm font-medium text-black mb-2">
+                                      Name
+                                    </label>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter banquet name"
+                                      value={banquet.banquetName}
+                                      onChange={(e) => {
+                                        const newBanquet = [...banquets];
+                                        newBanquet[index].banquetName = e.target.value;
+                                        setBanquets(newBanquet);
+                                      }}
+                                      className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 mb-4">
+                                  <div>
+                                    <label className="block text-sm font-medium text-black mb-2">
+                                      Size (LXBXH)
+                                    </label>
+                                    <input
+                                      type="text"
+                                      placeholder="To be discus development time"
+                                      value={banquet.banquetSize}
+                                      onChange={(e) => {
+                                        const newBanquet = [...banquets];
+                                        newBanquet[index].banquetSize = e.target.value;
+                                        setBanquets(newBanquet);
+                                      }}
+                                      className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                    />
+                                  </div>
+
+                                  <div>
+                                    <label className="block text-sm font-medium text-black mb-2">
+                                      Setup
+                                    </label>
+                                    <input
+                                      type="text"
+                                      placeholder="Enter setup"
+                                      value={banquet.banquetSetup}
+                                      onChange={(e) => {
+                                        const newBanquet = [...banquets];
+                                        newBanquet[index].banquetSetup = e.target.value;
+                                        setBanquets(newBanquet);
+                                      }}
+                                      className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 mb-4">
+                                  <div>
+                                    <label className="block text-sm font-medium text-black mb-2">
+                                      Veg Price
+                                    </label>
+                                    <div className="flex">
+                                      <input
+                                        type="text"
+                                        placeholder="Enter veg price"
+                                        value={banquet.banquetVegPrice}
+                                        onChange={(e) => {
+                                          const newBanquet = [...banquets];
+                                          newBanquet[index].banquetVegPrice = e.target.value;
+                                          setBanquets(newBanquet);
+                                        }}
+                                        className="border border-gray-300 bg-gray-50 p-2 rounded-l-md w-full"
+                                      />
+                                      <span className="inline-flex items-center border border-l-0 border-gray-300 bg-gray-100 px-3 rounded-r-md text-sm text-gray-500">
+                                        per plate
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div>
+                                    <label className="block text-sm font-medium text-black mb-2">
+                                      Non Veg Price
+                                    </label>
+                                    <div className="flex">
+                                      <input
+                                        type="text"
+                                        placeholder="Enter nonveg price"
+                                        value={banquet.banquetNonVegPrice}
+                                        onChange={(e) => {
+                                          const newBanquet = [...banquets];
+                                          newBanquet[index].banquetNonVegPrice = e.target.value;
+                                          setBanquets(newBanquet);
+                                        }}
+                                        className="border border-gray-300 bg-gray-50 p-2 rounded-l-md w-full"
+                                      />
+                                      <span className="inline-flex items-center border border-l-0 border-gray-300 bg-gray-100 px-3 rounded-r-md text-sm text-gray-500">
+                                        per plate
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium text-black mb-2">
+                                    Floor
+                                  </label>
+                                  <select
+                                    value={banquet.banquetFloor}
+                                    onChange={(e) => {
+                                      const newBanquet = [...banquets];
+                                      newBanquet[index].banquetFloor = e.target.value;
+                                      setBanquets(newBanquet);
+                                    }}
+                                    className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                  >
+                                    <option value="">Select floor</option>
+                                    {floorOptions.map((option) => (
+                                      <option key={option} value={option.toLowerCase()}>
+                                        {option}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+
+                                <div className="mt-6">
+                                  <label className="inline-flex items-center">
+                                    <input
+                                      type="checkbox"
+                                      checked={isPrefunctionAreaVisible}
+                                      onChange={() => setIsPrefunctionAreaVisible(!isPrefunctionAreaVisible)}
+                                      className="form-checkbox"
+                                    />
+                                    <span className="ml-2 text-sm">Do you have PFA (prefunction area)</span>
+                                  </label>
+
+                                  {isPrefunctionAreaVisible && (
+                                    <div className="mt-4">
+                                      <label className="block text-sm font-medium text-black mb-2">
+                                        Size LXBXH
+                                      </label>
+                                      <input
+                                        type="text"
+                                        placeholder="Enter Size"
+                                        value={banquet.prefuntionAreaSize}
+                                        onChange={(e) => {
+                                          const newBanquet = [...banquets];
+                                          newBanquet[index].prefuntionAreaSize = e.target.value;
+                                          setBanquets(newBanquet);
+                                        }}
+                                        className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Right column - Image upload */}
+                              <div>
+                                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 h-full">
+                                  <label className="block text-sm font-medium text-black mb-4">
+                                    Upload image
+                                  </label>
+
+                                  <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-8 mb-4 bg-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                    <p className="text-sm text-gray-500 mb-2">Maximum upload file size 25 MB, allowed files XLS,JPG,PNG *</p>
+
+                                    <input
+                                      type="file"
+                                      accept=".xls,.jpg,.png"
+                                      multiple
+                                      onChange={(e) => ImageUpload(e, index, banquets, setBanquets, "banquetImageUpload")}
+                                      className="hidden bg-gray-50"
+                                      id={`banquet-image-upload-${index}`}
+                                    />
+                                    <label
+                                      htmlFor={`banquet-image-upload-${index}`}
+                                      className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
+                                    >
+                                      Upload Images
+                                    </label>
+                                  </div>
+
+                                  {/* Display uploaded images */}
+                                  {banquet.banquetImageUpload.length > 0 && (
+                                    <div className="grid grid-cols-2 gap-4">
+                                      {banquet.banquetImageUpload.map((image, imgIndex) => (
+                                        <div key={imgIndex} className="relative">
+                                          <img
+                                            src={image.includes("base64") ? image : generateFilePath(image)}
+                                            alt={`Banquet Image ${imgIndex + 1}`}
+                                            className="h-24 w-full object-cover rounded-md border border-gray-200"
+                                          />
+                                          <button
+                                            type="button"
+                                            onClick={() => RemoveImage(index, imgIndex, banquets, setBanquets, "banquetImageUpload")}
+                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                                          >
+                                            X
+                                          </button>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+
+                        <div className="flex justify-end mt-4">
+                          <button
+                            type="button"
+                            onClick={handleAddBanquet}
+                            className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Banquet
+                          </button>
                         </div>
                       </div>
+                    )}
 
-                      {/* Location Section */}
+                    {vendor.vendorType.includes("Event Companies") && (
+                      <div>
+                        {/* Services Section */}
+                        <div className="mb-4 mt-8">
+                          <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
+                            <div className="flex justify-between items-center mb-4">
+                              <h2 className="text-lg font-bold">Event Services</h2>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setEventServices([
+                                    ...eventServices,
+                                    { services: "", rate: "" },
+                                  ])
+                                }
+                                className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
+                              >
+                                Add Services
+                              </button>
+                            </div>
+
+                            {eventServices.map((service, index) => (
+                              <div
+                                key={index}
+                                className="mb-4 flex items-center gap-4"
+                              >
+                                {/* Services Dropdown */}
+                                <div className="flex-1">
+                                  <label className="block text-sm  font-semibold text-gray-700 mb-2">
+                                    Services
+                                  </label>
+                                  <select
+                                    value={service.services}
+                                    onChange={(e) => {
+                                      const newServices = [...eventServices];
+                                      newServices[index].services = e.target.value;
+                                      setEventServices(newServices);
+                                    }}
+                                    className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
+                                  >
+                                    <option value="">Select Service</option>
+                                    <option value="catering">Catering</option>
+                                    <option value="decoration">Decoration</option>
+                                    <option value="photography">Photography</option>
+                                    <option value="entertainment">
+                                      Entertainment
+                                    </option>
+                                    <option value="venue">Venue</option>
+                                  </select>
+                                </div>
+
+                                {/* Rate Input */}
+                                <div className="flex-1">
+                                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Rate
+                                  </label>
+                                  <input
+                                    type="text"
+                                    placeholder="Enter rate"
+                                    value={service.rate}
+                                    onChange={(e) => {
+                                      const newServices = [...eventServices];
+                                      newServices[index].rate = e.target.value;
+                                      setEventServices(newServices);
+                                    }}
+                                    className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
+                                  />
+                                </div>
+
+                                {/* Remove Button */}
+                                {eventServices.length > 1 && (
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const newServices = eventServices.filter(
+                                        (_, i) => i !== index
+                                      );
+                                      setEventServices(newServices);
+                                    }}
+                                    className="text-red-500 hover:text-red-700 mt-6"
+                                  >
+                                    Remove
+                                  </button>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Location Section */}
+                        <div className="mb-4 mt-8">
+                          <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
+                            <h2 className="text-lg font-bold mb-4">Location</h2>
+                            <div className="grid grid-cols-2 gap-6">
+                              <div>
+                                <label className="block text-sm font-semibold text-black mb-1">
+                                  State
+                                </label>
+                                <input
+                                  type="text"
+                                  value={eventLocation.state}
+                                  onChange={(e) =>
+                                    setEventLocation({
+                                      ...eventLocation,
+                                      state: e.target.value,
+                                    })
+                                  }
+                                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                                  placeholder="Enter state"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-semibold text-black mb-1">
+                                  City
+                                </label>
+                                <input
+                                  type="text"
+                                  value={eventLocation.city}
+                                  onChange={(e) =>
+                                    setEventLocation({
+                                      ...eventLocation,
+                                      city: e.target.value,
+                                    })
+                                  }
+                                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                                  placeholder="Enter city"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-semibold text-black mb-1">
+                                  Area
+                                </label>
+                                <input
+                                  type="text"
+                                  value={eventLocation.area}
+                                  onChange={(e) =>
+                                    setEventLocation({
+                                      ...eventLocation,
+                                      area: e.target.value,
+                                    })
+                                  }
+                                  className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                                  placeholder="Enter area"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-semibold text-black mb-2">
+                                  Service Areas
+                                </label>
+                                <Select
+                                  isMulti
+                                  options={stateOptions}
+                                  value={eventLocation.serviceAreas.map((area) => ({
+                                    value: area,
+                                    label:
+                                      stateOptions.find((opt) => opt.value === area)
+                                        ?.label || area,
+                                  }))}
+                                  onChange={(selectedOptions) => {
+                                    const newServiceAreas = selectedOptions
+                                      ? selectedOptions.map(
+                                        (option) => option.value
+                                      )
+                                      : [];
+                                    setEventLocation({
+                                      ...eventLocation,
+                                      serviceAreas: newServiceAreas,
+                                    });
+                                  }}
+                                  className="basic-multi-select"
+                                  classNamePrefix=" select"
+                                  placeholder="Select service areas"
+                                  styles={customReactStylesSmall}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {vendor.vendorType.includes("Transport Service") && (
                       <div className="mb-4 mt-8">
                         <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
-                          <h2 className="text-lg font-bold mb-4">Location</h2>
+                          <h2 className="text-lg font-bold mb-4">
+                            Location Details
+                          </h2>
                           <div className="grid grid-cols-2 gap-6">
+                            {/* State Dropdown */}
                             <div>
-                              <label className="block text-sm font-semibold text-black mb-1">
+                              <label className="block font-semibold text-sm font-medium text-black mb-2">
                                 State
                               </label>
-                              <input
-                                type="text"
-                                value={eventLocation.state}
+                              <select
+                                value={transportLocation.state}
                                 onChange={(e) =>
-                                  setEventLocation({
-                                    ...eventLocation,
+                                  setTransportLocation({
+                                    ...transportLocation,
                                     state: e.target.value,
                                   })
                                 }
-                                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
-                                placeholder="Enter state"
-                              />
+                                className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select State</option>
+                                {stateOptions.map((option) => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
+
+                            {/* City Dropdown */}
                             <div>
-                              <label className="block text-sm font-semibold text-black mb-1">
+                              <label className="block text-sm font-semibold text-black mb-2">
                                 City
                               </label>
-                              <input
-                                type="text"
-                                value={eventLocation.city}
+                              <select
+                                value={transportLocation.city}
                                 onChange={(e) =>
-                                  setEventLocation({
-                                    ...eventLocation,
+                                  setTransportLocation({
+                                    ...transportLocation,
                                     city: e.target.value,
                                   })
                                 }
-                                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
-                                placeholder="Enter city"
-                              />
+                                className="w-full border border-gray-300 bg-gray-50 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select City</option>
+                                <option value="mumbai">Mumbai</option>
+                                <option value="delhi">Delhi</option>
+                                <option value="bangalore">Bangalore</option>
+                                <option value="chennai">Chennai</option>
+                                <option value="kolkata">Kolkata</option>
+                              </select>
                             </div>
-                            <div>
-                              <label className="block text-sm font-semibold text-black mb-1">
-                                Area
+
+                            {/* How do you travel Checkboxes */}
+                            <div className="col-span-2">
+                              <label className="block text-sm font-semibold text-black mb-2">
+                                How do you travel?
                               </label>
-                              <input
-                                type="text"
-                                value={eventLocation.area}
-                                onChange={(e) =>
-                                  setEventLocation({
-                                    ...eventLocation,
-                                    area: e.target.value,
-                                  })
-                                }
-                                className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
-                                placeholder="Enter area"
-                              />
+                              <div className="flex gap-6">
+                                <label className="inline-flex items-center">
+                                  <input
+                                    type="checkbox"
+                                    checked={transportLocation.travelLocal}
+                                    onChange={(e) =>
+                                      setTransportLocation({
+                                        ...transportLocation,
+                                        travelLocal: e.target.checked,
+                                      })
+                                    }
+                                    className="form-checkbox"
+                                  />
+                                  <span className="ml-2">Local</span>
+                                </label>
+                                <label className="inline-flex items-center">
+                                  <input
+                                    type="checkbox"
+                                    checked={transportLocation.travelOutStation}
+                                    onChange={(e) =>
+                                      setTransportLocation({
+                                        ...transportLocation,
+                                        travelOutStation: e.target.checked,
+                                      })
+                                    }
+                                    className="form-checkbox"
+                                  />
+                                  <span className="ml-2">Out-station</span>
+                                </label>
+                              </div>
                             </div>
-                            <div>
+
+                            {/* Service Areas Multi-Select */}
+                            <div className="col-span-2">
                               <label className="block text-sm font-semibold text-black mb-2">
                                 Service Areas
                               </label>
                               <Select
                                 isMulti
                                 options={stateOptions}
-                                value={eventLocation.serviceAreas.map((area) => ({
-                                  value: area,
-                                  label:
-                                    stateOptions.find((opt) => opt.value === area)
-                                      ?.label || area,
-                                }))}
+                                value={transportLocation.serviceAreas.map(
+                                  (area) => ({
+                                    value: area,
+                                    label:
+                                      stateOptions.find((opt) => opt.value === area)
+                                        ?.label || area,
+                                  })
+                                )}
                                 onChange={(selectedOptions) => {
                                   const newServiceAreas = selectedOptions
-                                    ? selectedOptions.map(
-                                      (option) => option.value
-                                    )
+                                    ? selectedOptions.map((option) => option.value)
                                     : [];
-                                  setEventLocation({
-                                    ...eventLocation,
+                                  setTransportLocation({
+                                    ...transportLocation,
                                     serviceAreas: newServiceAreas,
                                   });
                                 }}
-                                className="bg-gray-50 basic-multi-select"
+                                className=" basic-multi-select bg-gray-50"
                                 classNamePrefix="select"
                                 placeholder="Select service areas"
                                 styles={customReactStylesSmall}
@@ -2665,141 +2923,12 @@ const AddVendorForm = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-
-                  {vendor.vendorType.includes("Transport Service") && (
-                    <div className="mb-4 mt-8">
-                      <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
-                        <h2 className="text-lg font-bold mb-4">
-                          Location Details
-                        </h2>
-                        <div className="grid grid-cols-2 gap-6">
-                          {/* State Dropdown */}
-                          <div>
-                            <label className="block font-semibold text-sm font-medium text-black mb-2">
-                              State
-                            </label>
-                            <select
-                              value={transportLocation.state}
-                              onChange={(e) =>
-                                setTransportLocation({
-                                  ...transportLocation,
-                                  state: e.target.value,
-                                })
-                              }
-                              className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select State</option>
-                              {stateOptions.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                  {option.label}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-
-                          {/* City Dropdown */}
-                          <div>
-                            <label className="block text-sm font-semibold text-black mb-2">
-                              City
-                            </label>
-                            <select
-                              value={transportLocation.city}
-                              onChange={(e) =>
-                                setTransportLocation({
-                                  ...transportLocation,
-                                  city: e.target.value,
-                                })
-                              }
-                              className="w-full border border-gray-300 bg-gray-50 rounded-md p-2 text-sm"
-                            >
-                              <option value="">Select City</option>
-                              <option value="mumbai">Mumbai</option>
-                              <option value="delhi">Delhi</option>
-                              <option value="bangalore">Bangalore</option>
-                              <option value="chennai">Chennai</option>
-                              <option value="kolkata">Kolkata</option>
-                            </select>
-                          </div>
-
-                          {/* How do you travel Checkboxes */}
-                          <div className="col-span-2">
-                            <label className="block text-sm font-semibold text-black mb-2">
-                              How do you travel?
-                            </label>
-                            <div className="flex gap-6">
-                              <label className="inline-flex items-center">
-                                <input
-                                  type="checkbox"
-                                  checked={transportLocation.travelLocal}
-                                  onChange={(e) =>
-                                    setTransportLocation({
-                                      ...transportLocation,
-                                      travelLocal: e.target.checked,
-                                    })
-                                  }
-                                  className="form-checkbox"
-                                />
-                                <span className="ml-2">Local</span>
-                              </label>
-                              <label className="inline-flex items-center">
-                                <input
-                                  type="checkbox"
-                                  checked={transportLocation.travelOutStation}
-                                  onChange={(e) =>
-                                    setTransportLocation({
-                                      ...transportLocation,
-                                      travelOutStation: e.target.checked,
-                                    })
-                                  }
-                                  className="form-checkbox"
-                                />
-                                <span className="ml-2">Out-station</span>
-                              </label>
-                            </div>
-                          </div>
-
-                          {/* Service Areas Multi-Select */}
-                          <div className="col-span-2">
-                            <label className="block text-sm font-semibold text-black mb-2">
-                              Service Areas
-                            </label>
-                            <Select
-                              isMulti
-                              options={stateOptions}
-                              value={transportLocation.serviceAreas.map(
-                                (area) => ({
-                                  value: area,
-                                  label:
-                                    stateOptions.find((opt) => opt.value === area)
-                                      ?.label || area,
-                                })
-                              )}
-                              onChange={(selectedOptions) => {
-                                const newServiceAreas = selectedOptions
-                                  ? selectedOptions.map((option) => option.value)
-                                  : [];
-                                setTransportLocation({
-                                  ...transportLocation,
-                                  serviceAreas: newServiceAreas,
-                                });
-                              }}
-                              className="basic-multi-select bg-gray-50"
-                              classNamePrefix="select"
-                              placeholder="Select service areas"
-                              styles={customReactStylesSmall}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
+                    )}
+                  </div>
                   {/* Car Details Block */}
                   {(transportLocation.travelLocal ||
                     transportLocation.travelOutStation) && (
-                      <div className="border rounded-lg mt-8 p-6 shadow">
+                      <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
                         <div className="mt-6">
                           <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-bold">Car Details</h2>
@@ -2821,7 +2950,7 @@ const AddVendorForm = () => {
                                   ],
                                 })
                               }
-                              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                              className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
                             >
                               Add Car
                             </button>
@@ -3003,137 +3132,149 @@ const AddVendorForm = () => {
                         </div>
                       </div>
                     )}
-                  <div className="border rounded-lg mt-8 p-6 shadow bg-gray-50 grid grid-cols-3 gap-6 p-6">
-                    <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-lg font-bold">Bank Details</h2>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-black mb-2">
-                        Bank Name
-                      </label>
-                      <input
-                        type="text"
-                        name="bankName"
-                        value={bankDetails.bankName}
-                        onChange={(e) =>
-                          setBankDetails({
-                            ...bankDetails,
-                            bankName: e.target.value,
-                          })
-                        }
-                        placeholder="Bank Name"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-black mb-2">
-                        Bank Account Number
-                      </label>
-                      <input
-                        type="number"
-                        name="bankAccountNumber"
-                        value={bankDetails.bankAccountNumber}
-                        onChange={(e) =>
-                          setBankDetails({
-                            ...bankDetails,
-                            bankAccountNumber: e.target.value,
-                          })
-                        }
-                        placeholder="Bank Account Number"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-black mb-2">
-                        IFSC Code
-                      </label>
-                      <input
-                        type="text"
-                        name="ifsc"
-                        value={bankDetails.ifsc}
-                        onChange={(e) =>
-                          setBankDetails({
-                            ...bankDetails,
-                            ifsc: e.target.value,
-                          })
-                        }
-                        placeholder="IFSC Code"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-black mb-2">
-                        Point of Contact
-                      </label>
-                      <input
-                        type="text"
-                        name="pointOfContact"
-                        value={bankDetails.pointOfContact}
-                        onChange={(e) =>
-                          setBankDetails({
-                            ...bankDetails,
-                            pointOfContact: e.target.value,
-                          })
-                        }
-                        placeholder="Point of Contact"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-black mb-2">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={bankDetails.email}
-                        onChange={(e) =>
-                          setBankDetails({
-                            ...bankDetails,
-                            email: e.target.value,
-                          })
-                        }
-                        placeholder="Email"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-black mb-2">
-                        Phone Number
-                      </label>
-                      <input
-                        type="text"
-                        name="phoneNumber"
-                        value={bankDetails.phoneNumber}
-                        onChange={(e) =>
-                          setBankDetails({
-                            ...bankDetails,
-                            phoneNumber: e.target.value,
-                          })
-                        }
-                        placeholder="Phone Number"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-black mb-2">
-                        Billing Address
-                      </label>
-                      <input
-                        type="text"
-                        name="billingAddress"
-                        value={bankDetails.billingAddress}
-                        onChange={(e) =>
-                          setBankDetails({
-                            ...bankDetails,
-                            billingAddress: e.target.value,
-                          })
-                        }
-                        placeholder="Billing Address"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
+
+                  {/* bANK dETAILS */}
+
+
+                  <div className="border rounded-lg mt-8 p-6 shadow bg-gray-50">
+                    <h2 className="text-lg font-semibold mb-4">Bank Details</h2>
+
+                    <div className="grid grid-cols-3 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-black mb-2">
+                          Bank Name
+                        </label>
+                        <input
+                          type="text"
+                          name="bankName"
+                          value={bankDetails.bankName}
+                          onChange={(e) =>
+                            setBankDetails({
+                              ...bankDetails,
+                              bankName: e.target.value,
+                            })
+                          }
+                          placeholder="Bank Name"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-black mb-2">
+                          Bank Account Number
+                        </label>
+                        <input
+                          type="number"
+                          name="bankAccountNumber"
+                          value={bankDetails.bankAccountNumber}
+                          onChange={(e) =>
+                            setBankDetails({
+                              ...bankDetails,
+                              bankAccountNumber: e.target.value,
+                            })
+                          }
+                          placeholder="Bank Account Number"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-black mb-2">
+                          IFSC Code
+                        </label>
+                        <input
+                          type="text"
+                          name="ifsc"
+                          value={bankDetails.ifsc}
+                          onChange={(e) =>
+                            setBankDetails({
+                              ...bankDetails,
+                              ifsc: e.target.value,
+                            })
+                          }
+                          placeholder="IFSC Code"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-black mb-2">
+                          Point of Contact
+                        </label>
+                        <input
+                          type="text"
+                          name="pointOfContact"
+                          value={bankDetails.pointOfContact}
+                          onChange={(e) =>
+                            setBankDetails({
+                              ...bankDetails,
+                              pointOfContact: e.target.value,
+                            })
+                          }
+                          placeholder="Point of Contact"
+                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-black mb-2">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={bankDetails.email}
+                          onChange={(e) =>
+                            setBankDetails({
+                              ...bankDetails,
+                              email: e.target.value,
+                            })
+                          }
+                          placeholder="Email"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-black mb-2">
+                          Phone Number
+                        </label>
+                        <input
+                          type="text"
+                          name="phoneNumber"
+                          value={bankDetails.phoneNumber}
+                          onChange={(e) =>
+                            setBankDetails({
+                              ...bankDetails,
+                              phoneNumber: e.target.value,
+                            })
+                          }
+                          placeholder="Phone Number"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      <div className="col-span-3">
+                        <label className="block text-sm font-medium text-black mb-2">
+                          Billing Address
+                        </label>
+                        <input
+                          type="text"
+                          name="billingAddress"
+                          value={bankDetails.billingAddress}
+                          onChange={(e) =>
+                            setBankDetails({
+                              ...bankDetails,
+                              billingAddress: e.target.value,
+                            })
+                          }
+                          placeholder="Billing Address"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
                     </div>
                   </div>
+
 
                   {/* Separation Line */}
                   <hr className="my-6 border-gray-300 mt-4" />

@@ -13,7 +13,7 @@ export const customReactStyles = {
             border: '2px solid #D9D9D9 !important',
             bgColor:"#990a3e",
         },
-
+        backgroundColor: "#D1D1D1"
       
         
     })
