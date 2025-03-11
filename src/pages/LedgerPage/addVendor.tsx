@@ -2293,21 +2293,22 @@ const AddVendorForm = () => {
                       </div>
                     )} */}
 
+                    <div>
+                      <label className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={isBanquetDetailsVisible}
+                          onChange={() => setIsBanquetDetailsVisible(!isBanquetDetailsVisible)}
+                          className="form-checkbox"
+                        />
+                        <span className="ml-2 text-sm">Do you have Banquet</span>
+                      </label>
+                    </div>
+
                     {isBanquetDetailsVisible && (
                       <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
                         <div className="flex justify-between items-center mb-6">
                           <h2 className="text-xl font-bold">Banquet Details</h2>
-                          <div>
-                            <label className="inline-flex items-center">
-                              <input
-                                type="checkbox"
-                                checked={isBanquetDetailsVisible}
-                                onChange={() => setIsBanquetDetailsVisible(!isBanquetDetailsVisible)}
-                                className="form-checkbox"
-                              />
-                              <span className="ml-2 text-sm">Do you have Banquet</span>
-                            </label>
-                          </div>
                         </div>
 
                         {/* Number of Banquets Dropdown */}
