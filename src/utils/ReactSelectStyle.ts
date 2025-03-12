@@ -6,14 +6,15 @@ export const customReactStyles = {
         ...base,
         border: '1px solid #D9D9D9 !important',
         boxShadow: '0 !important',
-        padding:'8px',
+        // padding:'8px',
         zindex:'3',
-        minHeight:'60px',
-        '&:hover': {
-            border: '2px solid #D9D9D9 !important',
-            bgColor:"#990a3e",
-        },
-        backgroundColor: "#D1D1D1"
+        height:"40px",
+        minHeight:'30px',
+        // '&:hover': {
+        //     border: '2px solid #D9D9D9 !important',
+        //     bgColor:"#990a3e",
+        // },
+        backgroundColor: "#fafafa"
       
         
     })
@@ -46,7 +47,7 @@ export const customReactStyles = {
             border: '1px solid #D9D9D9',
             // You cannot use bgColor here directly; use backgroundColor instead
         },
-        backgroundColor: state.isFocused ? '#f0f0f0' : 'white', // Background on focus
+        backgroundColor: '#fafafa', // Background on focus
     }),
     option: (base: any, state: any) => ({
         ...base,

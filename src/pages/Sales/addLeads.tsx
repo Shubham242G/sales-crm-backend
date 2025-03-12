@@ -114,8 +114,8 @@ const AddNewLead = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-12">
-      <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-16">
+    <div className="min-h-screen bg-white p-12">
+      <div className="max-w-7xl mx-auto bg-gray-50  shadow-lg rounded-lg p-16">
         <h1 className="text-2xl font-bold mb-10">Add New Lead</h1>
         <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
@@ -130,10 +130,10 @@ const AddNewLead = () => {
                   handleSelectChange("salutation", val.target.value)
                 }
                 value={formData.salutation}
-                className="border border-gray-300 rounded-md p-4 w-full text-gray-500 placeholder-gray-400"
+                className="border border-gray-300 bg-gray-50 rounded-md p-4 w-full text-gray-500 placeholder-gray-400"
               >
                 <option value="" disabled hidden className="text-gray-400">
-                  Salutations
+                  Salutation
                 </option>
                 {salutationOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -156,7 +156,7 @@ const AddNewLead = () => {
                   setFormData({ ...formData, firstName: e.target.value })
                 }
                 placeholder="Enter first name"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
+                className="w-full bg-gray-50 border border-gray-300 rounded-md p-4 placeholder-gray-400"
               />
             </div>
 
@@ -173,7 +173,7 @@ const AddNewLead = () => {
                 }
                 type="text"
                 placeholder="Enter last name"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
+                className="w-full bg-gray-50 border border-gray-300 rounded-md p-4 placeholder-gray-400"
               />
             </div>
 
@@ -190,7 +190,7 @@ const AddNewLead = () => {
                 }
                 type="text"
                 placeholder="Enter company name"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-4 placeholder-gray-400"
               />
             </div>
 
@@ -207,7 +207,7 @@ const AddNewLead = () => {
                   setFormData({ ...formData, email: e.target.value })
                 }
                 placeholder="Enter email address"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-4 placeholder-gray-400"
               />
             </div>
 
@@ -224,7 +224,7 @@ const AddNewLead = () => {
                 }
                 type="text"
                 placeholder="Enter mobile number"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-4 placeholder-gray-400"
               />
             </div>
           </div>

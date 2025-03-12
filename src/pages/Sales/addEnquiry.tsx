@@ -177,6 +177,47 @@ const AddEnquiryForm = () => {
     multiToCity: "",
   })
 
+  const customStyles = {
+    control: (base: any) => ({
+        ...base,
+        border: '2px solid #e5e7eb !important',
+        boxShadow: '0 !important',
+        color:"#000",
+        padding:'5px',
+        fontFamily: "satoshi, sans-serif", 
+        backgroundColor:'#fafafa',
+        zindex:'9',
+        minHeight:'30px',
+        '&:hover': {
+            border: '1px solid #e5e7eb !important',
+           
+        },
+
+        menu: (provided:any) => ({
+            ...provided,
+            zIndex: 9999, // Increase the z-index here
+          }),
+
+          menuPortal: (provided:any) => ({ ...provided, zIndex: 5 }),
+      
+        
+    }),
+    option: (base:any) => ({
+        ...base,
+        cursor: "pointer",
+        background: "white",
+        color:"#000",
+        fontFamily: "'inter', sans-serif", 
+        zindex:'9',   // this was the mistake (I needed to remove this)
+        "&:hover": {
+           backgroundColor: "#687256",
+           color:"#fff",
+           fontFamily: "'inter', sans-serif", 
+         },
+})
+
+}
+
   const [isEventSetupVisible, setIsEventSetupVisible] = useState(false)
   const [isAirTicketVisible, setIsAirTicketVisible] = useState(false)
 
@@ -655,21 +696,21 @@ const AddEnquiryForm = () => {
   console.log(cab, "cab check ")
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-[#0B2F46] text-white py-4 px-6">
+      <div className="bg-white text-black py-4 px-6">
         <h1 className="text-xl font-semibold">Enquiry</h1>
       </div>
-      <div className="min-h-screen w-full bg-[#F5F5F5] p-4">
+      <div className="min-h-screen w-full bg-[#FAFAFA] p-4">
         <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
-          <div className="bg-white p-6 rounded shadow-sm mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+          <div className=" p-6 rounded bg-[#FAFAFA] shadow-sm mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
               {/* Salutation */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Salutation</label>
                 <select
                   onChange={(val) => handleSelectChange("salutation", val.target.value)}
                   value={salutation}
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   {salutationOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -688,7 +729,7 @@ const AddEnquiryForm = () => {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="First Name"
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -701,7 +742,7 @@ const AddEnquiryForm = () => {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Last Name"
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -714,7 +755,7 @@ const AddEnquiryForm = () => {
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="Company Name"
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -727,7 +768,7 @@ const AddEnquiryForm = () => {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="Phone Number"
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -740,7 +781,7 @@ const AddEnquiryForm = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -753,7 +794,7 @@ const AddEnquiryForm = () => {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="City"
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -769,7 +810,7 @@ const AddEnquiryForm = () => {
                     setArea(e.target.value)
                   }}
                   placeholder="Area"
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -782,7 +823,7 @@ const AddEnquiryForm = () => {
                   value={noOfRooms}
                   onChange={(e) => setNoOfRooms(e.target.value)}
                   placeholder="Number of Rooms"
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -793,7 +834,7 @@ const AddEnquiryForm = () => {
                   name="enquiryType"
                   value={enquiryType}
                   onChange={(e) => setEnquiryType(e.target.value)}
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Select Enquiry Type</option>
                   <option value="room">Room</option>
@@ -810,7 +851,7 @@ const AddEnquiryForm = () => {
                   name="checkIn"
                   value={moment(checkIn).format("YYYY-MM-DD")}
                   onChange={(e) => setCheckIn(e.target.value)}
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -822,7 +863,7 @@ const AddEnquiryForm = () => {
                   name="checkOut"
                   value={moment(checkOut).format("YYYY-MM-DD")}
                   onChange={(e) => setCheckOut(e.target.value)}
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -833,7 +874,7 @@ const AddEnquiryForm = () => {
                   name="levelOfEnquiry"
                   value={levelOfEnquiry}
                   onChange={(e) => setLevelOfEnquiry(e.target.value)}
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Select Enquiry Type</option>
                   <option value="urgent">Urgent</option>
@@ -848,7 +889,7 @@ const AddEnquiryForm = () => {
                 <select
                   value={othersPreference}
                   onChange={(e) => setOthersPreference(e.target.value)}
-                  className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-gray-300 bg-gray-50 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Select a Preference</option>
                   <option value="preference1">Preference 1</option>
@@ -880,6 +921,7 @@ const AddEnquiryForm = () => {
                   className="basic-multi-select"
                   classNamePrefix="select"
                   placeholder="Select Categories..."
+                  styles={customStyles}
                 />
               </div>
 
@@ -893,7 +935,7 @@ const AddEnquiryForm = () => {
                       value="single occupancy"
                       checked={occupancy.includes("single occupancy")}
                       onChange={() => handleCheckboxChange("single occupancy")}
-                      className="form-checkbox h-4 w-4 text-blue-600"
+                      className="form-checkbox bg-gray-50 h-4 w-4 text-blue-600"
                     />
                     <span className="text-sm">Single Occupancy</span>
                   </label>
@@ -903,7 +945,7 @@ const AddEnquiryForm = () => {
                       value="double occupancy"
                       checked={occupancy.includes("double occupancy")}
                       onChange={() => handleCheckboxChange("double occupancy")}
-                      className="form-checkbox h-4 w-4 text-blue-600"
+                      className="form-checkbox bg-gray-50 h-4 w-4 text-blue-600"
                     />
                     <span className="text-sm">Double Occupancy</span>
                   </label>
@@ -913,7 +955,7 @@ const AddEnquiryForm = () => {
                       value="extra bed"
                       checked={occupancy.includes("extra bed")}
                       onChange={() => handleCheckboxChange("extra bed")}
-                      className="form-checkbox h-4 w-4 text-blue-600"
+                      className="form-checkbox bg-gray-50 h-4 w-4 text-blue-600"
                     />
                     <span className="text-sm">Extra Bed</span>
                   </label>

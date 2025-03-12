@@ -106,6 +106,47 @@ const AddQuotesToCustomerForm = () => {
     }
   };
 
+  const customStyles = {
+    control: (base: any) => ({
+        ...base,
+        border: '1px solid #e5e7eb !important',
+        boxShadow: '0 !important',
+        color:"#000",
+        padding:'5px',
+        fontFamily: "inter, sans-serif", 
+        backgroundColor:'#fafafa',
+        zindex:'9',
+        minHeight:'30px',
+        '&:hover': {
+            border: '1px solid #e5e7eb !important',
+           
+        },
+
+        menu: (provided:any) => ({
+            ...provided,
+            zIndex: 9999, // Increase the z-index here
+          }),
+
+          menuPortal: (provided:any) => ({ ...provided, zIndex: 5 }),
+      
+        
+    }),
+    option: (base:any) => ({
+        ...base,
+        cursor: "pointer",
+        background: "white",
+        color:"#000",
+        fontFamily: "'inter', sans-serif", 
+        zindex:'9',   // this was the mistake (I needed to remove this)
+        "&:hover": {
+           backgroundColor: "#687256",
+           color:"#fff",
+           fontFamily: "'inter', sans-serif", 
+         },
+})
+
+}
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -167,12 +208,12 @@ const AddQuotesToCustomerForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-6xl mx-auto bg-gray-50 border border-gray-300 shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">Add Quotes To Customer</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-blackmb-1">
               Quotes ID
             </label>
             <input
@@ -180,13 +221,13 @@ const AddQuotesToCustomerForm = () => {
               value={formData.quotesId}
               onChange={handleInputChange}
               type="text"
-              className="w-full border border-gray-300 rounded-md p-2"
+              className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
               placeholder="Enter Quotes ID"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-blackmb-1">
               Customer Name
             </label>
             <input
@@ -194,13 +235,13 @@ const AddQuotesToCustomerForm = () => {
               value={formData.customerName}
               onChange={handleInputChange}
               type="text"
-              className="w-full border border-gray-300 rounded-md p-2"
+              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
               placeholder="Enter Customer Name"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-blackmb-1">
               Service Type
             </label>
             <Select
@@ -210,15 +251,16 @@ const AddQuotesToCustomerForm = () => {
                 formData.serviceType.includes(option.value)
               )}
               onChange={handleServiceTypeChange}
-              className="w-full mt-2 border rounded-md"
+              className="w-full bg-gray-50 mt-2 border border-gray-300 rounded-md"
               classNamePrefix="select"
               placeholder="Select service types"
+              styles={customStyles}
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             {/* <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-blackmb-1">
                 Amount
               </label>
               <input
@@ -240,7 +282,7 @@ const AddQuotesToCustomerForm = () => {
                 <button
                   type="button"
                   onClick={handleAddMarkupRow}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+                  className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
                 >
                   <svg
                     className="w-5 h-5"
@@ -258,19 +300,19 @@ const AddQuotesToCustomerForm = () => {
               </div>
               <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-200 rounded-lg">
-                  <thead className="bg-gray-100">
+                  <thead className="bg-[#0B2F46]">
                     <tr>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
                         S.No.
                       </th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
                         Label
                       </th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
                         Charges
                       </th>
                       {formData.markupDetails.length > 1 && (
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
                           Actions
                         </th>
                       )}
@@ -292,7 +334,7 @@ const AddQuotesToCustomerForm = () => {
                             onChange={(e) =>
                               handleMarkupChange(index, "label", e.target.value)
                             }
-                            className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                            className="w-full border border-gray-300 rounded-md p-3 text-black focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 transition duration-200"
                             placeholder="Enter label"
                           />
                         </td>
@@ -307,7 +349,7 @@ const AddQuotesToCustomerForm = () => {
                                 e.target.value
                               )
                             }
-                            className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                            className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                             placeholder="Enter markup amount"
                           />
                         </td>
@@ -330,14 +372,14 @@ const AddQuotesToCustomerForm = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-blackmb-1">
                 Total Amount
               </label>
               <input
                 name="totalAmount"
                 value={formData.totalAmount}
                 type="text"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
                 readOnly
               />
             </div>

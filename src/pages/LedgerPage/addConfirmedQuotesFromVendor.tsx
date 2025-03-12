@@ -427,18 +427,18 @@ const AddConfirmedQuotesFromVendor = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-6xl mx-auto bg-gray-50 shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">
           {id ? "Edit Confirmed Quotes" : "Add Confirmed Quotes"}
         </h1>
         <form onSubmit={handleSubmit}>
           {/* Banquet Event Orders Section */}
-          <div className="border rounded-lg mt-8 p-6 shadow">
+          <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
             <div className="mb-4">
               <label>Select Quote Id</label>
               <select
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                 value={formData.banquetEventOrders.quotesId}
                 onChange={(e) =>
                   setFormData({
@@ -460,7 +460,7 @@ const AddConfirmedQuotesFromVendor = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-black mb-2">
                 RFP Id
               </label>
               <input
@@ -475,27 +475,27 @@ const AddConfirmedQuotesFromVendor = () => {
                     },
                   })
                 }
-                className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                className="w-full bg-gray-50 border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                 placeholder="Enter RFP Id"
                 disabled
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-black mb-2">
                 Vendor
               </label>
               <input
                 type="text"
                 value={formData.banquetEventOrders.vendorList.label}
-                className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                 placeholder="Vendor Name"
                 disabled
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-black mb-2">
                 Amount
               </label>
               <input
@@ -510,14 +510,14 @@ const AddConfirmedQuotesFromVendor = () => {
                     },
                   })
                 }
-                className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                 placeholder="Enter amount"
                 disabled
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-black mb-2">
                 Received Date
               </label>
               <input
@@ -532,13 +532,13 @@ const AddConfirmedQuotesFromVendor = () => {
                     },
                   })
                 }
-                className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                 disabled
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-black mb-2">
                 Status
               </label>
               <select
@@ -552,7 +552,7 @@ const AddConfirmedQuotesFromVendor = () => {
                     },
                   })
                 }
-                className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                 disabled
               >
                 <option value="">Select Status</option>
@@ -563,7 +563,7 @@ const AddConfirmedQuotesFromVendor = () => {
             </div>
 
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-black mb-2">
                 Attachment
               </label>
               <div className="flex items-center gap-4">
@@ -578,7 +578,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+                  className="flex items-center m-10 gap-2 px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-blue-600 transition duration-200"
                 >
                   <FiUpload className="w-5 h-5" />
                   Upload Files
@@ -648,7 +648,7 @@ const AddConfirmedQuotesFromVendor = () => {
             <div className="mb-8">
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Event Coordinator Name
                   </label>
                   <input
@@ -663,12 +663,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter coordinator name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Event Date
                   </label>
                   <input
@@ -683,11 +683,11 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Hotel Name
                   </label>
                   <input
@@ -702,12 +702,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter hotel name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Event Coordinator Reporting Time
                   </label>
                   <input
@@ -724,11 +724,11 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Client's Company Name
                   </label>
                   <input
@@ -743,12 +743,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter company name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Onsite Client Name
                   </label>
                   <input
@@ -763,12 +763,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter client name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Sales Person Name
                   </label>
                   <input
@@ -783,12 +783,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter sales person name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Expected Pax
                   </label>
                   <input
@@ -803,7 +803,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter expected pax"
                   />
                 </div>
@@ -816,7 +816,7 @@ const AddConfirmedQuotesFromVendor = () => {
             <div className="mb-8">
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Event Start Time
                   </label>
                   <input
@@ -831,11 +831,11 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Event End Time
                   </label>
                   <input
@@ -850,11 +850,11 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     BTR
                   </label>
                   <input
@@ -869,12 +869,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter BTR"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Venue Handover Time
                   </label>
                   <input
@@ -889,11 +889,11 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Welcome Drink Start Time
                   </label>
                   <input
@@ -910,11 +910,11 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Venue Name
                   </label>
                   <input
@@ -929,12 +929,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter venue name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Setup
                   </label>
                   <input
@@ -949,12 +949,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter setup"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     AV Vendor Name
                   </label>
                   <input
@@ -969,12 +969,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter AV vendor name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     AV Vendor Number
                   </label>
                   <input
@@ -989,12 +989,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter AV vendor number"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Expected Number of Seating
                   </label>
                   <input
@@ -1009,12 +1009,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter expected seating"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Hotel Coordination Name
                   </label>
                   <input
@@ -1031,12 +1031,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter coordination name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Hotel Coordination Number
                   </label>
                   <input
@@ -1053,12 +1053,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter coordination number"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Liner Color
                   </label>
                   <input
@@ -1073,12 +1073,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter liner color"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Starters Placement
                   </label>
                   <input
@@ -1093,12 +1093,12 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter starters placement"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Starters Event Time
                   </label>
                   <input
@@ -1113,7 +1113,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
-                    className="w-full border border-gray-300 rounded-md p-2"
+                    className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
               </div>
@@ -1121,11 +1121,11 @@ const AddConfirmedQuotesFromVendor = () => {
           </div>
 
           {/* Menu Selection Section */}
-          <div className="mb-8 mt-8">
+          <div className="mb-8 mt-8 border border-gray-300 p-6 rounded-md shadow">
             <h2 className="text-xl font-semibold mb-4">Menu Selection</h2>
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Sr. No.
                 </label>
                 <input
@@ -1140,12 +1140,12 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter serial number"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Veg
                 </label>
                 <input
@@ -1160,12 +1160,12 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter veg menu"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Non-Veg
                 </label>
                 <input
@@ -1180,12 +1180,12 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter non-veg menu"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Actions
                 </label>
                 <input
@@ -1200,7 +1200,7 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter actions"
                 />
               </div>
@@ -1208,11 +1208,11 @@ const AddConfirmedQuotesFromVendor = () => {
           </div>
 
           {/* Event Flow Section */}
-          <div className="mb-8">
+          <div className="mb-8 border border-gray-300 p-6 rounded-md shadow">
             <h2 className="text-xl font-semibold mb-4">Event Flow</h2>
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Sr. No.
                 </label>
                 <input
@@ -1227,12 +1227,12 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter serial number"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Text 1
                 </label>
                 <input
@@ -1247,12 +1247,12 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter text 1"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Text 2
                 </label>
                 <input
@@ -1267,12 +1267,12 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter text 2"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Actions
                 </label>
                 <input
@@ -1287,7 +1287,7 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter actions"
                 />
               </div>
@@ -1295,11 +1295,11 @@ const AddConfirmedQuotesFromVendor = () => {
           </div>
 
           {/* Audio Visual Section */}
-          <div className="mb-8">
+          <div className="mb-8 border border-gray-300 p-6 rounded-md shadow">
             <h2 className="text-xl font-semibold mb-4">Audio Visual</h2>
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Sr. No.
                 </label>
                 <input
@@ -1314,12 +1314,12 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter serial number"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Text 1
                 </label>
                 <input
@@ -1334,12 +1334,12 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter text 1"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Text 2
                 </label>
                 <input
@@ -1354,12 +1354,12 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter text 2"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-black mb-1">
                   Actions
                 </label>
                 <input
@@ -1374,7 +1374,7 @@ const AddConfirmedQuotesFromVendor = () => {
                       },
                     })
                   }
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   placeholder="Enter actions"
                 />
               </div>
@@ -1389,24 +1389,24 @@ const AddConfirmedQuotesFromVendor = () => {
               <button
                 type="button"
                 onClick={handleAddChecklistItem}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
               >
                 Add New Item
               </button>
             </div>
-            <table className="min-w-full border border-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full border border-gray-300">
+              <thead className="bg-[#0B2F46]">
                 <tr>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                  <th className="px-4 py-2 text-left text-sm font-medium text-white border-b">
                     Sr. No.
                   </th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                  <th className="px-4 py-2 text-left text-sm font-medium text-white border-b">
                     Checks
                   </th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                  <th className="px-4 py-2 text-left text-sm font-medium text-white border-b">
                     Actions
                   </th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                  <th className="px-4 py-2 text-left text-sm font-medium text-white border-b">
                     Actions
                   </th>
                 </tr>
@@ -1422,7 +1422,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         onChange={(e) =>
                           handleChecklistChange(index, "checks", e.target.value)
                         }
-                        className="w-full border border-gray-300 rounded-md p-2"
+                        className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
                         placeholder="Enter checklist description"
                       />
                     </td>
@@ -1444,7 +1444,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         <button
                           type="button"
                           onClick={() => handleRemoveChecklistItem(index)}
-                          className="text-red-500 hover:text-red-700"
+                          className="text-red-500 bg-gray-50 hover:text-red-700"
                         >
                           Remove
                         </button>
@@ -1461,7 +1461,7 @@ const AddConfirmedQuotesFromVendor = () => {
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+              className="px-4 py-2 border border-gray-300 rounded-md text-black"
             >
               Cancel
             </button>

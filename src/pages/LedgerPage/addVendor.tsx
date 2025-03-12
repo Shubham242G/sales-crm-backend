@@ -530,6 +530,48 @@ const AddVendorForm = () => {
   }, [vendor.vendorType]);
 
 
+  const customStyles = {
+    control: (base: any) => ({
+        ...base,
+        border: '1px solid #e5e7eb !important',
+        boxShadow: '0 !important',
+        color:"#000",
+        padding:'5px',
+        fontFamily: "satoshi, sans-serif", 
+        backgroundColor:'#fafafa',
+        zindex:'9',
+        minHeight:'30px',
+        '&:hover': {
+            border: '1px solid #e5e7eb !important',
+           
+        },
+
+        menu: (provided:any) => ({
+            ...provided,
+            zIndex: 9999, // Increase the z-index here
+          }),
+
+          menuPortal: (provided:any) => ({ ...provided, zIndex: 5 }),
+      
+        
+    }),
+    option: (base:any) => ({
+        ...base,
+        cursor: "pointer",
+        background: "white",
+        color:"#000",
+        fontFamily: "'inter', sans-serif", 
+        zindex:'9',   // this was the mistake (I needed to remove this)
+        "&:hover": {
+           backgroundColor: "#687256",
+           color:"#fff",
+           fontFamily: "'inter', sans-serif", 
+         },
+})
+
+}
+
+
   console.log(isBanquetDetailsVisible, "check the visibiltiy")
 
   useEffect(() => {
@@ -1326,12 +1368,12 @@ const AddVendorForm = () => {
         <form onSubmit={handleSubmit}>
           <h1 className="text-2xl font-bold mb-6">Add Vendor</h1>
 
-          <div className=" mx-auto  ">
+          <div className=" mx-auto">
             <div className="mb-8">
               <div className="items-start ">
                 <div className=" space-y-6 rounded-lg ">
                   {/* Primary Contact Section */}
-                  <div className="bg-[#FAFAFA] border-[#D1D1D1] rounded-lg border grid lg:grid-cols-3  sm:gap-[8px] sm:grid-cols-1  p-[20px]">
+                  <div className="bg-[#FAFAFA] border-[#D1D1D1] rounded-lg border grid lg:grid-cols-3  md:gap-[20px] md:grid-cols-1  p-[20px]">
                     <div className="flex flex-wrap h-[75px] ">
                       <div className="flex flex-col gap-[8px] lg:items-start sm:items-center ">
                         <div >
@@ -1390,7 +1432,7 @@ const AddVendorForm = () => {
                       <span className="text-[14px] w-sm font-medium text-black ">
                         Company Name:
                       </span>
-                      <div className="w-96">
+                      <div className="w-full">
                         <input
                           type="text"
                           value={vendor.companyName}
@@ -1407,7 +1449,7 @@ const AddVendorForm = () => {
                       <span className="text-[14px] font-medium text-black ">
                         Contact Name:
                       </span>
-                      <div className="w-96">
+                      <div className="w-full">
                         <input
                           type="text"
                           value={vendor.contactName}
@@ -1424,7 +1466,7 @@ const AddVendorForm = () => {
                       <span className="text-[14px] font-medium text-black ">
                         Contact Owner:
                       </span>
-                      <div className="w-96">
+                      <div className="w-full">
                         <input
                           type="text"
                           value={vendor.contactOwner}
@@ -1442,7 +1484,7 @@ const AddVendorForm = () => {
                       <span className="text-[14px] font-medium text-black ">
                         Display Name:
                       </span>
-                      <div className="w-96">
+                      <div className="w-full">
                         {" "}
                         <select
                           value={vendor.displayName}
@@ -1463,7 +1505,7 @@ const AddVendorForm = () => {
                       <span className="text-[14px] font-medium text-black ">
                         Email Address:
                       </span>
-                      <div className="w-96 relative">
+                      <div className="w-full relative">
                         <input
                           type="email"
                           value={vendor.email}
@@ -1476,22 +1518,21 @@ const AddVendorForm = () => {
                           className={`w-full border ${!isEmailValid ? "border-red-500" : "border-gray-300"
                             } bg-gray-50 rounded-md p-2 text-sm pl-10`}
                         />
-                        <svg
-                          className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+                        <div className="absolute top-[9px] left-[6px] ">
+
+                          <svg
+                        
+                          className="w-[20px] h-[20px] text-[#abb1bc]"
                           fill="none"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth="2"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                        >
+                          >
                           <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        {!isEmailValid && (
-                          <p className="text-red-500 text-sm mt-1 font">
-                            Please enter a valid email address
-                          </p>
-                        )}
+                          </svg>
+                          </div>
                       </div>
                     </div>
 
@@ -1501,7 +1542,7 @@ const AddVendorForm = () => {
                         Phone Number
                       </h1>
                       <div className="flex-1 flex gap-4">
-                        <div className="relative w-44">
+                        <div className="relative w-full">
                           <input
                             type="tel"
                             value={vendor.landLine}
@@ -1526,7 +1567,7 @@ const AddVendorForm = () => {
                             <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                           </svg>
                         </div>
-                        <div className="relative w-48">
+                        <div className="relative w-full">
                           <input
                             type="tel"
                             value={vendor.phoneNumber}
@@ -1557,7 +1598,7 @@ const AddVendorForm = () => {
                       <span className="text-[14px] font-medium text-black ">
                         PAN Number:
                       </span>
-                      <div className="w-96">
+                      <div className="w-full">
                         <input
                           type="text"
                           value={vendor.panNumber}
@@ -1574,7 +1615,7 @@ const AddVendorForm = () => {
                       <span className="text-[14px] font-medium text-black ">
                         GST Number:
                       </span>
-                      <div className="w-96">
+                      <div className="w-full">
                         <input
                           type="text"
                           value={vendor.gst}
@@ -1591,7 +1632,7 @@ const AddVendorForm = () => {
                       <span className="text-[14px] font-medium text-black ">
                         Vendor Type:
                       </span>
-                      <div className="w-96 ">
+                      <div className="w-full ">
                         <Select
                           isMulti
                           options={[
@@ -1617,6 +1658,7 @@ const AddVendorForm = () => {
                           className=" bg-gray-50 basic-multi-select"
                           classNamePrefix="select"
                           placeholder="Select vendor types"
+                          // styles={customStyles}
                           styles={customReactStylesSmall}
                         />
                       </div>
@@ -1696,7 +1738,7 @@ const AddVendorForm = () => {
                           <h2 className="font-bold text-lg mb-4">Category</h2>
                           <div className="w-full">
                             <select
-                              className="w-96 border bg-gray-50 font-satoshiMedium border-gray-300 rounded-md p-2 text-sm"
+                              className="w-full border bg-gray-50 font-satoshiMedium border-gray-300 rounded-md p-2 text-sm"
                               value={category.categoryType}
                               onChange={(e) =>
                                 setCategory({
@@ -1938,7 +1980,7 @@ const AddVendorForm = () => {
                                               Upload image
                                             </label>
 
-                                            <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-8 mb-4 bg-white">
+                                            <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-8 mb-4">
                                               <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 className="h-10 w-10 text-gray-400 mb-2"
@@ -2553,7 +2595,7 @@ const AddVendorForm = () => {
                                     Upload image
                                   </label>
 
-                                  <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-8 mb-4 bg-white">
+                                  <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-8 mb-4">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
@@ -3277,13 +3319,10 @@ const AddVendorForm = () => {
                   </div>
 
 
-                  {/* Separation Line */}
-                  <hr className="my-6 border-gray-300 mt-4" />
-
                   {/* Tab Menu */}
                   <div className="mt-8">
-                    <div className="border-b border-gray-200">
-                      <nav className="flex space-x-8">
+                    <div className="border-b bg-gray-50 border-gray-300">
+                      <nav className="flex space-x-8  ">
                         {["Other Details", "Address", "Contact Persons"].map(
                           (tab) => (
                             <button
@@ -3305,14 +3344,14 @@ const AddVendorForm = () => {
                     {/* Tab Content */}
                     <div className="pt-6">
                       {activeTab === "Other Details" && (
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-4 gap-6">
                           {/* GST Treatment */}
                           <div className="col-span-2">
                             <div className="flex items-center gap-6">
                               <span className="text-base font-medium text-gray-700 mt-2">
                                 GST Treatment:
                               </span>
-                              <div className="w-96 mt-2 ml-8">
+                              <div className="w-full mt-2 ml-8">
                                 {" "}
                                 {/* Adjusting width for consistency */}
                                 <select
@@ -3354,7 +3393,7 @@ const AddVendorForm = () => {
                               <span className="text-base font-medium text-gray-700">
                                 GSTIN:
                               </span>
-                              <div className="w-96 ml-20">
+                              <div className="w-full ml-20">
                                 {" "}
                                 {/* Set width for consistency */}
                                 <input
@@ -3378,7 +3417,7 @@ const AddVendorForm = () => {
                               <span className="text-base font-medium text-gray-700">
                                 Place of Supply:
                               </span>
-                              <div className="w-96 ml-4">
+                              <div className="w-full ml-4">
                                 <select
                                   value={otherDetails.sourceOfSupply}
                                   onChange={(e) =>
@@ -3415,7 +3454,7 @@ const AddVendorForm = () => {
                               <span className="text-base font-medium text-gray-700">
                                 PAN:
                               </span>
-                              <div className="w-96 ml-24">
+                              <div className="w-full ml-24">
                                 {" "}
                                 {/* Same width as the "Place of Supply" field */}
                                 <input
@@ -3463,7 +3502,7 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               Currency:
                             </span>
-                            <div className="w-96 ml-16">
+                            <div className="w-full ml-16">
                               {" "}
                                Set width for consistency 
                               <select
@@ -3577,7 +3616,7 @@ const AddVendorForm = () => {
                             <span className="w-32 text-base font-medium text-gray-700">
                               Credit Limit:
                             </span>
-                            <div className="w-96">
+                            <div className="w-full">
                               <TextField
                                 label="Credit Limit"
                                 value={otherDetails.creditLimit}
@@ -3639,7 +3678,7 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               Payment Terms:
                             </span>
-                            <div className="w-96 ml-4">
+                            <div className="w-full ml-4">
                               {" "}
                               Set width for consistency 
                               <select
@@ -3682,7 +3721,7 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               TDS:
                             </span>
-                            <div className="w-96 ml-24">
+                            <div className="w-full ml-24">
                               {" "}
                                Set width for consistency
                               <select
@@ -3722,7 +3761,7 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               Price List:
                             </span>
-                            <div className="w-96 ml-16">
+                            <div className="w-full ml-16">
                               {" "}
                                Set width for consistency 
                               <select
@@ -3786,7 +3825,7 @@ const AddVendorForm = () => {
                             <span className="text-base font-medium text-gray-700">
                               Portal Language:
                             </span>
-                            <div className="w-96 ml-2">
+                            <div className="w-full ml-2">
                               {" "}
                                Set width for consistency 
                               <select
@@ -4022,7 +4061,7 @@ const AddVendorForm = () => {
                                     >
                                       Website URL:
                                     </label>
-                                    <div className="w-96 flex">
+                                    <div className="w-full flex">
                                       <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                         <Globe className="w-4 h-4 text-gray-400" />
                                       </div>
@@ -4050,7 +4089,7 @@ const AddVendorForm = () => {
                                     >
                                       Department:
                                     </label>
-                                    <div className="w-96 flex">
+                                    <div className="w-full flex">
                                       <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                         <Building2 className="w-4 h-4 text-gray-400" />
                                       </div>
@@ -4078,7 +4117,7 @@ const AddVendorForm = () => {
                                     >
                                       Designation:
                                     </label>
-                                    <div className="w-96 flex">
+                                    <div className="w-full flex">
                                       <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                         <UserRound className="w-4 h-4 text-gray-400" />
                                       </div>
@@ -4106,7 +4145,7 @@ const AddVendorForm = () => {
                                     >
                                       Twitter:
                                     </label>
-                                    <div className="w-96 flex">
+                                    <div className="w-full flex">
                                       <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                         <Twitter className="w-4 h-4 text-gray-400" />
                                       </div>
@@ -4134,7 +4173,7 @@ const AddVendorForm = () => {
                                     >
                                       Skype:
                                     </label>
-                                    <div className="w-96 flex">
+                                    <div className="w-full flex">
                                       <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                         <MessageCircle className="w-4 h-4 text-gray-400" />
                                       </div>
@@ -4162,7 +4201,7 @@ const AddVendorForm = () => {
                                     >
                                       Facebook:
                                     </label>
-                                    <div className="w-96 flex">
+                                    <div className="w-full flex">
                                       <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                         <Facebook className="w-4 h-4 text-gray-400" />
                                       </div>

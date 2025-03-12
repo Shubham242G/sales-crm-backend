@@ -73,6 +73,48 @@ const AddQuotesFromVendors = () => {
 
   const { id } = useParams();
 
+  const customStyles = {
+    control: (base: any) => ({
+        ...base,
+        border: '2px solid #e5e7eb !important',
+        boxShadow: '0 !important',
+        color:"#000",
+        padding:'5px',
+        fontFamily: "satoshi, sans-serif", 
+        backgroundColor:'#fafafa',
+        zindex:'9',
+        minHeight:'30px',
+        '&:hover': {
+            border: '1px solid #e5e7eb !important',
+           
+        },
+        
+
+        menu: (provided:any) => ({
+            ...provided,
+            zIndex: 9999, // Increase the z-index here
+          }),
+
+          menuPortal: (provided:any) => ({ ...provided, zIndex: 5 }),
+      
+        
+    }),
+    option: (base:any) => ({
+        ...base,
+        cursor: "pointer",
+        background: "white",
+        color:"#000",
+        fontFamily: "satoshi, sans-serif", 
+        zindex:'9',   // this was the mistake (I needed to remove this)
+        "&:hover": {
+           backgroundColor: "#687256",
+           color:"#fff",
+           fontFamily: "'inter', sans-serif", 
+         },
+})
+
+}
+
   const navigate = useNavigate();
   const { mutateAsync: addQuotesFromVendors } = useAddQuotesFromVendors();
   const { mutateAsync: updateQuotesFromVendors } =
@@ -314,12 +356,12 @@ const AddQuotesFromVendors = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-6xl mx-auto bg-gray-50 shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">Add Quotes From Vendors</h1>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-black mb-1">
               Quotes Id:
             </label>
             <input
@@ -327,13 +369,13 @@ const AddQuotesFromVendors = () => {
               value={formData.quotesId}
               onChange={handleInputChange}
               type="text"
-              className="w-full border border-gray-300 rounded-md p-2"
+              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
               placeholder="Enter Quotes Id"
             />
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+            <div className="mb-4">
+            <label className="block text-sm font-medium text-black mb-1">
               Vendor Name:
             </label>
             <input
@@ -341,15 +383,15 @@ const AddQuotesFromVendors = () => {
               value={formData?.vendorList?.label}
               onChange={handleInputChange}
               type="text"
-              className="w-full border border-gray-300 rounded-md p-2"
+              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
               placeholder="Enter Vendor Name"
             />
           </div>
 
           {/* Service Type and Event Date */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+          
             <div>
-              <label className="block text-gray-700 font-medium">
+              <label className="block font-satoshi text-black font-sm">
                 Service Type
               </label>
 
@@ -361,15 +403,17 @@ const AddQuotesFromVendors = () => {
                   formData.serviceType.includes(option.value)
                 )}
                 onChange={handleServiceTypeChange}
-                className="w-full mt-2 border rounded-md"
+                className="w-full bg-gray-50 border rounded-md"
                 classNamePrefix="select"
                 placeholder="Select service types"
+                styles={customStyles}
               />
             </div>
           </div>
+          
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-black mb-2">
               RFP ID
             </label>
             <Select
@@ -384,13 +428,14 @@ const AddQuotesFromVendors = () => {
               classNamePrefix="select"
               placeholder="Select RFP ID"
               isClearable
+              styles={customStyles}
             />
           </div>
 
           {/* Event Details and Deadline */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-black mb-1">
                 Amount
               </label>
               <input
@@ -398,12 +443,12 @@ const AddQuotesFromVendors = () => {
                 value={formData.amount}
                 onChange={handleInputChange}
                 type="text"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
                 placeholder="Enter event details"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-black mb-1">
                 Received Date
               </label>
               <input
@@ -411,7 +456,7 @@ const AddQuotesFromVendors = () => {
                 value={formData.receivedDate}
                 onChange={handleInputChange}
                 type="date"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
               />
             </div>
           </div>
@@ -435,7 +480,7 @@ const AddQuotesFromVendors = () => {
 
           {/* Additional Instructions */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               Status
             </label>
             <input
@@ -443,7 +488,7 @@ const AddQuotesFromVendors = () => {
               value={formData.status}
               onChange={handleInputChange}
               type="text"
-              className="w-full border border-gray-300 rounded-md p-2"
+              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
               placeholder="Enter Status"
             />
           </div>
@@ -451,13 +496,13 @@ const AddQuotesFromVendors = () => {
           {/*markup table*/}
           <div className="col-span-2">
             <div className="flex justify-between items-center mb-4">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-black">
                 Markup Details
               </label>
               <button
                 type="button"
                 onClick={handleAddMarkupRow}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
               >
                 <svg
                   className="w-5 h-5"
@@ -474,20 +519,20 @@ const AddQuotesFromVendors = () => {
               </button>
             </div>
             <div className="overflow-x-auto">
-              <table className="min-w-full border border-gray-200 rounded-lg">
-                <thead className="bg-gray-100">
+              <table className="min-w-full border border-gray-300 rounded-lg">
+                <thead className="bg-[#0B2F46]">
                   <tr>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
                       S.No.
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
                       Label
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
                       Markup Amount
                     </th>
                     {formData.markupDetails.length > 1 && (
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
                         Actions
                       </th>
                     )}
@@ -509,7 +554,7 @@ const AddQuotesFromVendors = () => {
                           onChange={(e) =>
                             handleMarkupChange(index, "label", e.target.value)
                           }
-                          className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                           placeholder="Enter label"
                         />
                       </td>
@@ -524,7 +569,7 @@ const AddQuotesFromVendors = () => {
                               e.target.value
                             )
                           }
-                          className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                          className="w-full border border-gray-300 bg-gray-50 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                           placeholder="Enter markup amount"
                         />
                       </td>

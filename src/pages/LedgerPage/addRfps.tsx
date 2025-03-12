@@ -12,6 +12,7 @@ import { checkPermissionsForButtons } from "@/utils/permission";
 import moment from "moment";
 import { AiOutlineConsoleSql } from "react-icons/ai";
 import { PiCornersOutFill } from "react-icons/pi";
+import { customReactStyles } from "@/utils/ReactSelectStyle";
 
 interface IVendorList {
   label: string;
@@ -42,6 +43,8 @@ const AddRfpsForm = () => {
   ];
 
   const { id } = useParams();
+
+  
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("RFPS");
@@ -227,9 +230,9 @@ const AddRfpsForm = () => {
       <div className="mx-auto border border-gray-300 bg-gray-50 shadow-lg rounded-lg p-8">
         <form onSubmit={handleSubmit}>
           {/* Service Type and Event Date */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+          <div className="grid grid-cols-1  md:grid-cols-2 gap-6 mb-4">
             <div>
-              <label className="block text-gray-700 font-medium">
+              <label className="block text-black font-500">
                 Service Type
               </label>
               <Select
@@ -239,8 +242,9 @@ const AddRfpsForm = () => {
                   formData.serviceType.includes(option.value)
                 )}
                 onChange={handleServiceTypeChange}
-                className="w-full mt-2 border border-gray-300 bg-gray-50 rounded-md"
+                className="w-full border border-gray-300 bg-gray-50 rounded-md"
                 classNamePrefix="select"
+                styles={customReactStyles}
                 placeholder="Select service types"
               />
             </div>
@@ -248,7 +252,7 @@ const AddRfpsForm = () => {
             {Array.isArray(formData.eventDates) &&
               formData.eventDates.map((el: any, index: number) => (
                 <div key={index}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium black mb-1">
                     Event Date
                   </label>
                   <input
@@ -269,7 +273,7 @@ const AddRfpsForm = () => {
           {/* Event Details and Deadline */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-black mb-1">
                 Event Details
               </label>
               <input
@@ -285,7 +289,7 @@ const AddRfpsForm = () => {
             {Array.isArray(formData.eventDates) &&
               formData.eventDates.map((el: any, index: number) => (
                 <div key={index}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-black mb-1">
                     Deadline for Proposal
                   </label>
                   <input
@@ -305,11 +309,12 @@ const AddRfpsForm = () => {
 
           {/* Vendor List */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               Vendor List
             </label>
             <Select
-              className="w-full border border-gray-300 bg-gray-50 rounded-md shadow-sm"
+              styles={customReactStyles}
+              className="w-full  border border-gray-300 bg-gray-50 rounded-md shadow-sm"
               isMulti
               value={formData?.vendorList}
               options={option}
@@ -324,7 +329,7 @@ const AddRfpsForm = () => {
 
           {/* Additional Instructions */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               Additional Instructions
             </label>
             <textarea
