@@ -1396,7 +1396,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 Add New Item
               </button>
             </div>
-            <table className="min-w-full border border-gray-300">
+            <table className="min-w-full ">
               <thead className="bg-[#0B2F46]">
                 <tr>
                   <th className="px-4 py-2 text-left text-sm font-medium text-white border-b">
