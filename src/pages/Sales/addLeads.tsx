@@ -48,6 +48,7 @@ const AddNewLead = () => {
     { value: "Mr", label: "Mr" },
     { value: "Ms", label: "Ms" },
     { value: "Mrs", label: "Mrs" },
+    { value: "Dr", label: "Dr" },
   ];
 
   console.log(formData, "check form data");
@@ -114,12 +115,12 @@ const AddNewLead = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white p-12">
+    <div className="min-h-screen bg-white m-[32px] p-12">
       <div className="max-w-7xl mx-auto bg-gray-50  shadow-lg rounded-lg p-16">
         <h1 className="text-2xl font-bold mb-10">Add New Lead</h1>
         <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] mb-10">
             {/* Salutation */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

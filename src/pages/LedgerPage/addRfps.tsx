@@ -223,7 +223,7 @@ const AddRfpsForm = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 m-[60px]">
       <h1 className="text-2xl font-bold mb-6">Add RPFs</h1>
 
       {/* Box with required styling */}

@@ -427,7 +427,7 @@ const AddConfirmedQuotesFromVendor = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white p-8">
+    <div className="min-h-screen m-[35px] bg-white p-8">
       <div className="max-w-6xl mx-auto bg-gray-50 shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">
           {id ? "Edit Confirmed Quotes" : "Add Confirmed Quotes"}
@@ -435,7 +435,7 @@ const AddConfirmedQuotesFromVendor = () => {
         <form onSubmit={handleSubmit}>
           {/* Banquet Event Orders Section */}
           <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
-            <div className="mb-4">
+            <div className="mb-4 ">
               <label>Select Quote Id</label>
               <select
                 className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
@@ -459,7 +459,7 @@ const AddConfirmedQuotesFromVendor = () => {
               </select>
             </div>
 
-            <div>
+            <div className="mb-4">
               <label className="block text-sm font-medium text-black mb-2">
                 RFP Id
               </label>
@@ -481,8 +481,8 @@ const AddConfirmedQuotesFromVendor = () => {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-black mb-2">
+            <div className="mb-4 ">
+              <label className="block mb-2  text-sm font-medium text-black">
                 Vendor
               </label>
               <input
@@ -494,7 +494,7 @@ const AddConfirmedQuotesFromVendor = () => {
               />
             </div>
 
-            <div>
+            <div className="mb-4 ">
               <label className="block text-sm font-medium text-black mb-2">
                 Amount
               </label>
@@ -516,7 +516,7 @@ const AddConfirmedQuotesFromVendor = () => {
               />
             </div>
 
-            <div>
+            <div className="mb-4 ">
               <label className="block text-sm font-medium text-black mb-2">
                 Received Date
               </label>
@@ -537,7 +537,7 @@ const AddConfirmedQuotesFromVendor = () => {
               />
             </div>
 
-            <div>
+            <div className="mb-4 ">
               <label className="block text-sm font-medium text-black mb-2">
                 Status
               </label>
@@ -562,11 +562,11 @@ const AddConfirmedQuotesFromVendor = () => {
               </select>
             </div>
 
-            <div className="col-span-2">
+            <div className="col-span-2 mb-[20px]">
               <label className="block text-sm font-medium text-black mb-2">
                 Attachment
               </label>
-              <div className="flex items-center gap-4">
+              <div className="items-center gap-4">
                 <input
                   type="file"
                   accept=".pdf,.jpg,.png"
@@ -578,18 +578,20 @@ const AddConfirmedQuotesFromVendor = () => {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center m-10 gap-2 px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-blue-600 transition duration-200"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-blue-600 transition duration-200"
                 >
                   <FiUpload className="w-5 h-5" />
                   Upload Files
                 </button>
-                <span className="text-sm text-gray-500">
+                <div className="text-sm mb-[10px] text-gray-500">
                   (PDF, JPG, PNG only, max 10MB each)
-                </span>
+                </div>
+                
               </div>
+              
               {/* Display Uploaded Files */}
               {formData.banquetEventOrders.attachment.length > 0 && (
-                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {formData.banquetEventOrders.attachment.map((file, index) => (
                     <div
                       key={index}
@@ -1404,11 +1406,13 @@ const AddConfirmedQuotesFromVendor = () => {
                     Checks
                   </th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-white border-b">
-                    Actions
+                    Checkbox
                   </th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-white border-b">
-                    Actions
-                  </th>
+                  {formData.checklist.length > 1 && (
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+                        Actions
+                      </th>
+                    )}
                 </tr>
               </thead>
               <tbody>

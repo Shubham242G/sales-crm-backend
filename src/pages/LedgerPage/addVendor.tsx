@@ -1363,7 +1363,7 @@ const AddVendorForm = () => {
 
 
     <>
-      <div className="min-h-screen bg-white p-8">
+      <div className="min-h-screen m-[60px] bg-white">
 
         <form onSubmit={handleSubmit}>
           <h1 className="text-2xl font-bold mb-6">Add Vendor</h1>
@@ -3320,8 +3320,8 @@ const AddVendorForm = () => {
 
 
                   {/* Tab Menu */}
-                  <div className="mt-8">
-                    <div className="border-b bg-gray-50 border-gray-300">
+                  <div className="mt-8 p-3">
+                    <div className="border border-gray-400 bg-gray-50 ">
                       <nav className="flex space-x-8  ">
                         {["Other Details", "Address", "Contact Persons"].map(
                           (tab) => (
@@ -3342,7 +3342,7 @@ const AddVendorForm = () => {
                     </div>
 
                     {/* Tab Content */}
-                    <div className="pt-6">
+                    <div className="p-6 bg-gray-50 border border-gray-300">
                       {activeTab === "Other Details" && (
                         <div className="grid grid-cols-4 gap-6">
                           {/* GST Treatment */}
@@ -5148,7 +5148,7 @@ const AddVendorForm = () => {
                               <button
                                 type="button"
                                 onClick={handleAddContactPerson}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
+                                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
                               >
                                 Add Row
                               </button>

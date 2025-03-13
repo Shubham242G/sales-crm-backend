@@ -356,7 +356,7 @@ const AddQuotesFromVendors = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white p-8">
+    <div className="min-h-screen m-[60px] bg-white p-8">
       <div className="max-w-6xl mx-auto bg-gray-50 shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">Add Quotes From Vendors</h1>
         <form onSubmit={handleSubmit}>
@@ -630,7 +630,7 @@ const AddQuotesFromVendors = () => {
                     return (
                       <div
                         key={index}
-                        className="flex items-center justify-between bg-gray-50 p-2 rounded"
+                        className="flex items-center bg-gray-50 p-2 rounded"
                       >
                         <span className="text-sm text-gray-600 truncate max-w-xs">
                           {fileName}
@@ -638,7 +638,7 @@ const AddQuotesFromVendors = () => {
                         <button
                           type="button"
                           onClick={() => handleRemoveFile(index)}
-                          className="text-red-500 hover:text-red-700"
+                          className="text-red-500 hover:text-red-700 mr-[10px]"
                         >
                           <svg
                             className="w-4 h-4"
