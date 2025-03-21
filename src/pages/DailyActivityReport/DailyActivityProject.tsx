@@ -2,15 +2,60 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
+import { useDailyActivityReport, useDeleteDailyActivityReportById, useUpdateDailyActivityReportById } from "@/services/dailyActivityReport.service";
+import { toastError, toastSuccess } from "@/utils/toast";
 
 function DailyActivityReport() {
     const navigate = useNavigate();
-    // const [loading, setLoading] = useState(false);
-    // const [currentPage, setCurrentPage] = useState(1);
-    // const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+
+
+const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [query, setQuery] = useState("");
+
+  const searchObj = useMemo(
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
+
+  const {data: DailyActivityReport, isLoading} = useDailyActivityReport(
+    searchObj
+);
+  const { mutateAsync: deleteDailyActivityReport } = useDeleteDailyActivityReportById();
+
+
+  
+
+  const handleDelete = async (id: string) => {
+    try {
+      if (window.confirm("Are you sure you want to delete this contact?")) {
+        const { data: res } = await deleteDailyActivityReport(id);
+        if (res) {
+          toastSuccess(res.message);
+          // Optionally refresh the data
+        }
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  };
+
+
+
+
+
+   
 
     // ledger details modal
     const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
@@ -19,10 +64,10 @@ function DailyActivityReport() {
     };
     const columns = [
         {
-            name: "Name",
+            name: "Sales Person Name",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
-                    <h6>{row.name}</h6>
+                    <h6>{ row.salesPerson}</h6>
                 </div>
             ),
             width: "10%",
@@ -32,7 +77,7 @@ function DailyActivityReport() {
             name: "Date",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
-                    <h6>{row.submissionDate}</h6>
+                    <h6>{row.dateOfVisit}</h6>
                 </div>
             ),
             width: "10%",
@@ -41,7 +86,7 @@ function DailyActivityReport() {
             name: "Cutomer Visited",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
-                    <h6>{row.cutomerVisited}</h6>
+                    <h6>{row?.customerName?.label}</h6>
                 </div>
             ),
             width: "20%",
@@ -55,22 +100,22 @@ function DailyActivityReport() {
             ),
             width: "20%",
         },
-        {
-            name: "Visit Outcome",
-            selector: (row: any) => (
-                <div className="flex gap-1 flex-col">
-                    <h6>{row.visitOutcome}</h6>
-                </div>
-            ),
-            width: "20%",
-        },
+        // {
+        //     name: "Visit Outcome",
+        //     selector: (row: any) => (
+        //         <div className="flex gap-1 flex-col">
+        //             <h6>{row.visitOutcome}</h6>
+        //         </div>
+        //     ),
+        //     width: "20%",
+        // },
         {
             name: "Status",
             selector: (row: any) => (
                 <div
                     className={`flex gap-1 flex-col p-2 rounded-md text-white ${row.status === "Pending"
                             ? "bg-yellow-200 text-yellow-500"
-                            : row.status === "Reviewed"
+                            : row.status === "Completed"
                                 ? "bg-green-300 text-green-600"
                                 : "bg-red-200 text-red-600"
                         }`}
@@ -102,85 +147,29 @@ function DailyActivityReport() {
         {
             name: "Action",
             width: "10%",
-            selector: () => (
+            selector: (row:any) => (
                 <div className="flex items-center gap-3">
-                    <Link
-                        to="/view-rfps"
+                    <button
+                        type='button'
                         className="p-[6px] text-black-400 text-lg flex items-center"
+                        onClick={() => navigate(`/add-DailyActivityReport/${row._id}`)}
                     >
                         <FaEye />
-                    </Link>
+                    </button>
+                    
                     {/* </button> */}
                     <Link
-                        to="/update-ledger/id=1234"
+                        to="/DailyActivityReport"
                         className=" p-[6px] text-Black-400 text-lg"
                     >
-                        <RiDeleteBin6Line />
+                        <RiDeleteBin6Line onClick={() => handleDelete(row._id)}/>
                     </Link>
                 </div>
             ),
         },
     ];
 
-    // Sample data
-    const data = [
-        {
-            name: "Ajay Kumar",
-            cutomerVisited: "Vivek Kumar",
-            purposeOfVisit: "Project discussion",
-            visitOutcome: "Proposal Accepted",
-            submissionDate: "27-10-2024",
-            status: "Pending",
-        },
-        {
-            name: "Ajay Kumar",
-            cutomerVisited: "Vivek Kumar",
-            purposeOfVisit: "Project discussion",
-            visitOutcome: "Proposal Accepted",
-            submissionDate: "27-10-2024",
-            status: "Pending",
-        },
-        {
-            name: "Ajay Kumar",
-            cutomerVisited: "Vivek Kumar",
-            purposeOfVisit: "Project discussion",
-            visitOutcome: "Proposal Accepted",
-            submissionDate: "27-10-2024",
-            status: "Pending",
-        },
-        {
-            name: "Ajay Kumar",
-            cutomerVisited: "Vivek Kumar",
-            purposeOfVisit: "Project discussion",
-            visitOutcome: "Proposal Accepted",
-            submissionDate: "27-10-2024",
-            status: "Pending",
-        },
-        {
-            name: "Ajay Kumar",
-            cutomerVisited: "Vivek Kumar",
-            purposeOfVisit: "Project discussion",
-            visitOutcome: "Proposal Accepted",
-            submissionDate: "27-10-2024",
-            status: "Pending",
-        },
-        {
-            name: "Ajay Kumar",
-            cutomerVisited: "Vivek Kumar",
-            purposeOfVisit: "Project discussion",
-            visitOutcome: "Proposal Accepted",
-            submissionDate: "27-10-2024",
-            status: "Pending",
-        },
-        {
-            name: "Ajay Kumar",
-            cutomerVisited: "Vivek Kumar",
-            purposeOfVisit: "Project discussion",
-            visitOutcome: "Proposal Accepted",
-            submissionDate: "27-10-2024",
-            status: "Pending",
-        },
-    ];
+   
 
     return (
         <>
@@ -201,7 +190,7 @@ function DailyActivityReport() {
                     <div className="search_boxes flex justify-between items-center">
                         {/* Heading on the Left */}
                         <h2 className="text-xl font-semibold text-gray-800">
-                            All RFPs List
+                            All Daily Activity List
                         </h2>
 
                         {/* Search and Buttons on the Right */}
@@ -232,17 +221,15 @@ function DailyActivityReport() {
                     </div>
                     {/* React Table */}
                     <ReactTable
-                        data={data}
+                        data={DailyActivityReport.data}
                         columns={columns}
                         loading={false}
                         totalRows={0}
-                    // loading={loading}
-                    // totalRows={data.length}
                     // onChangePage={handlePageChange}
                     // onChangeRowsPerPage={handleRowsPerPageChange}
                     // pagination
                     // paginationPerPage={rowsPerPage}
-                    // paginationRowsPerPageOptions={[5, 10, 20]}
+                    paginationRowsPerPageOptions={[5, 10, 20]}
                     />
                 </div>
             </div>

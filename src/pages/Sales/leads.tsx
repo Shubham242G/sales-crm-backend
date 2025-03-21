@@ -58,16 +58,16 @@ function Leads() {
   const { mutateAsync: deleteLead } = usedeleteLeadById();
   // const { mutateAsync: convert } = convertToContact();
 
-  const handleConvertEnquery = async (id: any) => {
-    try {
-      const { data: res } = await convertToContact(id);
-      if (res) {
-        toastSuccess(res.message);
-      }
-    } catch (error) {
-      toastError(error);
-    }
-  };
+  // const handleConvertEnquery = async (id: any) => {
+  //   try {
+  //     const { data: res } = await convertToContact(id);
+  //     if (res) {
+  //       toastSuccess(res.message);
+  //     }
+  //   } catch (error) {
+  //     toastError(error);
+  //   }
+  // };
 
   const handleDelete = async (id: string) => {
     try {
@@ -193,21 +193,21 @@ function Leads() {
       selector: (row: any) => row.email,
       width: "15%",
     },
-    {
-      name: "Convertor",
-      width: "10%",
-      selector: (row: any) => (
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => handleConvertEnquery(row._id)}
-            className="text-black-500 text-lg p-[6px]"
-          >
-            Convert
-          </button>
-        </div>
-      ),
-    },
+    // {
+    //   name: "Convertor",
+    //   width: "10%",
+    //   selector: (row: any) => (
+    //     <div className="flex items-center gap-3">
+    //       <button
+    //         type="button"
+    //         onClick={() => handleConvertEnquery(row._id)}
+    //         className="text-black-500 text-lg p-[6px]"
+    //       >
+    //         Convert
+    //       </button>
+    //     </div>
+    //   ),
+    // },
     {
       name: "Edit",
       width: "5%",

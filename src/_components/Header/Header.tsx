@@ -1,156 +1,71 @@
-// import mainlogo from "../../assets/mainlogo/logo.png";
-// import hamburger from "../../assets/header/hamburger.webp";
-// import { useSidebar } from "../../provider/SidebarContext";
-// import { FaCirclePlus } from "react-icons/fa6";
-// import { Link } from "react-router-dom";
-// import { IoChevronDown } from "react-icons/io5";
-// import { FaUserCircle } from "react-icons/fa";
-// import userimg from "../../assets/header/userimg.webp";
-// import { useState } from "react";
-// import CreateCustomer from "../ReuseableComponents/Modals/CreateCustomer";
-// function Header() {
-//   const { showSlim, toggleSlim } = useSidebar();
-
-//   const [loginDrop, setLoginDrop] = useState(false);
-
-//   const [showCreateModal, setShowCreateModal] = useState(false);
-
-//   const handleOpenCreateModal = () => {
-//     setShowCreateModal(true);
-//   };
-
-//   return (
-//     <>
-//       <header className="w-full h-full">
-//         <div className="flex flex-row ">
-//           <div className="w-full">
-//             <div className="right_header flex justify-end shadow-lg bg-white px-5 py-4 h-full border-b border-white">
-
-//               <div className="button_group flex gap-1">
-//                 <Link
-//                   to="/dashboard"
-//                   className="bg-primarylight rounded-3xl uppercase font-medium  py-2 px-5 flex gap-2 items-center text-white hover:bg-buttnhover"
-//                 >
-//                   <FaCirclePlus className="text-lg" />
-//                   New Sales
-//                 </Link>
-//                 <button
-//                   type="button"
-//                   onClick={handleOpenCreateModal}
-//                   className="bg-primarylight rounded-3xl uppercase font-medium  py-2 px-5 flex gap-2 items-center text-white hover:bg-buttnhover"
-//                 >
-//                   <FaCirclePlus className="text-lg" />
-//                   Customer
-//                 </button>
-
-//                 <div className="relative">
-//                   <button
-//                     type="button"
-//                     onClick={() => setLoginDrop(!loginDrop)}
-//                     className="bg-secondarycolor  rounded-3xl uppercase font-medium  py-2 px-4 flex gap-2 items-center text-white hover:bg-buttnhover"
-//                   >
-//                     <FaUserCircle className="text-3xl" />
-//                     <IoChevronDown className="text-lg text-white" />
-//                   </button>
-//                   {loginDrop && (
-//                     <div
-//                       className={`w-[200px] min-h-[110px] bg-[#f9f9f9] border border-[#e3e3e3] dropdown_list ${
-//                         loginDrop ? "show" : ""
-//                       } shadow-xl  absolute -bottom-[115px] -left-28 `}
-//                     >
-//                       <ul className="flex  gap-[10px] border-b border-[#e3e3e3] p-3">
-//                         <li>
-//                           <img
-//                             src={userimg}
-//                             alt="userimg"
-//                             className="w-[35px] h-[35px]"
-//                           />
-//                         </li>
-//                         <li>
-//                           <h6 className="text-secondarycolor font-semibold text-left">
-//                             Name
-//                           </h6>
-//                           <p className="text-paracolor uppercase text-sm text-left">
-//                             Admin Assistant
-//                           </p>
-//                         </li>
-//                       </ul>
-//                       <button
-//                         onClick={() => setLoginDrop(false)}
-//                         className="text-paracolor py-2 px-3 w-full text-left tracking-wide hover:bg-buttnhover hover:text-white "
-//                       >
-//                         Logout
-//                       </button>
-//                     </div>
-//                   )}
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </header>
-
-//       <CreateCustomer
-//         showCreateModal={showCreateModal}
-//         setShowCreateModal={setShowCreateModal}
-//       />
-//     </>
-//   );
-// }
-
-// export default Header;
-
-import mainlogo from "../../assets/mainlogo/logo.png";
-import hamburger from "../../assets/header/hamburger.webp";
-import { useSidebar } from "../../provider/SidebarContext";
-import { Link, useNavigate } from "react-router-dom";
-import { IoChevronDown } from "react-icons/io5";
-import { FaUserCircle, FaBell } from "react-icons/fa";
-import userimg from "../../assets/header/userimg.webp";
 import { useContext, useEffect, useState } from "react";
+
 import CreateCustomer from "../ReuseableComponents/Modals/CreateCustomer";
 import { AuthContext } from "@/context/AuthProvider";
 import { getAuth } from "@/utils/auth";
 import { useUserById } from "@/services/user.service";
+import { useNotificationByUserId } from "@/services/notification.service";
+import { useNavigate } from "react-router-dom";
+import { FaBell } from "react-icons/fa";
+import { IoChevronDown } from "react-icons/io5";
+import { useSidebar } from "@/provider/SidebarContext";
 
 function Header() {
   const { showSlim, toggleSlim } = useSidebar();
   const [loginDrop, setLoginDrop] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { isAuthorized, setIsAuthorized } = useContext(AuthContext);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [userId, setUserId] = useState("");
+
+  const { data: notification } = useNotificationByUserId(userId);
+
+  useEffect(() => {
+    if (notification) {
+      setNotificationCount(notification.data.length);
+    }
+  }, [notification]);
+
+  const handleNotification = () => {
+    navigate("/notification");
+    setNotificationCount(0);
+  };
+
+  const getUserId = async () => {
+    const decodedToken = await getAuth();
+    if (decodedToken?.token) {
+      setUserId(decodedToken.userId);
+    }
+  };
+
+  useEffect(() => {
+    getUserId();
+  }, []);
+
+  const { data: UserDataById } = useUserById(userId);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("AUTH_TOKEN");
+    setIsAuthorized(false);
+    navigate("/");
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     role: "",
   });
 
-  const [userId, setUserId] = useState("");
-
-  const { data: UserDataById } = useUserById(userId);
-  const navigate = useNavigate();
-
-  const handleLogut = () => {
-    localStorage.removeItem("AUTH_TOKEN");
-    setIsAuthorized(false);
-    navigate("/");
-  };
-
-  const getUser = async () => {
-    const decodedToken = await getAuth();
-    setUserId(decodedToken.user._id);
-
-    console.log(userId, "check userId", decodedToken);
-    console.log(UserDataById, "check user data by Id ");
-
-    setFormData({
-      name: UserDataById?.name || "",
-      email: UserDataById?.email || "",
-      role: UserDataById?.role || "",
-    });
-  };
-
   useEffect(() => {
-    getUser();
+    if (UserDataById) {
+      setFormData({
+        name: UserDataById?.name || "",
+        email: UserDataById?.email || "",
+        role: UserDataById?.role || "",
+      });
+    }
   }, [UserDataById]);
 
   return (
@@ -163,26 +78,25 @@ function Header() {
                 {/* Notification Button */}
                 <button
                   type="button"
-                  className="text-secondarycolor flex items-center text-2xl hover:text-buttnhover"
+                  className="text-secondarycolor flex items-center text-2xl relative"
+                  onClick={handleNotification}
                 >
+                  {notificationCount > 0 && (
+                    <p className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-[13px] h-[13px] flex justify-center items-center text-[12px]">
+                      {notificationCount}
+                    </p>
+                  )}
                   <FaBell />
                 </button>
 
-                {/* User Dropdown Button with Image and Name */}
+                {/* User Dropdown Button with Name */}
                 <div className="relative">
                   <button
                     type="button"
                     onClick={() => setLoginDrop(!loginDrop)}
                     className="flex items-center gap-2 py-2 px-4 rounded-md font-medium text-black hover:bg-buttnhover"
                   >
-                    <img
-                      src={userimg}
-                      alt="user profile"
-                      className="w-8 h-8 rounded-full"
-                    />
-                    <span className="text-sm font-semibold">
-                      {formData?.name}
-                    </span>
+                    <span className="text-sm font-semibold">{formData?.name}</span>
                     <IoChevronDown className="text-lg text-gray-500" />
                   </button>
 
@@ -191,26 +105,13 @@ function Header() {
                     <div className="w-[200px] min-h-[110px] bg-[#f9f9f9] border border-[#e3e3e3] dropdown_list shadow-xl absolute -bottom-[115px] -left-28">
                       <ul className="flex gap-[10px] border-b border-[#e3e3e3] p-3">
                         <li>
-                          <img
-                            src={userimg}
-                            alt="user profile"
-                            className="w-[35px] h-[35px] rounded-full"
-                          />
-                        </li>
-                        <li>
-                          <h6 className="text-secondarycolor font-semibold text-left">
-                            {formData?.name}
-                          </h6>
-                          <p className="text-paracolor uppercase text-sm text-left">
-                            {formData?.email}
-                          </p>
-                          <p className="text-paracolor uppercase text-sm text-left">
-                            {formData?.role}
-                          </p>
+                          <h6 className="text-secondarycolor font-semibold text-left">{formData?.name}</h6>
+                          <p className="text-paracolor uppercase text-sm text-left">{formData?.email}</p>
+                          <p className="text-paracolor uppercase text-sm text-left">{formData?.role}</p>
                         </li>
                       </ul>
                       <button
-                        onClick={() => handleLogut()}
+                        onClick={handleLogout}
                         className="text-paracolor py-2 px-3 w-full text-left tracking-wide hover:bg-buttnhover hover:text-white"
                       >
                         Logout
@@ -224,10 +125,7 @@ function Header() {
         </div>
       </header>
 
-      <CreateCustomer
-        showCreateModal={showCreateModal}
-        setShowCreateModal={setShowCreateModal}
-      />
+      <CreateCustomer showCreateModal={showCreateModal} setShowCreateModal={setShowCreateModal} />
     </>
   );
 }

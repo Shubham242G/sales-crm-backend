@@ -16,6 +16,7 @@ import {
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { getAuth } from "@/utils/auth";
+import { io } from "socket.io-client";
 
 function TaskManagement() {
   const navigate = useNavigate();
@@ -29,11 +30,13 @@ function TaskManagement() {
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
-
+  
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Task");
 
-  const [userId, setUserId] = useState("");
+
+    const [userId, setUserId] = useState<string | null>(null);
+    const [socket, setSocket] = useState<any>(null);
   const [role, setRole] = useState("");
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -79,6 +82,71 @@ function TaskManagement() {
     }
   };
 
+  const getUserId = async () => {
+    const decodedToken = await getAuth();
+    if (decodedToken?.token) {
+      setUserId(decodedToken.userId);
+    }
+  };
+
+
+  
+
+  
+  useEffect(() => {
+    console.log("Fetching user ID...");
+    getUserId();
+  }, [getAuth]);
+
+
+  useEffect(() => {
+    if (!userId) return; // Wait until userId is available
+  
+    console.log(userId, "check userId");
+  
+    const newSocket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
+      query: { userId }, // Send userId to the server
+      transports: ["websocket"],
+    });
+  
+    newSocket.on("connect", () => {
+      console.log("Connected to server", newSocket.id);
+    });
+  
+    newSocket.emit("playerConnected", newSocket.id);
+    newSocket.on("check", (msg) => console.log(msg, "check msg"));
+  
+    setSocket(newSocket); // Store socket in state
+  
+    return () => {
+      newSocket.disconnect(); // Cleanup on unmount
+    };
+  }, [userId]);
+
+  // const socket = useMemo(
+  //   () =>
+  //     io(`${process.env.NEXT_PUBLIC_API_URL}`, {
+  //       query: { userId }, // Send userId to the server
+  //       transports: ["websocket"],
+  //     }),
+  //   []
+  // );
+
+  // useEffect(() => {
+  //   socket.on("connect", () => {
+  //     console.log("Connected to server");
+  //   });
+  //   socket.emit("playerConnected", socket.id);
+  //   socket.on("check", (msg) => console.log(msg, "check msg"));
+  // }, [socket, getAuth]);
+
+  // const getUserId = async () => {
+  //   const decodedToken = await getAuth();
+  //   if (decodedToken?.token) {
+  //     setUserId(decodedToken.userId);
+  //   }
+  // };
+
   const handleUpdate = async (id: string, data: any) => {
     try {
       const { data: res } = await updateTaskManagement({ id, ...data });
@@ -90,6 +158,10 @@ function TaskManagement() {
       toastError(error);
     }
   };
+
+  useEffect(() => {
+    getUserId();
+  }, [getAuth]);
 
   console.log(TaskManagementData.data, "Task Management data");
   // useEffect(() => {

@@ -85,10 +85,10 @@ function Sidebar() {
           dropHead: "Confirmed Quotes",
           link: "confirmedQuotes",
         },
-        {
-          dropHead: "Purchase Contacts",
-          link: "/purchaseContact",
-        },
+        // {
+        //   dropHead: "Purchase Contacts",
+        //   link: "/purchaseContact",
+        // },
       ],
     },
 
@@ -134,11 +134,11 @@ function Sidebar() {
           dropHead: "Customer Outstanding",
           link: "confirmedQuotes",
         },
-        {
-          dropHead: "Sales Contacts",
-          link: "sales-contact-view",
-          plusLink: "/add-sales-contact",
-        },
+        // {
+        //   dropHead: "Sales Contacts",
+        //   link: "sales-contact-view",
+        //   plusLink: "/add-sales-contact",
+        // },
       ],
     },
     // {
@@ -164,6 +164,28 @@ function Sidebar() {
       activeIcon: ledgerw,
       isActive: false,
       isArrow: true,
+      dropArr: [
+        {
+          dropHead: "Daily Activity Report View",
+          link: "DailyActivityReport",
+          plusLink: "/DailyActivityReport",
+        },
+      ],
+    },
+    {
+      mainlink: "/hotelSearch",
+      heading: "Hotel Search",
+      icon: ledger,
+      activeIcon: ledgerw,
+      isActive: false,
+      isArrow: true,
+      dropArr: [
+        {
+          dropHead: "Venue Search",
+          link: "venueSearch",
+          plusLink: "/venueSearch",
+        },
+      ],
     },
     {
       mainlink: "/TaskManagement",
@@ -219,7 +241,7 @@ function Sidebar() {
     },
   ]);
 
-  //console.log("sidebar arr", sidebarArr);
+
 
   const [showdrop, setShowDrop] = useState<number | null>(null);
 

@@ -31,6 +31,7 @@ import StockReportList from "../pages/Stock/StockReportList";
 import UpdateProduct from "../pages/Stock/UpdateProduct";
 import SalesLedger from "../pages/LedgerPage/SalesLedger";
 import AddLedger from "../pages/LedgerPage/AddLedger";
+import HotelSearch from '../pages/HotelSearch/hotelSearch'
 // import UpdateLedger from '../pages/LedgerPage/UpdateLedger'
 import Rfps from "../pages/LedgerPage/Rfps";
 import QuotesForVendors from "../pages/LedgerPage/quotesForVendors";
@@ -76,6 +77,7 @@ import PurchaseContactView from "@/pages/LedgerPage/purchaseContactView";
 import MyTask from "@/pages/TaskManagement/MyTask";
 import AddConfirmedQuotesFromVendor from "@/pages/LedgerPage/addConfirmedQuotesFromVendor";
 import ConfirmedQuotestoCustomer from "@/pages/Sales/confirmedQuotestoCustomer";
+import NotificationPage from "@/pages/NotificationPage/notificationPage";
 import AddQuotesToCustomerForm from "@/pages/Sales/addQuotesToCustomer";
 
 export default function AuthorizedRoutes() {
@@ -121,6 +123,14 @@ export default function AuthorizedRoutes() {
             path="/addQuotesFromVendors/:id"
             element={<AddQuotesFromVendorsForm />}
           ></Route>
+           <Route
+            path="/notification/:id"
+            element={<NotificationPage/>}
+          ></Route>
+           <Route
+            path="/notification"
+            element={<NotificationPage/>}
+          ></Route>
 
           <Route
             path="/addQuotesToCustomer"
@@ -129,6 +139,15 @@ export default function AuthorizedRoutes() {
           <Route
             path="/addQuotesToCustomer/:id"
             element={<AddQuotesToCustomerForm />}
+          ></Route>
+          <Route
+            path="/notification/:id"
+            element={<NotificationPage/>}
+          ></Route>
+
+          <Route
+            path="/notification"
+            element={<NotificationPage/>}
           ></Route>
 
           <Route
@@ -142,6 +161,10 @@ export default function AuthorizedRoutes() {
           <Route
             path="/quotesForCustomer"
             element={<QuotesForCustomer />}
+          ></Route>
+          <Route
+            path="/hotelSearch/"
+            element={<HotelSearch />}
           ></Route>
           <Route
             path="/quotesForCustomerView"
@@ -167,6 +190,10 @@ export default function AuthorizedRoutes() {
           ></Route>
           <Route
             path="/add-DailyActivityReport"
+            element={<AddDailyActivityReport />}
+          ></Route>
+           <Route
+            path="/add-DailyActivityReport/:id"
             element={<AddDailyActivityReport />}
           ></Route>
           <Route path="/customer-sales" element={<CustomerSales />}></Route>
@@ -208,7 +235,7 @@ export default function AuthorizedRoutes() {
           <Route path="/add-ledger" element={<AddLedger />}></Route>
           <Route path="/add-customer" element={<AddCustomer />}></Route>
           <Route path="/add-customer/:id" element={<AddCustomer />}></Route>
-          <Route
+          {/* <Route
             path="/add-sales-contact"
             element={<AddSalesContact />}
           ></Route>
@@ -232,7 +259,7 @@ export default function AuthorizedRoutes() {
           <Route
             path="/sales-contact-view/"
             element={<SalesContactView />}
-          ></Route>
+          ></Route> */}
           <Route path="/add-vendor" element={<AddVendorForm />}></Route>
           <Route path="/add-vendor/:id" element={<AddVendorForm />}></Route>
           <Route

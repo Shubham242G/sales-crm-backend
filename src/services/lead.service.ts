@@ -2,7 +2,7 @@
 import { usePagination } from "../libs/hooks/usePagination";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PaginationState } from "@tanstack/react-table";
-import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination } from "./urls.service";
+import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination, ReactSelectFormat } from "./urls.service";
 import axios from "../libs/hooks/axios";
 import { CHARGE_TYPE } from "@/common/constant.common";
 import { ICustomer } from "./customer.service";
@@ -12,88 +12,12 @@ import { ICustomer } from "./customer.service";
 const prefix = "/lead";
 export interface ILead {
     // Basic Details
-
-    salutation: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    company: '',
-
-    // companyName: string;
-    // salutation: string;
-    // firstName: string;
-    // lastName: string;
-    // phone: string;
-    // currencyCode: string;
-    // notes: string;
-    // website: string;
-    // status: string;
-    // openingBalance: string;
-    // openingBalanceExchangeRate: string;
-    // branchId: string;
-    // branchName: string;
-    // bankAccountPayment: string;
-    // portalEnabled: boolean;
-    // creditLimit: string;
-    // customerSubType: string;
-    // department: string;
-    // designation: string;
-    // priceList: string;
-    // paymentTerms: string;
-    // paymentTermsLabel: string;
-
-    // // Contact Information
-    // emailId: string;
-    // mobilePhone: string;
-    // skypeIdentity: string;
-    // facebook: string;
-    // twitter: string;
-
-    // // GST Details
-    // gstTreatment: string;
-    // gstin: string;
-    // taxable: boolean;
-    // taxId: string;
-    // taxName: string;
-    // taxPercentage: string;
-    // exemptionReason: string;
-
-    // // Billing Address
-    // billingAttention: string;
-    // billingAddress: string;
-    // billingStreet2: string;
-    // billingCity: string;
-    // billingState: string;
-    // billingCountry: string;
-    // billingCounty: string;
-    // billingCode: string;
-    // billingPhone: string;
-    // billingFax: string;
-
-    // // Shipping Address
-    // shippingAttention: string;
-    // shippingAddress: string;
-    // shippingStreet2: string;
-    // shippingCity: string;
-    // shippingState: string;
-    // shippingCountry: string;
-    // shippingCounty: string;
-    // shippingCode: string;
-    // shippingPhone: string;
-    // shippingFax: string;
-
-    // // Additional Details
-    // placeOfContact: string;
-    // placeOfContactWithStateCode: string;
-    // contactAddressId: string;
-    // source: string;
-    // ownerName: string;
-    // primaryContactId: string;
-    // contactId: string;
-    // contactName: string;
-    // contactType: string;
-    // lastSyncTime: string;
+    salutation: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string,
+    company: string,
 }
 
 
@@ -123,9 +47,29 @@ export const useleadApiHook = () => {
         return axios.get<GeneralApiResponsePagination<ILead>>(`${BASE_URL}${prefix}/?${query}`);
     };
 
+
+
     const convertToContact = async (id: any) => {
         return axios.post<GeneralApiResponse<ILead>>(`${BASE_URL}${prefix}/convert/${id}`);
     }
+
+    const getAllLeadName = async (searchObj: any) => {
+        const query = new URLSearchParams({
+            ...searchObj,
+        }).toString();
+        return axios.get<GeneralApiResponsePagination<ReactSelectFormat[]>>(`${BASE_URL}${prefix}/?${query}`);
+    };
+
+    const getCompanyName = async (fullName: string) => {
+
+
+        return axios.get<GeneralApiResponse<ILead>>(`${BASE_URL}${prefix}/getCompanyName/${fullName}`);
+    };
+
+
+
+
+
 
     return {
         getAllLead,
@@ -133,7 +77,9 @@ export const useleadApiHook = () => {
         deleteLeadById,
         getContactById,
         addLead,
-        convertToContact
+        convertToContact,
+        getAllLeadName,
+        getCompanyName
 
     };
 };
@@ -149,13 +95,13 @@ export const useAddLead = () => {
     });
 };
 
-export const useLeadById = (id: string) => {
+export const useLeadById = (id: string ,enabled: boolean = true) => {
     const api = useleadApiHook();
 
     return useQuery({
         queryKey: ["lead_id", id],
         queryFn: () => api.getContactById(id).then((res) => res.data),
-        enabled: !!id,
+        enabled: !!id && enabled,
     });
 };
 
@@ -204,12 +150,12 @@ export const useUpdateLeadById = () => {
 
 export const convertToContact = async (id: any) => {
     return axios.post<GeneralApiResponse<ILead>>(
-      `${BASE_URL}${prefix}/convert/${id}`
+        `${BASE_URL}${prefix}/convert/${id}`
     );
-  };
+};
 
 
-  export const getExel = async () => {
+export const getExel = async () => {
     return axios.get(`${BASE_URL}${prefix}/getExel`);
 };
 
@@ -217,6 +163,43 @@ export const convertToContact = async (id: any) => {
 export const addLeadExel = async (obj: any,) => {
 
     return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadLeads`, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
+};
+
+export const useLeadName = (
+    searchObj: Record<string, any> = {},
+) => {
+
+
+
+    const api = useleadApiHook();
+    return useQuery({
+        queryKey: ["LeadName", searchObj],
+        queryFn: () =>
+            api.getAllLeadName(searchObj).then((res) => res?.data),
+        initialData: {
+            data: [],
+            total: 0,
+            message: "",
+        } as unknown as GeneralApiResponsePagination<ReactSelectFormat[]>
+    });
+};
+
+export const useCompanyName = (fullName: string,
+
+) => {
+
+
+
+    const api = useleadApiHook();
+    return useQuery({
+        queryKey: ["LeadCompanyName", fullName],
+        queryFn: () =>
+            api.getCompanyName(fullName).then((res) => res?.data),
+        initialData: {
+            data: [],
+            message: "",
+        } as unknown as GeneralApiResponse<ILead>,
+    });
 };
 
 

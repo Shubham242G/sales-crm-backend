@@ -1537,7 +1537,7 @@ const AddVendorForm = () => {
                     </div>
 
                     {/* Phone Numbers */}
-                    <div className="flex flex-col gap-6 gap-[8px] lg:items-start md:items-center">
+                    <div className="flex flex-col gap-[8px] lg:items-start md:items-center">
                       <h1 className="text-[14px] font-medium text-black font-newbold">
                         Phone Number
                       </h1>
@@ -2849,7 +2849,7 @@ const AddVendorForm = () => {
                           <div className="grid grid-cols-2 gap-6">
                             {/* State Dropdown */}
                             <div>
-                              <label className="block font-semibold text-sm font-medium text-black mb-2">
+                              <label className="block font-semibold text-sm text-black mb-2">
                                 State
                               </label>
                               <select
