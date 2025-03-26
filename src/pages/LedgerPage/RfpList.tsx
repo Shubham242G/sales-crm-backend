@@ -17,11 +17,11 @@ import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { SiConvertio } from "react-icons/si";
 
-function CustomerLedger() {
+function RfpList() {
   const navigate = useNavigate();
-  // const [loading, setLoading] = useState(false);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // ledger details modal
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
@@ -43,7 +43,10 @@ function CustomerLedger() {
     [pageIndex, pageSize, query]
   );
 
-  const { data: RfpData } = useRfp(searchObj);
+  
+  // const {data: useEnquiryByIdData} = useEnquiryById(enquiryId);
+
+  const { data: RfpData, isLoading } = useRfp(searchObj);
   console.log(RfpData, "check RfpData");
   const { mutateAsync: deleteRfp } = usedeleteRfpById();
   const { mutateAsync: updateRfp } = useUpdateRfpById();
@@ -147,7 +150,17 @@ function CustomerLedger() {
           <h6>{row.rfpId}</h6>
         </div>
       ),
-      width: "35%",
+      width: "15%",
+    },
+    {
+      name: "Full Name",
+      selector: (row: any) => (
+        <div className="flex gap-1 flex-col">
+          <h6>{row?.fullName}</h6> 
+          {/* {row.fullName} */}
+        </div>
+      ),
+      width: "20%",
     },
     {
       name: "Event Date",
@@ -292,10 +305,9 @@ function CustomerLedger() {
             data={RfpData.data}
             columns={filterColumns}
             loading={false}
-            // loading={loading}
             totalRows={RfpData?.total}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
+            onChangePage={setPageIndex}
+            onChangeRowsPerPage={setPageSize}
             // pagination
             // paginationPerPage={rowsPerPage}
             // paginationRowsPerPageOptions={[5, 10, 20]}
@@ -306,4 +318,4 @@ function CustomerLedger() {
   );
 }
 
-export default CustomerLedger;
+export default RfpList;

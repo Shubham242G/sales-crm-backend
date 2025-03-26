@@ -94,6 +94,28 @@ function Sidebar() {
 
     {
       mainlink: "/",
+      heading: "Hierarchy",
+      icon: ledger,
+      activeIcon: ledgerw,
+      isActive: false,
+      isArrow: true,
+
+      dropArr: [
+        {
+          dropHead: "Roles",
+          link: "roleHierarchy",
+          plusLink: "/roleHierarchy",
+        },
+        {
+          dropHead: "role Modal",
+          link: "roleModal",
+          plusLink: "/newRoleModal",
+        },
+      ],
+    },
+
+    {
+      mainlink: "/",
       heading: "Sales",
       icon: ledger,
       activeIcon: ledgerw,

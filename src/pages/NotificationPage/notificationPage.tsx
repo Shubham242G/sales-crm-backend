@@ -1,7 +1,8 @@
 import { useNotification, useNotificationByUserId } from '@/services/notification.service'
 import { useTaskManagement, useTaskManagementById } from '@/services/tastManagement.service'
 import { getAuth } from '@/utils/auth';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import moment from 'moment';
 
 function NotificationPage() {
@@ -23,10 +24,22 @@ function NotificationPage() {
     getUserId();
   }, [getAuth]);
 
- 
+    const [pageIndex, setPageIndex] = useState(1);
+    const [pageSize, setPageSize] = useState(1000);
+    const [query, setQuery] = useState("");
+
+ const searchObj = useMemo(
+
+     () => ({
+       ...(query && { query }),
+       pageIndex: pageIndex - 1,
+       pageSize,
+     }),
+     [pageIndex, pageSize, query]
+   );
   
 
-  const {data: notificationByUser,  refetch} = useNotificationByUserId(userId);
+  const {data: notificationByUser} = useNotification(searchObj);
 
   console.log(notificationByUser?.data, "notificationByUser1234");
 
@@ -37,10 +50,10 @@ function NotificationPage() {
   // const {data : notificationById}  = useNotificationById(Notification?._id);
 
 
-  console.log(userId, "check userId")
-useEffect(() => {
-  refetch();
-}, [userId, refetch]);
+//   console.log(userId, "check userId")
+// useEffect(() => {
+//   refetch();
+// }, [userId, refetch]);
 
   return (
     <div className=''>

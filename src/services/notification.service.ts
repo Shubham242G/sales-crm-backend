@@ -5,6 +5,7 @@ import { PaginationState } from "@tanstack/react-table";
 import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination } from "./urls.service";
 import axios from "../libs/hooks/axios";
 import { CHARGE_TYPE } from "@/common/constant.common";
+import axiosAuth from "./axios.service";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 
 
@@ -47,7 +48,7 @@ export const useNotificationApiHook = () => {
             pageSize: String(pagination.pageSize),
             ...searchObj,
         }).toString();
-        return axios.get<GeneralApiResponsePagination<INotification>>(`${BASE_URL}${prefix}?${query}`);
+        return axiosAuth.get<GeneralApiResponsePagination<INotification>>(`${BASE_URL}${prefix}?${query}`);
     };
 
     return {

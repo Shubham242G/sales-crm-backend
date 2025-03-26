@@ -33,7 +33,7 @@ import SalesLedger from "../pages/LedgerPage/SalesLedger";
 import AddLedger from "../pages/LedgerPage/AddLedger";
 import HotelSearch from '../pages/HotelSearch/hotelSearch'
 // import UpdateLedger from '../pages/LedgerPage/UpdateLedger'
-import Rfps from "../pages/LedgerPage/Rfps";
+import Rfps from "../pages/LedgerPage/RfpList";
 import QuotesForVendors from "../pages/LedgerPage/quotesForVendors";
 import ConfirmedQuotes from "../pages/LedgerPage/confirmedQuotesFromVendor";
 import AddVendorForm from "../pages/LedgerPage/addVendor";
@@ -79,6 +79,10 @@ import AddConfirmedQuotesFromVendor from "@/pages/LedgerPage/addConfirmedQuotesF
 import ConfirmedQuotestoCustomer from "@/pages/Sales/confirmedQuotestoCustomer";
 import NotificationPage from "@/pages/NotificationPage/notificationPage";
 import AddQuotesToCustomerForm from "@/pages/Sales/addQuotesToCustomer";
+import RoleHierarchy from "@/pages/Hierarchy/roleHierarchy";
+import NewRoleModal from "@/pages/Hierarchy/newRoleModal";
+import SearchBar from "../pages/HotelSearch/hotelSearch";
+// import CalendarView from "@/pages/Calendar/CalendarView";
 
 export default function AuthorizedRoutes() {
   return (
@@ -144,10 +148,23 @@ export default function AuthorizedRoutes() {
             path="/notification/:id"
             element={<NotificationPage/>}
           ></Route>
-
+{/* 
+          <Route
+            path="/calender"
+            element={<CalendarView />}
+          ></Route> */}
           <Route
             path="/notification"
             element={<NotificationPage/>}
+          ></Route>
+
+          <Route
+            path="/roleHierarchy"
+            element={<RoleHierarchy/>}
+          ></Route>
+          <Route
+            path="/newRoleModal"
+            element={<NewRoleModal />}
           ></Route>
 
           <Route
@@ -204,6 +221,10 @@ export default function AuthorizedRoutes() {
           <Route
             path="/quotesFromVendors"
             element={<QuotesForVendors />}
+          ></Route>
+          <Route
+            path="/venueSearch"
+            element={<SearchBar/>}
           ></Route>
           <Route
             path="/quotesFromVendors/:id"
