@@ -15,7 +15,6 @@ export interface IDailyActivityReport {
 // Basic Details
 
     companyName:string;
-    salesPerson:string;
     purposeOfVisit:string;
     dateOfVisit:string;
     modeOfMeeting:string;
