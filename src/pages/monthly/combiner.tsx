@@ -1,30 +1,31 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
 
-// Mock service (unchanged)
+// Updated interface with time
 interface ImonthlyPlanner {
     _id: string;
     date: string | Date;
+    time?: string; // e.g., "14:30" (24-hour format)
     clientName: string;
     company: string;
     agenda: string;
     status: 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled';
 }
 
+// Updated mock data with time
 let mockData: ImonthlyPlanner[] = [
-    { _id: '1', date: '2025-03-03T00:00:00.000Z', clientName: 'John', company: 'Acme', agenda: 'Meeting', status: 'Pending' },
-    { _id: '2', date: '2025-03-03T00:00:00.000Z', clientName: 'Jane', company: 'XYZ', agenda: 'Review', status: 'Confirmed' },
-    { _id: '3', date: '2025-03-04T00:00:00.000Z', clientName: 'Bob', company: 'Corp', agenda: 'Call', status: 'Completed' },
+    { _id: '1', date: '2025-03-03', time: '09:00', clientName: 'John', company: 'Acme', agenda: 'Meeting', status: 'Pending' },
+    { _id: '2', date: '2025-03-03', time: '14:30', clientName: 'Jane', company: 'XYZ', agenda: 'Review', status: 'Confirmed' },
+    { _id: '3', date: '2025-03-04', time: '10:00', clientName: 'Bob', company: 'Corp', agenda: 'Call', status: 'Completed' },
 ];
 
-// Hooks (unchanged)
+// Hooks (updated for time)
 const useMonthlyPlanner = (searchObj: { query?: string; pageIndex: number; pageSize: number }) => {
     const [data, setData] = useState<{ data: ImonthlyPlanner[] }>({ data: [] });
 
     useEffect(() => {
         const filtered = mockData.filter(m => {
             if (!searchObj.query) return true;
-            const taskDate = new Date(m.date).toISOString().split('T')[0];
+            const taskDate = new Date(m.date).toLocaleDateString('en-CA'); // 'en-CA' gives YYYY-MM-DD
             return taskDate === searchObj.query;
         });
         setData({ data: filtered });
@@ -32,7 +33,7 @@ const useMonthlyPlanner = (searchObj: { query?: string; pageIndex: number; pageS
 
     return {
         data,
-        refetch: () => setData({ data: mockData.filter(m => !searchObj.query || new Date(m.date).toISOString().split('T')[0] === searchObj.query) }),
+        refetch: () => setData({ data: mockData.filter(m => !searchObj.query || new Date(m.date).toLocaleDateString('en-CA') === searchObj.query) }),
     };
 };
 
@@ -64,6 +65,7 @@ const TaskManager: React.FC = () => {
     const [editId, setEditId] = useState<string | null>(null);
     const [formData, setFormData] = useState<Partial<ImonthlyPlanner>>({
         date: new Date(),
+        time: '09:00', // Default time
         clientName: '',
         company: '',
         agenda: '',
@@ -87,30 +89,16 @@ const TaskManager: React.FC = () => {
     const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
-
-
-    const colorScale = [
-        '', 'bg-violet-500', 'bg-indigo-500', 'bg-orange-500', 'bg-green-500', 'bg-red-500', 'bg-blue-500',
-    ];
-    const dotColors = [
-        '', 'bg-violet-500', 'bg-indigo-500', 'bg-orange-500', 'bg-green-500', 'bg-red-500', 'bg-blue-500',
-    ];
+    const colorScale = ['', 'bg-violet-500', 'bg-indigo-500', 'bg-orange-500', 'bg-green-500', 'bg-red-500', 'bg-blue-500'];
+    const dotColors = ['', 'bg-violet-500', 'bg-indigo-500', 'bg-orange-500', 'bg-green-500', 'bg-red-500', 'bg-blue-500'];
 
     const getMeetingCount = (day: number): number => {
-        const checkDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day).toISOString().split('T')[0];
-        const count = (allPlanners?.data || []).filter(m => new Date(m.date).toISOString().split('T')[0] === checkDate).length;
-        console.log(`Day ${day}: ${count} meetings on ${checkDate}`); // Debug log
-        return count;
+        const checkDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day).toLocaleDateString('en-CA');
+        return (allPlanners?.data || []).filter(m => new Date(m.date).toLocaleDateString('en-CA') === checkDate).length;
     };
 
     const getBackgroundColor = (day: number): string => {
-
-        console.log(day, "check day")
-
-
         const count = getMeetingCount(day);
-
-        console.log(count, "check count")
         return colorScale[Math.min(count, colorScale.length - 1)];
     };
 
@@ -119,55 +107,48 @@ const TaskManager: React.FC = () => {
         return dotColors[Math.min(count, dotColors.length - 1)];
     };
 
-    // Ensure calendar updates when currentDate changes
-    // useEffect(() => {
-    //     refetchAll(); // Refetch all planners when the month changes
-    // }, [currentDate, refetchAll]);
-
     const handleDateSelect = (date: Date) => {
-        const dateStr = date.toISOString().split('T')[0];
+        const dateStr = date.toLocaleDateString('en-CA'); // Consistent YYYY-MM-DD format
         setSelectedDate(dateStr);
-        setFormData({ ...formData, date: new Date(dateStr) });
+        setFormData({ ...formData, date: dateStr });
         refetch();
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        if (name === 'date') {
-            setFormData(prev => ({ ...prev, [name]: new Date(value) }));
-        } else {
-            setFormData(prev => ({ ...prev, [name]: value }));
-        }
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = () => {
         const payload = {
             _id: '',
             ...formData,
-            date: formData.date instanceof Date ? formData.date.toISOString() : new Date(formData.date!).toISOString(),
+            date: formData.date instanceof Date ? formData.date.toLocaleDateString('en-CA') : formData.date!,
+            time: formData.time || '09:00', // Default time if not provided
             clientName: formData.clientName || '',
             company: formData.company || '',
             agenda: formData.agenda || '',
-            status: formData.status || 'Pending'
+            status: formData.status || 'Pending',
         } as ImonthlyPlanner;
 
         if (editId) {
-            updateMonthlyPlannerMutation.mutate({ id: editId, obj: payload as ImonthlyPlanner });
+            updateMonthlyPlannerMutation.mutate({ id: editId, obj: payload });
             setOpen(false);
             setEditId(null);
         } else {
             addMonthlyPlannerMutation.mutate(payload);
             setOpen(false);
         }
-        setFormData({ date: new Date(selectedDate!), clientName: '', company: '', agenda: '', status: 'Pending' });
+        setFormData({ date: selectedDate!, time: '09:00', clientName: '', company: '', agenda: '', status: 'Pending' });
         refetch();
-        refetchAll(); // Ensure calendar updates after adding/updating
+        refetchAll();
     };
 
     const handleEdit = (id: string, monthlyPlanner: ImonthlyPlanner) => {
         setEditId(id);
         setFormData({
             date: new Date(monthlyPlanner.date),
+            time: monthlyPlanner.time || '09:00',
             clientName: monthlyPlanner.clientName,
             company: monthlyPlanner.company,
             agenda: monthlyPlanner.agenda,
@@ -182,7 +163,7 @@ const TaskManager: React.FC = () => {
 
     const handleOpenAdd = () => {
         setEditId(null);
-        setFormData({ date: new Date(selectedDate!), clientName: '', company: '', agenda: '', status: 'Pending' });
+        setFormData({ date: selectedDate || new Date().toLocaleDateString('en-CA'), time: '09:00', clientName: '', company: '', agenda: '', status: 'Pending' });
         setOpen(true);
     };
 
@@ -193,7 +174,6 @@ const TaskManager: React.FC = () => {
             {/* Calendar */}
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl mx-auto mb-6">
                 <div className="flex justify-between mb-4">
-
                     <button
                         onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))}
                         className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
@@ -210,35 +190,32 @@ const TaskManager: React.FC = () => {
                         Next
                     </button>
                 </div>
-                <div className="grid grid-cols-7 gap-2 ">
+                <div className="grid grid-cols-7 gap-2">
                     {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                        <div key={day} className={`text-center font-bold text-gray-700 `}>{day}</div>
+                        <div key={day} className="text-center font-bold text-gray-700">{day}</div>
                     ))}
                     {Array(firstDay).fill(null).map((_, i) => (
                         <div key={`empty-${i}`} />
                     ))}
-                    {days.map(day => (<>
-
+                    {days.map(day => (
                         <button
                             key={day}
                             className={`p-4 rounded-lg hover:bg-gray-200 ${getBackgroundColor(day)}`}
                             onClick={() => handleDateSelect(new Date(currentDate.getFullYear(), currentDate.getMonth(), day))}
                         >
-                            <div className={`flex flex-col items-center  `}>
-                                {getMeetingCount(day) > 0 ?  (
-                                    <span className={`w-2 h-2 rounded-full mt-1  ${getDotColor(day)}`}>{day}</span>
-                                ): (
-                                    <span> {day} </span>
+                            <div className="flex flex-col items-center">
+                                {getMeetingCount(day) > 0 ? (
+                                    <span className={`w-2 h-2 rounded-full mt-1 ${getDotColor(day)}`}>{day}</span>
+                                ) : (
+                                    <span>{day}</span>
                                 )}
                             </div>
-                           
                         </button>
-                    </>
                     ))}
                 </div>
             </div>
 
-            {/* Task List and Modal */}
+            {/* Task List */}
             {selectedDate && (
                 <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl mx-auto">
                     <h2 className="text-2xl font-bold mb-4">Tasks for {new Date(selectedDate).toLocaleDateString()}</h2>
@@ -260,6 +237,14 @@ const TaskManager: React.FC = () => {
                                             value={formData.company}
                                             onChange={handleInputChange}
                                             name="company"
+                                            className="w-full border p-2 rounded mb-2"
+                                            required
+                                        />
+                                        <input
+                                            type="time"
+                                            value={formData.time}
+                                            onChange={handleInputChange}
+                                            name="time"
                                             className="w-full border p-2 rounded mb-2"
                                             required
                                         />
@@ -296,6 +281,7 @@ const TaskManager: React.FC = () => {
                                     <>
                                         <h3 className="font-bold text-lg">{monthlyPlanner.clientName}</h3>
                                         <p>Company: {monthlyPlanner.company}</p>
+                                        <p>Time: {monthlyPlanner.time || 'Not set'}</p>
                                         <p>Agenda: {monthlyPlanner.agenda}</p>
                                         <p>Status: {monthlyPlanner.status}</p>
                                         <p>Date: {new Date(monthlyPlanner.date).toLocaleDateString()}</p>
@@ -338,7 +324,14 @@ const TaskManager: React.FC = () => {
                             <input
                                 type="date"
                                 name="date"
-                                value={formData.date instanceof Date ? formData.date.toISOString().split('T')[0] : ''}
+                                value={formData.date instanceof Date ? formData.date.toISOString().split('T')[0] : formData.date}
+                                onChange={handleInputChange}
+                                className="w-full border p-2 rounded"
+                            />
+                            <input
+                                type="time"
+                                name="time"
+                                value={formData.time}
                                 onChange={handleInputChange}
                                 className="w-full border p-2 rounded"
                             />
