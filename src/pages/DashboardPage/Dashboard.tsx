@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell
 } from 'recharts';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+
+
 
 // User roles (simple string options)
 type UserRole = 'sales' | 'operations' | 'admin';
