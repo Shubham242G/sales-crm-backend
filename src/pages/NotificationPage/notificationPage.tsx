@@ -41,7 +41,14 @@ function NotificationPage() {
 
   const {data: notificationByUser} = useNotification(searchObj);
 
+  console.log(notificationByUser, "notificationByUser");
+  console.log(userId, "userId");
+
   console.log(notificationByUser?.data, "notificationByUser1234");
+
+
+ const filteredNotifications = notificationByUser?.data.filter((item: any) => item?.userId === userId);     
+  
 
 
 
@@ -58,16 +65,16 @@ function NotificationPage() {
   return (
     <div className=''>
 
-      {
-        notificationByUser?.data && notificationByUser?.data.length  > 0 && notificationByUser?.data?.map((item: any) => {
-          return (
-            <div className="bg-white shadow-lg rounded-lg  border border-gray-200 w-[90%] p-4 m-4">
-              <p className="text-gray-800 font-medium text-base">{item.message}</p>
-              <p className="text-gray-500 text-sm mt-2">{moment(item.createdAt).format("DD-MM-YYYY, HH:mm")}</p>
-            </div>
-          )
-        })
-      }
+      {filteredNotifications && filteredNotifications.length > 0 ? (
+        filteredNotifications.map((item: any) => (
+          <div className="bg-white shadow-lg rounded-lg border border-gray-200 w-[90%] p-4 m-4" key={item.id}>
+            <p className="text-gray-800 font-medium text-base">{item.message}</p>
+            <p className="text-gray-500 text-sm mt-2">{moment(item.createdAt).format("DD-MM-YYYY, HH:mm")}</p>
+          </div>
+        ))
+      ) : (
+        <p className="text-gray-500 text-base">No notifications available.</p>
+      )}
     </div>
     
   )
