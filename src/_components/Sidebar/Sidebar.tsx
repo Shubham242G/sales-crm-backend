@@ -192,7 +192,13 @@ function Sidebar() {
           link: "DailyActivityReport",
           plusLink: "/DailyActivityReport",
         },
+        {
+          dropHead: "Monthly Planner",
+          link: "monthlyPlanner",
+          plusLink: "/monthlyPlanner",
+        },
       ],
+
     },
     {
       mainlink: "/hotelSearch",
@@ -275,15 +281,15 @@ function Sidebar() {
     .map((item) => {
       let filteredDropArr = item.dropArr
         ? item.dropArr
-            .map((dropItem) => {
-              let response = CreateRoutePermission(dropItem.dropHead, dropItem);
-              if (response.view) {
-                dropItem.plusLink = response.create ? dropItem.plusLink : "";
-                return dropItem;
-              }
-              return null;
-            })
-            .filter(Boolean)
+          .map((dropItem) => {
+            let response = CreateRoutePermission(dropItem.dropHead, dropItem);
+            if (response.view) {
+              dropItem.plusLink = response.create ? dropItem.plusLink : "";
+              return dropItem;
+            }
+            return null;
+          })
+          .filter(Boolean)
         : null;
 
       console.log(filteredDropArr, "drop");
@@ -328,9 +334,8 @@ function Sidebar() {
                     </h6>
                   </div>
                   <MdChevronRight
-                    className={`transition-transform ${
-                      showdrop === index ? "rotate-90" : ""
-                    }`}
+                    className={`transition-transform ${showdrop === index ? "rotate-90" : ""
+                      }`}
                   />
                 </button>
               ) : (

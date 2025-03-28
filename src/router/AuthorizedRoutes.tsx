@@ -82,6 +82,7 @@ import AddQuotesToCustomerForm from "@/pages/Sales/addQuotesToCustomer";
 import RoleHierarchy from "@/pages/Hierarchy/roleHierarchy";
 import NewRoleModal from "@/pages/Hierarchy/newRoleModal";
 import SearchBar from "../pages/HotelSearch/hotelSearch";
+import Combiner from "@/pages/monthly/combiner";
 // import CalendarView from "@/pages/Calendar/CalendarView";
 
 export default function AuthorizedRoutes() {
@@ -124,16 +125,25 @@ export default function AuthorizedRoutes() {
             element={<AddQuotesFromVendorsForm />}
           ></Route>
           <Route
+            path="/monthlyPlanner"
+            element={< Combiner />}
+          ></Route>
+
+          <Route
+            path="/monthlyPlanner/:date"
+            element={< Combiner />}
+          ></Route>
+          <Route
             path="/addQuotesFromVendors/:id"
             element={<AddQuotesFromVendorsForm />}
           ></Route>
-           <Route
+          <Route
             path="/notification/:id"
-            element={<NotificationPage/>}
+            element={<NotificationPage />}
           ></Route>
-           <Route
+          <Route
             path="/notification"
-            element={<NotificationPage/>}
+            element={<NotificationPage />}
           ></Route>
 
           <Route
@@ -146,21 +156,21 @@ export default function AuthorizedRoutes() {
           ></Route>
           <Route
             path="/notification/:id"
-            element={<NotificationPage/>}
+            element={<NotificationPage />}
           ></Route>
-{/* 
+          {/* 
           <Route
             path="/calender"
             element={<CalendarView />}
           ></Route> */}
           <Route
             path="/notification"
-            element={<NotificationPage/>}
+            element={<NotificationPage />}
           ></Route>
 
           <Route
             path="/roleHierarchy"
-            element={<RoleHierarchy/>}
+            element={<RoleHierarchy />}
           ></Route>
           <Route
             path="/newRoleModal"
@@ -209,7 +219,7 @@ export default function AuthorizedRoutes() {
             path="/add-DailyActivityReport"
             element={<AddDailyActivityReport />}
           ></Route>
-           <Route
+          <Route
             path="/add-DailyActivityReport/:id"
             element={<AddDailyActivityReport />}
           ></Route>
@@ -224,7 +234,7 @@ export default function AuthorizedRoutes() {
           ></Route>
           <Route
             path="/venueSearch"
-            element={<SearchBar/>}
+            element={<SearchBar />}
           ></Route>
           <Route
             path="/quotesFromVendors/:id"
