@@ -40,7 +40,7 @@ export const useNotificationApiHook = () => {
         return axios.get<any>(`${BASE_URL}${prefix}/getByUserId/${userId}`);
     };
 
-   
+
 
     const getAllNotification = async (pagination: PaginationState, searchObj: any) => {
         const query = new URLSearchParams({
@@ -58,7 +58,7 @@ export const useNotificationApiHook = () => {
         getNotificationById,
         addNotification,
         getNotificationByUserId
-        
+
 
     };
 };

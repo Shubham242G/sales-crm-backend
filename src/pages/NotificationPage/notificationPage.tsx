@@ -6,40 +6,43 @@ import { useMemo } from 'react'
 import moment from 'moment';
 
 function NotificationPage() {
-  
+
   const [message, setMessage] = React.useState('');
-  
+
   const [userId, setUserId] = React.useState('');
   const [createdAt, setCreatedAt] = React.useState('');
   const [userName, setUserName] = React.useState('')
-     
- const getUserId = async () => {
+
+  const getUserId = async () => {
     const decodedToken = await getAuth();
     if (decodedToken?.token) {
       setUserId(decodedToken.userId);
     }
   };
 
- useEffect(() => {
+  useEffect(() => {
     getUserId();
   }, [getAuth]);
 
-    const [pageIndex, setPageIndex] = useState(1);
-    const [pageSize, setPageSize] = useState(1000);
-    const [query, setQuery] = useState("");
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(1000);
+  const [query, setQuery] = useState("");
 
- const searchObj = useMemo(
+  const searchObj = useMemo(
 
-     () => ({
-       ...(query && { query }),
-       pageIndex: pageIndex - 1,
-       pageSize,
-     }),
-     [pageIndex, pageSize, query]
-   );
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
+
+
   
 
-  const {data: notificationByUser} = useNotification(searchObj);
+
+  const { data: notificationByUser } = useNotification(searchObj);
 
   console.log(notificationByUser, "notificationByUser");
   console.log(userId, "userId");
@@ -47,8 +50,8 @@ function NotificationPage() {
   console.log(notificationByUser?.data, "notificationByUser1234");
 
 
- const filteredNotifications = notificationByUser?.data.filter((item: any) => item?.userId === userId);     
-  
+  const filteredNotifications = notificationByUser?.data.filter((item: any) => item?.userId === userId);
+
 
 
 
@@ -57,10 +60,10 @@ function NotificationPage() {
   // const {data : notificationById}  = useNotificationById(Notification?._id);
 
 
-//   console.log(userId, "check userId")
-// useEffect(() => {
-//   refetch();
-// }, [userId, refetch]);
+  //   console.log(userId, "check userId")
+  // useEffect(() => {
+  //   refetch();
+  // }, [userId, refetch]);
 
   return (
     <div className=''>
@@ -76,7 +79,7 @@ function NotificationPage() {
         <p className="text-gray-500 text-base">No notifications available.</p>
       )}
     </div>
-    
+
   )
 }
 

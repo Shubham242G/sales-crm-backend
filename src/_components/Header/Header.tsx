@@ -19,13 +19,9 @@ function Header() {
   const [notificationCount, setNotificationCount] = useState(0);
   const [userId, setUserId] = useState("");
 
-  const { data: notification } = useNotificationByUserId(userId);
+ 
 
-  useEffect(() => {
-    if (notification) {
-      setNotificationCount(notification.data.length);
-    }
-  }, [notification]);
+
 
   const handleNotification = () => {
     navigate("/notification");
