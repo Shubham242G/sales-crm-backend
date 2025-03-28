@@ -63,15 +63,15 @@ const [pageIndex, setPageIndex] = useState(1);
         setShowLedgerDetailsModal(true);
     };
     const columns = [
-        {
-            name: "Sales Person Name",
-            selector: (row: any) => (
-                <div className="flex gap-1 flex-col">
-                    <h6>{ row.salesPerson}</h6>
-                </div>
-            ),
-            width: "10%",
-        },
+        // {
+        //     name: "Sales Person Name",
+        //     selector: (row: any) => (
+        //         <div className="flex gap-1 flex-col">
+        //             <h6>{ row.salesPerson}</h6>
+        //         </div>
+        //     ),
+        //     width: "10%",
+        // },
 
         {
             name: "Date",

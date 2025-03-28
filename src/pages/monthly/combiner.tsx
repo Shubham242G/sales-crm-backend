@@ -1,359 +1,393 @@
-import React, { useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css"; // Default calendar styles
-import { FaEdit, FaTrash } from "react-icons/fa"; // Icons from react-icons
 
-interface IMeeting {
-    id: string;
-    date: Date;
+import React, { useState, useMemo, useEffect } from 'react';
+
+// Mock service (unchanged)
+interface ImonthlyPlanner {
+    _id: string;
+    date: string | Date;
     clientName: string;
     company: string;
     agenda: string;
-    status: string;
+    status: 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled';
 }
 
-const MeetingCalendar: React.FC = () => {
-    // State for the calendar and meetings
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [meetings, setMeetings] = useState<IMeeting[]>([
-        // Sample data
-        {
-            id: "1",
-            date: new Date("2025-03-27"),
-            clientName: "John Doe",
-            company: "xAI",
-            agenda: "Discuss AI",
-            status: "Scheduled",
-        },
-        {
-            id: "2",
-            date: new Date("2025-03-27"),
-            clientName: "Jane Smith",
-            company: "Tech Corp",
-            agenda: "Project Review",
-            status: "Completed",
-        },
-        {
-            id: "3",
-            date: new Date("2025-03-28"),
-            clientName: "Alice Brown",
-            company: "Innovate Inc",
-            agenda: "Strategy Meeting",
-            status: "Scheduled",
-        },
-    ]);
-    const [openDialog, setOpenDialog] = useState(false);
+let mockData: ImonthlyPlanner[] = [
+    { _id: '1', date: '2025-03-03T00:00:00.000Z', clientName: 'John', company: 'Acme', agenda: 'Meeting', status: 'Pending' },
+    { _id: '2', date: '2025-03-03T00:00:00.000Z', clientName: 'Jane', company: 'XYZ', agenda: 'Review', status: 'Confirmed' },
+    { _id: '3', date: '2025-03-04T00:00:00.000Z', clientName: 'Bob', company: 'Corp', agenda: 'Call', status: 'Completed' },
+];
+
+// Hooks (unchanged)
+const useMonthlyPlanner = (searchObj: { query?: string; pageIndex: number; pageSize: number }) => {
+    const [data, setData] = useState<{ data: ImonthlyPlanner[] }>({ data: [] });
+
+    useEffect(() => {
+        const filtered = mockData.filter(m => {
+            if (!searchObj.query) return true;
+            const taskDate = new Date(m.date).toISOString().split('T')[0];
+            return taskDate === searchObj.query;
+        });
+        setData({ data: filtered });
+    }, [searchObj.query]);
+
+    return {
+        data,
+        refetch: () => setData({ data: mockData.filter(m => !searchObj.query || new Date(m.date).toISOString().split('T')[0] === searchObj.query) }),
+    };
+};
+
+const useAddMonthlyPlanner = () => ({
+    mutate: (payload: ImonthlyPlanner) => {
+        mockData.push({ ...payload, _id: Date.now().toString() });
+    },
+});
+
+const useUpdateMonthlyPlannerById = () => ({
+    mutate: ({ id, obj }: { id: string; obj: ImonthlyPlanner }) => {
+        mockData = mockData.map(m => (m._id === id ? { ...obj, _id: id } : m));
+    },
+});
+
+const useDeleteMonthlyPlannerById = () => ({
+    mutate: (params: { 0: string, 1?: { onSuccess?: () => void } }) => {
+        const [id, options] = Array.isArray(params) ? params : [params];
+        mockData = mockData.filter(m => m._id !== id);
+        options?.onSuccess?.();
+    },
+});
+
+// Main Component
+const TaskManager: React.FC = () => {
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [currentDate, setCurrentDate] = useState<Date>(new Date());
+    const [open, setOpen] = useState(false);
     const [editId, setEditId] = useState<string | null>(null);
-    const [formData, setFormData] = useState<Partial<IMeeting>>({
-        date: selectedDate || new Date(),
-        clientName: "",
-        company: "",
-        agenda: "",
-        status: "",
+    const [formData, setFormData] = useState<Partial<ImonthlyPlanner>>({
+        date: new Date(),
+        clientName: '',
+        company: '',
+        agenda: '',
+        status: 'Pending',
     });
 
-    // Get meetings for a specific date
-    const getMeetingsForDate = (date: Date) => {
-        return meetings.filter(
-            (meeting) =>
-                new Date(meeting.date).toDateString() === date.toDateString()
-        );
+    const { data: allPlanners, refetch: refetchAll } = useMonthlyPlanner({ query: '', pageIndex: 0, pageSize: 100 });
+    const searchObj = useMemo(() => ({
+        query: selectedDate || '',
+        pageIndex: 0,
+        pageSize: 10,
+    }), [selectedDate]);
+    const { data: monthlyPlanners, refetch } = useMonthlyPlanner(searchObj);
+
+    const addMonthlyPlannerMutation = useAddMonthlyPlanner();
+    const updateMonthlyPlannerMutation = useUpdateMonthlyPlannerById();
+    const deleteMonthlyPlannerMutation = useDeleteMonthlyPlannerById();
+
+    // Calendar Logic
+    const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+
+
+    const colorScale = [
+        '', 'bg-violet-500', 'bg-indigo-500', 'bg-orange-500', 'bg-green-500', 'bg-red-500', 'bg-blue-500',
+    ];
+    const dotColors = [
+        '', 'bg-violet-500', 'bg-indigo-500', 'bg-orange-500', 'bg-green-500', 'bg-red-500', 'bg-blue-500',
+    ];
+
+    const getMeetingCount = (day: number): number => {
+        const checkDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day).toISOString().split('T')[0];
+        const count = (allPlanners?.data || []).filter(m => new Date(m.date).toISOString().split('T')[0] === checkDate).length;
+        console.log(`Day ${day}: ${count} meetings on ${checkDate}`); // Debug log
+        return count;
     };
 
-    // Color-code dates based on the number of meetings
-    const tileClassName = ({ date }: { date: Date }) => {
-        const meetingCount = getMeetingsForDate(date).length;
-        if (meetingCount === 0) return "bg-white";
-        if (meetingCount === 1) return "bg-blue-100";
-        if (meetingCount === 2) return "bg-blue-300";
-        return "bg-blue-500 text-white"; // 3 or more meetings
+    const getBackgroundColor = (day: number): string => {
+
+        console.log(day, "check day")
+
+
+        const count = getMeetingCount(day);
+
+        console.log(count, "check count")
+        return colorScale[Math.min(count, colorScale.length - 1)];
     };
 
-    // Handle date click
-    const handleDateClick = (date: Date) => {
-        setSelectedDate(date);
-        setFormData((prev) => ({ ...prev, date }));
+    const getDotColor = (day: number): string => {
+        const count = getMeetingCount(day);
+        return dotColors[Math.min(count, dotColors.length - 1)];
     };
 
-    // Handle form input changes
-    const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) => {
+    // Ensure calendar updates when currentDate changes
+    // useEffect(() => {
+    //     refetchAll(); // Refetch all planners when the month changes
+    // }, [currentDate, refetchAll]);
+
+    const handleDateSelect = (date: Date) => {
+        const dateStr = date.toISOString().split('T')[0];
+        setSelectedDate(dateStr);
+        setFormData({ ...formData, date: new Date(dateStr) });
+        refetch();
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        if (name === 'date') {
+            setFormData(prev => ({ ...prev, [name]: new Date(value) }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
-    // Handle form submission (add or edit meeting)
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const newMeeting: IMeeting = {
-            id: editId || Date.now().toString(), // Generate ID for new meeting
-            date: new Date(formData.date!),
-            clientName: formData.clientName || "",
-            company: formData.company || "",
-            agenda: formData.agenda || "",
-            status: formData.status || "",
-        };
+    const handleSubmit = () => {
+        const payload = {
+            _id: '',
+            ...formData,
+            date: formData.date instanceof Date ? formData.date.toISOString() : new Date(formData.date!).toISOString(),
+            clientName: formData.clientName || '',
+            company: formData.company || '',
+            agenda: formData.agenda || '',
+            status: formData.status || 'Pending'
+        } as ImonthlyPlanner;
 
         if (editId) {
-            // Update existing meeting
-            setMeetings((prev) =>
-                prev.map((meeting) =>
-                    meeting.id === editId ? newMeeting : meeting
-                )
-            );
+            updateMonthlyPlannerMutation.mutate({ id: editId, obj: payload as ImonthlyPlanner });
+            setOpen(false);
+            setEditId(null);
         } else {
-            // Add new meeting
-            setMeetings((prev) => [...prev, newMeeting]);
+            addMonthlyPlannerMutation.mutate(payload);
+            setOpen(false);
         }
-
-        // Reset form and close dialog
-        setFormData({
-            date: selectedDate || new Date(),
-            clientName: "",
-            company: "",
-            agenda: "",
-            status: "",
-        });
-        setEditId(null);
-        setOpenDialog(false);
+        setFormData({ date: new Date(selectedDate!), clientName: '', company: '', agenda: '', status: 'Pending' });
+        refetch();
+        refetchAll(); // Ensure calendar updates after adding/updating
     };
 
-    // Handle edit meeting
-    const handleEdit = (meeting: IMeeting) => {
-        setEditId(meeting.id);
+    const handleEdit = (id: string, monthlyPlanner: ImonthlyPlanner) => {
+        setEditId(id);
         setFormData({
-            date: meeting.date,
-            clientName: meeting.clientName,
-            company: meeting.company,
-            agenda: meeting.agenda,
-            status: meeting.status,
+            date: new Date(monthlyPlanner.date),
+            clientName: monthlyPlanner.clientName,
+            company: monthlyPlanner.company,
+            agenda: monthlyPlanner.agenda,
+            status: monthlyPlanner.status,
         });
-        setOpenDialog(true);
+        setOpen(true);
     };
 
-    // Handle delete meeting
     const handleDelete = (id: string) => {
-        setMeetings((prev) => prev.filter((meeting) => meeting.id !== id));
+        deleteMonthlyPlannerMutation.mutate([id, { onSuccess: () => { refetch(); refetchAll(); } }]);
     };
 
-    // Handle add meeting
     const handleOpenAdd = () => {
         setEditId(null);
-        setFormData({
-            date: selectedDate || new Date(),
-            clientName: "",
-            company: "",
-            agenda: "",
-            status: "",
-        });
-        setOpenDialog(true);
+        setFormData({ date: new Date(selectedDate!), clientName: '', company: '', agenda: '', status: 'Pending' });
+        setOpen(true);
     };
 
     return (
-        <div className="p-6 max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6 text-center">
-                Meeting Calendar
-            </h1>
+        <div className="min-h-screen bg-gray-100 p-6">
+            <h1 className="text-3xl font-bold text-center mb-6">Task Manager</h1>
 
-            {/* Calendar and Meetings Section */}
-            <div className="flex flex-col md:flex-row gap-6">
-                {/* Calendar */}
-                <div className="md:w-1/2">
-                    <Calendar
-                        onClickDay={handleDateClick}
-                        tileClassName={tileClassName}
-                        className="border rounded-lg shadow-md w-full"
-                    />
+            {/* Calendar */}
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl mx-auto mb-6">
+                <div className="flex justify-between mb-4">
+
+                    <button
+                        onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))}
+                        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                    >
+                        Previous
+                    </button>
+                    <h2 className="text-xl font-bold">
+                        {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+                    </h2>
+                    <button
+                        onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))}
+                        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                    >
+                        Next
+                    </button>
                 </div>
+                <div className="grid grid-cols-7 gap-2 ">
+                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                        <div key={day} className={`text-center font-bold text-gray-700 `}>{day}</div>
+                    ))}
+                    {Array(firstDay).fill(null).map((_, i) => (
+                        <div key={`empty-${i}`} />
+                    ))}
+                    {days.map(day => (<>
 
-                {/* Meetings for Selected Date */}
-                {selectedDate && (
-                    <div className="md:w-1/2">
-                        <h2 className="text-xl font-semibold mb-4">
-                            Meetings on {selectedDate.toDateString()}
-                        </h2>
                         <button
-                            onClick={handleOpenAdd}
-                            className="mb-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                            key={day}
+                            className={`p-4 rounded-lg hover:bg-gray-200 ${getBackgroundColor(day)}`}
+                            onClick={() => handleDateSelect(new Date(currentDate.getFullYear(), currentDate.getMonth(), day))}
                         >
-                            Add Meeting
+                            <div className={`flex flex-col items-center  `}>
+                                {getMeetingCount(day) > 0 ?  (
+                                    <span className={`w-2 h-2 rounded-full mt-1  ${getDotColor(day)}`}>{day}</span>
+                                ): (
+                                    <span> {day} </span>
+                                )}
+                            </div>
+                           
                         </button>
-                        <div className="space-y-4">
-                            {getMeetingsForDate(selectedDate).length === 0 ? (
-                                <p className="text-gray-500">
-                                    No meetings scheduled for this day.
-                                </p>
-                            ) : (
-                                getMeetingsForDate(selectedDate).map(
-                                    (meeting) => (
-                                        <div
-                                            key={meeting.id}
-                                            className="p-4 border rounded-lg shadow-sm bg-white"
-                                        >
-                                            <h3 className="text-lg font-medium">
-                                                {meeting.clientName}
-                                            </h3>
-                                            <p>
-                                                <strong>Company:</strong>{" "}
-                                                {meeting.company}
-                                            </p>
-                                            <p>
-                                                <strong>Agenda:</strong>{" "}
-                                                {meeting.agenda}
-                                            </p>
-                                            <p>
-                                                <strong>Status:</strong>{" "}
-                                                {meeting.status}
-                                            </p>
-                                            <div className="mt-2 flex gap-2">
-                                                <button
-                                                    onClick={() =>
-                                                        handleEdit(meeting)
-                                                    }
-                                                    className="p-2 text-blue-600 hover:text-blue-800"
-                                                >
-                                                    <FaEdit className="w-5 h-5" />
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleDelete(meeting.id)
-                                                    }
-                                                    className="p-2 text-red-600 hover:text-red-800"
-                                                >
-                                                    <FaTrash className="w-5 h-5" />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )
-                                )
-                            )}
-                        </div>
-                    </div>
-                )}
+                    </>
+                    ))}
+                </div>
             </div>
 
-            {/* Add/Edit Meeting Dialog */}
-            <dialog
-                open={openDialog}
-                className="p-6 rounded-lg shadow-lg bg-white max-w-md w-full"
-            >
-                <h2 className="text-xl font-semibold mb-4">
-                    {editId ? "Edit Meeting" : "Add Meeting"}
-                </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label
-                            htmlFor="date"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Date
-                        </label>
-                        <input
-                            type="date"
-                            id="date"
-                            name="date"
-                            value={
-                                formData.date instanceof Date
-                                    ? formData.date.toISOString().split("T")[0]
-                                    : ""
-                            }
-                            onChange={handleInputChange}
-                            className="mt-1 block w-full border rounded-md p-2"
-                            required
-                        />
+            {/* Task List and Modal */}
+            {selectedDate && (
+                <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl mx-auto">
+                    <h2 className="text-2xl font-bold mb-4">Tasks for {new Date(selectedDate).toLocaleDateString()}</h2>
+                    {monthlyPlanners?.data?.length > 0 ? (
+                        monthlyPlanners.data.map((monthlyPlanner: ImonthlyPlanner) => (
+                            <div key={monthlyPlanner._id} className="bg-white p-4 rounded-lg shadow mb-4">
+                                {editId === monthlyPlanner._id ? (
+                                    <form onSubmit={e => { e.preventDefault(); handleSubmit(); }}>
+                                        <input
+                                            type="text"
+                                            value={formData.clientName}
+                                            onChange={handleInputChange}
+                                            name="clientName"
+                                            className="w-full border p-2 rounded mb-2"
+                                            required
+                                        />
+                                        <input
+                                            type="text"
+                                            value={formData.company}
+                                            onChange={handleInputChange}
+                                            name="company"
+                                            className="w-full border p-2 rounded mb-2"
+                                            required
+                                        />
+                                        <textarea
+                                            value={formData.agenda}
+                                            onChange={handleInputChange}
+                                            name="agenda"
+                                            className="w-full border p-2 rounded mb-2"
+                                            required
+                                        />
+                                        <select
+                                            value={formData.status}
+                                            onChange={handleInputChange}
+                                            name="status"
+                                            className="w-full border p-2 rounded mb-2"
+                                        >
+                                            <option value="Pending">Pending</option>
+                                            <option value="Confirmed">Confirmed</option>
+                                            <option value="Completed">Completed</option>
+                                            <option value="Cancelled">Cancelled</option>
+                                        </select>
+                                        <div className="flex gap-2">
+                                            <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">Save</button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setEditId(null)}
+                                                className="bg-gray-500 text-white px-4 py-2 rounded"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                ) : (
+                                    <>
+                                        <h3 className="font-bold text-lg">{monthlyPlanner.clientName}</h3>
+                                        <p>Company: {monthlyPlanner.company}</p>
+                                        <p>Agenda: {monthlyPlanner.agenda}</p>
+                                        <p>Status: {monthlyPlanner.status}</p>
+                                        <p>Date: {new Date(monthlyPlanner.date).toLocaleDateString()}</p>
+                                        <div className="mt-2 flex gap-2">
+                                            <button
+                                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                                onClick={() => handleEdit(monthlyPlanner._id, monthlyPlanner)}
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                                onClick={() => handleDelete(monthlyPlanner._id)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-gray-500">No tasks for this date.</p>
+                    )}
+                    <button
+                        onClick={handleOpenAdd}
+                        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    >
+                        Add Task
+                    </button>
+                </div>
+            )}
+
+            {/* Modal */}
+            {open && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded-lg w-96">
+                        <h3 className="text-xl font-bold mb-4">{editId ? 'Edit Task' : 'Add Task'}</h3>
+                        <div className="space-y-4">
+                            <input
+                                type="date"
+                                name="date"
+                                value={formData.date instanceof Date ? formData.date.toISOString().split('T')[0] : ''}
+                                onChange={handleInputChange}
+                                className="w-full border p-2 rounded"
+                            />
+                            <input
+                                name="clientName"
+                                value={formData.clientName}
+                                onChange={handleInputChange}
+                                placeholder="Client Name"
+                                className="w-full border p-2 rounded"
+                            />
+                            <input
+                                name="company"
+                                value={formData.company}
+                                onChange={handleInputChange}
+                                placeholder="Company"
+                                className="w-full border p-2 rounded"
+                            />
+                            <textarea
+                                name="agenda"
+                                value={formData.agenda}
+                                onChange={handleInputChange}
+                                placeholder="Agenda"
+                                className="w-full border p-2 rounded"
+                            />
+                            <select
+                                name="status"
+                                value={formData.status}
+                                onChange={handleInputChange}
+                                className="w-full border p-2 rounded"
+                            >
+                                <option value="Pending">Pending</option>
+                                <option value="Confirmed">Confirmed</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div className="mt-4 flex gap-2">
+                            <button onClick={() => setOpen(false)} className="bg-gray-500 text-white px-4 py-2 rounded">
+                                Cancel
+                            </button>
+                            <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded">
+                                {editId ? 'Update' : 'Add'}
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <label
-                            htmlFor="clientName"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Client Name
-                        </label>
-                        <input
-                            type="text"
-                            id="clientName"
-                            name="clientName"
-                            value={formData.clientName || ""}
-                            onChange={handleInputChange}
-                            className="mt-1 block w-full border rounded-md p-2"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="company"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Company
-                        </label>
-                        <input
-                            type="text"
-                            id="company"
-                            name="company"
-                            value={formData.company || ""}
-                            onChange={handleInputChange}
-                            className="mt-1 block w-full border rounded-md p-2"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="agenda"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Agenda
-                        </label>
-                        <input
-                            type="text"
-                            id="agenda"
-                            name="agenda"
-                            value={formData.agenda || ""}
-                            onChange={handleInputChange}
-                            className="mt-1 block w-full border rounded-md p-2"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="status"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Status
-                        </label>
-                        <select
-                            id="status"
-                            name="status"
-                            value={formData.status || ""}
-                            onChange={handleInputChange}
-                            className="mt-1 block w-full border rounded-md p-2"
-                            required
-                        >
-                            <option value="">Select Status</option>
-                            <option value="Scheduled">Scheduled</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Cancelled">Cancelled</option>
-                        </select>
-                    </div>
-                    <div className="flex justify-end gap-2">
-                        <button
-                            type="button"
-                            onClick={() => setOpenDialog(false)}
-                            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                        >
-                            {editId ? "Update" : "Add"}
-                        </button>
-                    </div>
-                </form>
-            </dialog>
+                </div>
+            )}
         </div>
     );
 };
 
-export default MeetingCalendar;
+export default TaskManager;

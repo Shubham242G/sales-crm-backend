@@ -11,7 +11,7 @@ const AddDailyActivityReport = () => {
 
   const { id } = useParams();
   const [companyName, setCompanyName] = useState("");
-  const [salesPerson, setSalesPerson] = useState("");
+  // const [salesPerson, setSalesPerson] = useState("");
   const [purposeOfVisit, setPurposeOfVisit] = useState("");
   const [dateOfVisit, setDateOfVisit] = useState("");
   const [modeOfMeeting, setModeOfMeeting] = useState("");
@@ -33,7 +33,7 @@ const AddDailyActivityReport = () => {
       setStatus(DailyActivityReportById?.data?.status)
       console.log(DailyActivityReportById?.data, "check DailyActivityReportById")
       setCompanyName(DailyActivityReportById?.data?.companyName)
-      setSalesPerson(DailyActivityReportById?.data?.salesPerson)
+      // setSalesPerson(DailyActivityReportById?.data?.salesPerson)
       setPurposeOfVisit(DailyActivityReportById?.data?.purposeOfVisit)
       setDateOfVisit(DailyActivityReportById?.data?.dateOfVisit)
       setModeOfMeeting(DailyActivityReportById?.data?.modeOfMeeting)
@@ -74,7 +74,7 @@ const AddDailyActivityReport = () => {
     e.preventDefault();
     try {
 
-      const obj = { status, companyName, salesPerson, purposeOfVisit, dateOfVisit, modeOfMeeting, customerName, scheduleMeeting, description };
+      const obj = { status, companyName, purposeOfVisit, dateOfVisit, modeOfMeeting, customerName, scheduleMeeting, description };
 
       console.log(obj.status, "checking submit obj");
 
@@ -105,7 +105,7 @@ const AddDailyActivityReport = () => {
         <h1 className="text-2xl font-bold mb-6">Add Report</h1>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 md:grid-cols-2 gap-6 mb-4">
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-black mb-1">
                 Sales Person
               </label>
@@ -120,7 +120,7 @@ const AddDailyActivityReport = () => {
                 <option>Bhawna</option>
                 <option>Tushar</option>
               </select>
-            </div>
+            </div> */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Date of Visit
