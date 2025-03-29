@@ -268,7 +268,7 @@ function Sidebar() {
           className="object-contain w-[168px] h-[178px] mx-auto"
         />
       </div>
-      <ul className="main-list w-full">
+      <ul className="main-list w-full overflow-auto h-[100vh]">
         {filteredSidebarArr.map((el, index) => (
           <li className="relative" key={index}>
             {el?.dropArr ? (
