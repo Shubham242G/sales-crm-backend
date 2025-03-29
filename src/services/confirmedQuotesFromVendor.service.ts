@@ -81,7 +81,6 @@ export interface IConfirmedQuotes {
 export const useConfirmedQuotesApiHook = () => {
   // const axiosAuth = useAxiosAuth({});
   const addConfirmedQuotes = async (obj: any) => {
-    console.log(`${BASE_URL}${prefix}/`, "test");
     return axios.post<GeneralApiResponse<any>>(`${BASE_URL}${prefix}/`, obj);
   };
   const updateConfirmedQuotesById = async ({ id, obj }: { id: string; obj: any }) => {

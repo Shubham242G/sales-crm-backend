@@ -12,7 +12,6 @@ const AddCategory = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id, "id");
   const { mutateAsync: addCategory } = useAddCategory();
   const { mutateAsync: updateCategory } = useUpdateCategoryById();
   const { data: categoryData, isLoading } = useCategoryById(id || "");
@@ -22,7 +21,6 @@ const AddCategory = () => {
   useEffect(() => {
     // Prefill form when editing
     if (categoryData) {
-      console.log(categoryData, "getById/");
       setName(categoryData?.data?.name || "");
     }
   }, [categoryData]);
@@ -39,7 +37,6 @@ const AddCategory = () => {
           navigate("/categoryList");
         }
       } else {
-        console.log("check");
 
         const { data: res } = await addCategory(obj);
         if (res?.message) {

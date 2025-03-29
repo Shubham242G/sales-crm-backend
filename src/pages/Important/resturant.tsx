@@ -25,7 +25,7 @@ const AddResturant = () => {
   const [floor, setFloor] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id, "id");
+
   const { mutateAsync: addResturant } = useAddResturant();
   const { mutateAsync: updateResturant } = useUpdateResturantById();
   const { data: resturantDataById, isLoading } = useResturantById(id || "");
@@ -36,13 +36,12 @@ const AddResturant = () => {
   useEffect(() => {
     // Prefill form when editing
     if (resturantDataById) {
-      console.log(resturantDataById, "getById/");
+
       setFloor(resturantDataById?.data?.floor || "");
     }
   }, [resturantDataById]);
   const handleImageUpload = (files: { value: string }[]) => {
-    console.log(files, "filessss");
-    console.log(images, "image");
+
     setImages(files.map((el) => ({ image: el.value })));
   };
   const handleSubmit = async (e: React.FormEvent) => {

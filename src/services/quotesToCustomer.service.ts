@@ -25,7 +25,6 @@ export interface IQuotesToCustomer {
 export const useQuotesToCustomerApiHook = () => {
   // const axiosAuth = useAxiosAuth({});
   const addQuotesToCustomer = async (obj: any) => {
-    console.log(`${BASE_URL}${prefix}/`, "test");
     return axios.post<GeneralApiResponse<any>>(`${BASE_URL}${prefix}/`, obj);
   };
   const updateQuotesToCustomerById = async ({
@@ -62,7 +61,6 @@ export const useQuotesToCustomerApiHook = () => {
     pagination: PaginationState,
     searchObj: any
   ) => {
-    console.log(`${BASE_URL}${prefix}/`, "test c");
     // const query = new URLSearchParams({
     //     pageIndex: String(pagination.pageIndex),
     //     pageSize: String(pagination.pageSize),

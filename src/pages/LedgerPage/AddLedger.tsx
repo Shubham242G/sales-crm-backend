@@ -169,13 +169,11 @@ export default function AddLedger() {
     setShowFilterModal(true);
   };
 
-  console.log("agenttypetypererer", agenttype);
 
   const location = useLocation();
   const { pathname } = location;
 
   useEffect(() => {
-    console.log("currentUrlcurrentUrlcurrentUrl", pathname);
   }, [pathname]);
 
   return (

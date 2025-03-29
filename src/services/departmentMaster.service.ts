@@ -18,7 +18,6 @@ export interface IDepartmentMaster {
 export const useDepartmentMasterApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addDepartmentMaster = async (obj: any) => {
-        console.log(obj,"add images service")
         return axios.post<GeneralApiResponse<IDepartmentMaster>>(`${BASE_URL}${prefix}/`, obj);
     };
     const updateDepartmentMasterById = async ({ id, obj }: { id: string; obj: any }) => {

@@ -89,7 +89,6 @@ function EnquiryLIst() {
     if (!file) return;
 
     try {
-      console.log("Starting upload, setting isUploading to true");
       setIsUploading(true);
 
       const allowedExtensions = ["xlsx", "csv"];
@@ -102,13 +101,10 @@ function EnquiryLIst() {
       const formData = new FormData();
       formData.append("file", file);
 
-      console.log("Calling addEnquiryExel with FormData");
       const response = await addEnquiryExel(formData);
 
-      console.log(response, "check response ");
 
       if (response.status === 200) {
-        console.log("Upload response:", response);
         toastSuccess("Enquiries imported successfully!");
         refetch();
       } else {
@@ -116,12 +112,9 @@ function EnquiryLIst() {
       }
 
       setIsUploading(false);
-      console.log("set is uploading false inside try");
     } catch (error: any) {
-      console.error("Import Error:", error);
       toastError("An error occurred during import. Please try again.");
     } finally {
-      console.log("In finally block, setting isUploading to false");
       setIsUploading(false);
 
       if (fileInputRef.current) {
@@ -133,7 +126,6 @@ function EnquiryLIst() {
   const handleExportEnquiries = async () => {
     try {
       const { data: response } = await getExel();
-      console.log(response, "check response");
       const url = generateFilePath("/" + response.filename);
       const link = document.createElement("a");
       link.href = url;
@@ -144,7 +136,6 @@ function EnquiryLIst() {
       toastSuccess("Enquries exported successfully!");
     } catch (error) {
       toastError("Failed to export enquiries. Please try again.");
-      console.error("Export Error:", error);
     }
   };
 

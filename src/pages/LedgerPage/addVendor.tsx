@@ -383,7 +383,6 @@ const AddVendorForm = () => {
   ]);
 
   const [isRoomDetailsVisible, setIsRoomDetailsVisible] = useState(false);
-  console.log(isRoomDetailsVisible, "check  value")
 
   const populateDemoData = () => {
     setVendor({
@@ -572,13 +571,10 @@ const AddVendorForm = () => {
 }
 
 
-  console.log(isBanquetDetailsVisible, "check the visibiltiy")
 
   useEffect(() => {
-    console.log(vendorDataById, "vendorDataById");
     if (vendorDataById) {
       const apiData = vendorDataById.data;
-      console.log(apiData, "check for api data");
 
       setVendor((prev) => ({
         ...prev,
@@ -793,17 +789,11 @@ const AddVendorForm = () => {
     }
   }, [vendorDataById]);
 
-  console.log(
-    contactPersons.find(
-      (contactPersonMobilePhone) => contactPersonMobilePhone,
-      "checking the mobile number"
-    )
-  );
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log(vendor, "check for vendor data");
       const obj = {
         vendor,
         contactPersons,
@@ -823,7 +813,6 @@ const AddVendorForm = () => {
         isRestaurantDetailsVisible,
       };
 
-      console.log(obj, "check obj");
 
       if (id) {
         const { data: res } = await updateVendor({ id, obj });
@@ -857,11 +846,7 @@ const AddVendorForm = () => {
     } catch (error) {
       toastError(error);
     }
-    console.log("FormDataaaa:-->", vendor);
-    console.log(otherDetails, "other details check");
-    console.log(billingAddress, "billing address check");
-    console.log(shippingAddress, "shipping address check");
-    console.log(contactPersons, "contact persons check");
+    
   };
 
   const handleAddRoom = () => {
@@ -960,7 +945,6 @@ const AddVendorForm = () => {
             toastSuccess(`${validFiles.length} image(s) uploaded successfully`);
           })
           .catch((error) => {
-            console.error("Error reading files:", error);
             toastError("Error uploading images");
           });
       }
@@ -1084,7 +1068,6 @@ const AddVendorForm = () => {
           toastSuccess(`${files.length} image(s) uploaded successfully`);
         })
         .catch((error) => {
-          console.error("Error reading files:", error);
           toastError("Error uploading images");
         });
     }
@@ -1140,7 +1123,6 @@ const AddVendorForm = () => {
             toastSuccess(`${validFiles.length} image(s) uploaded successfully`);
           })
           .catch((error) => {
-            console.error("Error reading files:", error);
             toastError("Error uploading images");
           });
       }
@@ -1343,7 +1325,6 @@ const AddVendorForm = () => {
   ];
 
   const copyBillingAddress = () => {
-    console.log("check function working ");
     setShippingAddress({
       ...shippingAddress,
       shippingCountry: billingAddress.billingCountry,
@@ -1357,7 +1338,6 @@ const AddVendorForm = () => {
     });
   };
 
-  console.log(location, "checking the location");
 
   return (
 
@@ -2031,7 +2011,6 @@ const AddVendorForm = () => {
                                                       alt={`Room Image ${imgIndex + 1}`}
                                                       className="h-24 w-full object-cover rounded-md border border-gray-200"
                                                       onError={(e) => {
-                                                        console.error("Image failed to load:", image);
                                                         (e.target as HTMLImageElement).src =
                                                           "path/to/placeholder-image.jpg"; // Fallback image
                                                       }}

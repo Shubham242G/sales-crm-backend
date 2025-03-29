@@ -23,7 +23,6 @@ export interface IHotel {
 export const useHotelApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addHotel = async (obj: any) => {
-        console.log(obj,"add images service")
         return axios.post<GeneralApiResponse<IHotel>>(`${BASE_URL}${prefix}/`, obj);
     };
     const updateHotelById = async ({ id, obj }: { id: string; obj: any }) => {

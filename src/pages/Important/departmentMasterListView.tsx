@@ -44,7 +44,6 @@ function DepartmentMasterListView() {
   };
 
   // ledger details modal
-  console.log(DepartmentData, "DepartmentData");
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);

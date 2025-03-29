@@ -25,7 +25,6 @@ function SupplierGroup() {
   // Sample data
   // const totalRows = data.length;
   const handlePageChange = (page:any) => {
-    console.log(page, "page")
     setCurrentPage(page);
   };
   const handleRowsPerPageChange = (newPerPage:any) => {
@@ -34,7 +33,6 @@ function SupplierGroup() {
 
   const handleSubmit = async () => {
     try {
-      console.log(name, name == "", "namenamename")
       if (!name || name == "") {
         toastError("Name is mandatory !!!");
         return
@@ -46,14 +44,11 @@ function SupplierGroup() {
         let { data: supplierUpdateRes } = await updateSupplierGroup({ id: selectedGroupId, obj });
         if (supplierUpdateRes.message) {
           toastSuccess(supplierUpdateRes.message);
-          console.log(
-            `Supplier Group with ID ${selectedGroupId} updated successfully`
-          );
+          
         }
       } else {
         const { data: SupplierAddRes } = await addSupplierGroup(obj);
         if (SupplierAddRes.message) {
-          console.log(SupplierAddRes, "SupplierAdd");
           toastSuccess(SupplierAddRes.message);
         }
       }
@@ -63,7 +58,6 @@ function SupplierGroup() {
       setSelectedGroupId("");
     } catch (error) {
       toastError(error);
-      console.log(error, "Submit Error");
     }
   };
 

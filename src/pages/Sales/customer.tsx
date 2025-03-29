@@ -50,7 +50,6 @@ function CustomerSales() {
   );
 
   const { data: CustomerData } = useCustomer(searchObj);
-  console.log(CustomerData, "check customerData");
   const { mutateAsync: deleteCustomer } = usedeleteCustomerById();
   const { mutateAsync: updateCustomer } = useUpdateCustomerById();
 

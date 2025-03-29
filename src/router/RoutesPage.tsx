@@ -11,7 +11,7 @@ export default function RootRouter() {
   const checkAuth = async () => {
     try {
       const decodedToken = await getAuth();
-      console.log(decodedToken, "check decode token");
+
       if (decodedToken?.token) {
         setIsAuthorized(true);
       } else {
@@ -24,7 +24,6 @@ export default function RootRouter() {
     checkAuth();
   }, []);
   useEffect(() => {
-    console.log(isAuthorized);
   }, [isAuthorized]);
 
   // if (isLoading) {

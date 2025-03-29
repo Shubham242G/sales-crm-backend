@@ -51,7 +51,6 @@ function LedgerGroup() {
       setIsEditMode(false);
       setSelectedGroupId("");
     } catch (error) {
-      console.log(error, "Submit Error");
     }
   };
 
@@ -75,7 +74,6 @@ function LedgerGroup() {
       toastSuccess(res.message);
     }
     } catch (error) {
-      console.log(error, "Delete Error");
     }
   };
 

@@ -24,7 +24,7 @@ function ConfirmedQuotestoCustomer() {
       name: "Quotes Id",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row ? console.log(row) : row.quotesId}</h6>
+          <h6>{row.quotesId}</h6>
         </div>
       ),
       width: "10%",

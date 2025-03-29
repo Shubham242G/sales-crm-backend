@@ -235,7 +235,6 @@ const AddEnquiryForm = () => {
         currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1))
       }
 
-      console.log("Check dates ", dates)
       setRoom(
         dates.map((date) => ({
           date: date.date,
@@ -437,12 +436,8 @@ const AddEnquiryForm = () => {
     if (enquiryDataById && enquiryDataById?.data) {
       const { eventSetup } = enquiryDataById.data
 
-      console.log(enquiryDataById.data, "check upcoming data")
-      console.log("event setup data: ", enquiryDataById.data.eventSetup, "getById/")
-      console.log("event start data: ", enquiryDataById.data.eventSetup.eventStartDate)
-      console.log("event start data: ", enquiryDataById.data.eventSetup.eventEndDate)
+
       setAirTickets(enquiryDataById?.data?.airTickets || airTickets)
-      console.log("Fetched eventSetup:", eventSetup)
       setEventSetup({
         functionType: eventSetup.functionType || "",
         setupRequired: eventSetup.setupRequired || "",
@@ -460,7 +455,6 @@ const AddEnquiryForm = () => {
       setBillingAddress(enquiryDataById?.data?.billingAddress)
       setCompanyName(enquiryDataById?.data?.companyName)
 
-      console.log("room category", enquiryDataById?.data?.room[0]?.roomCategory)
       setPhoneNumber(enquiryDataById?.data?.phoneNumber)
       setHotelName(enquiryDataById?.data?.hotelName)
       setApproxPassengers(enquiryDataById?.data?.approxPassengers)
@@ -489,17 +483,12 @@ const AddEnquiryForm = () => {
     }
   }, [enquiryDataById])
 
-  //   console.log("start date: ", moment(eventSetup.eventDates[0]).format("YYYY-MM-DD"))
-  console.log("start date: ", eventSetup?.eventDates[0]?.startDate)
-  console.log(eventSetup, "check event setup changes")
-  console.log("Enquiry Data by ID:", enquiryDataById)
-  console.log("number of rooms: ", enquiryDataById?.data?.noOfRooms)
+
   // Submit Handler
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
     try {
-      console.log("Current area state:", area)
 
       const { eventStartDate, eventEndDate, ...restEventSetup } = eventSetup
 
@@ -538,87 +527,60 @@ const AddEnquiryForm = () => {
         area: area,
       }
 
-      console.log(obj, "obj check")
 
-      console.log("User Details:", {
-        firstName: obj.firstName,
-        lastName: obj.lastName,
-        phoneNumber: obj.phoneNumber,
-        email: obj.email,
-        companyName: obj.companyName,
-        levelOfEnquiry: obj.levelOfEnquiry,
-        enquiryType: obj.enquiryType,
-        // hotelPreferences: obj.hotelPreferences,
-        checkIn: obj.checkIn,
-        checkOut: obj.checkOut,
-        city: obj.city,
-        noOfRooms: obj.noOfRooms,
-        categoryOfHotel: obj.categoryOfHotel,
-        occupancy: obj.occupancy,
-        billingAddress: obj.billingAddress,
-        area: obj.area,
-      })
 
-      console.log("Room Details:", obj.room)
-      obj.room.forEach((room, index) => {
-        console.log(`Room ${index + 1}:`, {
-          date: room.date,
-          roomCategory: room?.roomCategory,
-          noOfRooms: room.noOfRooms,
-          occupancy: room.occupancy,
-          mealPlan: room.mealPlan,
-        })
-      })
 
-      console.log("Banquet Details:", obj.banquet)
-      obj.banquet.forEach((banquet, index) => {
-        console.log(`Banquet ${index + 1}:`, {
-          date: banquet.date,
-          session: banquet.session,
-          seatingStyle: banquet.seatingStyle,
-          avSetup: banquet.avSetup,
-          menuType: banquet.menuType,
-          minPax: banquet.minPax,
-          seatingRequired: banquet.seatingRequired,
-        })
-      })
+      // obj.room.forEach((room, index) => {
+      //   console.log(`Room ${index + 1}:`, {
+      //     date: room.date,
+      //     roomCategory: room?.roomCategory,
+      //     noOfRooms: room.noOfRooms,
+      //     occupancy: room.occupancy,
+      //     mealPlan: room.mealPlan,
+      //   })
+      // })
 
-      console.log("Cab Details:", obj.cab)
-      obj.cab.forEach((cab, index) => {
-        console.log(`Cab ${index + 1}:`, {
-          date: cab.date,
-          fromCity: cab.fromCity,
-          toCity: cab.toCity,
-          noOfVehicles: cab.noOfVehicles,
-          vehicleType: cab.vehicleType,
-          tripType: cab.tripType,
-          mealPlan: cab.mealPlan,
-        })
-      })
+      // console.log("Banquet Details:", obj.banquet)
+      // obj.banquet.forEach((banquet, index) => {
+      //   console.log(`Banquet ${index + 1}:`, {
+      //     date: banquet.date,
+      //     session: banquet.session,
+      //     seatingStyle: banquet.seatingStyle,
+      //     avSetup: banquet.avSetup,
+      //     menuType: banquet.menuType,
+      //     minPax: banquet.minPax,
+      //     seatingRequired: banquet.seatingRequired,
+      //   })
+      // })
 
-      console.log("Event Setup Details:", obj.eventSetup)
-      console.log("Event Setup Function Type:", obj.eventSetup.functionType)
-      console.log("Event Setup Required:", obj.eventSetup.setupRequired)
-      console.log("Event Dates:", obj.eventSetup.eventDates)
-      obj.eventSetup.eventDates.forEach((date, index) => {
-        console.log(`Event Date ${index + 1}:`, {
-          startDate: date?.startDate,
-          endDate: date?.endDate,
-        })
-      })
+      // console.log("Cab Details:", obj.cab)
+      // obj.cab.forEach((cab, index) => {
+      //   console.log(`Cab ${index + 1}:`, {
+      //     date: cab.date,
+      //     fromCity: cab.fromCity,
+      //     toCity: cab.toCity,
+      //     noOfVehicles: cab.noOfVehicles,
+      //     vehicleType: cab.vehicleType,
+      //     tripType: cab.tripType,
+      //     mealPlan: cab.mealPlan,
+      //   })
+      // })
 
-      console.log("Air Tickets Details:", obj.airTickets)
-      console.log("Air Tickets Trip Type:", obj.airTickets.tripType)
-      console.log("Air Tickets Number of Passengers:", obj.airTickets.numberOfPassengers)
-      console.log("Air Tickets From City:", obj.airTickets.fromCity)
-      console.log("Air Tickets To City:", obj.airTickets.toCity)
-      console.log("Air Tickets Departure Date:", obj.airTickets.departureDate)
-      console.log("Air Tickets Return Date:", obj.airTickets.returnDate)
+      // console.log("Event Setup Details:", obj.eventSetup)
+      // console.log("Event Setup Function Type:", obj.eventSetup.functionType)
+      // console.log("Event Setup Required:", obj.eventSetup.setupRequired)
+      // console.log("Event Dates:", obj.eventSetup.eventDates)
+      // obj.eventSetup.eventDates.forEach((date, index) => {
+      //   console.log(`Event Date ${index + 1}:`, {
+      //     startDate: date?.startDate,
+      //     endDate: date?.endDate,
+      //   })
+      // })
 
-      console.log("airTickets:", obj.airTickets)
+      
 
       if (id) {
-        console.log(obj, "<<<<<<<check obj")
+        
         const { data: res } = await updateEnquiryById({ id, obj })
 
         if (res?.message) {
@@ -626,7 +588,6 @@ const AddEnquiryForm = () => {
           navigate("/enquiryList")
         }
       } else {
-        console.log(obj, "<<<<<<<check obj")
         const { data: res } = await addEnquiry(obj)
         if (res?.message) {
           toastSuccess(res.message)
@@ -691,9 +652,7 @@ const AddEnquiryForm = () => {
   //for resolving error for now
   const nameOptions = [{ value: "", label: "" }]
 
-  console.log(othersPreference, "check other preferences")
 
-  console.log(cab, "cab check ")
   return (
     <div className="bg-white min-h-screen">
       <div className="bg-white text-black py-4 px-6">

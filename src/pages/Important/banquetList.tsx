@@ -39,7 +39,6 @@ function BanquetList() {
     setPageIndex(newPage);
   };
   const { data: banquetData } = useBanquet(searchObj);
-  console.log(banquetData, "check banquetData");
   const { mutateAsync: deleteBanquet } = usedeleteBanquetById();
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
@@ -60,7 +59,6 @@ function BanquetList() {
   };
 
   // ledger details modal
-  console.log(banquetData, "banquetData");
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);

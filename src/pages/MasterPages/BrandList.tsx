@@ -35,7 +35,6 @@ function BrandList() {
   };
   const handleSubmit = async () => {
     try {
-      console.log(name, name == "", "namenamename");
       if (!name || name == "") {
         toastError("Name is mandatory !!!");
         return;
@@ -49,12 +48,10 @@ function BrandList() {
         });
         if (brandUpdateRes.message) {
           toastSuccess(brandUpdateRes.message);
-          console.log(`Brand with ID ${selectedGroupId} updated successfully`);
         }
       } else {
         const { data: brandAddRes } = await addBrand(obj);
         if (brandAddRes.message) {
-          console.log(brandAddRes, "brandAddRes");
           toastSuccess(brandAddRes.message);
         }
       }
@@ -65,7 +62,6 @@ function BrandList() {
       setSelectedGroupId("");
     } catch (error) {
       toastError(error);
-      console.log(error, "Submit Error");
     }
   };
 

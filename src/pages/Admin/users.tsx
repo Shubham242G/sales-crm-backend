@@ -31,7 +31,6 @@ function Users() {
   );
 
   const { data: UserData } = useUser(searchObj);
-  console.log(UserData, "check UserData");
   const { mutateAsync: deleteUser } = useDeleteUser();
 
   const handleDelete = async (id: string) => {

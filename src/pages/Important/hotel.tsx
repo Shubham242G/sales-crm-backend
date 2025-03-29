@@ -18,7 +18,6 @@ const AddHotel = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id, "id");
   const { mutateAsync: addHotel } = useAddHotel();
   const { mutateAsync: updateHotel } = useUpdateHotelById();
   const { data: hotelDataById, isLoading } = useHotelById(id || "");
@@ -29,13 +28,11 @@ const AddHotel = () => {
   useEffect(() => {
     // Prefill form when editing
     if (hotelDataById) {
-      console.log(hotelDataById, "getById/");
       setName(hotelDataById?.data?.name || "");
     }
   }, [hotelDataById]);
   const handleImageUpload = (files: { value: string }[]) => {
-    console.log(files, "filessss");
-    console.log(images, "image");
+  
     setImages(files.map((el) => ({ image: el.value })));
   };
   const handleSubmit = async (e: React.FormEvent) => {

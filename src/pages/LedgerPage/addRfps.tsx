@@ -79,11 +79,9 @@ const AddRfpsForm = () => {
     label: el.fullName,
   }));
 
-  console.log(vendorArr, "check vendorArr");
 
   useEffect(() => {
     if (!isLoading && rfpDataById?.data) {
-      console.log(rfpDataById, "<<-------rfpDataById");
       setFormData({
         rfpId: rfpDataById.data.rfpId || "",
         serviceType: rfpDataById.data.serviceType || [],
@@ -96,10 +94,7 @@ const AddRfpsForm = () => {
         additionalInstructions: rfpDataById.data.additionalInstructions || "",
       });
 
-      console.log(
-        rfpDataById?.data?.vendorList,
-        "check rfpDataById fgsdfffgdsgg"
-      );
+      
 
       setSelectedVendors(rfpDataById?.data?.vendorList);
 
@@ -116,7 +111,6 @@ const AddRfpsForm = () => {
     try {
       const obj = { ...formData };
 
-      console.log(obj, "checking submit obj");
 
       if (id) {
         const { data: res } = await updateRfp({ id, obj });
@@ -124,8 +118,7 @@ const AddRfpsForm = () => {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/rfps");
-          console.log(obj, "<<<<<<<check obj");
-          console.log("Thisssss---->", selectedVendors);
+          
         }
       } else {
         const { data: res } = await addRfp(obj);
@@ -206,7 +199,6 @@ const AddRfpsForm = () => {
   //   }));
   // };
 
-  console.log(vendorData.data, "vendorData");
   useEffect(() => {
     if (vendorData && vendorData.data) {
       setVendorArr(
@@ -218,7 +210,6 @@ const AddRfpsForm = () => {
     }
   }, [vendorData]);
   const optionConvertor = (firstName: string, lastname: string) => {
-    console.log("firstname", firstName, "lastname", lastname);
     return `${firstName} ${lastname}`;
   };
 

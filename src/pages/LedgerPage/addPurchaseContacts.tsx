@@ -36,7 +36,6 @@ const AddPurchaseContact = () => {
   useEffect(() => {
     // Prefill form when editing
     if (purchaseContactDataById) {
-      console.log(purchaseContactDataById, "getById/");
       setFormData(purchaseContactDataById?.data || "");
     }
   }, [purchaseContactDataById]);
@@ -63,7 +62,6 @@ const AddPurchaseContact = () => {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/purchaseContact");
-          console.log("formDataaaaaaa", formData);
         }
       } else {
         const { data: res } = await addPurchaseContact(obj);

@@ -75,7 +75,6 @@ function HotelList() {
   };
 
   // ledger details modal
-  console.log(hotelData?.data, "hotelData");
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);

@@ -27,7 +27,6 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
     reassignments: [] as IReassignment[],
   });
 
-  console.log(formData.reassignments, "check reassignments  for changes ");
   const [newReassignment, setNewReassignment] = useState<IReassignment>({
     reAssignedTo: "",
     remark: "",
@@ -56,7 +55,6 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
 
   const { data: userData } = useUser();
 
-  console.log(userData, "user data");
   const usersOptions =
     userData?.data.map((user: any) => ({
       label: user.name,
@@ -67,7 +65,6 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
     (item) => item.previousAssignee
   );
 
-  console.log(formData.reassignments, "reassignments");
 
   const reassigningOptions = usersOptions.filter(
     (user) =>
@@ -75,7 +72,6 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
       !previousAssigneeArr.includes(user.value)
   );
 
-  console.log(reassigningOptions, "reassigningOptions");
 
   // const reassigningOptions = usersOptions.filter((user) => {
   //   const isAssigned =
@@ -88,12 +84,8 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
   // Populate initial state when taskData is available
   useEffect(() => {
     if (TaskManagementDataById && TaskManagementDataById?.data) {
-      console.log("TaskManagementDataById", TaskManagementDataById);
 
-      console.log(
-        TaskManagementDataById.data.reassignments,
-        "reassignmentssssssss"
-      );
+      
       setFormData((prev: any) => ({
         ...prev,
 
@@ -127,10 +119,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
     }
   }, [TaskManagementDataById]);
 
-  console.log(
-    TaskManagementDataById,
-    "ckecking the task management data......"
-  );
+ 
 
   // Update timeType options when timeType changes
   useEffect(() => {
@@ -196,7 +185,6 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
       //     return;
       //   }
 
-      console.log(formData, "check form data");
 
       let obj = { ...formData };
 
@@ -227,18 +215,15 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
           navigate("/TaskManagement");
         }
       }
-      console.log(obj, "check obj");
-      console.log(formData, "check form data");
+      
     } catch (error) {
       toastError(error);
     }
-    console.log("FormDataaaa:-->", formData);
   };
 
   // const isEditable = Boolean(id);
   const isEditable = async () => {
     const decodedToken = await getAuth();
-    console.log(decodedToken, "decode tokennnnnn");
     const role = decodedToken.role;
     if (role === "ADMIN") {
       return true;
@@ -252,17 +237,13 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
     const fetchEditableStatus = async () => {
       const editableStatus = await isEditable();
       setValue(editableStatus);
-      console.log(editableStatus, "value check 1");
     };
 
     fetchEditableStatus();
   }, [getAuth]);
 
-  console.log(value, "value check ");
 
-  console.log(formData.reassignments, "check reassignments data");
 
-  console.log(formData, "formdata check");
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">

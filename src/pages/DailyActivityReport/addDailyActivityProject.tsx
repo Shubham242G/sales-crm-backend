@@ -31,7 +31,6 @@ const AddDailyActivityReport = () => {
       setScheduleMeeting(DailyActivityReportById?.data?.scheduleMeeting)
       setDescription(DailyActivityReportById?.data?.description)
       setStatus(DailyActivityReportById?.data?.status)
-      console.log(DailyActivityReportById?.data, "check DailyActivityReportById")
       setCompanyName(DailyActivityReportById?.data?.companyName)
       // setSalesPerson(DailyActivityReportById?.data?.salesPerson)
       setPurposeOfVisit(DailyActivityReportById?.data?.purposeOfVisit)
@@ -76,7 +75,6 @@ const AddDailyActivityReport = () => {
 
       const obj = { status, companyName, purposeOfVisit, dateOfVisit, modeOfMeeting, customerName, scheduleMeeting, description };
 
-      console.log(obj.status, "checking submit obj");
 
       if (id) {
         const { data: res } = await updateDailyActivityReport({ id, obj });
@@ -91,14 +89,12 @@ const AddDailyActivityReport = () => {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/DailyActivityReport");
-          console.log("OBj", obj)
         }
       }
     } catch (error) {
       toastError(error);
     }
   };
-  console.log(LeadNames?.data, "check LeadNames")
   return (
     <div className="min-h-screen bg-white p-8">
       <div className="max-w-6xl mx-auto bg-gray-50 shadow-lg rounded-lg p-8">

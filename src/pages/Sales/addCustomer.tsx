@@ -237,7 +237,6 @@ const AddCustomer = () => {
   useEffect(() => {
     if (customerDataById) {
       const apiData = customerDataById.data;
-      console.log(apiData, "check for api data");
 
       if (apiData.contactPersons) {
         setContactPersons(
@@ -253,7 +252,6 @@ const AddCustomer = () => {
         );
       }
 
-      console.log("customer salutation: ", apiData.salutation);
       setFormData((prev) => ({
         ...prev,
         email: apiData?.email || "",
@@ -313,7 +311,6 @@ const AddCustomer = () => {
         // contactPersonsMobile: apiData?.contactPersonsMobile || "",
         // contactPersonsCommunicationChannels: apiData?. contactPersonsCommunicationChannels || "",
       }));
-      console.log(apiData, "api data for the final time");
     }
   }, [customerDataById]);
 
@@ -407,7 +404,6 @@ const AddCustomer = () => {
           setImageState((prevImages) => [...prevImages, ...base64Images]);
         })
         .catch((error) => {
-          console.error("Error reading files:", error);
         });
     }
   };
@@ -492,7 +488,6 @@ const AddCustomer = () => {
         documentArray: uploadFiles,
       };
 
-      console.log(submissionData, "check the submission data");
 
       // Handle create/update based on whether we have an ID
       if (id) {
@@ -533,7 +528,6 @@ const AddCustomer = () => {
   };
 
   const copyBillingAddress = () => {
-    console.log("check function working ");
     setFormData({
       ...formData,
       shippingCountryRegion: formData.countryRegion,
@@ -549,7 +543,6 @@ const AddCustomer = () => {
 
   const { canView, canUpdate, canCreate } =
     checkPermissionsForButtons("Customers");
-  console.log(canUpdate, "checking can update");
 
   // console.log(formData.openingBalance, "checking the opening balance");
 

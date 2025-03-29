@@ -37,7 +37,6 @@ export interface IQuotesFromVendors {
 export const useQuotesFromVendorsApiHook = () => {
   // const axiosAuth = useAxiosAuth({});
   const addQuotesFromVendors = async (obj: any) => {
-    console.log(`${BASE_URL}${prefix}/`, "test");
     return axios.post<GeneralApiResponse<any>>(`${BASE_URL}${prefix}/`, obj);
   };
   const updateQuotesFromVendorsById = async ({
@@ -74,7 +73,6 @@ export const useQuotesFromVendorsApiHook = () => {
     pagination: PaginationState,
     searchObj: any
   ) => {
-    console.log(`${BASE_URL}${prefix}/`, "test c");
     // const query = new URLSearchParams({
     //     pageIndex: String(pagination.pageIndex),
     //     pageSize: String(pagination.pageSize),

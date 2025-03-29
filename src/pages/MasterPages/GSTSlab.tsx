@@ -162,7 +162,6 @@ function GSTSlab() {
 
 
   const handleChangePageSize = (value: string) => {
-    console.log(value, "valuevaluevaluevaluevaluevaluevaluevalue")
     const params = new URLSearchParams(searchParams.toString());
     params.set(pageIndex, String(pagination.pageIndex));
     params.set(pageSize, String(value));
@@ -172,7 +171,7 @@ function GSTSlab() {
   const debounceFn = useCallback(
     debounce((e) => {
       let regExp = new RegExp("^[0-9]*$");
-      console.log(regExp,"regExp", e, regExp.test(e))
+
       if (regExp.test(e)) {
         setQueryObj({ query: e })
       }

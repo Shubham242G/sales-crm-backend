@@ -35,13 +35,11 @@ const AddSalesContact = () => {
 
   useEffect(() => {
     if (salesContactDataById) {
-      console.log(salesContactDataById, "getById/");
       setFormData(salesContactDataById?.data || "");
     }
   }, [salesContactDataById]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log(formData, "<-----formData");
     e.preventDefault();
     try {
       if (!formData.firstName) {
@@ -64,7 +62,6 @@ const AddSalesContact = () => {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/sales-contact-view");
-          console.log("formDataaaaaaa", formData);
         }
       } else {
         const { data: res } = await addSalesContact(obj);

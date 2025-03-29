@@ -12,7 +12,6 @@ const handleLogout = (navigate:any) => {
 axiosAuth.interceptors.request.use(
   async function (config) {
     const decodedToken = await getAuth();
-    console.log(decodedToken,"ffffffffffffffffffffffffffffffffffffffffffffffff")
     if (decodedToken?.token) {
       config.headers["Authorization"] = `Bearer ${decodedToken?.token}`;
     }

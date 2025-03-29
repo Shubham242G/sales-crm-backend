@@ -52,7 +52,6 @@ function TaskManagement() {
   );
 
   const { data: TaskManagementData } = useTaskManagement(searchObj);
-  console.log(TaskManagementData, "check TaskManagementData");
   const { mutateAsync: deleteTaskManagement } = usedeleteTaskManagementById();
   const { mutateAsync: updateTaskManagement } = useUpdateTaskManagementById();
   // const { mutateAsync: convert } = convertToContact();
@@ -61,7 +60,6 @@ function TaskManagement() {
     const decodedToken = await getAuth();
     setUserId(decodedToken.user?._id || "");
     setRole(decodedToken.role);
-    console.log(decodedToken, " decoded token check");
   };
 
   useEffect(() => {
@@ -94,7 +92,6 @@ function TaskManagement() {
 
   
   useEffect(() => {
-    console.log("Fetching user ID...");
     getUserId();
   }, [getAuth]);
 
@@ -102,7 +99,6 @@ function TaskManagement() {
   useEffect(() => {
     if (!userId) return; // Wait until userId is available
   
-    console.log(userId, "check userId");
   
     const newSocket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
       query: { userId }, // Send userId to the server
@@ -110,11 +106,9 @@ function TaskManagement() {
     });
   
     newSocket.on("connect", () => {
-      console.log("Connected to server", newSocket.id);
     });
   
     newSocket.emit("playerConnected", newSocket.id);
-    newSocket.on("check", (msg) => console.log(msg, "check msg"));
   
     setSocket(newSocket); // Store socket in state
   
@@ -163,7 +157,6 @@ function TaskManagement() {
     getUserId();
   }, [getAuth]);
 
-  console.log(TaskManagementData.data, "Task Management data");
   // useEffect(() => {
   //   if (TaskManagementData?.data) {
   //     const filterData =

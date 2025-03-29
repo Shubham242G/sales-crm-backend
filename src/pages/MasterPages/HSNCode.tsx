@@ -216,7 +216,6 @@ function HSNCode() {
 
 
   const handleChangePageSize = (value:string)=> {
-    console.log(value,"valuevaluevaluevaluevaluevaluevaluevalue")
     const params = new URLSearchParams(searchParams.toString());
     params.set(pageIndex,String(pagination.pageIndex));
     params.set(pageSize,  String(value));

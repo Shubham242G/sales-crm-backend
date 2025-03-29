@@ -77,7 +77,6 @@ const RoleHierarchy: React.FC = () => {
 
   // Simulate fetching roles from Zoho CRM API
   useEffect(() => {
-    console.log("Fetching roles from Zoho CRM (simulated)...");
   }, []);
 
   const findAndUpdateRole = (

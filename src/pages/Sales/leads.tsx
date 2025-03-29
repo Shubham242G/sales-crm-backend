@@ -54,7 +54,6 @@ function Leads() {
   const { data: leadData, refetch } = useLead(searchObj);
 
   const { data: LeadData } = useLead(searchObj);
-  console.log(LeadData, "check leadData");
   const { mutateAsync: deleteLead } = usedeleteLeadById();
   // const { mutateAsync: convert } = convertToContact();
 
@@ -95,7 +94,6 @@ function Leads() {
     if (!file) return;
 
     try {
-      console.log("Starting upload, setting isUploading to true");
       setIsUploading(true); // Set uploading state
 
       // Check for allowed file extensions
@@ -109,14 +107,12 @@ function Leads() {
       const formData = new FormData();
       formData.append("file", file);
 
-      console.log("Calling addEnquiryExel with FormData");
       const response = await addLeadExel(formData);
 
-      console.log(response, "check response ");
+      
 
       // Check if the upload was successful
       if (response.status === 200) {
-        console.log("Upload response:", response);
         toastSuccess("Enquiries imported successfully!");
         refetch(); // Trigger data refetch
       } else {
@@ -124,12 +120,12 @@ function Leads() {
       }
 
       setIsUploading(false); // End uploading state
-      console.log("set is uploading false inside try");
+ 
     } catch (error: any) {
-      console.error("Import Error:", error);
+
       toastError("An error occurred during import. Please try again.");
     } finally {
-      console.log("In finally block, setting isUploading to false");
+
       setIsUploading(false); // Always set uploading to false
 
       // Reset the file input value after upload attempt
@@ -143,7 +139,7 @@ function Leads() {
   const handleExportEnquiries = async () => {
     try {
       const { data: response } = await getExel();
-      console.log(response, "check response");
+
       const url = generateFilePath("/" + response.filename);
       const link = document.createElement("a");
       link.href = url;
@@ -154,7 +150,6 @@ function Leads() {
       toastSuccess("Enquries exported successfully!");
     } catch (error) {
       toastError("Failed to export enquiries. Please try again.");
-      console.error("Export Error:", error);
     }
   };
 

@@ -6,7 +6,7 @@ import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination } from "./ur
 import axios from "../libs/hooks/axios";
 
 const prefix = "/ledgerGroup";
-console.log(BASE_URL)
+
 export interface ILedgerGroup  {
     name: string,
 }

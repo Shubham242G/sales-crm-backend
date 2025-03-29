@@ -59,7 +59,6 @@ function ResturantList() {
   };
 
   // ledger details modal
-  console.log(resturantData, "resturantData");
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);

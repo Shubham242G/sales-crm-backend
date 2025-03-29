@@ -13,7 +13,6 @@ const AddDepartment = () => {
   const [subDepartment, setSubDepartment] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id, "id");
   const { mutateAsync: addDepartment } = useAddDepartmentMaster();
   const { mutateAsync: updateDepartment } = useUpdateDepartmentMasterById();
   const { data: departmentData, isLoading } = useDepartmentMasterById(id || "");
@@ -23,7 +22,6 @@ const AddDepartment = () => {
   useEffect(() => {
     // Prefill form when editing
     if (departmentData) {
-      console.log(departmentData, "getById/");
       setDepartment(departmentData?.data?.department || "");
       setSubDepartment(departmentData?.data?.subDepartment || "");
     }
@@ -41,7 +39,6 @@ const AddDepartment = () => {
           navigate("/departmentMasterView");
         }
       } else {
-        console.log("check");
 
         const { data: res } = await addDepartment(obj);
         if (res?.message) {

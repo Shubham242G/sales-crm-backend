@@ -40,7 +40,7 @@ function CategoryList() {
   };
 
   // ledger details modal
-  console.log(categoryData, "categoryData");
+
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);

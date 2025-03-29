@@ -47,7 +47,6 @@ function RfpList() {
   // const {data: useEnquiryByIdData} = useEnquiryById(enquiryId);
 
   const { data: RfpData, isLoading } = useRfp(searchObj);
-  console.log(RfpData, "check RfpData");
   const { mutateAsync: deleteRfp } = usedeleteRfpById();
   const { mutateAsync: updateRfp } = useUpdateRfpById();
 

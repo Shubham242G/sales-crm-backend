@@ -58,7 +58,6 @@ const AddNewUser = () => {
     }
   }, [UserDataById, id]);
 
-  console.log(formData.password, "user's password");
 
   // const roleOptions = [
   //   { value: "Customer", label: "Customer" },
@@ -68,7 +67,6 @@ const AddNewUser = () => {
   //   { value: "Sub-Admin", label: "Sub-Admin" },
   // ];
 
-  console.log(rolesResponse, "checking the roles response");
 
   const roleOptions =
     rolesResponse?.data?.map((role: any) => ({

@@ -21,7 +21,6 @@ export interface IResturant {
 export const useResturantApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addResturant = async (obj: any) => {
-        console.log(obj, "add images service")
         return axios.post<GeneralApiResponse<IResturant>>(`${BASE_URL}${prefix}/`, obj);
     };
     const updateResturantById = async ({ id, obj }: { id: string; obj: any }) => {

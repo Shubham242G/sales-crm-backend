@@ -32,7 +32,6 @@ const AddNewLead = () => {
 
   useEffect(() => {
     if (leadDataById && leadDataById.data) {
-      console.log(leadDataById.data.company, "check company");
       setFormData({
         salutation: leadDataById.data.salutation || "",
         firstName: leadDataById.data.firstName || "",
@@ -51,8 +50,7 @@ const AddNewLead = () => {
     { value: "Dr", label: "Dr" },
   ];
 
-  console.log(formData, "check form data");
-  console.log(leadDataById, "check lead by data id");
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,12 +86,10 @@ const AddNewLead = () => {
           navigate("/leads");
         }
       }
-      console.log(obj, "check obj");
-      console.log(formData, "check form data");
+
     } catch (error) {
       toastError(error);
     }
-    console.log("FormDataaaa:-->", formData);
   };
 
   const handleInputChange = (

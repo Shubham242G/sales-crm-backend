@@ -49,7 +49,6 @@ function MyTask() {
   );
 
   const { data: TaskManagementData } = useMyTask(searchObj);
-  console.log(TaskManagementData, "check TaskManagementData");
   const { mutateAsync: deleteTaskManagement } = usedeleteTaskManagementById();
   const { mutateAsync: updateTaskManagement } = useUpdateTaskManagementById();
   // const { mutateAsync: convert } = convertToContact();
@@ -58,7 +57,6 @@ function MyTask() {
     const decodedToken = await getAuth();
     setUserId(decodedToken.user?._id || "");
     setRole(decodedToken.role);
-    console.log(decodedToken, " decoded token check");
   };
 
   useEffect(() => {
@@ -91,7 +89,6 @@ function MyTask() {
     }
   };
 
-  console.log(TaskManagementData.data, "Task Management data");
   // useEffect(() => {
   //   if (TaskManagementData?.data) {
   //     const filterData =

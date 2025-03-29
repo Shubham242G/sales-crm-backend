@@ -23,7 +23,6 @@ function CustomerLedger() {
   const { mutateAsync: convertQuotesFromVendorToQuotesToCustomer } =
     useConvertQuotesFromVendorToQuotesToCustomer();
 
-  console.log(quotesFromVendors, "Quotes froms");
   const { mutateAsync: deleteQuotesFromVendors } =
     usedeleteQuotesFromVendorsById();
 

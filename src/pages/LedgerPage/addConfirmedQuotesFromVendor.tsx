@@ -253,7 +253,6 @@ const AddConfirmedQuotesFromVendor = () => {
     refetch();
   }, [formData.banquetEventOrders.quotesId]);
 
-  console.log(res, "check the data changes or not");
 
   useEffect(() => {
     if (res && res.data) {
@@ -398,7 +397,7 @@ const AddConfirmedQuotesFromVendor = () => {
             toastSuccess(`${validFiles.length} file(s) uploaded successfully`);
           })
           .catch((error) => {
-            console.error("Error reading files:", error);
+
             toastError("Error uploading files");
           });
       }

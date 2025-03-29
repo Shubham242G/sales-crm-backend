@@ -25,7 +25,6 @@ export interface IBanquet {
 export const usebanquetApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addBanquet = async (obj: any) => {
-        console.log(obj, "add images service")
         return axios.post<GeneralApiResponse<IBanquet>>(`${BASE_URL}${prefix}/`, obj);
     };
     const updateBanquetById = async ({ id, obj }: { id: string; obj: any }) => {

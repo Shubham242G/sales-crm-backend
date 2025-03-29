@@ -39,7 +39,6 @@ function SalesContactView() {
   );
 
   const { data: SalesContactData } = useSalesContact(searchObj);
-  console.log(SalesContactData, "check ContactData");
   const { mutateAsync: deleteContact } = usedeleteSalesContactById();
   const { mutateAsync: convertEnquiry } = useConvert();
 
@@ -62,15 +61,13 @@ function SalesContactView() {
 
       const response = await addSalesContactsExel(formData);
 
-      console.log(response, "check response");
       toastSuccess("Contacts imported successfully!");
 
       // Optionally refresh the data
       // You might want to add a refetch function from your useContact hook
     } catch (error) {
       toastError("Failed to import contacts. Please try again.");
-      console.error("Import Error:", error);
-    } finally {
+   } finally {
       setIsUploading(false);
       // Clear the file input
       if (fileInputRef.current) {
@@ -83,7 +80,7 @@ function SalesContactView() {
   const handleExportContacts = async () => {
     try {
       const { data: response } = await getExel();
-      console.log(response, "check response");
+      
       const url = generateFilePath("/" + response.filename);
       const link = document.createElement("a");
       link.href = url;
@@ -94,7 +91,6 @@ function SalesContactView() {
       toastSuccess("Sales Contacts exported successfully!");
     } catch (error) {
       toastError("Failed to export contacts. Please try again.");
-      console.error("Export Error:", error);
     }
   };
 

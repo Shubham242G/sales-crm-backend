@@ -36,7 +36,6 @@ function ConfirmedQuotesFromVendor() {
     useConfirmedQuotes(searchObj);
   const { mutateAsync: deleteConfirmedQuote } = usedeleteConfirmedQuotesById();
 
-  console.log(confirmedQuotesToVendorData, "confirmed quotes");
 
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);

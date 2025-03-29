@@ -34,7 +34,6 @@ export const useCategoryApiHook = () => {
     };
 
     const getAllCategory = async (pagination: PaginationState, searchObj: any) => {
-        console.log(`${BASE_URL}${prefix}/`, "test c")
         // const query = new URLSearchParams({
         //     pageIndex: String(pagination.pageIndex),
         //     pageSize: String(pagination.pageSize),

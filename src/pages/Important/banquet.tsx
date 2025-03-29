@@ -18,7 +18,6 @@ const AddHotel = () => {
   const [banquetName, setBanquetName] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id, "id");
   const { mutateAsync: addBanquet } = useAddBanquet();
   const { mutateAsync: updateBanquet } = useUpdateBanquetById();
   const { data: banquetDataById, isLoading } = useBanquetById(id || "");
@@ -30,13 +29,12 @@ const AddHotel = () => {
   useEffect(() => {
     // Prefill form when editing
     if (banquetDataById) {
-      console.log(banquetDataById, "getById/");
+      
       setBanquetName(banquetDataById?.data?.banquetName || "");
     }
   }, [banquetDataById]);
   const handleImageUpload = (files: { value: string }[]) => {
-    console.log(files, "filessss");
-    console.log(images, "image");
+    
     setImages(files.map((el) => ({ image: el.value })));
   };
   const handleSubmit = async (e: React.FormEvent) => {

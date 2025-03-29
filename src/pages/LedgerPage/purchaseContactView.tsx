@@ -39,7 +39,7 @@ function PurchaseContactView() {
   );
 
   const { data: purchaseContactData } = usepurchaseContact(searchObj);
-  console.log(purchaseContactData, "check ContactData");
+
   const { mutateAsync: deletePurchaseContact } = usedeletepurchaseContactById();
   const { mutateAsync: convertPurchaseEnquiry } = useConvert();
 
@@ -62,14 +62,12 @@ function PurchaseContactView() {
 
       const response = await addpurchaseContactsExel(formData);
 
-      console.log(response, "check response");
       toastSuccess("Pruchase Contacts imported successfully!");
 
       // Optionally refresh the data
       // You might want to add a refetch function from your useContact hook
     } catch (error) {
       toastError("Failed to import Purchase contacts. Please try again.");
-      console.error("Import Error:", error);
     } finally {
       setIsUploading(false);
       // Clear the file input
@@ -83,7 +81,6 @@ function PurchaseContactView() {
   const handleExportContacts = async () => {
     try {
       const { data: response } = await getExel();
-      console.log(response, "check response");
       const url = generateFilePath("/" + response.filename);
       const link = document.createElement("a");
       link.href = url;
@@ -94,7 +91,6 @@ function PurchaseContactView() {
       toastSuccess("Purchase Contacts exported successfully!");
     } catch (error) {
       toastError("Failed to export contacts. Please try again.");
-      console.error("Export Error:", error);
     }
   };
 

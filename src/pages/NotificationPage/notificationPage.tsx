@@ -44,10 +44,7 @@ function NotificationPage() {
 
   const { data: notificationByUser } = useNotification(searchObj);
 
-  console.log(notificationByUser, "notificationByUser");
-  console.log(userId, "userId");
 
-  console.log(notificationByUser?.data, "notificationByUser1234");
 
 
   const filteredNotifications = notificationByUser?.data.filter((item: any) => item?.userId === userId);

@@ -42,9 +42,9 @@ function SearchBar() {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSearch = () => {
-    console.log("Searching with:", searchData, "and filters:", filters);
-  };
+  // const handleSearch = () => {
+  //   console.log("Searching with:", searchData, "and filters:", filters);
+  // };
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans">
@@ -107,7 +107,7 @@ function SearchBar() {
               Filter
             </button>
             <button
-              onClick={handleSearch}
+              // onClick={handleSearch}
               className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition"
             >
               Find venues
@@ -427,7 +427,7 @@ function SearchBar() {
 
             {/* Apply Filters Button */}
             <button
-              onClick={handleSearch}
+              // onClick={handleSearch}
               className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
             >
               Find venues

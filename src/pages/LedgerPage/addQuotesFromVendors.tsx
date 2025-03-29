@@ -124,7 +124,7 @@ const AddQuotesFromVendors = () => {
   const { data: vendorData } = useVendor();
   const { data: quotesFromVendors } = useQuotesFromVendors();
 
-  console.log("quotesFromVendors", quotesFromVendors);
+  
 
   const [serviceTypeArr, setServiceTypeArr] = useState<any>([]);
   const [selectedServiceType, setSelectedServiceType] = useState<any>([]);
@@ -139,7 +139,6 @@ const AddQuotesFromVendors = () => {
 
   useEffect(() => {
     if (quotesFromVendorsDataById && quotesFromVendorsDataById?.data) {
-      console.log(quotesFromVendorsDataById?.data?.rfpId, "check  label");
       setFormData({
         // quotesFromVendorsId: quotesFromVendorsDataById?.data?.quotesFromVendorsId || "",
         quotesId: quotesFromVendorsDataById?.data?.quotesId || "",
@@ -180,8 +179,7 @@ const AddQuotesFromVendors = () => {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/quotesFromVendors");
-          console.log(obj, "<<<<<<<check obj");
-          console.log("Thisssss---->", selectedServiceType);
+
         }
       } else {
         const { data: res } = await addQuotesFromVendors(obj);
@@ -260,7 +258,6 @@ const AddQuotesFromVendors = () => {
           toastSuccess(`${newFiles.length} file(s) uploaded successfully!`);
         })
         .catch((error) => {
-          console.error("Error reading files:", error);
           toastError("Error uploading files.");
         });
 
@@ -340,7 +337,6 @@ const AddQuotesFromVendors = () => {
   //       }
   //   },[vendorData])
   const optionConvertor = (firstName: string, lastname: string) => {
-    console.log("firstname", firstName, "lastname", lastname);
     return `${firstName} ${lastname}`;
   };
 
@@ -352,7 +348,6 @@ const AddQuotesFromVendors = () => {
 
   const handleChangeRfp = (selected: any) => {
     setSelectedOption(selected);
-    console.log("Selected option:", selected);
   };
 
   return (

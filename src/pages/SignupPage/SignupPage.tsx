@@ -33,7 +33,6 @@ export default function SignupPage() {
             };
             let response = await loginUser(obj);
             if (response?.success) {
-                console.log(response, "123456123456123456123456");
                 handleDashboardRoute();
             } else {
                 toastError(response?.msg);

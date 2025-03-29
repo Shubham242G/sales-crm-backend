@@ -41,7 +41,7 @@ function VendorList() {
   );
 
   const { data: VendorData, refetch } = useVendor(searchObj);
-  console.log(VendorData, "check leadData");
+  
   const { mutateAsync: deleteVendor } = usedeleteVendorById();
   const { mutateAsync: updateVendor } = useUpdateVendorById();
   const { mutateAsync: convertVendorToSalesContact } =
@@ -85,7 +85,6 @@ function VendorList() {
       }
     } catch (error) {
       toastError("Failed to convert vendor to Sales Contact.");
-      console.error("Conversion Error:", error);
     }
   };
 
@@ -185,7 +184,6 @@ function VendorList() {
     refetch();
   }, [searchObj, refetch]);
 
-  console.log(query, searchObj, "check this data ");
   // Sample data
 
   return (
