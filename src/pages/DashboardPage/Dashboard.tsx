@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell
 } from 'recharts';
+import { useDashboard } from '@/services/dashboard.service';
+import backgroundImage from "../../assets/background.jpg"
 
-
-
-// User roles (simple string options)
+// User roles
 type UserRole = 'sales' | 'operations' | 'admin';
 
-// Chart types (simple options)
+// Chart types
 type ChartType = 'Bar' | 'Line' | 'Pie';
 
-// Data for each role (simple objects)
+// Data for each role
 const salesData = [
   { month: 'Jan', revenue: 4000, dealsClosed: 20 },
   { month: 'Feb', revenue: 3000, dealsClosed: 15 },
@@ -36,128 +36,132 @@ const pieData = [
   { name: 'Other', value: 2000 },
 ];
 
+// Static fallback quotes (unchanged)
+const staticQuotes = [
+  { text: "The best way to predict the future is to create it.", author: "Peter Drucker" },
+  { text: "Success is not final; failure is not fatal.", author: "Winston Churchill" },
+  { text: "You miss 100% of the shots you don’t take.", author: "Wayne Gretzky" },
+  { text: "Believe you can and you’re halfway there.", author: "Theodore Roosevelt" },
+  { text: "The only limit is your mind.", author: "Unknown" },
+  { text: "Do what you can, with what you have, where you are.", author: "Theodore Roosevelt" },
+  { text: "Act as if what you do makes a difference. It does.", author: "William James" },
+  { text: "Dream big, work hard, stay focused.", author: "Unknown" },
+  { text: "Every day is a fresh start.", author: "Unknown" },
+  { text: "The journey of a thousand miles begins with one step.", author: "Lao Tzu" },
+  { text: "Keep going; you’re closer than you think.", author: "Unknown" },
+  { text: "Turn obstacles into opportunities.", author: "Unknown" },
+  { text: "Stay positive, work hard, make it happen.", author: "Unknown" },
+  { text: "Success is the sum of small efforts.", author: "Robert Collier" },
+  { text: "Focus on the goal, not the struggle.", author: "Unknown" },
+  { text: "What you do today shapes tomorrow.", author: "Unknown" },
+  { text: "Courage is taking the first step.", author: "Unknown" },
+  { text: "Progress, not perfection.", author: "Unknown" },
+  { text: "You are enough.", author: "Unknown" },
+  { text: "Make it happen; shock everyone.", author: "Unknown" },
+  { text: "Sell the problem you solve, not the product.", author: "Unknown" },
+  { text: "Every sale starts with a conversation.", author: "Unknown" },
+  { text: "The best salespeople listen more than they talk.", author: "Unknown" },
+  { text: "A sale is made in every call; either you sell or they sell you ‘no’.", author: "Unknown" },
+  { text: "Persistence beats resistance.", author: "Unknown" },
+  { text: "Know your customer, win the deal.", author: "Unknown" },
+  { text: "Sales is about trust, not tricks.", author: "Unknown" },
+  { text: "Close the deal, open the relationship.", author: "Unknown" },
+  { text: "Every ‘no’ brings you closer to ‘yes’.", author: "Unknown" },
+  { text: "Sell value, not price.", author: "Unknown" },
+  { text: "Success in sales is a numbers game.", author: "Unknown" },
+  { text: "The harder you work, the luckier you get in sales.", author: "Unknown" },
+  { text: "A goal without a plan is just a wish.", author: "Antoine de Saint-Exupéry" },
+  { text: "Winning starts with preparation.", author: "Unknown" },
+  { text: "Sales is helping, not selling.", author: "Unknown" },
+  { text: "Ask questions, find solutions.", author: "Unknown" },
+  { text: "Your attitude determines your altitude in sales.", author: "Unknown" },
+  { text: "Build relationships, not just deals.", author: "Unknown" },
+  { text: "Success is the best revenge.", author: "Frank Sinatra" },
+  { text: "Keep knocking until the door opens.", author: "Unknown" },
+  { text: "Efficiency is doing things right.", author: "Peter Drucker" },
+  { text: "Simplify, then amplify.", author: "Unknown" },
+  { text: "Good processes save time.", author: "Unknown" },
+  { text: "Teamwork makes the dream work.", author: "John C. Maxwell" },
+  { text: "Measure twice, cut once.", author: "Unknown" },
+  { text: "Details matter in operations.", author: "Unknown" },
+  { text: "Work smarter, not harder.", author: "Unknown" },
+  { text: "Consistency is key.", author: "Unknown" },
+  { text: "Great systems build great results.", author: "Unknown" },
+  { text: "Plan the work, work the plan.", author: "Unknown" },
+  { text: "Efficiency turns chaos into order.", author: "Unknown" },
+  { text: "Every step counts in the process.", author: "Unknown" },
+  { text: "Precision drives progress.", author: "Unknown" },
+  { text: "Organize today for success tomorrow.", author: "Unknown" },
+  { text: "The best operations run like clockwork.", author: "Unknown" },
+  { text: "Small improvements, big wins.", author: "Unknown" },
+  { text: "Focus on what works, fix what doesn’t.", author: "Unknown" },
+  { text: "Strong teams build strong outcomes.", author: "Unknown" },
+  { text: "Time is money; save both.", author: "Unknown" },
+  { text: "Excellence is a habit.", author: "Aristotle" },
+  { text: "Leadership is action, not position.", author: "Donald H. McGannon" },
+  { text: "Control the chaos, create the calm.", author: "Unknown" },
+  { text: "A good admin sees the big picture.", author: "Unknown" },
+  { text: "Empower others to succeed.", author: "Unknown" },
+  { text: "Organize, prioritize, succeed.", author: "Unknown" },
+  { text: "The best leaders lift others up.", author: "Unknown" },
+  { text: "Vision without execution is just a dream.", author: "Unknown" },
+  { text: "Lead by example, not by force.", author: "Unknown" },
+  { text: "Clarity is power.", author: "Unknown" },
+  { text: "A team is only as strong as its leader.", author: "Unknown" },
+  { text: "Plan today, win tomorrow.", author: "Unknown" },
+  { text: "Great admin builds great teams.", author: "Unknown" },
+  { text: "Decide, delegate, deliver.", author: "Unknown" },
+  { text: "Success starts with structure.", author: "Unknown" },
+  { text: "Be the calm in the storm.", author: "Unknown" },
+  { text: "Lead with purpose, not pressure.", author: "Unknown" },
+  { text: "Every detail builds the whole.", author: "Unknown" },
+  { text: "Inspire, don’t just manage.", author: "Unknown" },
+  { text: "A leader’s job is to create more leaders.", author: "Unknown" },
+  { text: "Set the tone, shape the future.", author: "Unknown" },
+  { text: "Don’t wait for opportunity; create it.", author: "Unknown" },
+  { text: "Hard work beats talent when talent doesn’t work.", author: "Tim Notke" },
+  { text: "The only way to do great work is to love it.", author: "Steve Jobs" },
+  { text: "Start where you stand.", author: "Unknown" },
+  { text: "Fear is a liar; action is truth.", author: "Unknown" },
+  { text: "You don’t find time; you make it.", author: "Unknown" },
+  { text: "Rise above the storm and find the sun.", author: "Unknown" },
+  { text: "Effort today, rewards tomorrow.", author: "Unknown" },
+  { text: "Be the change you wish to see.", author: "Mahatma Gandhi" },
+  { text: "One small step can change everything.", author: "Unknown" },
+  { text: "Doubt kills more dreams than failure.", author: "Suzy Kassem" },
+  { text: "Keep pushing; the best is yet to come.", author: "Unknown" },
+  { text: "Your only competition is yesterday’s you.", author: "Unknown" },
+  { text: "Turn your wounds into wisdom.", author: "Oprah Winfrey" },
+  { text: "The future belongs to those who believe.", author: "Eleanor Roosevelt" },
+  { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
+  { text: "You are stronger than you know.", author: "Pankaj Maurya" },
+  { text: "Make today count.", author: "vinay yadav" },
+  { text: "Impossible is just an opinion.", author: "Paulo Coelho" },
+  { text: "Shine bright; the world needs your light.", author: "Unknown" },
+];  
 
-const quotes = [
-  ...[
-    { text: "The best way to predict the future is to create it.", author: "Peter Drucker" },
-    { text: "Success is not final; failure is not fatal.", author: "Winston Churchill" },
-    { text: "You miss 100% of the shots you don’t take.", author: "Wayne Gretzky" },
-    { text: "Believe you can and you’re halfway there.", author: "Theodore Roosevelt" },
-    { text: "The only limit is your mind.", author: "Unknown" },
-    { text: "Do what you can, with what you have, where you are.", author: "Theodore Roosevelt" },
-    { text: "Act as if what you do makes a difference. It does.", author: "William James" },
-    { text: "Dream big, work hard, stay focused.", author: "Unknown" },
-    { text: "Every day is a fresh start.", author: "Unknown" },
-    { text: "The journey of a thousand miles begins with one step.", author: "Lao Tzu" },
-    { text: "Keep going; you’re closer than you think.", author: "Unknown" },
-    { text: "Turn obstacles into opportunities.", author: "Unknown" },
-    { text: "Stay positive, work hard, make it happen.", author: "Unknown" },
-    { text: "Success is the sum of small efforts.", author: "Robert Collier" },
-    { text: "Focus on the goal, not the struggle.", author: "Unknown" },
-    { text: "What you do today shapes tomorrow.", author: "Unknown" },
-    { text: "Courage is taking the first step.", author: "Unknown" },
-    { text: "Progress, not perfection.", author: "Unknown" },
-    { text: "You are enough.", author: "Unknown" },
-    { text: "Make it happen; shock everyone.", author: "Unknown" },
-    { text: "Sell the problem you solve, not the product.", author: "Unknown" },
-    { text: "Every sale starts with a conversation.", author: "Unknown" },
-    { text: "The best salespeople listen more than they talk.", author: "Unknown" },
-    { text: "A sale is made in every call; either you sell or they sell you ‘no’.", author: "Unknown" },
-    { text: "Persistence beats resistance.", author: "Unknown" },
-    { text: "Know your customer, win the deal.", author: "Unknown" },
-    { text: "Sales is about trust, not tricks.", author: "Unknown" },
-    { text: "Close the deal, open the relationship.", author: "Unknown" },
-    { text: "Every ‘no’ brings you closer to ‘yes’.", author: "Unknown" },
-    { text: "Sell value, not price.", author: "Unknown" },
-    { text: "Success in sales is a numbers game.", author: "Unknown" },
-    { text: "The harder you work, the luckier you get in sales.", author: "Unknown" },
-    { text: "A goal without a plan is just a wish.", author: "Antoine de Saint-Exupéry" },
-    { text: "Winning starts with preparation.", author: "Unknown" },
-    { text: "Sales is helping, not selling.", author: "Unknown" },
-    { text: "Ask questions, find solutions.", author: "Unknown" },
-    { text: "Your attitude determines your altitude in sales.", author: "Unknown" },
-    { text: "Build relationships, not just deals.", author: "Unknown" },
-    { text: "Success is the best revenge.", author: "Frank Sinatra" },
-    { text: "Keep knocking until the door opens.", author: "Unknown" },
-    { text: "Efficiency is doing things right.", author: "Peter Drucker" },
-    { text: "Simplify, then amplify.", author: "Unknown" },
-    { text: "Good processes save time.", author: "Unknown" },
-    { text: "Teamwork makes the dream work.", author: "John C. Maxwell" },
-    { text: "Measure twice, cut once.", author: "Unknown" },
-    { text: "Details matter in operations.", author: "Unknown" },
-    { text: "Work smarter, not harder.", author: "Unknown" },
-    { text: "Consistency is key.", author: "Unknown" },
-    { text: "Great systems build great results.", author: "Unknown" },
-    { text: "Plan the work, work the plan.", author: "Unknown" },
-    { text: "Efficiency turns chaos into order.", author: "Unknown" },
-    { text: "Every step counts in the process.", author: "Unknown" },
-    { text: "Precision drives progress.", author: "Unknown" },
-    { text: "Organize today for success tomorrow.", author: "Unknown" },
-    { text: "The best operations run like clockwork.", author: "Unknown" },
-    { text: "Small improvements, big wins.", author: "Unknown" },
-    { text: "Focus on what works, fix what doesn’t.", author: "Unknown" },
-    { text: "Strong teams build strong outcomes.", author: "Unknown" },
-    { text: "Time is money; save both.", author: "Unknown" },
-    { text: "Excellence is a habit.", author: "Aristotle" },
-    { text: "Leadership is action, not position.", author: "Donald H. McGannon" },
-    { text: "Control the chaos, create the calm.", author: "Unknown" },
-    { text: "A good admin sees the big picture.", author: "Unknown" },
-    { text: "Empower others to succeed.", author: "Unknown" },
-    { text: "Organize, prioritize, succeed.", author: "Unknown" },
-    { text: "The best leaders lift others up.", author: "Unknown" },
-    { text: "Vision without execution is just a dream.", author: "Unknown" },
-    { text: "Lead by example, not by force.", author: "Unknown" },
-    { text: "Clarity is power.", author: "Unknown" },
-    { text: "A team is only as strong as its leader.", author: "Unknown" },
-    { text: "Plan today, win tomorrow.", author: "Unknown" },
-    { text: "Great admin builds great teams.", author: "Unknown" },
-    { text: "Decide, delegate, deliver.", author: "Unknown" },
-    { text: "Success starts with structure.", author: "Unknown" },
-    { text: "Be the calm in the storm.", author: "Unknown" },
-    { text: "Lead with purpose, not pressure.", author: "Unknown" },
-    { text: "Every detail builds the whole.", author: "Unknown" },
-    { text: "Inspire, don’t just manage.", author: "Unknown" },
-    { text: "A leader’s job is to create more leaders.", author: "Unknown" },
-    { text: "Set the tone, shape the future.", author: "Unknown" },
-    { text: "Don’t wait for opportunity; create it.", author: "Unknown" },
-    { text: "Hard work beats talent when talent doesn’t work.", author: "Tim Notke" },
-    { text: "The only way to do great work is to love it.", author: "Steve Jobs" },
-    { text: "Start where you stand.", author: "Unknown" },
-    { text: "Fear is a liar; action is truth.", author: "Unknown" },
-    { text: "You don’t find time; you make it.", author: "Unknown" },
-    { text: "Rise above the storm and find the sun.", author: "Unknown" },
-    { text: "Effort today, rewards tomorrow.", author: "Unknown" },
-    { text: "Be the change you wish to see.", author: "Mahatma Gandhi" },
-    { text: "One small step can change everything.", author: "Unknown" },
-    { text: "Doubt kills more dreams than failure.", author: "Suzy Kassem" },
-    { text: "Keep pushing; the best is yet to come.", author: "Unknown" },
-    { text: "Your only competition is yesterday’s you.", author: "Unknown" },
-    { text: "Turn your wounds into wisdom.", author: "Oprah Winfrey" },
-    { text: "The future belongs to those who believe.", author: "Eleanor Roosevelt" },
-    { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
-    { text: "You are stronger than you know.", author: "Pankaj Maurya" },
-    { text: "Make today count.", author: "vinay yadav" },
-    { text: "Impossible is just an opinion.", author: "Paulo Coelho" },
-    { text: "Shine bright; the world needs your light.", author: "Unknown" },
-  ]
-];
+// Colors for chart sections
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-// Which fields to show for each role (simple true/false settings)
+// Field visibility settings
 type FieldVisibility = {
   sales: { revenue: boolean; dealsClosed: boolean };
   operations: { operationalCost: boolean; efficiency: boolean };
   admin: { totalRevenue: boolean; expenses: boolean; profit: boolean };
 };
 
-// Fetch a random quote from the API
-// const fetchQuote = async () => {
-//   const response = await axios.get('https://zenquotes.io/api/today');
-//   return response.data[0]; // { q: "quote", a: "author" }
-// };
+const fetchDailyQuote = async () => {
+  try {
+    const response = await fetch('https://api.quotable.io/random');
+    const data = await response.json();
+    return { text: data.content, author: data.author };
+  } catch (error) {
+    console.error('Error fetching quote:', error);
+    return staticQuotes[Math.floor(Math.random() * staticQuotes.length)];
+  }
+};
 
 const Dashboard: React.FC = () => {
-  // State for current user role, chart type, and field visibility
   const [userRole, setUserRole] = useState<UserRole>('sales');
   const [chartType, setChartType] = useState<ChartType>('Bar');
   const [visibleFields, setVisibleFields] = useState<FieldVisibility>({
@@ -165,18 +169,55 @@ const Dashboard: React.FC = () => {
     operations: { operationalCost: true, efficiency: true },
     admin: { totalRevenue: true, expenses: true, profit: true },
   });
+  const [quote, setQuote] = useState<{ text: string; author: string } | null>(null);
 
-  // Get a new quote every minute using TanStack Query
-  // const { data: quote, isLoading: quoteLoading } = useQuery({
-  //   queryKey: ['quote'],
-  //   queryFn: fetchQuote,
-  //   refetchInterval: 60000, // Refresh every 60 seconds
-  // });
+  const [pageIndex, setPageIndex] = useState(1);
+    const [pageSize, setPageSize] = useState(100);
+    const [query, setQuery] = useState("");
+    const searchObj = useMemo(
+      () => ({
+        ...(query && { query }),
+        pageIndex: pageIndex - 1,
+        pageSize,
+      }),
+      [pageIndex, pageSize, query]
+    );
+  // Fetch dashboard data using the useDashboard hook
+  const { data: dashboardData, isLoading } = useDashboard(searchObj);
 
 
- 
+  console.log(dashboardData, "checking dashboardData");
+  // Extract costOfVendor, businessFromCustomer, and revenue from the fetched data
+  const dashboard = dashboardData?.data?.[0] || {};
+  const costOfVendor = dashboard.costOfVendor || '0';
+  const businessFromCustomer = dashboard.businessFromCustomer || '0';
+  const revenue = dashboard.revenue || '0';
 
-  // Pick the right data based on the user role
+  // Fetch quote on mount and update daily
+  useEffect(() => {
+    const updateQuote = async () => {
+      const newQuote = await fetchDailyQuote();
+      setQuote(newQuote);
+    };
+
+    updateQuote();
+
+    const checkDailyUpdate = () => {
+      const now = new Date();
+      const lastFetchDate = localStorage.getItem('lastQuoteFetchDate');
+      const today = now.toDateString();
+
+      if (lastFetchDate !== today) {
+        updateQuote();
+        localStorage.setItem('lastQuoteFetchDate', today);
+      }
+    };
+
+    const interval = setInterval(checkDailyUpdate, 60000);
+
+    return () => clearInterval(interval); 
+  }, []);
+
   const getData = () => {
     if (userRole === 'sales') return salesData;
     if (userRole === 'operations') return operationsData;
@@ -186,35 +227,18 @@ const Dashboard: React.FC = () => {
 
   const data = getData();
 
-  // Toggle whether a field is shown (used by Admin)
-  const toggleField = (role: UserRole, field: keyof FieldVisibility): void => {
-    if (!visibleFields.hasOwnProperty(role)) {
-      throw new Error(`Unknown role: ${role}`);
-    }
-    const prevFields = visibleFields[role];
-    if (!prevFields.hasOwnProperty(field)) {
-      throw new Error(`Unknown field: ${field}`);
-    }
-
+  const toggleField = (role: UserRole, field: keyof FieldVisibility) => {
     setVisibleFields((prev) => ({
       ...prev,
       [role]: {
         ...prev[role],
         [field]: !(prev[role] as Record<string, boolean>)[field],
       },
-    }))
-    // setVisibleFields((prev) => ({
-    //   ...prev,
-    //   [role]: {
-    //     ...prev[role],
-    //     [field]: !prev[role][field], // Flip true/false
-    //   },
-    // }));
+    }));
   };
 
-  // Draw the chart based on the selected type and role
   const renderChart = () => {
-    const fields = visibleFields[userRole]; // Get visible fields for the current role
+    const fields = visibleFields[userRole];
 
     if (chartType === 'Bar') {
       return (
@@ -224,9 +248,9 @@ const Dashboard: React.FC = () => {
           <YAxis />
           <Tooltip />
           <Legend />
-          {Object.entries(fields).map(([key, value]) => (
+          {Object.entries(fields).map(([key, value]) =>
             value && <Bar key={key} dataKey={key} fill={COLORS[Object.keys(fields).indexOf(key)]} />
-          ))}
+          )}
         </BarChart>
       );
     }
@@ -240,22 +264,22 @@ const Dashboard: React.FC = () => {
           <Tooltip />
           <Legend />
           {userRole === 'sales' && (
-  <>
-    {(fields as { revenue: boolean; dealsClosed: boolean; }).revenue && <Line type="monotone" dataKey="revenue" stroke="#8884d8" />}
-    {(fields as { revenue: boolean; dealsClosed: boolean; }).dealsClosed && <Line type="monotone" dataKey="dealsClosed" stroke="#82ca9d" />}
-  </>
-)}
+            <>
+              {(fields as { revenue: boolean; dealsClosed: boolean }).revenue && <Line type="monotone" dataKey="revenue" stroke="#8884d8" />}
+              {(fields as { revenue: boolean; dealsClosed: boolean }).dealsClosed && <Line type="monotone" dataKey="dealsClosed" stroke="#82ca9d" />}
+            </>
+          )}
           {userRole === 'operations' && (
             <>
-              {(fields as { operationalCost: boolean; efficiency: boolean; }).operationalCost && <Line type="monotone" dataKey="operationalCost" stroke="#8884d8" />}
-              {(fields as { operationalCost: boolean; efficiency: boolean; }).efficiency && <Line type="monotone" dataKey="efficiency" stroke="#82ca9d" />}
+              {(fields as { operationalCost: boolean; efficiency: boolean }).operationalCost && <Line type="monotone" dataKey="operationalCost" stroke="#8884d8" />}
+              {(fields as { operationalCost: boolean; efficiency: boolean }).efficiency && <Line type="monotone" dataKey="efficiency" stroke="#82ca9d" />}
             </>
           )}
           {userRole === 'admin' && (
             <>
-              {(fields as { totalRevenue: boolean; expenses: boolean; profit: boolean; }).totalRevenue && <Line type="monotone" dataKey="totalRevenue" stroke="#8884d8" />}
-              {(fields as { totalRevenue: boolean; expenses: boolean; profit: boolean; }).expenses && <Line type="monotone" dataKey="expenses" stroke="#ff7300" />}
-              {(fields as { totalRevenue: boolean; expenses: boolean; profit: boolean; }).profit && <Line type="monotone" dataKey="profit" stroke="#82ca9d" />}
+              {(fields as { totalRevenue: boolean; expenses: boolean; profit: boolean }).totalRevenue && <Line type="monotone" dataKey="totalRevenue" stroke="#8884d8" />}
+              {(fields as { totalRevenue: boolean; expenses: boolean; profit: boolean }).expenses && <Line type="monotone" dataKey="expenses" stroke="#ff7300" />}
+              {(fields as { totalRevenue: boolean; expenses: boolean; profit: boolean }).profit && <Line type="monotone" dataKey="profit" stroke="#82ca9d" />}
             </>
           )}
         </LineChart>
@@ -282,19 +306,52 @@ const Dashboard: React.FC = () => {
 
     return null;
   };
-  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+
+  console.log(costOfVendor, "checking costOfVendor");
+  console.log(businessFromCustomer, "checking businessFromCustomer");
+  console.log(revenue, "checking revenue");
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header with a quote */}
+        {/* Header */}
         <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
           <h1 className="text-3xl font-bold text-center text-gray-800">Financial Dashboard</h1>
-          <div className="mt-4 text-center">
-            { (
-              <p className="text-lg text-gray-600 italic ">
-                "{quote?.text}" — <span className="font-semibold">{quote?.author}</span>
+        </div>
+
+        {/* Financial Metrics Section */}
+        <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
+          <h2 className="text-xl font-semibold mb-4">Key Financial Metrics</h2>
+          {isLoading ? (
+            <p className="text-gray-500">Loading financial data...</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <h3 className="text-lg font-medium text-blue-800">Cost of Vendors</h3>
+                <p className="text-2xl font-bold text-blue-600">₹{parseFloat(costOfVendor).toLocaleString()}</p>
+              </div>
+              <div className="p-4 bg-green-50 rounded-lg">
+                <h3 className="text-lg font-medium text-green-800">Business from Customers</h3>
+                <p className="text-2xl font-bold text-green-600">₹{parseFloat(businessFromCustomer).toLocaleString()}</p>
+              </div>
+              <div className="p-4 bg-purple-50 rounded-lg">
+                <h3 className="text-lg font-medium text-purple-800">Revenue</h3>
+                <p className="text-2xl font-bold text-purple-600">₹{parseFloat(revenue).toLocaleString()}</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Thought of the Day Section */}
+        <div className="bg-white p-6 rounded-lg shadow-lg mb-6" style={{backgroundImage: `url(${backgroundImage})` , backgroundSize:"cover", height: '400px'}}>
+          <h2 className="text-xl font-semibold text-center mb-4">Quote</h2>
+          <div className="text-center flex flex-col justify-center items-center h-full px-10">
+            {quote ? (
+              <p className="text-3xl text-black italic px-24">
+                "{quote.text}" — <span className="font-semibold">{quote.author}</span>
               </p>
+            ) : (
+              <p className="text-lg text-gray-600">Loading Quotes...</p>
             )}
           </div>
         </div>
@@ -366,7 +423,7 @@ const Dashboard: React.FC = () => {
 
           {/* Show the chart */}
           <ResponsiveContainer width="100%" height={400}>
-            {renderChart()?? <p className="text-gray-500">No data available for the selected chart type.</p>}
+            {renderChart() ?? <p className="text-gray-500">No data available for the selected chart type.</p>}
           </ResponsiveContainer>
         </div>
       </div>

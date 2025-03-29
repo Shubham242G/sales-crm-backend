@@ -44,7 +44,7 @@ const AddRfpsForm = () => {
 
   const { id } = useParams();
 
-  
+
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("RFPS");
@@ -167,14 +167,20 @@ const AddRfpsForm = () => {
 
   const handleInputChangeEventDates = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
+    type: "start" | "end" // Added type to distinguish between start and end date
   ) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
 
+    // Update the correct date field based on type
     setFormData((prevFormData) => ({
       ...prevFormData,
       eventDates: prevFormData.eventDates.map((el, i) =>
-        i === index ? { ...el, startDate: value } : el
+        i === index
+          ? type === "start"
+            ? { ...el, startDate: value }
+            : { ...el, endDate: value } // Update endDate for deadline
+          : el
       ),
     }));
   };
@@ -248,12 +254,8 @@ const AddRfpsForm = () => {
                   </label>
                   <input
                     name="eventDates"
-                    value={
-                      moment(el.startDate).format("YYYY-MM-DD") ||
-                      el.startDate ||
-                      ""
-                    }
-                    onChange={(e) => handleInputChangeEventDates(e, index)}
+                    value={moment(el.startDate).format("YYYY-MM-DD") || el.startDate || ""}
+                    onChange={(e) => handleInputChangeEventDates(e, index, "start")}
                     type="date"
                     className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
                   />
@@ -284,13 +286,9 @@ const AddRfpsForm = () => {
                     Deadline for Proposal
                   </label>
                   <input
-                    name="eventDates"
-                    value={
-                      moment(el.endDate).format("YYYY-MM-DD") ||
-                      el.startDate ||
-                      ""
-                    }
-                    onChange={(e) => handleInputChangeEventDates(e, index)}
+                    name="deadlineDates" // Separate name for deadline dates
+                    value={moment(el.endDate).format("YYYY-MM-DD") || el.endDate || ""}
+                    onChange={(e) => handleInputChangeEventDates(e, index, "end")} // Pass "end" to distinguish
                     type="date"
                     className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
                   />
