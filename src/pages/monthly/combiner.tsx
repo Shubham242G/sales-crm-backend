@@ -205,7 +205,7 @@ const TaskManager: React.FC = () => {
                         >
                             <div className="flex flex-col items-center">
                                 {getMeetingCount(day) > 0 ? (
-                                    <span className={`w-2 h-2 rounded-full mt-1 ${getDotColor(day)}`}>{day}</span>
+                                    <span >{day}</span>
                                 ) : (
                                     <span>{day}</span>
                                 )}
