@@ -69,6 +69,11 @@ function CustomerLedger() {
       width: "8%",
     },
     {
+      name: "Status",
+      selector: (row: any) => <h6>{row?.status}</h6>,
+      width: "8%",
+    },
+    {
       name: "Service",
       selector: (row: any) => (
         <div className="flex justify-around">
@@ -94,23 +99,23 @@ function CustomerLedger() {
       selector: (row: any) => <h6>{row?.submissionDate}</h6>,
       width: "10%",
     },
-    {
-      name: "Status",
-      selector: (row: any) => (
-        <div
-          className={`p-2 rounded-md text-white ${
-            row.status === "Pending"
-              ? "bg-yellow-200 text-yellow-500"
-              : row.status === "Reviewed"
-              ? "bg-green-300 text-green-600"
-              : "bg-red-200 text-red-600"
-          }`}
-        >
-          <h6>{row?.status}</h6>
-        </div>
-      ),
-      width: "12%",
-    },
+    // {
+    //   name: "Status",
+    //   selector: (row: any) => (
+    //     <div
+    //       className={`p-2 rounded-md text-white ${
+    //         row.status === "Pending"
+    //           ? "bg-yellow-200 text-yellow-500"
+    //           : row.status === "Reviewed"
+    //           ? "bg-green-300 text-green-600"
+    //           : "bg-red-200 text-red-600"
+    //       }`}
+    //     >
+    //       <h6>{row?.status}</h6>
+    //     </div>
+    //   ),
+    //   width: "12%",
+    // },
     {
       name: "Action",
       width: "8%",

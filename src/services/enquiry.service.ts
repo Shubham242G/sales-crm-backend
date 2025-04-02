@@ -33,6 +33,7 @@ export interface IEnqiry {
     categoryOfHotel:string[];
     priority: string;
     occupancy:string[];
+    status: string;
     banquet:{
         date:string;
         session:string;
@@ -214,6 +215,3 @@ export const addEnquiryExel = async (obj: any,) => {
 
     return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadEnquiries`, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
 };
-
-
-

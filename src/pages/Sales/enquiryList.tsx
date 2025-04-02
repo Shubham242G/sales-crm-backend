@@ -2,6 +2,7 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef, useEffect } from "react";
+import { useStatusById } from "@/services/status.service";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import {
   FaFilter,
@@ -202,13 +203,12 @@ function EnquiryLIst() {
       name: "Level of Enquiry",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col p-2 rounded-md  ${
-            row.levelOfEnquiry === "moderate"
-              ? "bg-yellow-200 text-white-100"
-              : row.levelOfEnquiry === "Not Urgent"
+          className={`flex gap-1 flex-col p-2 rounded-md  ${row.levelOfEnquiry === "moderate"
+            ? "bg-yellow-200 text-white-100"
+            : row.levelOfEnquiry === "Not Urgent"
               ? "bg-green-300 text-white-600"
               : row.levelOfEnquiry === "urgent" && "bg-red-300 text-red-600"
-          }`}
+            }`}
         >
           <h6>{row.levelOfEnquiry}</h6>
         </div>
@@ -242,10 +242,10 @@ function EnquiryLIst() {
       name: "Status",
       selector: (row: any) => (
         <div className="flex gap-1">
-          <Switch defaultChecked />
+          {row?.status}
         </div>
       ),
-      width: "8%",
+      width: "20%",
     },
     {
       name: "Edit",

@@ -20,6 +20,7 @@ export default BASE_URL
 
 
 export type GeneralApiResponse<T = unknown> = {
+  _id: any;
   message: string;
   data: T;
 };

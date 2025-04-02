@@ -1,3 +1,4 @@
+
 import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
@@ -194,6 +195,13 @@ function RfpList() {
         <div className="flex justify-around">{row.serviceType}</div>
       ),
       width: "10%",
+    },
+    {
+      name: "Status",
+      selector: (row: any) => (
+        <div className="flex justify-around">{row.status}</div>
+      ),
+      width: "15%",
     },
     {
       name: "Edit",

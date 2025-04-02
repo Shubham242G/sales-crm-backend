@@ -1,4 +1,3 @@
-
 import { usePagination } from "../libs/hooks/usePagination";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PaginationState } from "@tanstack/react-table";
@@ -19,6 +18,7 @@ export interface IRPF {
     _id: string; // Unique identifier
     rfpId: string;
     serviceType: [],
+    status: string,
     eventDates: [
         {
         startDate: string,
@@ -156,6 +156,3 @@ export const addRfpExel = async (obj: any,) => {
 
     return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadEnquiries`, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
 };
-
-
-

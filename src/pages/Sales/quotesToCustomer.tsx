@@ -22,6 +22,7 @@ interface IQuotesToCustomer {
   customerName: string;
   serviceType: string[];
   amount: string;
+  status:string;
   totalAmount: string;
 }
 
@@ -100,6 +101,15 @@ function QuotesForCustomer() {
       selector: (row: IQuotesToCustomer) => (
         <div className="flex gap-1 flex-col">
           <h6>{row.amount || "N/A"}</h6>
+        </div>
+      ),
+      width: "10%",
+    },
+    {
+      name: "Status",
+      selector: (row: IQuotesToCustomer) => (
+        <div className="flex gap-1 flex-col">
+          <h6>{row.status || "N/A"}</h6>
         </div>
       ),
       width: "10%",

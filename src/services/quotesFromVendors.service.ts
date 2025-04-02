@@ -22,6 +22,7 @@ export interface IQuotesFromVendors {
   receivedDate: string;
   status: string;
   attachment: string[];
+  enquiryId: string;
   eventDates: [
     {
       startDate: Date;

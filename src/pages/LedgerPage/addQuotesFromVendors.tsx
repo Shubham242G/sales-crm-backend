@@ -29,7 +29,6 @@ interface IShipppingAddress {
   rfpId: string;
   amount: string;
   receivedDate: string;
-  status: string;
   attachment: string[];
   eventDates: {
     startDate: string;
@@ -49,7 +48,6 @@ const AddQuotesFromVendors = () => {
     rfpId: "",
     amount: "",
     receivedDate: "",
-    status: "",
     attachment: [] as string[],
     eventDates: [
       {
@@ -85,7 +83,7 @@ const AddQuotesFromVendors = () => {
         zindex:'9',
         minHeight:'30px',
         '&:hover': {
-            border: '1px solid #e5e7eb !important',
+            border: '2px solid #e5e7eb !important',
            
         },
         
@@ -147,7 +145,6 @@ const AddQuotesFromVendors = () => {
         rfpId: quotesFromVendorsDataById?.data?.rfpId || "",
         amount: quotesFromVendorsDataById?.data?.amount || "",
         receivedDate: quotesFromVendorsDataById?.data?.receivedDate || "",
-        status: quotesFromVendorsDataById?.data?.status || "",
         attachment: quotesFromVendorsDataById?.data?.attachment || [],
         serviceType: quotesFromVendorsDataById?.data?.serviceType || [],
         markupDetails:
@@ -474,7 +471,7 @@ const AddQuotesFromVendors = () => {
           </div> */}
 
           {/* Additional Instructions */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block text-sm font-medium text-black mb-1">
               Status
             </label>
@@ -486,7 +483,7 @@ const AddQuotesFromVendors = () => {
               className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
               placeholder="Enter Status"
             />
-          </div>
+          </div> */}
 
           {/*markup table*/}
           <div className="col-span-2">
