@@ -1334,16 +1334,6 @@ const AddEnquiryForm = () => {
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Departure date</label>
-                    <input
-                      type="date"
-                      value={moment(airTickets.departureDate).format("YYYY-MM-DD")}
-                      onChange={(e) => handleAirTicketChange("departureDate", e.target.value)}
-                      className="border border-gray-300 p-2 rounded w-full text-sm"
-                    />
-                  </div>
-
                   {/* Round Trip Fields */}
                   {airTickets.tripType === "Round Trip" && (
                     <div>

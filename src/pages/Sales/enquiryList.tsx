@@ -168,7 +168,7 @@ function EnquiryLIst() {
       const { data: res } = await convertEnquiryToRfp(enquiryId);
       toastSuccess(res.message);
     } catch (error) {
-      toastError("Failed to convert to RFP.");
+      toastError(error);
     }
   };
   const columns = [

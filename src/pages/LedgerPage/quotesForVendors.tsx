@@ -96,7 +96,7 @@ function CustomerLedger() {
     },
     {
       name: "Date Received",
-      selector: (row: any) => <h6>{row?.submissionDate}</h6>,
+      selector: (row: any) => <h6>{row?.receivedDate}</h6>,
       width: "10%",
     },
     // {

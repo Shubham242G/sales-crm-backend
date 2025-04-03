@@ -44,7 +44,7 @@ function RfpList() {
     [pageIndex, pageSize, query]
   );
 
-  
+
   // const {data: useEnquiryByIdData} = useEnquiryById(enquiryId);
 
   const { data: RfpData, isLoading } = useRfp(searchObj);
@@ -123,9 +123,11 @@ function RfpList() {
   const handleConvertRfptoQuotesFromVendor = async (id: string) => {
     try {
       const { data: res } = await convertRfp(id);
+      console.log("Thiss is rfp to vendor--->", res.message)
       toastSuccess(res.message);
-    } catch (error) {
-      toastError("Failed to convert to RFP.");
+    } catch (error: any) {
+      console.log("error", error);
+      toastError(error);
     }
   };
 
@@ -156,7 +158,7 @@ function RfpList() {
       name: "Full Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row?.fullName}</h6> 
+          <h6>{row?.fullName}</h6>
           {/* {row.fullName} */}
         </div>
       ),
@@ -315,9 +317,9 @@ function RfpList() {
             totalRows={RfpData?.total}
             onChangePage={setPageIndex}
             onChangeRowsPerPage={setPageSize}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+          // pagination
+          // paginationPerPage={rowsPerPage}
+          // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

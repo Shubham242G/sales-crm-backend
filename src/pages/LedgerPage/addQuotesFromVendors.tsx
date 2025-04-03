@@ -12,6 +12,7 @@ import Select from "react-select";
 import { useRfp } from "@/services/rfp.service";
 import { useRfpById } from "@/services/rfp.service";
 import { customReactStylesSmall } from "@/utils/ReactSelectStyle";
+import { S } from "vite/dist/node/types.d-aGj9QkWt";
 
 interface IMarkupItem {
   label: string;
@@ -37,7 +38,7 @@ interface IShipppingAddress {
 }
 
 const AddQuotesFromVendors = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IShipppingAddress>({
     //new fields
     quotesId: "",
     vendorList: {
@@ -73,45 +74,45 @@ const AddQuotesFromVendors = () => {
 
   const customStyles = {
     control: (base: any) => ({
-        ...base,
+      ...base,
+      border: '2px solid #e5e7eb !important',
+      boxShadow: '0 !important',
+      color: "#000",
+      padding: '5px',
+      fontFamily: "satoshi, sans-serif",
+      backgroundColor: '#fafafa',
+      zindex: '9',
+      minHeight: '30px',
+      '&:hover': {
         border: '2px solid #e5e7eb !important',
-        boxShadow: '0 !important',
-        color:"#000",
-        padding:'5px',
-        fontFamily: "satoshi, sans-serif", 
-        backgroundColor:'#fafafa',
-        zindex:'9',
-        minHeight:'30px',
-        '&:hover': {
-            border: '2px solid #e5e7eb !important',
-           
-        },
-        
 
-        menu: (provided:any) => ({
-            ...provided,
-            zIndex: 9999, // Increase the z-index here
-          }),
+      },
 
-          menuPortal: (provided:any) => ({ ...provided, zIndex: 5 }),
-      
-        
+
+      menu: (provided: any) => ({
+        ...provided,
+        zIndex: 9999, // Increase the z-index here
+      }),
+
+      menuPortal: (provided: any) => ({ ...provided, zIndex: 5 }),
+
+
     }),
-    option: (base:any) => ({
-        ...base,
-        cursor: "pointer",
-        background: "white",
-        color:"#000",
-        fontFamily: "satoshi, sans-serif", 
-        zindex:'9',   // this was the mistake (I needed to remove this)
-        "&:hover": {
-           backgroundColor: "#687256",
-           color:"#fff",
-           fontFamily: "'inter', sans-serif", 
-         },
-})
+    option: (base: any) => ({
+      ...base,
+      cursor: "pointer",
+      background: "white",
+      color: "#000",
+      fontFamily: "satoshi, sans-serif",
+      zindex: '9',   // this was the mistake (I needed to remove this)
+      "&:hover": {
+        backgroundColor: "#687256",
+        color: "#fff",
+        fontFamily: "'inter', sans-serif",
+      },
+    })
 
-}
+  }
 
   const navigate = useNavigate();
   const { mutateAsync: addQuotesFromVendors } = useAddQuotesFromVendors();
@@ -122,7 +123,7 @@ const AddQuotesFromVendors = () => {
   const { data: vendorData } = useVendor();
   const { data: quotesFromVendors } = useQuotesFromVendors();
 
-  
+
 
   const [serviceTypeArr, setServiceTypeArr] = useState<any>([]);
   const [selectedServiceType, setSelectedServiceType] = useState<any>([]);
@@ -173,6 +174,7 @@ const AddQuotesFromVendors = () => {
 
       if (id) {
         const { data: res } = await updateQuotesFromVendors({ id, obj });
+        console.log("Vendor Data ---->", obj);
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/quotesFromVendors");
@@ -180,6 +182,7 @@ const AddQuotesFromVendors = () => {
         }
       } else {
         const { data: res } = await addQuotesFromVendors(obj);
+        console.log("Vendor Data ---->", obj);
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/quotesFromVendors");
@@ -352,7 +355,7 @@ const AddQuotesFromVendors = () => {
       <div className="max-w-6xl mx-auto bg-gray-50 shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">Add Quotes From Vendors</h1>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="block text-sm font-medium text-black mb-1">
               Quotes Id:
             </label>
@@ -364,24 +367,24 @@ const AddQuotesFromVendors = () => {
               className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
               placeholder="Enter Quotes Id"
             />
-          </div>
+          </div> */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div className="mb-4">
-            <label className="block text-sm font-medium text-black mb-1">
-              Vendor Name:
-            </label>
-            <input
-              name={"vendorList"}
-              value={formData?.vendorList?.label}
-              onChange={handleInputChange}
-              type="text"
-              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
-              placeholder="Enter Vendor Name"
-            />
-          </div>
+              <label className="block text-sm font-medium text-black mb-1">
+                Vendor Name:
+              </label>
+              <input
+                name={"vendorList"}
+                value={formData?.vendorList?.label}
+                onChange={handleInputChange}
+                type="text"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                placeholder="Enter Vendor Name"
+              />
+            </div>
 
-          {/* Service Type and Event Date */}
-          
+            {/* Service Type and Event Date */}
+
             <div>
               <label className="block font-satoshi text-black font-sm">
                 Service Type
@@ -402,7 +405,7 @@ const AddQuotesFromVendors = () => {
               />
             </div>
           </div>
-          
+
 
           <div className="mb-3">
             <label className="block text-sm font-medium text-black mb-2">
@@ -614,11 +617,11 @@ const AddQuotesFromVendors = () => {
                   {formData.attachment.map((file, index) => {
                     const fileName = file.split(";base64")[0].split("data:")[1]
                       ? // .includes("pdf")
-                        `File_${index + 1}.pdf`
+                      `File_${index + 1}.pdf`
                       : file.split(";base64")[0].split("data:")[1]
-                      ? // .includes("excel")
+                        ? // .includes("excel")
                         `File_${index + 1}.xlsx`
-                      : `File_${index + 1}.jpg`;
+                        : `File_${index + 1}.jpg`;
                     return (
                       <div
                         key={index}
