@@ -152,7 +152,7 @@ function RfpList() {
           <h6>{row.rfpId}</h6>
         </div>
       ),
-      width: "15%",
+      width: "7%",
     },
     {
       name: "Full Name",
@@ -162,7 +162,7 @@ function RfpList() {
           {/* {row.fullName} */}
         </div>
       ),
-      width: "20%",
+      width: "15%",
     },
     {
       name: "Event Date",

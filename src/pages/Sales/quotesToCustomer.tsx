@@ -129,7 +129,7 @@ function QuotesForCustomer() {
       selector: (row: IQuotesToCustomer & { _id: string }) => (
         <button
           onClick={() => navigate(`/addQuotesToCustomer/${row._id}`)}
-          className="text-blue-500 text-lg p-2 hover:bg-blue-100 rounded-full transition duration-200"
+          className="text-black-500 text-lg p-2 hover:bg-black-100 rounded-full transition duration-200"
         >
           <FaEdit />
         </button>
@@ -141,7 +141,7 @@ function QuotesForCustomer() {
       selector: (row: IQuotesToCustomer & { _id: string }) => (
         <button
           onClick={() => handleDelete(row._id)}
-          className="text-red-500 text-lg p-2 hover:bg-red-100 rounded-full transition duration-200"
+          className="text-black-500 text-lg p-2 hover:bg-black-100 rounded-full transition duration-200"
         >
           <FaTrash />
         </button>

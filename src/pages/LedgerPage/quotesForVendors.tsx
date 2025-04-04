@@ -118,9 +118,9 @@ function CustomerLedger() {
     // },
     {
       name: "Action",
-      width: "8%",
+      width: "10%",
       selector: (row: any) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Link
             to={`/addQuotesFromVendors/${row._id}`}
             className="p-[6px] text-black-400 text-lg"
@@ -140,11 +140,11 @@ function CustomerLedger() {
       name: "Convert to Customer Quote",
       width: "14%",
       selector: (row: any) => (
-        <div className="flex justify-center">
+        <div>
           <button
             type="button"
             onClick={() => handleConvertToCustomerQuote(row._id)}
-            className="text-lg text-blue-500 hover:text-blue-700"
+            className="text-lg text-black-400 hover:text-black-700 ml-7"
             title="Convert to Customer Quote"
           >
             <SiConvertio />

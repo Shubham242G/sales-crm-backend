@@ -188,7 +188,7 @@ function EnquiryLIst() {
           <h6>{row.enquiryType}</h6>
         </div>
       ),
-      width: "10%",
+      width: "5%",
     },
     {
       name: "Loaction",
@@ -236,7 +236,7 @@ function EnquiryLIst() {
     {
       name: "Number of Rooms",
       selector: (row: any) => row.noOfRooms,
-      width: "10%",
+      width: "8%",
     },
     {
       name: "Status",
@@ -245,7 +245,7 @@ function EnquiryLIst() {
           {row?.status}
         </div>
       ),
-      width: "20%",
+      width: "16%",
     },
     {
       name: "Edit",
