@@ -94,7 +94,7 @@ const AddRfpsForm = () => {
         additionalInstructions: rfpDataById.data.additionalInstructions || "",
       });
 
-      
+
 
       setSelectedVendors(rfpDataById?.data?.vendorList);
 
@@ -118,7 +118,7 @@ const AddRfpsForm = () => {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/rfps");
-          
+
         }
       } else {
         const { data: res } = await addRfp(obj);
@@ -279,7 +279,7 @@ const AddRfpsForm = () => {
               />
             </div>
 
-            {Array.isArray(formData.eventDates) &&
+            {/* {Array.isArray(formData.eventDates) &&
               formData.eventDates.map((el: any, index: number) => (
                 <div key={index}>
                   <label className="block text-sm font-medium text-black mb-1">
@@ -293,7 +293,20 @@ const AddRfpsForm = () => {
                     className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
                   />
                 </div>
-              ))}
+              ))} */}
+
+            <div>
+              <label className="block text-sm font-medium text-black mb-1">
+                Deadline for Proposal
+              </label>
+              <input
+                name="deadlineOfProposal" // Changed from deadlineDates to match state property
+                value={formData.deadlineOfProposal ? moment(formData.deadlineOfProposal).format("YYYY-MM-DD") : ""} // Fixed value binding
+                onChange={handleInputChange} // Using your existing handler which updates based on name
+                type="date"
+                className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
+              />
+            </div>
           </div>
 
           {/* Vendor List */}

@@ -181,12 +181,8 @@ function RfpList() {
       name: "Deadline for proposal",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>
-            {" "}
-            {row.eventDates?.length > 0
-              ? new Date(row.eventDates[0].endDate).toDateString()
-              : "No Dates"}
-          </h6>
+          <h6>{new Date(row?.deadlineOfProposal).toDateString()}</h6>
+          {/* {row.fullName} */}
         </div>
       ),
       width: "15%",
