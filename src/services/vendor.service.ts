@@ -42,16 +42,16 @@ export interface IVendor {
     numberOfRooms: number;
     roomSize: string;
     roomImageUpload: string[];
-    prices: { 
+    prices: {
       roomType: string;
       roomPrice: string;
     }[];
   }[];
 
-  
+
   isBanquetDetailsVisible: boolean;
   isRestaurantDetailsVisible: boolean;
-  
+
 
   banquets: {
     numberOfBanquests: string;
@@ -84,7 +84,7 @@ export interface IVendor {
     billingAddress: string;
   };
 
-  eventServices: { 
+  eventServices: {
     services: string;
     rate: string;
   }[];
@@ -175,6 +175,8 @@ export interface IVendor {
   documents?: string;
 }
 
+
+
 export const useVendorApiHook = () => {
   // const axiosAuth = useAxiosAuth({});
   const addVendor = async (obj: any) => {
@@ -204,7 +206,7 @@ export const useVendorApiHook = () => {
       pageIndex: String(pagination.pageIndex),
       pageSize: String(pagination.pageSize),
       ...searchObj,
-  }).toString();
+    }).toString();
     return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}?${query}`);
   };
 
@@ -214,12 +216,21 @@ export const useVendorApiHook = () => {
     );
   };
 
+
+
   const getAllVendorName = async () => {
-   
-  
+
+
     return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}/getAllVendorName`);
   };
- 
+
+
+
+
+  const bulkUpload = async (obj: any) => {
+    return axios.post<GeneralApiResponse<any>>(`${BASE_URL}${prefix}/bulkUpload`, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
+  }
+
 
   return {
     addVendor,
@@ -228,7 +239,8 @@ export const useVendorApiHook = () => {
     getVendorById,
     getAllVendor,
     convertVendorToSalesContact,
-    getAllVendorName
+    getAllVendorName,
+    bulkUpload,
   };
 };
 
@@ -298,30 +310,44 @@ export const useUpdateVendorById = () => {
   });
 };
 
+export const useBulkUpload = () => {
+  const api = useVendorApiHook()
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: api.bulkUpload,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["vendorBulkUpload"] });
+    }
+  })
+}
+
+
+
+
 export const useConvertVendorToSalesContact = () => {
   const api = useVendorApiHook();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: api.convertVendorToSalesContact,
     onSuccess: (res) => {
-      queryClient.invalidateQueries({ queryKey: ["Sales Contact"] }); 
-      queryClient.invalidateQueries({ queryKey: ["Vendor"] }); 
+      queryClient.invalidateQueries({ queryKey: ["Sales Contact"] });
+      queryClient.invalidateQueries({ queryKey: ["Vendor"] });
     },
   });
 };
 
 
 export const useVendorName = (
- 
+
 ) => {
-  
+
 
 
   const api = useVendorApiHook();
   return useQuery({
     queryKey: ["VendorName"],
     queryFn: () =>
-      api.getAllVendorName().then((res:any) => res?.data),
+      api.getAllVendorName().then((res: any) => res?.data),
     initialData: {
       data: [],
       total: 0,

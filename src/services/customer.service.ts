@@ -142,7 +142,12 @@ export const usecustomerApiHook = () => {
     return axios.post<GeneralApiResponse<ICustomer>>(
       `${BASE_URL}${prefix}/convert/${id}`
     );
+
   };
+
+  const bulkUpload = async (obj: any) => {
+      return axios.post<GeneralApiResponse<any>>(`${BASE_URL}${prefix}/bulkUpload`, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
+    }
 
   return {
     getAllCustomer,
@@ -151,6 +156,7 @@ export const usecustomerApiHook = () => {
     getCustomerById,
     addCustomer,
     convertEnquiry,
+    bulkUpload
   };
 };
 
@@ -224,6 +230,16 @@ export const useUpdateCustomerById = () => {
   });
 };
 
+export const useBulkUpload = () => {
+  const api = usecustomerApiHook();
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: api.bulkUpload,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["vendorBulkUpload"] });
+    }
+  })
+}
 // export const getExel = async () => {
 //     return axios.get(`${BASE_URL}${prefix}/getExel`);
 // };

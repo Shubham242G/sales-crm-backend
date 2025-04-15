@@ -2,15 +2,16 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
+import { FaFilter, FaFileExport, FaPlus, FaFileImport } from "react-icons/fa";
 import {
   useVendorById,
   useVendor,
   usedeleteVendorById,
   useUpdateVendorById,
   useConvertVendorToSalesContact,
+  useBulkUpload,
 } from "@/services/vendor.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
@@ -18,9 +19,9 @@ import { SiConvertio } from "react-icons/si";
 
 function VendorList() {
   const navigate = useNavigate();
-  // const [loading, setLoading] = useState(false);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // ledger details modal
   const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
@@ -41,7 +42,7 @@ function VendorList() {
   );
 
   const { data: VendorData, refetch } = useVendor(searchObj);
-  
+
   const { mutateAsync: deleteVendor } = usedeleteVendorById();
   const { mutateAsync: updateVendor } = useUpdateVendorById();
   const { mutateAsync: convertVendorToSalesContact } =
@@ -49,6 +50,45 @@ function VendorList() {
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Vendors");
+
+  const { mutateAsync: BulkUpload } = useBulkUpload();
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Handle Import button click
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      const allowedExtensions = ["xlsx", "csv"];
+      const fileExtension = file.name.split(".").pop()?.toLowerCase() || "";
+      if (!allowedExtensions.includes(fileExtension)) {
+        toastError("Invalid file type. Please upload an Excel or CSV file.");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", file);
+      const { data: response } = await BulkUpload(formData);
+      if (response.data) {
+        toastSuccess(`${response.data.successCount} cities imported successfully!
+              ${response.data.errorCount} cities failed to import. Please check the file for errors.
+              ${response.data.errorArr.map((item: any) => item.error)}
+              `);
+      }
+    } catch (error) {
+      toastError(error);
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
 
   const handleDelete = async (id: string) => {
     try {
@@ -134,40 +174,48 @@ function VendorList() {
       width: "18%",
     },
     {
-      name: "Actions",
+      name: "Update",
       width: "14%",
       selector: (row: any) => (
         <div className="flex items-center gap-4">
           <Link to={`/add-vendor/${row?._id}`} title="View Vendor">
-            <FaEye className="text-lg text-gray-600 hover:text-black" />
+            <FaEye className="text-lg text-gray-600 hover:text-black ml-4" />
           </Link>
+        </div>
+      ),
+    },
+    {
+      name: "Delete",
+      width: "14%",
+      selector: (row: any) => (
+        <div className="flex items-center gap-4">
           <button
             type="button"
             onClick={() => handleDelete(row._id)}
-            className="text-lg text-red-500 hover:text-red-700"
+            className="text-lg  text-gray-600 hover:text-black ml-2"
             title="Delete Vendor"
           >
             <RiDeleteBin6Line />
           </button>
         </div>
       ),
-    },
-    {
-      name: "Convert to Sales Contact",
-      width: "14%",
-      selector: (row: any) => (
-        <div className="flex justify-center">
-          <button
-            type="button"
-            onClick={() => handleConvertToSalesContact(row._id)}
-            className="text-lg text-blue-500 hover:text-blue-700"
-            title="Convert to Sales Contact"
-          >
-            <SiConvertio />
-          </button>
-        </div>
-      ),
-    },
+    }
+    // {
+    //   name: "Convert to Sales Contact",
+    //   width: "14%",
+    //   selector: (row: any) => (
+    //     <div className="flex justify-center">
+    //       <button
+    //         type="button"
+    //         onClick={() => handleConvertToSalesContact(row._id)}
+    //         className="text-lg text-blue-500 hover:text-blue-700"
+    //         title="Convert to Sales Contact"
+    //       >
+    //         <SiConvertio />
+    //       </button>
+    //     </div>
+    //   ),
+    // },
   ];
 
   const filterColumns = columns.filter((item) => {
@@ -224,9 +272,30 @@ function VendorList() {
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button>
+              {/* Import Button */}
+              <button
+                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
+                onClick={handleImportClick}
+              >
+                <FaFileImport />
+                Import
+              </button>
+
+
+
+              {/* Hidden File Input for Import */}
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                onChange={handleFileChange}
+              />
+
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
+
 
               {canCreate && (
                 <button
@@ -245,10 +314,15 @@ function VendorList() {
             columns={filterColumns}
             loading={false}
             totalRows={VendorData?.total}
-            // loading={loading}
+            onChangeRowsPerPage={setPageSize}
+            onChangePage={setPageIndex}
+            page={pageIndex}
+            rowsPerPageText={pageSize}
+            isServerPropsDisabled={false}
           />
         </div>
       </div>
+
     </>
   );
 }

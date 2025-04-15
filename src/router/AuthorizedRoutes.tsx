@@ -83,6 +83,7 @@ import RoleHierarchy from "@/pages/Hierarchy/roleHierarchy";
 import NewRoleModal from "@/pages/Hierarchy/newRoleModal";
 import SearchBar from "../pages/HotelSearch/hotelSearch";
 import Combiner from "@/pages/monthly/combiner";
+import ZohoInvoice from "@/pages/Sales/zoho_invoice_view";
 // import CalendarView from "@/pages/Calendar/CalendarView";
 
 export default function AuthorizedRoutes() {
@@ -94,6 +95,7 @@ export default function AuthorizedRoutes() {
                         <Route path="/home" element={<Dashboard />}></Route> */}
           <Route path="/" element={<Dashboard />}></Route>
           <Route path="/admin" element={<Admin />}></Route>
+          <Route path="/zohoInvoice" element={<ZohoInvoice />}></Route>
           <Route path="/vendorList" element={<VendorList />}></Route>
           <Route path="/rfps" element={<Rfps />}></Route>
           <Route

@@ -2,9 +2,9 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
+import { FaFilter, FaFileExport, FaPlus, FaFileImport } from "react-icons/fa";
 import {
   useCustomer,
   usedeleteCustomerById,
@@ -65,6 +65,12 @@ function CustomerSales() {
     } catch (error) {
       toastError(error);
     }
+  };
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
   };
 
   const handleUpdate = async (id: string, data: any) => {
@@ -285,6 +291,15 @@ function CustomerSales() {
                 <FaFileExport /> Export
               </button>
 
+              {/* Import Button */}
+              <button
+                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
+                onClick={handleImportClick}
+              >
+                <FaFileImport />
+                Import
+              </button>
+
               {canCreate && (
                 <button
                   onClick={() => navigate("/add-customer")}
@@ -302,13 +317,13 @@ function CustomerSales() {
             columns={filterColumns}
             loading={false}
             totalRows={CustomerData?.total}
-            // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+          // loading={loading}
+          // totalRows={data.length}
+          // onChangePage={handlePageChange}
+          // onChangeRowsPerPage={handleRowsPerPageChange}
+          // pagination
+          // paginationPerPage={rowsPerPage}
+          // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

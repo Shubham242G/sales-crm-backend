@@ -223,11 +223,26 @@ function Sidebar() {
         },
       ],
     },
+    {
+      mainlink: "/zohoInvoice",
+      heading: "zohoInvoice",
+      icon: ledger,
+      activeIcon: ledgerw,
+      isActive: false,
+      isArrow: true,
+      dropArr: [
+        {
+          dropHead: "Zoho Invoice",
+          link: "zohoInvoice",
+        },
+
+      ],
+    }
   ]);
 
   const [showdrop, setShowDrop] = useState(null);
 
-  const handleDropShow = (index:any) => {
+  const handleDropShow = (index: any) => {
     setShowDrop(showdrop === index ? null : index);
   };
 
@@ -235,18 +250,18 @@ function Sidebar() {
     .map((item) => {
       let filteredDropArr = item.dropArr
         ? item.dropArr
-            .map((dropItem) => {
-              let response = CreateRoutePermission(dropItem.dropHead, dropItem);
-              if (response.view) {
-                dropItem.plusLink = response.create ? dropItem.plusLink : "";
-                return dropItem;
-              }
-              return null;
-            })
-            .filter(Boolean)
+          .map((dropItem) => {
+            let response = CreateRoutePermission(dropItem.dropHead, dropItem);
+            if (response.view) {
+              dropItem.plusLink = response.create ? dropItem.plusLink : "";
+              return dropItem;
+            }
+            return null;
+          })
+          .filter(Boolean)
         : null;
 
- 
+
       const hasMainPermission =
         item.heading === "Dashboard" ? true : RoutePermission(item.heading);
       const hasValidDropItems = filteredDropArr && filteredDropArr.length > 0;

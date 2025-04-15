@@ -2,7 +2,7 @@ import { ReactTable } from "../../_components/ReuseableComponents/DataTable/Reac
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 import { SiConvertio } from "react-icons/si";
@@ -18,7 +18,20 @@ function CustomerLedger() {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { data: quotesFromVendors, isLoading } = useQuotesFromVendors();
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [query, setQuery] = useState("");
+  const searchObj = useMemo(
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
+  const { data: quotesFromVendors, isLoading } = useQuotesFromVendors(searchObj);
+
+
 
   const { mutateAsync: convertQuotesFromVendorToQuotesToCustomer } =
     useConvertQuotesFromVendorToQuotesToCustomer();
@@ -189,6 +202,11 @@ function CustomerLedger() {
           columns={columns}
           loading={false}
           totalRows={0}
+          onChangeRowsPerPage={setPageSize}
+          onChangePage={setPageIndex}
+          page={pageIndex}
+          rowsPerPageText={pageSize}
+          isServerPropsDisabled={false}
         />
       </div>
     </div>

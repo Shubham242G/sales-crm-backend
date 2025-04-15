@@ -8,7 +8,7 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import {
   useQuotesToCustomer,
@@ -43,6 +43,11 @@ function QuotesForCustomer() {
     }),
     [pageIndex, pageSize, query]
   );
+
+  useEffect(() => {
+    // This will trigger a refetch whenever this component is rendered/re-rendered
+    refetch();
+  }, [location.pathname]);
 
   const {
     data: quotesToCustomerData,
