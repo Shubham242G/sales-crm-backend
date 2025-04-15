@@ -8,6 +8,9 @@ import { FaPlus } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 import { usedeleteRolesById, useRoles } from "@/services/roles.service";
 import { toastError, toastSuccess } from "@/utils/toast";
+import RoleHierarchy from "@/pages/Hierarchy/roleHierarchy";
+
+
 
 function Roles() {
   const navigate = useNavigate();
@@ -29,7 +32,7 @@ function Roles() {
 
   const handleDelete = async (id: string) => {
     try {
-      if (window.confirm("Are you sure you want to delete this contact?")) {
+      if (window.confirm("Are you sure you want to delete this role?")) {
         const { data: res } = await deleteRoles(id);
         if (res) {
           toastSuccess(res.message);
@@ -52,28 +55,8 @@ function Roles() {
       width: "12%",
     },
     {
-      name: "Phone Number",
-      selector: (row: any) => row.phoneNo,
-      width: "12%",
-    },
-    {
-      name: "Email Address",
-      selector: (row: any) => row.email,
-      width: "12%",
-    },
-    {
-      name: "Department",
-      selector: (row: any) => row.department,
-      width: "12%",
-    },
-    {
-      name: "Designation",
-      selector: (row: any) => row.designation,
-      width: "12%",
-    },
-    {
-      name: "Description",
-      selector: (row: any) => row.description,
+      name: "Hierarchy",
+      selector: (row: any) => row.hierarchy || "N/A",
       width: "12%",
     },
     {
@@ -115,6 +98,8 @@ function Roles() {
                 type="search"
                 className="rounded-md w-[250px] border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search by role name"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
               />
               <div className="relative right-8">
                 <IoSearchOutline />
@@ -136,6 +121,9 @@ function Roles() {
           totalRows={roleData?.total}
         />
       </div>
+      <RoleHierarchy />
+ 
+   
     </div>
   );
 }

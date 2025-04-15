@@ -28,6 +28,7 @@ interface IRoles {
   designation: string;
   department: string;
   routePermissions: RoutePermission[];
+  parentRoleName?: string;
 }
 
 // Permissions for each route

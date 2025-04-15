@@ -1,66 +1,79 @@
-// src/components/RoleHierarchy.tsx
 import React, { useState, useEffect } from "react";
-import NewRoleModal from "./newRoleModal";
+import { useRoleHierarchy } from "@/services/roleHierarchy.service";
 
-
-// Mock initial roles (simulating Zoho CRM roles)
-const initialRoles: any = [
-  {
-    id: "portl2888",
-    name: "Management",
-    reportsTo: null,
-    children: [
-      {
-        id: "team-leader-1",
-        name: "Team Leader 1",
-        reportsTo: "portl2888",
-        children: [
-          { id: "group-ops-1", name: "Group OPS 1", reportsTo: "team-leader-1", children: [] },
-          { id: "group-ops-2", name: "Group OPS 2", reportsTo: "team-leader-1", children: [] },
-        ],
-      },
-    ],
-  },
-];
-
-// RoleNode component with typed props
-interface RoleNodeProps {
-  role: any;
-  onAddRole: (parentId: string | null) => void;
-  isExpandedAll?: boolean;
+// Role type interface
+interface Role {
+  id: string;
+  name: string;
+  reportsTo: string | null;
+  description?: string;
+  children?: Role[];
 }
 
-const RoleNode: React.FC<RoleNodeProps> = ({ role, onAddRole, isExpandedAll }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const effectiveExpanded = isExpandedAll !== undefined ? isExpandedAll : isExpanded;
+// Build a tree from flat role data
+const buildRoleTree = (roles: Role[]): Role[] => {
+  const map = new Map<string, Role>();
+  const roots: Role[] = [];
+  
+  roles.forEach(role => {
+    const newRole = { ...role, children: [] };
+    map.set(role.id, newRole);
+  });
+  
+  roles.forEach(role => {
+    if (role.reportsTo && map.has(role.reportsTo)) {
+      map.get(role.reportsTo)!.children!.push(map.get(role.id)!);
+    } else {
+      roots.push(map.get(role.id)!);
+    }
+  });
+  
+  return roots;
+};
 
+// TreeNode component (recursive)
+const TreeNode: React.FC<{ role: Role; isLast: boolean }> = ({ role, isLast }) => {
+  const [expanded, setExpanded] = useState(true);
+  const hasChildren = role.children && role.children.length > 0;
+  
   return (
-    <div className="ml-4">
-      <div className="flex items-center">
-        {role.children.length > 0 && (
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="text-gray-500 mr-2"
-          >
-            {effectiveExpanded ? "▼" : "▶"}
-          </button>
-        )}
-        <span className="text-gray-700">{role.name}</span>
-        <button
-          onClick={() => onAddRole(role.id)}
-          className="ml-2 text-blue-500 text-sm hover:underline"
-        >
-          + Add Child
-        </button>
+    <div className="relative pl-6">
+      {/* Vertical connector (not for last item) */}
+      {!isLast && <div className="absolute left-2 top-4 h-full border-l-2 border-gray-300" />}
+      
+      <div className="relative flex items-start mb-2">
+        {/* Horizontal connector */}
+        <div className="absolute left-0 top-4 w-2 border-t-2 border-gray-300" />
+        
+        {/* Node circle */}
+        <div className="z-10 flex items-center justify-center w-4 h-4 mt-2 bg-blue-500 rounded-full">
+          {hasChildren && (
+            <button 
+              onClick={() => setExpanded(!expanded)} 
+              className="flex items-center justify-center w-full h-full text-white text-xs font-bold"
+            >
+              {expanded ? "-" : "+"}
+            </button>
+          )}
+        </div>
+        
+        {/* Content box */}
+        <div className="ml-3 p-3 bg-white border border-gray-200 rounded-md shadow-sm w-full hover:shadow-md transition-shadow duration-200">
+          <div className="font-medium text-gray-800">{role.name || "(Unnamed Role)"}</div>
+          {role.description && (
+            <div className="text-sm text-gray-500 mt-1">{role.description}</div>
+          )}
+        </div>
       </div>
-      {effectiveExpanded && role.children.length > 0 && (
-        <div className="border-l-2 border-dashed border-gray-300 ml-4">
-          {role.children.map((child:any) => (
-            <RoleNode
-              key={child.id}
-              role={child}
-              onAddRole={onAddRole}
-              isExpandedAll={isExpandedAll}
+      
+      {/* Children */}
+      {hasChildren && expanded && (
+        <div className="pl-1">
+          {role.children!.map((child, index) => (
+            <TreeNode 
+              key={child.id} 
+              role={child} 
+              isLast={index === role.children!.length - 1} 
             />
           ))}
         </div>
@@ -69,113 +82,41 @@ const RoleNode: React.FC<RoleNodeProps> = ({ role, onAddRole, isExpandedAll }) =
   );
 };
 
+// Main component
 const RoleHierarchy: React.FC = () => {
-  const [roles, setRoles] = useState(initialRoles);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [expanded, setExpanded] = useState<boolean>(false);
-  const [suggestedParentId, setSuggestedParentId] = useState<string | null>(null);
-
-  // Simulate fetching roles from Zoho CRM API
+  const { data, isLoading, error } = useRoleHierarchy();
+  const [treeData, setTreeData] = useState<Role[]>([]);
+  
   useEffect(() => {
-  }, []);
-
-  const findAndUpdateRole = (
-    roles: any,
-    roleId: string,
-    newRole: any | null
-  ): any => {
-    return roles.map((role:any) => {
-      if (role.id === roleId) {
-        return {
-          ...role,
-          children: newRole
-            ? [...role.children, { ...newRole, children: [], reportsTo: roleId }]
-            : role.children,
-        };
-      }
-      if (role.children.length > 0) {
-        return {
-          ...role,
-          children: findAndUpdateRole(role.children, roleId, newRole),
-        };
-      }
-      return role;
-    });
-  };
-
-  const handleAddRole = (newRole: any) => {
-    const parentId = newRole.reportsTo; // Use reportsTo from the form data
-    const createdRole = {
-      id: `role-${Date.now()}`, // Generate a unique ID
-      name: newRole.name,
-      description: newRole.description,
-      shareDataWithPeers: newRole.shareData,
-      reportsTo: parentId,
-      children: [],
-    };
-
-    if (!parentId) {
-      setRoles([...roles, createdRole]);
-    } else {
-      setRoles(findAndUpdateRole(roles, parentId, createdRole));
+    if (Array.isArray(data?.data)) {
+      const tree = buildRoleTree(data.data);
+      setTreeData(tree);
     }
-    setIsModalOpen(false);
-    setSuggestedParentId(null);
-  };
-
-  const toggleExpandAll = () => {
-    setExpanded(!expanded);
-  };
-
-  const openModalForRole = (parentId: string | null) => {
-    setSuggestedParentId(parentId); // Suggest the parent ID based on "Add Child"
-    setIsModalOpen(true);
-  };
+  }, [data]);
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-gray-800">ROLES</h2>
-        <div className="space-x-2">
-          <button
-            onClick={() => openModalForRole(null)}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-          >
-            NEW ROLE
-          </button>
-          <button
-            onClick={toggleExpandAll}
-            className="text-blue-500 hover:underline"
-          >
-            {expanded ? "COLLAPSE ALL" : "EXPAND ALL"}
-          </button>
-        </div>
-      </div>
-      <p className="text-gray-600 mb-4">
-        THIS PAGE WILL ALLOW YOU TO DEFINE HOW YOU SHARE THE DATA AMONG USERS
-        BASED ON YOUR ORGANIZATION’S ROLE HIERARCHY.
+    <div className="p-6 bg-gray-50 rounded-lg shadow">
+      <h1 className="text-xl font-bold text-gray-800 mb-2">Organizational Role Hierarchy</h1>
+      <p className="text-sm text-gray-600 mb-6">
+        Interactive visualization of reporting relationships
       </p>
-      <div>
-        {roles.map((role:any) => (
-          <RoleNode
-            key={role.id}
-            role={role}
-            onAddRole={openModalForRole}
-            isExpandedAll={expanded}
+      
+      {isLoading && <div className="text-gray-500">Loading role hierarchy...</div>}
+      {error && <div className="text-red-500">Failed to load roles.</div>}
+      
+      {!isLoading && !error && treeData.length === 0 && (
+        <div className="text-gray-500">No roles available.</div>
+      )}
+      
+      <div className="pt-4">
+        {treeData.map((role, index) => (
+          <TreeNode 
+            key={role.id} 
+            role={role} 
+            isLast={index === treeData.length - 1} 
           />
         ))}
       </div>
-      {isModalOpen && (
-        <NewRoleModal
-          onClose={() => {
-            setIsModalOpen(false);
-            setSuggestedParentId(null);
-          }}
-          onSave={handleAddRole}
-          roles={roles}
-          suggestedParentId={suggestedParentId}
-        />
-      )}
     </div>
   );
 };

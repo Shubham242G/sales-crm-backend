@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FaPlus, FaSave } from "react-icons/fa";
 import {
   useAddRoles,
+  useRoles,
   useRolesById,
   useUpdateRolesById,
 } from "@/services/roles.service";
@@ -27,6 +28,7 @@ interface Role {
   phoneNo: string;
   designation: string;
   department: string;
+  parentRoleName?: string; 
 }
 
 // Permissions for each route
@@ -66,6 +68,27 @@ function AddRoles() {
       permissions: { create: false, view: false, update: false, delete: false },
     },
   ]);
+   const [pageIndex, setPageIndex] = useState(1);
+    const [pageSize, setPageSize] = useState(100);
+    const [query, setQuery] = useState("");
+    const searchObj = useMemo(
+      () => ({
+        ...(query && { query }),
+        pageIndex: pageIndex - 1,
+        pageSize,
+      }),
+      [pageIndex, pageSize, query]
+    );
+
+  const {data: allRolesData} = useRoles(searchObj);
+  console.log(allRolesData?.data, "all roles data");
+const [parentRoleName, setParentRoleName] = useState<string>("");
+
+const allRoles = allRolesData?.data || [];
+
+
+
+
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -83,11 +106,15 @@ function AddRoles() {
       setDesignation(roleDataById?.data?.designation);
       setDepartment(roleDataById?.data?.department);
       setPermissions(roleDataById?.data?.routePermissions);
+      setParentRoleName(roleDataById?.data?.parentRoleName || "");
     }
   }, [roleDataById]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if(!roleName || !description || !name ||  !designation || !department){
+      return toastError("Please fill all the fields");
+    }
     try {
       const newRole: Role = {
         roleName,
@@ -98,6 +125,7 @@ function AddRoles() {
         designation,
         department,
         routePermissions: permissions,
+        parentRoleName
       };
 
       if (id) {
@@ -233,6 +261,19 @@ function AddRoles() {
             placeholder="Enter Designation"
           />
         </div>
+
+        <div>
+
+       
+        <Autocomplete
+  options={allRoles.map((r:any) => r.roleName).filter((r:any) => r !== roleName)}
+  value={parentRoleName}
+  onChange={(_, newValue) => setParentRoleName(newValue || "")}
+  renderInput={(params) => (
+    <TextField {...params} label="Parent Role (for hierarchy)" />
+  )}
+/>
+</div>
         <div>
           <label className="block font-medium mb-4">Role Name</label>
           <input
