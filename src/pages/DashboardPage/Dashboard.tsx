@@ -42,102 +42,182 @@ const staticQuotes = [
   { text: "Success is not final; failure is not fatal.", author: "Winston Churchill" },
   { text: "You miss 100% of the shots you don’t take.", author: "Wayne Gretzky" },
   { text: "Believe you can and you’re halfway there.", author: "Theodore Roosevelt" },
-  { text: "The only limit is your mind.", author: "Unknown" },
-  { text: "Do what you can, with what you have, where you are.", author: "Theodore Roosevelt" },
-  { text: "Act as if what you do makes a difference. It does.", author: "William James" },
-  { text: "Dream big, work hard, stay focused.", author: "Unknown" },
-  { text: "Every day is a fresh start.", author: "Unknown" },
-  { text: "The journey of a thousand miles begins with one step.", author: "Lao Tzu" },
-  { text: "Keep going; you’re closer than you think.", author: "Unknown" },
-  { text: "Turn obstacles into opportunities.", author: "Unknown" },
-  { text: "Stay positive, work hard, make it happen.", author: "Unknown" },
-  { text: "Success is the sum of small efforts.", author: "Robert Collier" },
-  { text: "Focus on the goal, not the struggle.", author: "Unknown" },
-  { text: "What you do today shapes tomorrow.", author: "Unknown" },
-  { text: "Courage is taking the first step.", author: "Unknown" },
-  { text: "Progress, not perfection.", author: "Unknown" },
-  { text: "You are enough.", author: "Unknown" },
-  { text: "Make it happen; shock everyone.", author: "Unknown" },
-  { text: "Sell the problem you solve, not the product.", author: "Unknown" },
-  { text: "Every sale starts with a conversation.", author: "Unknown" },
-  { text: "The best salespeople listen more than they talk.", author: "Unknown" },
-  { text: "A sale is made in every call; either you sell or they sell you ‘no’.", author: "Unknown" },
-  { text: "Persistence beats resistance.", author: "Unknown" },
-  { text: "Know your customer, win the deal.", author: "Unknown" },
-  { text: "Sales is about trust, not tricks.", author: "Unknown" },
-  { text: "Close the deal, open the relationship.", author: "Unknown" },
-  { text: "Every ‘no’ brings you closer to ‘yes’.", author: "Unknown" },
-  { text: "Sell value, not price.", author: "Unknown" },
-  { text: "Success in sales is a numbers game.", author: "Unknown" },
-  { text: "The harder you work, the luckier you get in sales.", author: "Unknown" },
-  { text: "A goal without a plan is just a wish.", author: "Antoine de Saint-Exupéry" },
-  { text: "Winning starts with preparation.", author: "Unknown" },
-  { text: "Sales is helping, not selling.", author: "Unknown" },
-  { text: "Ask questions, find solutions.", author: "Unknown" },
-  { text: "Your attitude determines your altitude in sales.", author: "Unknown" },
-  { text: "Build relationships, not just deals.", author: "Unknown" },
-  { text: "Success is the best revenge.", author: "Frank Sinatra" },
-  { text: "Keep knocking until the door opens.", author: "Unknown" },
-  { text: "Efficiency is doing things right.", author: "Peter Drucker" },
-  { text: "Simplify, then amplify.", author: "Unknown" },
-  { text: "Good processes save time.", author: "Unknown" },
-  { text: "Teamwork makes the dream work.", author: "John C. Maxwell" },
-  { text: "Measure twice, cut once.", author: "Unknown" },
-  { text: "Details matter in operations.", author: "Unknown" },
-  { text: "Work smarter, not harder.", author: "Unknown" },
-  { text: "Consistency is key.", author: "Unknown" },
-  { text: "Great systems build great results.", author: "Unknown" },
-  { text: "Plan the work, work the plan.", author: "Unknown" },
-  { text: "Efficiency turns chaos into order.", author: "Unknown" },
-  { text: "Every step counts in the process.", author: "Unknown" },
-  { text: "Precision drives progress.", author: "Unknown" },
-  { text: "Organize today for success tomorrow.", author: "Unknown" },
-  { text: "The best operations run like clockwork.", author: "Unknown" },
-  { text: "Small improvements, big wins.", author: "Unknown" },
-  { text: "Focus on what works, fix what doesn’t.", author: "Unknown" },
-  { text: "Strong teams build strong outcomes.", author: "Unknown" },
-  { text: "Time is money; save both.", author: "Unknown" },
-  { text: "Excellence is a habit.", author: "Aristotle" },
-  { text: "Leadership is action, not position.", author: "Donald H. McGannon" },
-  { text: "Control the chaos, create the calm.", author: "Unknown" },
-  { text: "A good admin sees the big picture.", author: "Unknown" },
-  { text: "Empower others to succeed.", author: "Unknown" },
-  { text: "Organize, prioritize, succeed.", author: "Unknown" },
-  { text: "The best leaders lift others up.", author: "Unknown" },
-  { text: "Vision without execution is just a dream.", author: "Unknown" },
-  { text: "Lead by example, not by force.", author: "Unknown" },
-  { text: "Clarity is power.", author: "Unknown" },
-  { text: "A team is only as strong as its leader.", author: "Unknown" },
-  { text: "Plan today, win tomorrow.", author: "Unknown" },
-  { text: "Great admin builds great teams.", author: "Unknown" },
-  { text: "Decide, delegate, deliver.", author: "Unknown" },
-  { text: "Success starts with structure.", author: "Unknown" },
-  { text: "Be the calm in the storm.", author: "Unknown" },
-  { text: "Lead with purpose, not pressure.", author: "Unknown" },
-  { text: "Every detail builds the whole.", author: "Unknown" },
-  { text: "Inspire, don’t just manage.", author: "Unknown" },
-  { text: "A leader’s job is to create more leaders.", author: "Unknown" },
-  { text: "Set the tone, shape the future.", author: "Unknown" },
-  { text: "Don’t wait for opportunity; create it.", author: "Unknown" },
-  { text: "Hard work beats talent when talent doesn’t work.", author: "Tim Notke" },
-  { text: "The only way to do great work is to love it.", author: "Steve Jobs" },
-  { text: "Start where you stand.", author: "Unknown" },
-  { text: "Fear is a liar; action is truth.", author: "Unknown" },
-  { text: "You don’t find time; you make it.", author: "Unknown" },
-  { text: "Rise above the storm and find the sun.", author: "Unknown" },
-  { text: "Effort today, rewards tomorrow.", author: "Unknown" },
-  { text: "Be the change you wish to see.", author: "Mahatma Gandhi" },
-  { text: "One small step can change everything.", author: "Unknown" },
-  { text: "Doubt kills more dreams than failure.", author: "Suzy Kassem" },
-  { text: "Keep pushing; the best is yet to come.", author: "Unknown" },
-  { text: "Your only competition is yesterday’s you.", author: "Unknown" },
-  { text: "Turn your wounds into wisdom.", author: "Oprah Winfrey" },
-  { text: "The future belongs to those who believe.", author: "Eleanor Roosevelt" },
-  { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
-  { text: "You are stronger than you know.", author: "Pankaj Maurya" },
-  { text: "Make today count.", author: "vinay yadav" },
-  { text: "Impossible is just an opinion.", author: "Paulo Coelho" },
-  { text: "Shine bright; the world needs your light.", author: "Unknown" },
+  {
+    text: "The only way to do great work is to love what you do.",
+    author: "Steve Jobs"
+  },
+  {
+    text: "Believe you can and you're halfway there.",
+    author: "Theodore Roosevelt"
+  },
+  {
+    text: "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+    author: "Winston Churchill"
+  },
+  {
+    text: "The best way to predict the future is to create it.",
+    author: "Abraham Lincoln"
+  },
+  {
+    text: "You miss 100% of the shots you don't take.",
+    author: "Wayne Gretzky"
+  },
+  {
+    text: "In the middle of every difficulty lies opportunity.",
+    author: "Albert Einstein"
+  },
+  {
+    text: "Don't watch the clock; do what it does. Keep going.",
+    author: "Sam Levenson"
+  },
+  {
+    text: "You are never too old to set another goal or to dream a new dream.",
+    author: "C.S. Lewis"
+  },
+  {
+    text: "Hardships often prepare ordinary people for an extraordinary destiny.",
+    author: "C.S. Lewis"
+  },
+  {
+    text: "Success is not how high you have climbed, but how you make a positive difference to the world.",
+    author: "Roy T. Bennett"
+  },
+  {
+    text: "The future belongs to those who believe in the beauty of their dreams.",
+    author: "Eleanor Roosevelt"
+  },
+  {
+    text: "The only limit to our realization of tomorrow will be our doubts of today.",
+    author: "Franklin D. Roosevelt"
+  },
+  {
+    text: "Life is 10% what happens to us and 90% how we react to it.",
+    author: "Charles R. Swindoll"
+  },
+  {
+    text: "The journey of a thousand miles begins with one step.",
+    author: "Lao Tzu"
+  },
+  {
+    text: "The secret of getting ahead is getting started.",
+    author: "Mark Twain"
+  },
+  {
+    text: "You are braver than you believe, stronger than you seem, and smarter than you think.",
+    author: "A.A. Milne"
+  },
+  {
+    text: "The biggest risk is not taking any risk.",
+    author: "Mark Zuckerberg"
+  },
+  {
+    text: "Strive not to be a success, but rather to be of value.",
+    author: "Albert Einstein"
+  },
+  {
+    text: "Success is walking from failure to failure with no loss of enthusiasm.",
+    author: "Winston Churchill"
+  },
+  {
+    text: "Don't let yesterday take up too much of today.",
+    author: "Will Rogers"
+  },
+  {
+    text: "The way to get started is to quit talking and begin doing.",
+    author: "Walt Disney"
+  },
+  {
+    text: "It is during our darkest moments that we must focus to see the light.",
+    author: "Aristotle"
+  },
+  {
+    text: "Many of life's failures are people who did not realize how close they were to success when they gave up.",
+    author: "Thomas A. Edison"
+  },
+  {
+    text: "The only impossible journey is the one you never begin.",
+    author: "Tony Robbins"
+  },
+  {
+    text: "If you are not willing to risk the usual, you will have to settle for the ordinary.",
+    author: "Jim Rohn"
+  },
+  {
+    text: "The most difficult thing is the decision to act, the rest is merely tenacity.",
+    author: "Amelia Earhart"
+  },
+  {
+    text: "It does not matter how slowly you go as long as you do not stop.",
+    author: "Confucius"
+  },
+  {
+    text: "If you cannot do great things, do small things in a great way.",
+    author: "Napoleon Hill"
+  },
+  {
+    text: "Dreams don't work unless you do.",
+    author: "John C. Maxwell"
+  },
+  {
+    text: "We can do anything we want to if we stick to it long enough.",
+    author: "Helen Keller"
+  },
+  {
+    text: "Self-discipline is the ability to make yourself do what you should do when you should do it, whether you feel like it or not.",
+    author: "Elbert Hubbard"
+  },
+  {
+    text: "Depending on what they are, our habits will either make us or break us. We become what we repeatedly do.",
+    author: "Sean Covey"
+  },
+  {
+    text: "We cannot become what we want by remaining what we are.",
+    author: "Max DePree"
+  },
+  {
+    text: "You will either step forward into growth, or you will step backward into safety.",
+    author: "Abraham Maslow"
+  },
+  {
+    text: "If there is no struggle, there is no progress.",
+    author: "Frederick Douglass"
+  },
+  {
+    text: "We are what we repeatedly do. Excellence is not an act, but a habit.",
+    author: "Aristotle"
+  },
+  {
+    text: "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will.",
+    author: "Vince Lombardi"
+  },
+  {
+    text: "Success is not in what you have, but who you are.",
+    author: "Bo Bennett"
+  },
+  {
+    text: "The only place where success comes before work is in the dictionary.",
+    author: "Vidal Sassoon"
+  },
+  {
+    text: "You must expect great things of yourself before you can do them.",
+    author: "Michael Jordan"
+  },
+  {
+    text: "The only thing standing between you and your goal is the story you keep telling yourself as to why you can't achieve it.",
+    author: "Jordan Belfort"
+  },
+  {
+    text: "Don't be afraid to give up the good to go for the great.",
+    author: "John D. Rockefeller"
+  },
+  {
+    text: "All our dreams can come true, if we have the courage to pursue them.",
+    author: "Walt Disney"
+  },
+  {
+    text: "Opportunities don't happen, you create them.",
+    author: "Chris Grosser"
+  },
 ];  
 
 // Colors for chart sections
@@ -312,42 +392,45 @@ const Dashboard: React.FC = () => {
   console.log(revenue, "checking revenue");
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen w-[98%] ml-auto  bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-          <h1 className="text-3xl font-bold text-center text-gray-800">Financial Dashboard</h1>
+        <div className=" bg-white rounded-2xl text-3xl md:text-4xl font-extrabold text-gray-800 h-30 md:h-40   text-center shadow-lg py-4 px-6 mb-10 tracking-wide">
+          <p className="text-gray-600 mt-10">Welcome to the Financial Dashboard</p>
         </div>
 
         {/* Financial Metrics Section */}
-        <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-          <h2 className="text-xl font-semibold mb-4">Key Financial Metrics</h2>
+        {/* <div className="bg-white p-6 rounded-lg shadow-lg mb-6 "> */}
+        <div className="bg-white rounded-2xl shadow-md p-6 mt-6">
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">Key Financial Metrics</h2>
           {isLoading ? (
             <p className="text-gray-500">Loading financial data...</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <h3 className="text-lg font-medium text-blue-800">Cost of Vendors</h3>
-                <p className="text-2xl font-bold text-blue-600">₹{parseFloat(costOfVendor).toLocaleString()}</p>
+              <div className="p-2 bg-blue-50 rounded-lg hover:shadow-lg transition duration-300 ease-in-out">
+                <h3 className="bg-blue-50 rounded-xl p-4  text-lg font-medium text-blue-800">Cost of Vendors</h3>
+                <p className="text-blue-500 text-2xl font-bold ml-4">₹{parseFloat(costOfVendor).toLocaleString()}</p>
               </div>
-              <div className="p-4 bg-green-50 rounded-lg">
-                <h3 className="text-lg font-medium text-green-800">Business from Customers</h3>
-                <p className="text-2xl font-bold text-green-600">₹{parseFloat(businessFromCustomer).toLocaleString()}</p>
+              <div className="p-2 bg-green-50 rounded-lg hover:shadow-lg transition duration-300 ease-in-out">
+                <h3 className="bg-green-50 rounded-xl p-4  text-lg font-medium text-green-800">Business from Customers</h3>
+                <p className="text-2xl font-bold ml-4 text-green-600">₹{parseFloat(businessFromCustomer).toLocaleString()}</p>
               </div>
-              <div className="p-4 bg-purple-50 rounded-lg">
-                <h3 className="text-lg font-medium text-purple-800">Revenue</h3>
-                <p className="text-2xl font-bold text-purple-600">₹{parseFloat(revenue).toLocaleString()}</p>
+              <div className="p-2 bg-purple-50 rounded-lg hover:shadow-lg transition duration-300 ease-in-out">
+                <h3 className="bg-purple-50 rounded-xl p-4  text-lg font-medium text-purple-800">Revenue</h3>
+                <p className="text-2xl font-bold ml-4 text-purple-600">₹{parseFloat(revenue).toLocaleString()}</p>
               </div>
             </div>
           )}
         </div>
 
         {/* Thought of the Day Section */}
-        <div className="bg-white p-6 rounded-lg shadow-lg mb-6" style={{backgroundImage: `url(${backgroundImage})` , backgroundSize:"cover", height: '400px'}}>
-          <h2 className="text-xl font-semibold text-center mb-4">Quote</h2>
+        <div className="bg-gradient-to-r from-blue-100 mt-10 via-white to-pink-100 p-10 rounded-2xl shadow-md mb-10 text-center" >
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-700 mb-6 ">
+        ✨Quote
+      </h2>
           <div className="text-center flex flex-col justify-center items-center h-full px-10">
             {quote ? (
-              <p className="text-3xl text-black italic px-24">
+              <p className="text-3xl md:text-3xl font-semibold text-gray-800 mb-6">
                 "{quote.text}" — <span className="font-semibold">{quote.author}</span>
               </p>
             ) : (

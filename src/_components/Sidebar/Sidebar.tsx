@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { MdChevronRight } from "react-icons/md";
 import home from "../../assets/sidebar/home.webp";
-import homew from "../../assets/sidebar/homew.webp";
-import ledger from "@/assets/sidebar/ledger.png";
+import homew from "../../assets/sidebar/homew.webp"
+import ledger from "@/assets/slidericon/computer.png";
+import cart from "../../assets/slidericon/cart.png";
+import hierarchy from "../../assets/slidericon/hierarchy.png";
+import important from "../../assets/slidericon/important.png";
+import pricetag from "../../assets/slidericon/pricetag.png";
+import search from "../../assets/slidericon/search.png";
+import task from "../../assets/slidericon/task.png";
 import transport from "../../assets/sidebar/transport.png";
 import transportw from "../../assets/sidebar/transportw.png";
 import ledgerw from "@/assets/sidebar/ledgerw.png";
 import { useSidebar } from "../../provider/SidebarContext";
 import { Link } from "react-router-dom";
-import mainlogo from "../../assets/mainlogo/logo.png";
+import mainlogo from "../../assets/mainlogo/favicon-9.png";
 import { getAuth } from "@/utils/auth";
 import { useRolesById, useRolesByRole } from "@/services/roles.service";
 import {
@@ -31,7 +37,7 @@ function Sidebar() {
       mainlink: "/admin",
       heading: "Admin",
       icon: ledger,
-      activeIcon: ledgerw,
+      activeIcon: ledger,
       isActive: false,
       isArrow: true,
       dropArr: [
@@ -50,8 +56,8 @@ function Sidebar() {
     {
       mainlink: "/",
       heading: "Purchase",
-      icon: ledger,
-      activeIcon: ledgerw,
+      icon: cart,
+      activeIcon: cart,
       isActive: false,
       isArrow: true,
       dropArr: [
@@ -79,8 +85,8 @@ function Sidebar() {
     {
       mainlink: "/",
       heading: "Hierarchy",
-      icon: ledger,
-      activeIcon: ledgerw,
+      icon: hierarchy,
+      activeIcon: hierarchy,
       isActive: false,
       isArrow: true,
       dropArr: [
@@ -99,8 +105,8 @@ function Sidebar() {
     {
       mainlink: "/",
       heading: "Sales",
-      icon: ledger,
-      activeIcon: ledgerw,
+      icon: pricetag,
+      activeIcon: pricetag,
       isActive: false,
       isArrow: true,
       dropArr: [
@@ -161,8 +167,8 @@ function Sidebar() {
     {
       mainlink: "/hotelSearch",
       heading: "Hotel Search",
-      icon: ledger,
-      activeIcon: ledgerw,
+      icon: search,
+      activeIcon: search,
       isActive: false,
       isArrow: true,
       dropArr: [
@@ -176,8 +182,8 @@ function Sidebar() {
     {
       mainlink: "/TaskManagement",
       heading: "Task Management",
-      icon: ledger,
-      activeIcon: ledgerw,
+      icon: task,
+      activeIcon: task,
       isActive: false,
       isArrow: true,
       dropArr: [
@@ -196,8 +202,8 @@ function Sidebar() {
     {
       mainlink: "/Important",
       heading: "Important",
-      icon: ledger,
-      activeIcon: ledgerw,
+      icon: important,
+      activeIcon: important,
       isActive: false,
       isArrow: true,
       dropArr: [
@@ -275,7 +281,7 @@ function Sidebar() {
 
 
   return (
-    <div className="bg-[#0B2F46] h-full lg:h-[100vh] w-64 fixed overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-[#0B2F46]">
+    <div className=" text-gray-850 bg-[#f7f8ff] h-full lg:h-[100vh] w-64 fixed overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-[#0B2F46]">
       <div className="shadow-xl p-4">
         <img
           src={mainlogo}
@@ -285,19 +291,19 @@ function Sidebar() {
       </div>
       <ul className="main-list w-full overflow-auto h-[100vh]">
         {filteredSidebarArr.map((el, index) => (
-          <li className="relative" key={index}>
+          <li className="relative mt-4" key={index}>
             {el?.dropArr ? (
               <button
                 type="button"
-                className="flex items-center p-3 w-full bg-transparent hover:bg-orange-600 transition-colors justify-between"
+                className="flex text-gray-850 items-center p-3 w-full bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors justify-between"
                 onClick={() => handleDropShow(index)}
               >
-                <div className="icon w-6 h-6 mr-4 flex flex-row items-center gap-2">
+                <div className="icon w-6 h-2 mr-4 flex flex-row items-center gap-2">
                   <img
                     src={showdrop === index ? el.activeIcon : el.icon}
                     alt={el.heading}
                   />
-                  <h6 className="text-sidebartext flex-1 group-hover:text-white whitespace-nowrap">
+                  <h6 className=" flex-1 group-hover:text-white whitespace-nowrap">
                     {el.heading}
                   </h6>
                 </div>
@@ -308,19 +314,19 @@ function Sidebar() {
             ) : (
               <Link
                 to={el?.mainlink ? el.mainlink : ""}
-                className="flex items-center p-3 w-full bg-transparent hover:bg-orange-600 transition-colors"
+                className="flex items-center p-3 w-full bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors"
               >
-                <div className="icon w-6 h-6 mr-4">
+                <div className="icon w-6 h-6 mr-2">
                   <img src={el?.icon} alt={el?.heading} />
                 </div>
-                <h6 className="text-sidebartext flex-1 whitespace-nowrap">
+                <h6 className=" flex-1 whitespace-nowrap">
                   {el?.heading}
                 </h6>
               </Link>
             )}
 
             {el?.dropArr && showdrop === index && (
-              <div className="dropdown_list max-h-40 overflow-y-auto">
+              <div className="dropdown_list max-h-40 ml-6 overflow-y-auto">
                 <ul className="pl-6">
                   {el.dropArr.map((ele, idx) => (
                     <li key={idx} className="py-1">
@@ -329,7 +335,7 @@ function Sidebar() {
                           <>
                             <Link
                               to={ele.link}
-                              className="text-sm text-sidebartext hover:text-sidebartexthover"
+                              className=" text-sm text-grey-850 hover:text-orange-500 hover:rounded-lg "
                             >
                               {ele.dropHead}
                             </Link>

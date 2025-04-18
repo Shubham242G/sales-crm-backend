@@ -1,3 +1,4 @@
+import { colors } from '@mui/material';
 import DataTable from 'react-data-table-component';
 
 const customStyles: any = {
@@ -10,6 +11,7 @@ const customStyles: any = {
             backgroundColor: '#FFF',
             boxShadow: '0px 0px 0px 0px rgba(16, 24, 40, 0.06), 0px 1px 8px 0px rgba(16, 24, 40, 0.10)',
             overflow: 'visible !important',
+        
         },
     },
 
@@ -19,11 +21,10 @@ const customStyles: any = {
             // '&:not(:last-of-type)': {
             // 	border: '1px solid #EAECF0',
             // },
-
+            
             // borderRight: '1px solid #000',
 
-
-
+            
         },
     },
 
@@ -42,11 +43,11 @@ const customStyles: any = {
         style: {
             fontSize: '13px',
             fontWeight: '500',
-            // color: '#667085',
+            color: '#667085',
             paddingLeft: '10px',
             border: '1px solid #e5e5e5',
             overflow: 'unset',
-            color: '#fff',
+           
 
 
 
@@ -60,6 +61,8 @@ const customStyles: any = {
             fontWeight: '500',
             color: '#667085',
             border: '1px solid #e5e5e5',
+           
+            
 
         },
     },

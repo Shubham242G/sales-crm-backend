@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import loginimg from "@/assets/LoginPages/loginimg.webp";
 import loginlogo from "@/assets/LoginPages/biglogo.webp";
+import logo from "@/assets/mainlogo/logo.png";
 import { FaRegIdBadge } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 // import googleicn from '@/assets/LoginPages/googleicn.webp'
@@ -47,7 +48,18 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="login_box pt-[10%]">
+    
+    <header className="w-full border-b border-gray-200 px-8 h-[75px]  bg-white">
+      <div className="max-w-screen-xl  mt-4 flex items-center justify-between">
+        <img
+          src={logo}
+          alt="360 Icon"
+          className="h-[80px]  object-contain"
+        />
+        
+      </div>
+    </header>
+      <div className="login_box pt-[6%]">
         <div className="flex justify-center items-center">
           {/* <div className="w-1/2">
             <div className="image w-full h-[100vh]">
@@ -60,7 +72,7 @@ export default function LoginPage() {
           </div> */}
           <div className="w-1/2">
             <div className="login-form bg-[url('/loginbg.webp')] w-full h-full bg-cover bg-no-repeat flex items-center">
-              <div className="w-[65%] mx-auto ">
+              <div className="w-[65%] mx-auto font-zoho ">
                 {/* <Link to="/login-page">
                   <div className="logo relative w-[350px] h-[100px]">
                     <img
@@ -70,13 +82,12 @@ export default function LoginPage() {
                     />
                   </div>
                 </Link> */}
-                <h2 className="heading text-txtcolor font-medium text-3xl mt-8 mb-2">
+                <h2 className="heading font-bold text-gray-900 text-3xl mt-8 mb-5  ">
                   Log-In Your Account
                 </h2>
-                <p className="text-graytext">
-                  Welcome back to 360 Soluction Please log in to access your
-                  account.
-                </p>
+                <p className="text-sm text-gray-600">
+          Welcome back to <span className="font-semibold text-black">360 Solution</span>. Please log in to access your account.
+        </p>
 
                 <div className="form mt-5">
                   <div className="flex flex-wrap -mx-3 items-center  ">
@@ -88,7 +99,7 @@ export default function LoginPage() {
                         Email/PhoneNo.<span className="text-red-500">*</span>
                       </label>
                       <input
-                        className="appearance-none  text-sm font-normal block w-full  text-graytext border border-inputborder rounded p-3 py-4  leading-tight focus:outline-none focus:border-primarycolor"
+                        className="appearance-none  text-sm font-normal block w-full  text-graytext border border-black rounded p-3 py-4  leading-tight focus:outline-none focus:border-blue-500"
                         type="text"
                         placeholder="Phone Number or Email"
                         onChange={(e) => setEmail(e.target.value)}
@@ -104,7 +115,7 @@ export default function LoginPage() {
                         Password<span className="text-red-500">*</span>
                       </label>
                       <input
-                        className="appearance-none  text-sm font-normal block w-full  text-graytext border border-inputborder rounded p-3 py-4  leading-tight focus:outline-none focus:border-primarycolor"
+                        className="appearance-none  text-sm font-normal block w-full  text-graytext border border-black rounded p-3 py-4  leading-tight focus:outline-none focus:border-blue-500"
                         type="password"
                         placeholder="Password"
                         onChange={(e) => setPassword(e.target.value)}
@@ -121,7 +132,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={handleSubmit}
-                    className="bg-[#0B2F46] py-4 w-full mt-3  border border-[#0B2F46]   rounded-md text-white hover:bg-transparent hover:text-primarycolor"
+                    className="bg-red-600 py-4 w-full mt-3  border    rounded-md text-white font-bold tracking-widest uppercase"
                   >
                     {" "}
                     Login

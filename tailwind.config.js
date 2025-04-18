@@ -57,6 +57,7 @@ export default {
           satoshiBoldItalic: ['var(--font-satoshiBoldItalic)', 'sans-serif'],
           satoshiLight: ['var(--font-satoshiLight)', 'sans-serif'],
           satoshiLightItalic: ['var(--font-satoshiLightItalic)', 'sans-serif'],
+          zoho: ['Zoho_Puvi_SemiBold', 'sans-serif'],
           satoshiMedium: "var(--font-satoshiMedium)",
 
           newbold:"var(--newbolad)"

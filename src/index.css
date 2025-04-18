@@ -70,8 +70,16 @@
   font-family: 'Satoshi_Regular';
   src: url('./assets/fonts/Satoshi-Regular.otf') format('truetype');
 }
+
+@font-face {
+  font-family: 'Zoho_Puvi_SemiBold';
+  src: url('/fonts/Zoho_Puvi_SemiBold.ttf') format('truetype');
+  font-style: normal;
+}
+
 body{
     font-family: 'Satoshi';
+    @apply  font-zoho;
 }
 
 

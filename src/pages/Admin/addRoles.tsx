@@ -206,28 +206,30 @@ const allRoles = allRolesData?.data || [];
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="bg-gray-100 min-h-screen w-[98%] ml-auto -mt-9  rounded-lg shadow-lg ">
+    <div className="container mx-auto p-10 ">
       <h1 className="text-2xl font-bold mb-4">
         {id ? "Edit Role" : "Add New Role"}
       </h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
+       
         <div>
           <label className="block font-medium mb-2">Name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
             placeholder="Enter Name"
           />
         </div>
         <div>
-          <label className="block font-medium mb-2">Email</label>
+          <label className="block font-medium mb-2 ">Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
             placeholder="Enter Email Address"
           />
         </div>
@@ -237,7 +239,7 @@ const allRoles = allRolesData?.data || [];
             type="number"
             value={phoneNo}
             onChange={(e) => setPhoneNo(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
             placeholder="Enter Phone Number"
           />
         </div>
@@ -247,7 +249,7 @@ const allRoles = allRolesData?.data || [];
             type="text"
             value={department}
             onChange={(e) => setDepartment(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
             placeholder="Enter Department"
           />
         </div>
@@ -257,7 +259,7 @@ const allRoles = allRolesData?.data || [];
             type="text"
             value={designation}
             onChange={(e) => setDesignation(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
             placeholder="Enter Designation"
           />
         </div>
@@ -280,7 +282,7 @@ const allRoles = allRolesData?.data || [];
             type="text"
             value={roleName}
             onChange={(e) => setRoleName(e.target.value.toUpperCase())}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
             placeholder="Enter Role Name"
           />
         </div>
@@ -289,7 +291,7 @@ const allRoles = allRolesData?.data || [];
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-orange-400"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
             placeholder="Enter Role Description"
           ></textarea>
         </div>
@@ -372,7 +374,7 @@ const allRoles = allRolesData?.data || [];
                   <td className="border border-gray-300 p-2 text-center">
                     <button
                       type="button"
-                      className="text-orange-500 hover:underline"
+                      className="text-blue-500 hover:underline"
                       onClick={() => handleEditClick(index)}
                     >
                       Edit
@@ -391,24 +393,27 @@ const allRoles = allRolesData?.data || [];
               ))}
             </tbody>
           </table>
+          <div className="button flex justify-between mt-5 mb-5 ">
           <button
             type="button"
-            className="mt-4 flex items-center px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            className=" flex items-center px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
             onClick={handleAddNewRoute}
           >
             <FaPlus className="mr-2" /> Add New Route
           </button>
-        </div>
+        
 
-        <div>
+        
           <button
             type="submit"
-            className="flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="flex items-center px-4 py-2   bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
           >
             <FaSave className="mr-2" /> Save Role
           </button>
         </div>
+        </div>
       </form>
+    </div>
     </div>
   );
 }

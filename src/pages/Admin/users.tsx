@@ -108,7 +108,7 @@ function Users() {
       <div className="container px-6">
         <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
           <div className="search_boxes flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-gray-800">Users List</h2>
+            <h2 className="text-xl ml-1 font-semibold text-[#2a2929]">Users List</h2>
 
             <div className="flex items-center justify-start gap-2">
               <div className="w-full flex items-center ">
