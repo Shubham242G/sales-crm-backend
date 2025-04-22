@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 
-// @ts-expect-error: plugin-react has a default export, but types say otherwise
+
 import react from "@vitejs/plugin-react";
 
 export default ({ mode }: any) => {
