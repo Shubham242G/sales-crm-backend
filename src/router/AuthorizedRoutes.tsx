@@ -84,6 +84,7 @@ import NewRoleModal from "@/pages/Hierarchy/newRoleModal";
 import SearchBar from "../pages/HotelSearch/hotelSearch";
 import Combiner from "@/pages/monthly/combiner";
 import ZohoInvoice from "@/pages/Sales/zoho_invoice_view";
+import InvoiceView from "@/pages/Sales/invoiceView";
 // import CalendarView from "@/pages/Calendar/CalendarView";
 
 export default function AuthorizedRoutes() {
@@ -134,6 +135,10 @@ export default function AuthorizedRoutes() {
           <Route
             path="/monthlyPlanner/:date"
             element={< Combiner />}
+          ></Route>
+          <Route
+            path="/invoicesById/:id"
+            element={< InvoiceView />}
           ></Route>
           <Route
             path="/addQuotesFromVendors/:id"

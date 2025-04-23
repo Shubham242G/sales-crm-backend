@@ -20,6 +20,10 @@ import { toastError, toastSuccess } from "@/utils/toast";
 import { generateFilePath } from "@/services/urls.service";
 import { checkPermissionsForButtons } from "@/utils/permission";
 
+import AdvancedSearch, { SearchField } from "@/utils/advancedSearch";
+
+
+
 function Leads() {
   const navigate = useNavigate();
 
@@ -55,6 +59,13 @@ function Leads() {
 
   const { data: LeadData } = useLead(searchObj);
   const { mutateAsync: deleteLead } = usedeleteLeadById();
+  const [isOpen, setIsOpen] = useState(false);
+  const handleModalOpen = () => {
+    setIsOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsOpen(false);
+  };
   // const { mutateAsync: convert } = convertToContact();
 
   // const handleConvertEnquery = async (id: any) => {
@@ -67,6 +78,22 @@ function Leads() {
   //     toastError(error);
   //   }
   // };
+
+
+
+
+
+
+  const searchFields: SearchField[] = [
+    { key: "firstName", label: "First Name", type: "text" },
+    { key: "lastName", label: "Last Name", type: "text" },
+    { key: "email", label: "Email", type: "text" },
+    { key: "company", label: "Company Name", type: "text" },
+    { key: "phone", label: "Phone", type: "text" },
+  ];
+
+
+  console.log(query, "check query")
 
   const handleDelete = async (id: string) => {
     try {
@@ -109,7 +136,7 @@ function Leads() {
 
       const response = await addLeadExel(formData);
 
-      
+
 
       // Check if the upload was successful
       if (response.status === 200) {
@@ -120,7 +147,7 @@ function Leads() {
       }
 
       setIsUploading(false); // End uploading state
- 
+
     } catch (error: any) {
 
       toastError("An error occurred during import. Please try again.");
@@ -306,6 +333,13 @@ function Leads() {
                 {isUploading ? "Importing..." : "Import"}
               </button>
 
+              <button onClick={handleModalOpen} className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+                Advance Search
+              </button>
+
+
+
+
               {canCreate && (
                 <button
                   onClick={() => navigate("/add-leads")}
@@ -315,6 +349,9 @@ function Leads() {
                   <span>New Lead</span>
                 </button>
               )}
+
+
+
             </div>
           </div>
           {/* React Table */}
@@ -328,16 +365,47 @@ function Leads() {
             page={pageIndex}
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
-            // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+          // loading={loading}
+          // totalRows={data.length}
+          // onChangePage={handlePageChange}
+          // onChangeRowsPerPage={handleRowsPerPageChange}
+          // pagination
+          // paginationPerPage={rowsPerPage}
+          // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>
+
+
+
+
+
+      {isOpen &&
+        <>
+          <div className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)] h-full w-full">
+          </div>
+
+
+{/* 
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-6 mt-4 z-10 " >
+            <AdvancedSearch
+              fields={searchFields}
+              onSearch={(values) => {
+                setQuery(values);
+                setIsOpen(false);
+              }}
+              onClear={() => {
+                setIsOpen(false);
+                setQuery("");
+              }}
+            />
+
+          </div> */}
+        </>
+      }
+
+
+
     </>
   );
 }
