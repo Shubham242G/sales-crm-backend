@@ -17,6 +17,8 @@ import {
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { SiConvertio } from "react-icons/si";
+import { Margin } from "@mui/icons-material";
+import { l } from "vite/dist/node/types.d-aGj9QkWt";
 
 function RfpList() {
   const navigate = useNavigate();
@@ -148,22 +150,22 @@ function RfpList() {
     {
       name: "RFPID",
       selector: (row: any) => (
-        <div className="flex gap-1 flex-col">
+        <div className="flex gap-1 flex-col ">
           <h6>{row.rfpId}</h6>
         </div>
       ),
-      width: "7%",
+      width: "10%",
     },
-    {
-      name: "Full Name",
-      selector: (row: any) => (
-        <div className="flex gap-1 flex-col">
-          <h6>{row?.fullName}</h6>
-          {/* {row.fullName} */}
-        </div>
-      ),
-      width: "15%",
-    },
+    // {
+    //   name: "Full Name",
+    //   selector: (row: any) => (
+    //     <div className="flex gap-1 flex-col">
+    //       <h6>{row?.fullName}</h6>
+    //       {/* {row.fullName} */}
+    //     </div>
+    //   ),
+    //   width: "10%",
+    // },
     {
       name: "Event Date",
       selector: (row: any) => (
@@ -175,7 +177,7 @@ function RfpList() {
           </h6>
         </div>
       ),
-      width: "10%",
+      width: "13%",
     },
     {
       name: "Deadline for proposal",
@@ -190,16 +192,16 @@ function RfpList() {
     {
       name: "Services",
       selector: (row: any) => (
-        <div className="flex justify-around">{row.serviceType}</div>
+        <div className="flex justify-around ml-1">{row.serviceType}</div>
       ),
       width: "10%",
     },
     {
       name: "Status",
       selector: (row: any) => (
-        <div className="flex justify-around">{row.status}</div>
+        <div  className="flex  justify-around  "><h6 className="whitespace-normal break-words">{row.status}</h6></div>
       ),
-      width: "15%",
+      width: "26%",
     },
     {
       name: "Edit",
@@ -216,14 +218,14 @@ function RfpList() {
     },
     {
       name: "Delete",
-      width: "10%",
+      width: "8%",
       selector: (row: any) => (
         <Link
           to="/rfps"
           className="p-[6px] text-black-400 text-lg"
           onClick={() => handleDelete(row._id)}
         >
-          <RiDeleteBin6Line />
+          <RiDeleteBin6Line className="ml-3"/>
         </Link>
       ),
     },
@@ -298,7 +300,7 @@ function RfpList() {
               </button>
               <button
                 onClick={() => navigate("/add-rfps")}
-                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-400 border border-gray-300"
               >
                 <FaPlus />
                 <span>New RFPs</span>

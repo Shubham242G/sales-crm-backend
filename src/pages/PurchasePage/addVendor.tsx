@@ -531,44 +531,44 @@ const AddVendorForm = () => {
 
   const customStyles = {
     control: (base: any) => ({
-        ...base,
+      ...base,
+      border: '1px solid #e5e7eb !important',
+      boxShadow: '0 !important',
+      color: "#000",
+      padding: '5px',
+      fontFamily: "satoshi, sans-serif",
+      backgroundColor: '#fafafa',
+      zindex: '9',
+      minHeight: '30px',
+      '&:hover': {
         border: '1px solid #e5e7eb !important',
-        boxShadow: '0 !important',
-        color:"#000",
-        padding:'5px',
-        fontFamily: "satoshi, sans-serif", 
-        backgroundColor:'#fafafa',
-        zindex:'9',
-        minHeight:'30px',
-        '&:hover': {
-            border: '1px solid #e5e7eb !important',
-           
-        },
 
-        menu: (provided:any) => ({
-            ...provided,
-            zIndex: 9999, // Increase the z-index here
-          }),
+      },
 
-          menuPortal: (provided:any) => ({ ...provided, zIndex: 5 }),
-      
-        
+      menu: (provided: any) => ({
+        ...provided,
+        zIndex: 9999, // Increase the z-index here
+      }),
+
+      menuPortal: (provided: any) => ({ ...provided, zIndex: 5 }),
+
+
     }),
-    option: (base:any) => ({
-        ...base,
-        cursor: "pointer",
-        background: "white",
-        color:"#000",
-        fontFamily: "'inter', sans-serif", 
-        zindex:'9',   // this was the mistake (I needed to remove this)
-        "&:hover": {
-           backgroundColor: "#687256",
-           color:"#fff",
-           fontFamily: "'inter', sans-serif", 
-         },
-})
+    option: (base: any) => ({
+      ...base,
+      cursor: "pointer",
+      background: "white",
+      color: "#000",
+      fontFamily: "'inter', sans-serif",
+      zindex: '9',   // this was the mistake (I needed to remove this)
+      "&:hover": {
+        backgroundColor: "#687256",
+        color: "#fff",
+        fontFamily: "'inter', sans-serif",
+      },
+    })
 
-}
+  }
 
 
 
@@ -789,7 +789,7 @@ const AddVendorForm = () => {
     }
   }, [vendorDataById]);
 
-  
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -846,7 +846,7 @@ const AddVendorForm = () => {
     } catch (error) {
       toastError(error);
     }
-    
+
   };
 
   const handleAddRoom = () => {
@@ -1009,7 +1009,7 @@ const AddVendorForm = () => {
 
   //   setUploading(true);
   //   try {
-  //     const formData = new FormData();
+  //     const otherDetails = new FormData();
   //     selectedFiles.forEach((file, index) => {
   //       formData.append(`file${index}`, file);
   //     });
@@ -1501,18 +1501,18 @@ const AddVendorForm = () => {
                         <div className="absolute top-[9px] left-[6px] ">
 
                           <svg
-                        
-                          className="w-[20px] h-[20px] text-[#abb1bc]"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
+
+                            className="w-[20px] h-[20px] text-[#abb1bc]"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                           >
-                          <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                           </svg>
-                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -3301,7 +3301,7 @@ const AddVendorForm = () => {
                   {/* Tab Menu */}
                   <div className="mt-8 p-3">
                     <div className="border border-gray-400 bg-gray-50 ">
-                      <nav className="flex space-x-8  ">
+                      <nav className="flex space-x-8 mt-5 ml-2  ">
                         {["Other Details", "Address", "Contact Persons"].map(
                           (tab) => (
                             <button
@@ -4028,180 +4028,179 @@ const AddVendorForm = () => {
                                 </>
                               )}
                             </button>
-
-                            {isExpanded && (
-                              <div className="col-span-2 mt-8">
-                                <div className="space-y-8">
-                                  {/* Website URL */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="websiteUrl"
-                                    >
-                                      Website URL:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Globe className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="websiteUrl"
-                                        type="text"
-                                        value={otherDetails.websiteUrl}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            websiteUrl: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Website URL"
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+     {isExpanded && (
+                            <div className="col-span-2 mt-8">
+                              <div className="space-y-8 w-[400px]">
+                                {/* Website URL */}
+                                <div className="flex items-center ">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="websiteUrl"
+                                  >
+                                    Website URL:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Globe className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="websiteUrl"
+                                      type="text"
+                                      value={otherDetails.websiteUrl}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          websiteUrl: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Website URL"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
+                                </div>
 
-                                  {/* Department */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="department"
-                                    >
-                                      Department:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Building2 className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="department"
-                                        type="text"
-                                        value={otherDetails.department}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            department: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Department"
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+                                {/* Department */}
+                                <div className="flex items-center ">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="department"
+                                  >
+                                    Department:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Building2 className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="department"
+                                      type="text"
+                                      value={otherDetails.department}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          department: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Department"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
+                                </div>
 
-                                  {/* Designation */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="designation"
-                                    >
-                                      Designation:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <UserRound className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="designation"
-                                        type="text"
-                                        value={otherDetails.designation}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            designation: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Designation"
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+                                {/* Designation */}
+                                <div className="flex items-center ">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="designation"
+                                  >
+                                    Designation:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <UserRound className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="designation"
+                                      type="text"
+                                      value={otherDetails.designation}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          designation: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Designation"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
+                                </div>
 
-                                  {/* Twitter */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="twitter"
-                                    >
-                                      Twitter:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Twitter className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="twitter"
-                                        type="text"
-                                        value={otherDetails.twitter}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            twitter: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Twitter id..."
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+                                {/* Twitter */}
+                                <div className="flex items-center ">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="twitter"
+                                  >
+                                    Twitter:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Twitter className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="twitter"
+                                      type="text"
+                                      value={otherDetails.twitter}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          twitter: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Twitter id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
+                                </div>
 
-                                  {/* Skype */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="skype"
-                                    >
-                                      Skype:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <MessageCircle className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="skype"
-                                        type="text"
-                                        value={otherDetails.skype}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            skype: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter skype id..."
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+                                {/* Skype */}
+                                <div className="flex items-center ">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="skype"
+                                  >
+                                    Skype:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <MessageCircle className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="skype"
+                                      type="text"
+                                      value={otherDetails.skype}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          skype: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter skype id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
+                                </div>
 
-                                  {/* Facebook */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="facebook"
-                                    >
-                                      Facebook:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Facebook className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="facebook"
-                                        type="text"
-                                        value={otherDetails.facebook}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            facebook: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter facebook id..."
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+                                {/* Facebook */}
+                                <div className="flex items-center">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="facebook"
+                                  >
+                                    Facebook:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Facebook className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="facebook"
+                                      type="text"
+                                      value={otherDetails.facebook}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          facebook: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter facebook id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
                                 </div>
                               </div>
-                            )}
+                            </div>
+                          )}
                           </div>
                           {/* <div>
                           <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -4256,10 +4255,10 @@ const AddVendorForm = () => {
                             </span>
                             <input
                               type="text"
-                              value={formData.attention}
+                              value={otherDetails.attention}
                               onChange={(e) =>
-                                setFormData({
-                                  ...formData,
+                                setotherDetails({
+                                  ...otherDetails,
                                   attention: e.target.value,
                                 })
                               }
@@ -4273,10 +4272,10 @@ const AddVendorForm = () => {
                                   Country / Region:
                                 </span>
                                 {/* <select
-                                value={formData.countryRegion}
+                                value={otherDetails.countryRegion}
                                 onChange={(e) =>
-                                  setFormData({
-                                    ...formData,
+                                  setotherDetails({
+                                    ...otherDetails,
                                     countryRegion: e.target.value,
                                   })
                                 }
@@ -4505,10 +4504,10 @@ const AddVendorForm = () => {
                                   State:
                                 </span>
                                 {/* <select
-                                value={formData.state}
+                                value={otherDetails.state}
                                 onChange={(e) =>
-                                  setFormData({
-                                    ...formData,
+                                  setotherDetails({
+                                    ...otherDetails,
                                     state: e.target.value,
                                   })
                                 }
@@ -4739,10 +4738,10 @@ const AddVendorForm = () => {
                             </span>
                             <input
                               type="text"
-                              value={formData.shippingAttention}
+                              value={otherDetails.shippingAttention}
                               onChange={(e) =>
-                                setFormData({
-                                  ...formData,
+                                setotherDetails({
+                                  ...otherDetails,
                                   shippingAttention: e.target.value,
                                 })
                               }

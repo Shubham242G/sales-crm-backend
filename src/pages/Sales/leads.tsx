@@ -166,7 +166,7 @@ function Leads() {
     {
       name: "Account Manager",
       selector: (row: any) => <div className="flex gap-1">{row.ownerName}</div>,
-      width: "12%",
+      width: "13%",
     },
     {
       name: "Mobile Number",
@@ -186,7 +186,7 @@ function Leads() {
     {
       name: "Email",
       selector: (row: any) => row.email,
-      width: "15%",
+      width: "20%",
     },
     // {
     //   name: "Convertor",
@@ -205,14 +205,14 @@ function Leads() {
     // },
     {
       name: "Edit",
-      width: "5%",
+      width: " 8%",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => navigate(`/add-leads/${row._id}`)}
           className="text-black-500 text-lg p-[6px]"
         >
-          <FaEye />
+          <FaEye className="ml-1" />
         </button>
       ),
     },
@@ -225,7 +225,7 @@ function Leads() {
           onClick={() => handleDelete(row._id)}
           className="p-[6px] text-black-400 text-lg"
         >
-          <RiDeleteBin6Line />
+          <RiDeleteBin6Line className="ml-3"/>
         </button>
       ),
     },
