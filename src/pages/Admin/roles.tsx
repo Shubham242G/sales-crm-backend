@@ -119,6 +119,11 @@ function Roles() {
           columns={columns}
           loading={false}
           totalRows={roleData?.total}
+          onChangePage={setPageIndex}
+          onChangeRowsPerPage={setPageSize}
+          page={pageIndex}
+          rowsPerPageText={pageSize}
+          isServerPropsDisabled={false}
         />
       </div>
       <RoleHierarchy />

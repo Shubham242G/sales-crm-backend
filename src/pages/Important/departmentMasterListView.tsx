@@ -22,7 +22,8 @@ function DepartmentMasterListView() {
     pageSize: 1000,
   });
   const { mutateAsync: deleteDepartment } = usedeleteDepartmentMasterById();
-
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Add Department");
   // const [loading, setLoading] = useState(false);
@@ -179,14 +180,13 @@ function DepartmentMasterListView() {
             data={DepartmentData?.data}
             columns={filterColumns}
             loading={false}
-            totalRows={0}
-            // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+            totalRows={DepartmentData?.total}
+            onChangePage={setPageIndex}
+            onChangeRowsPerPage={setPageSize}
+            paginationRowsPerPageOptions={[5, 10, 20]}
+            page={pageIndex}
+            rowsPerPageText={pageSize}
+            isServerPropsDisabled={false}
           />
         </div>
       </div>

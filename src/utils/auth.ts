@@ -36,7 +36,6 @@ export const loginUser = async (formData: any) => {
     try {
         let { data: response } = await loginApi(formData);
         if (response) {
-            console.log(response);
             let decodedToken: any = await jwtDecode(response.token);
             let authToken = {
                 ...response,

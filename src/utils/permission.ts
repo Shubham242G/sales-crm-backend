@@ -19,10 +19,10 @@ export const getPermissions = () => {
   const [role, setRole] = useState("");
   const [permissions, setPermissions] = useState<RoutePermission[]>([]);
 
-  console.log(role, "check role set");
+ 
   const getRole = async () => {
     const decodedToken = await getAuth();
-    console.log(decodedToken, "check decode toke for side bar role");
+   
     setUserId(decodedToken.userId);
     setRole(decodedToken.role);
   };
@@ -35,7 +35,7 @@ export const getPermissions = () => {
 
   useEffect(() => {
     if (roleDataByRole) {
-      console.log(roleDataByRole, "check roleDataById");
+     
 
       setPermissions(
         roleDataByRole?.data?.routePermissions as RoutePermission[]
@@ -51,9 +51,9 @@ export const getPermissions = () => {
 export const RoutePermission = (route: string) => {
   const permissionsData = getPermissions();
 
-  console.log(permissionsData, "check permissions data from");
+ 
 
-  console.log(permissionsData, route, "permissions");
+ 
   const result = permissionsData?.some((item) => item.routeName === route);
 
   if (result) {
@@ -88,11 +88,11 @@ export const checkPermissionsForButtons = (routeName: string) => {
 export const CreateRoutePermission =  (route: string,item:any) => {
   const permissionsData =  getPermissions();
 
-  console.log(permissionsData, "check permissions data from");
+
 
   
   const result = permissionsData?.find((item) => item.routeName === route);
-  console.log(result, "permissions-------",item);
+ 
   if(result &&result?.permissions ){
     return {
       view: result.permissions.create || result.permissions.view ,

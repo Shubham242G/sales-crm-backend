@@ -174,7 +174,6 @@ const AddQuotesFromVendors = () => {
 
       if (id) {
         const { data: res } = await updateQuotesFromVendors({ id, obj });
-        console.log("Vendor Data ---->", obj);
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/quotesFromVendors");
@@ -182,7 +181,6 @@ const AddQuotesFromVendors = () => {
         }
       } else {
         const { data: res } = await addQuotesFromVendors(obj);
-        console.log("Vendor Data ---->", obj);
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/quotesFromVendors");
@@ -660,6 +658,7 @@ const AddQuotesFromVendors = () => {
             <button
               type="button"
               className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+              onClick={() => navigate(-1)}
             >
               Cancel
             </button>

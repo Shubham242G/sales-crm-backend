@@ -9,7 +9,7 @@ import { MdOutlineFilterAlt } from "react-icons/md";
 import { IState, useStates } from "@/services/state.service";
 import { ICity, useAddCity, useCitys, usedeleteCityById, useUpdateCityById } from "@/services/city.service";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { pageIndex, pageSize } from "@/common/constant.common";
+import { pageIndex as PAGE_INDEX, pageSize as PAGE_SIZE } from "@/common/constant.common";
 import { usePagination } from "@/hooks/usePagination";
 import { toastError, toastSuccess } from "@/utils/toast";
 import moment from "moment";
@@ -27,6 +27,8 @@ function AllCity() {
 
   const [stateId, setStateId] = useState<null | string>(null)
   const [status, setStatus] = useState("")
+  const [pageIndex, setPageIndex] = useState(1);
+const [pageSize, setPageSize] = useState(10);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState<string>("");
   const [name, setName] = useState("");
@@ -37,7 +39,7 @@ function AllCity() {
   const navigate = useNavigate();
 
   let [searchParams, setSearchParams] = useSearchParams();
-  const pagination = usePagination(true, pageIndex, pageSize);
+  const pagination = usePagination(true, pageIndex.toString(), pageSize.toString());
 
 
 
@@ -184,8 +186,8 @@ function AllCity() {
 
   const handleChangePageSize = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set(pageIndex, String(pagination.pageIndex));
-    params.set(pageSize, String(value));
+    params.set(PAGE_INDEX, String(pagination.pageIndex));
+    params.set(PAGE_SIZE, String(value));
     navigate(location.pathname + "?" + params.toString());
   }
 
@@ -237,6 +239,11 @@ function AllCity() {
             columns={columns}
             loading={isLoading}
             totalRows={CityData.total || 0}
+            isServerPropsDisabled={false}
+            rowsPerPageText={pageSize}
+            page={pageIndex}
+            onChangeRowsPerPage={setPageSize}
+            onChangePage={setPageIndex}
           />
         </div>
       </div>

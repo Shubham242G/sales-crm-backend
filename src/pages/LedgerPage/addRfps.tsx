@@ -44,8 +44,6 @@ const AddRfpsForm = () => {
 
   const { id } = useParams();
 
-
-
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("RFPS");
 
@@ -59,26 +57,12 @@ const AddRfpsForm = () => {
 
   const { data: vendorNames } = useVendorName();
 
-  // console.log(res, "check the data of vendor Names");
-  // useEffect(() => {
-  //   if (vendorNames?.data?.length  > 0) {
-  //     console.log(vendorNames.data[1]?.fullName || "No second vendor found");
 
-  //     const formattedVendors = vendorNames.data.map((el: any) => ({
-  //       value: el.fullName,
-  //       label: el.fullName,
-  //     }));
 
-  //     console.log(formattedVendors, "check formatted");
-  //     setVendorArr(formattedVendors);
-  //   }
-  // }, [vendorNames]);
-
-  const option = vendorNames.data.map((el: any) => ({
-    value: el.fullName,
-    label: el.fullName,
-  }));
-
+  const option = vendorNames?.data?.map((el: any) => ({
+    value: el._id || el.Name, // Use _id if available, else displayName for uniqueness
+    label: el.Name, // Show only displayName
+  })) || [];
 
   useEffect(() => {
     if (!isLoading && rfpDataById?.data) {
@@ -94,15 +78,7 @@ const AddRfpsForm = () => {
         additionalInstructions: rfpDataById.data.additionalInstructions || "",
       });
 
-
-
       setSelectedVendors(rfpDataById?.data?.vendorList);
-
-      // const prefilledVendors = (rfpDataById.data.vendorList || []).map(
-      //   (vendorId: string) => vendorArr.find((v: any) => v.value === vendorId)
-      // ).filter(Boolean); // Remove any undefined values
-
-      // setSelectedVendors(prefilledVendors);
     }
   }, [rfpDataById, isLoading, vendorArr]);
 
@@ -111,14 +87,12 @@ const AddRfpsForm = () => {
     try {
       const obj = { ...formData };
 
-
       if (id) {
         const { data: res } = await updateRfp({ id, obj });
 
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/rfps");
-
         }
       } else {
         const { data: res } = await addRfp(obj);
@@ -168,18 +142,17 @@ const AddRfpsForm = () => {
   const handleInputChangeEventDates = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
-    type: "start" | "end" // Added type to distinguish between start and end date
+    type: "start" | "end"
   ) => {
     const { value } = e.target;
 
-    // Update the correct date field based on type
     setFormData((prevFormData) => ({
       ...prevFormData,
       eventDates: prevFormData.eventDates.map((el, i) =>
         i === index
           ? type === "start"
             ? { ...el, startDate: value }
-            : { ...el, endDate: value } // Update endDate for deadline
+            : { ...el, endDate: value }
           : el
       ),
     }));
@@ -195,38 +168,26 @@ const AddRfpsForm = () => {
     }));
   };
 
-  // const handleChange = (selected: string[] | null) => {
-  //   setFormData((prevData) => ({ ...prevData, vendorList: selected || [] }));
-  // };
-  // const handleSelectChange = (name: string, value: any) => {
-  //   setFormData(prev => ({
-  //     ...prev,
-  //     [name]: value
-  //   }));
-  // };
-
   useEffect(() => {
     if (vendorData && vendorData.data) {
       setVendorArr(
         vendorData.data.map((el: any) => ({
           value: el._id,
-          label: el.vendor?.firstName + " " + el.vendor?.lastName,
+          label: el.vendor?.displayName,
         }))
       );
     }
   }, [vendorData]);
-  const optionConvertor = (firstName: string, lastname: string) => {
-    return `${firstName} ${lastname}`;
+  const optionConvertor = (displayName: string) => {
+    return `${displayName} `;
   };
 
   return (
     <div className="p-6 m-[60px]">
       <h1 className="text-2xl font-bold mb-6">Add RPFs</h1>
 
-      {/* Box with required styling */}
       <div className="mx-auto border border-gray-300 bg-gray-50 shadow-lg rounded-lg p-8">
         <form onSubmit={handleSubmit}>
-          {/* Service Type and Event Date */}
           <div className="grid grid-cols-1  md:grid-cols-2 gap-6 mb-4">
             <div>
               <label className="block text-black font-500">
@@ -263,7 +224,6 @@ const AddRfpsForm = () => {
               ))}
           </div>
 
-          {/* Event Details and Deadline */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
               <label className="block text-sm font-medium text-black mb-1">
@@ -279,37 +239,20 @@ const AddRfpsForm = () => {
               />
             </div>
 
-            {/* {Array.isArray(formData.eventDates) &&
-              formData.eventDates.map((el: any, index: number) => (
-                <div key={index}>
-                  <label className="block text-sm font-medium text-black mb-1">
-                    Deadline for Proposal
-                  </label>
-                  <input
-                    name="deadlineDates" // Separate name for deadline dates
-                    value={moment(el.endDate).format("YYYY-MM-DD") || el.endDate || ""}
-                    onChange={(e) => handleInputChangeEventDates(e, index, "end")} // Pass "end" to distinguish
-                    type="date"
-                    className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
-                  />
-                </div>
-              ))} */}
-
             <div>
               <label className="block text-sm font-medium text-black mb-1">
                 Deadline for Proposal
               </label>
               <input
-                name="deadlineOfProposal" // Changed from deadlineDates to match state property
-                value={formData.deadlineOfProposal ? moment(formData.deadlineOfProposal).format("YYYY-MM-DD") : ""} // Fixed value binding
-                onChange={handleInputChange} // Using your existing handler which updates based on name
+                name="deadlineOfProposal"
+                value={formData.deadlineOfProposal ? moment(formData.deadlineOfProposal).format("YYYY-MM-DD") : ""}
+                onChange={handleInputChange}
                 type="date"
                 className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
               />
             </div>
           </div>
 
-          {/* Vendor List */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-black mb-1">
               Vendor List
@@ -329,7 +272,6 @@ const AddRfpsForm = () => {
             />
           </div>
 
-          {/* Additional Instructions */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-black mb-1">
               Additional Instructions
@@ -349,11 +291,11 @@ const AddRfpsForm = () => {
             ></textarea>
           </div>
 
-          {/* Buttons */}
           <div className="flex justify-end gap-4">
             <button
               type="button"
               className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-200 transition"
+              onClick={() => navigate(-1)}
             >
               Cancel
             </button>

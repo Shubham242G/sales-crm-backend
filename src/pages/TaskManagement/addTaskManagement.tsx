@@ -394,6 +394,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
               <button
                 type="button"
                 className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+                onClick={() => navigate(-1)}
               >
                 Cancel
               </button>

@@ -97,7 +97,6 @@ const AddConfirmedQuotesFromVendor = () => {
     id || ""
   );
 
-  console.log(confirmedQuotesDataById, "check the confirmed quotes by id");
   const [selectedQuoteId, setSelectedQuoteId] = useState("");
   const { data: confirmedQuotesId } = useConfirmedQuotesId();
 

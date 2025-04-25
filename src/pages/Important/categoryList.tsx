@@ -16,6 +16,8 @@ import { checkPermissionsForButtons } from "@/utils/permission";
 
 function CategoryList() {
   const navigate = useNavigate();
+  const [pageIndex, setPageIndex] = useState(1);
+const [pageSize, setPageSize] = useState(10);
   const { data: categoryData } = useCategory();
   const { mutateAsync: deleteCategory } = usedeleteCategoryById();
 
@@ -166,14 +168,10 @@ function CategoryList() {
             data={categoryData?.data}
             columns={filterColumns}
             loading={false}
-            totalRows={0}
-            // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+            totalRows={categoryData?.total}
+            onChangePage={setPageIndex}
+            onChangeRowsPerPage={setPageSize}
+            paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>

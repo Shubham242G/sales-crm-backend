@@ -137,6 +137,11 @@ function Users() {
             columns={columns}
             loading={false}
             totalRows={UserData?.total}
+            onChangePage={setPageIndex}
+            onChangeRowsPerPage={setPageSize}
+            page={pageIndex}
+            rowsPerPageText={pageSize}
+            isServerPropsDisabled={false}
           />
         </div>
       </div>

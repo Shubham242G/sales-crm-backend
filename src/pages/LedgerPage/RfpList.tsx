@@ -123,10 +123,8 @@ function RfpList() {
   const handleConvertRfptoQuotesFromVendor = async (id: string) => {
     try {
       const { data: res } = await convertRfp(id);
-      console.log("Thiss is rfp to vendor--->", res.message)
       toastSuccess(res.message);
     } catch (error: any) {
-      console.log("error", error);
       toastError(error);
     }
   };
@@ -296,13 +294,13 @@ function RfpList() {
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
-              <button
+              {/* <button
                 onClick={() => navigate("/add-rfps")}
                 className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
               >
                 <FaPlus />
                 <span>New RFPs</span>
-              </button>
+              </button> */}
             </div>
           </div>
           {/* React Table */}

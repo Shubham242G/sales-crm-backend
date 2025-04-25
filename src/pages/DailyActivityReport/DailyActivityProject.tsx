@@ -225,11 +225,12 @@ const [pageIndex, setPageIndex] = useState(1);
                         columns={columns}
                         loading={false}
                         totalRows={0}
-                    // onChangePage={handlePageChange}
-                    // onChangeRowsPerPage={handleRowsPerPageChange}
-                    // pagination
-                    // paginationPerPage={rowsPerPage}
-                    paginationRowsPerPageOptions={[5, 10, 20]}
+                        onChangePage={setPageIndex}
+                        onChangeRowsPerPage={setPageSize}
+                        page={pageIndex}
+                        isServerPropsDisabled={false}
+                        rowsPerPageText={pageSize}
+                        paginationRowsPerPageOptions={[5, 10, 20]}
                     />
                 </div>
             </div>

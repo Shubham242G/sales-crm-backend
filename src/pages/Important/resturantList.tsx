@@ -184,14 +184,12 @@ function ResturantList() {
             data={resturantData?.data}
             columns={filterColumns}
             loading={false}
-            totalRows={0}
-            // loading={loading}
-            // totalRows={data.length}
-            // onChangePage={handlePageChange}
-            // onChangeRowsPerPage={handleRowsPerPageChange}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+            totalRows={resturantData.total}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={setPageSize}
+            page={pageSize}
+            paginationRowsPerPageOptions={[5, 10, 20]}
+            isServerPropsDisabled={false}
           />
         </div>
       </div>

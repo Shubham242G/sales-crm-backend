@@ -180,7 +180,6 @@ export interface IVendor {
 export const useVendorApiHook = () => {
   // const axiosAuth = useAxiosAuth({});
   const addVendor = async (obj: any) => {
-    console.log(`${BASE_URL}${prefix}/`, "test");
     return axios.post<GeneralApiResponse<any>>(`${BASE_URL}${prefix}/`, obj);
   };
   const updateVendorById = async ({ id, obj }: { id: string; obj: any }) => {
@@ -201,7 +200,6 @@ export const useVendorApiHook = () => {
   };
 
   const getAllVendor = async (pagination: PaginationState, searchObj: any) => {
-    console.log(`${BASE_URL}${prefix}/quotesFromVendors`, "test c");
     const query = new URLSearchParams({
       pageIndex: String(pagination.pageIndex),
       pageSize: String(pagination.pageSize),

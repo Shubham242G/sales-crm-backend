@@ -236,7 +236,6 @@ const fetchDailyQuote = async () => {
     const data = await response.json();
     return { text: data.content, author: data.author };
   } catch (error) {
-    console.error('Error fetching quote:', error);
     return staticQuotes[Math.floor(Math.random() * staticQuotes.length)];
   }
 };
@@ -266,7 +265,6 @@ const Dashboard: React.FC = () => {
   const { data: dashboardData, isLoading } = useDashboard(searchObj);
 
 
-  console.log(dashboardData, "checking dashboardData");
   // Extract costOfVendor, businessFromCustomer, and revenue from the fetched data
   const dashboard = dashboardData?.data?.[0] || {};
   const costOfVendor = dashboard.costOfVendor || '0';
@@ -387,9 +385,6 @@ const Dashboard: React.FC = () => {
     return null;
   };
 
-  console.log(costOfVendor, "checking costOfVendor");
-  console.log(businessFromCustomer, "checking businessFromCustomer");
-  console.log(revenue, "checking revenue");
 
   return (
     <div className="min-h-screen w-[98%] ml-auto  bg-gray-50 p-6">

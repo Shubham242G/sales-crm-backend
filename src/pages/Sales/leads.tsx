@@ -93,7 +93,6 @@ function Leads() {
   ];
 
 
-  console.log(query, "check query")
 
   const handleDelete = async (id: string) => {
     try {
@@ -369,7 +368,6 @@ function Leads() {
           // totalRows={data.length}
           // onChangePage={handlePageChange}
           // onChangeRowsPerPage={handleRowsPerPageChange}
-          // pagination
           // paginationPerPage={rowsPerPage}
           // paginationRowsPerPageOptions={[5, 10, 20]}
           />
