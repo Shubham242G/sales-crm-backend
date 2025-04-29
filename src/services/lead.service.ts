@@ -155,9 +155,14 @@ export const convertToContact = async (id: any) => {
 };
 
 
-export const getExel = async () => {
-    return axios.get(`${BASE_URL}${prefix}/getExel`);
-};
+export const getExel = async (searchParams?: any) => {
+    try {
+      const response = await axios.post(`${BASE_URL}${prefix}/getExel`, searchParams);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 
 
 export const addLeadExel = async (obj: any,) => {
