@@ -434,7 +434,7 @@ const AddConfirmedQuotesFromVendor = () => {
           {/* Banquet Event Orders Section */}
           <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
             <div className="mb-4 ">
-              <label>Select Quote Id</label>
+              <label className="font-semibold" >Select Quote Id</label>
               <select
                 className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                 value={formData.banquetEventOrders.quotesId}
@@ -458,7 +458,7 @@ const AddConfirmedQuotesFromVendor = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-black mb-2">
+              <label className="block text-sm font-semibold font-semibold text-black mb-2">
                 RFP Id
               </label>
               <input
@@ -480,7 +480,7 @@ const AddConfirmedQuotesFromVendor = () => {
             </div>
 
             <div className="mb-4 ">
-              <label className="block mb-2  text-sm font-medium text-black">
+              <label className="block mb-2  text-sm font-semibold text-black">
                 Vendor
               </label>
               <input
@@ -493,7 +493,7 @@ const AddConfirmedQuotesFromVendor = () => {
             </div>
 
             <div className="mb-4 ">
-              <label className="block text-sm font-medium text-black mb-2">
+              <label className="block text-sm  font-semibold text-black mb-2">
                 Amount
               </label>
               <input
@@ -515,7 +515,7 @@ const AddConfirmedQuotesFromVendor = () => {
             </div>
 
             <div className="mb-4 ">
-              <label className="block text-sm font-medium text-black mb-2">
+              <label className="block text-sm font-semibold text-black mb-2">
                 Received Date
               </label>
               <input
@@ -536,7 +536,7 @@ const AddConfirmedQuotesFromVendor = () => {
             </div>
 
             <div className="mb-4 ">
-              <label className="block text-sm font-medium text-black mb-2">
+              <label className="block text-sm font-semibold text-black mb-2">
                 Status
               </label>
               <select
@@ -561,7 +561,7 @@ const AddConfirmedQuotesFromVendor = () => {
             </div>
 
             <div className="col-span-2 mb-[20px]">
-              <label className="block text-sm font-medium text-black mb-2">
+              <label className="block text-sm font-semibold text-black mb-2">
                 Attachment
               </label>
               <div className="items-center gap-4">
@@ -648,7 +648,7 @@ const AddConfirmedQuotesFromVendor = () => {
             <div className="mb-8">
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Event Coordinator Name
                   </label>
                   <input
@@ -668,7 +668,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Event Date
                   </label>
                   <input
@@ -687,7 +687,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Hotel Name
                   </label>
                   <input
@@ -707,7 +707,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Event Coordinator Reporting Time
                   </label>
                   <input
@@ -728,7 +728,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Client's Company Name
                   </label>
                   <input
@@ -748,7 +748,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Onsite Client Name
                   </label>
                   <input
@@ -768,7 +768,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Sales Person Name
                   </label>
                   <input
@@ -788,7 +788,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Expected Pax
                   </label>
                   <input
@@ -816,7 +816,7 @@ const AddConfirmedQuotesFromVendor = () => {
             <div className="mb-8">
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Event Start Time
                   </label>
                   <input
@@ -835,7 +835,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Event End Time
                   </label>
                   <input
@@ -854,7 +854,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     BTR
                   </label>
                   <input
@@ -874,7 +874,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Venue Handover Time
                   </label>
                   <input
@@ -893,7 +893,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Welcome Drink Start Time
                   </label>
                   <input
@@ -914,7 +914,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Venue Name
                   </label>
                   <input
@@ -934,7 +934,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Setup
                   </label>
                   <input
@@ -954,7 +954,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     AV Vendor Name
                   </label>
                   <input
@@ -974,7 +974,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     AV Vendor Number
                   </label>
                   <input
@@ -994,7 +994,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Expected Number of Seating
                   </label>
                   <input
@@ -1014,7 +1014,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Hotel Coordination Name
                   </label>
                   <input
@@ -1036,7 +1036,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Hotel Coordination Number
                   </label>
                   <input
@@ -1058,7 +1058,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Liner Color
                   </label>
                   <input
@@ -1078,7 +1078,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Starters Placement
                   </label>
                   <input
@@ -1098,7 +1098,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-semibold text-black mb-1">
                     Starters Event Time
                   </label>
                   <input
@@ -1125,7 +1125,7 @@ const AddConfirmedQuotesFromVendor = () => {
             <h2 className="text-xl font-semibold mb-4">Menu Selection</h2>
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Sr. No.
                 </label>
                 <input
@@ -1145,7 +1145,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Veg
                 </label>
                 <input
@@ -1165,7 +1165,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Non-Veg
                 </label>
                 <input
@@ -1185,7 +1185,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Actions
                 </label>
                 <input
@@ -1212,7 +1212,7 @@ const AddConfirmedQuotesFromVendor = () => {
             <h2 className="text-xl font-semibold mb-4">Event Flow</h2>
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Sr. No.
                 </label>
                 <input
@@ -1232,7 +1232,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Text 1
                 </label>
                 <input
@@ -1252,7 +1252,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Text 2
                 </label>
                 <input
@@ -1272,7 +1272,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Actions
                 </label>
                 <input
@@ -1299,7 +1299,7 @@ const AddConfirmedQuotesFromVendor = () => {
             <h2 className="text-xl font-semibold mb-4">Audio Visual</h2>
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Sr. No.
                 </label>
                 <input
@@ -1319,7 +1319,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Text 1
                 </label>
                 <input
@@ -1339,7 +1339,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Text 2
                 </label>
                 <input
@@ -1359,7 +1359,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-semibold text-black mb-1">
                   Actions
                 </label>
                 <input
@@ -1385,7 +1385,7 @@ const AddConfirmedQuotesFromVendor = () => {
           <div className="mb-8">
             <h2 className="text-xl font-semibold mb-4">Checklist</h2>
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium">Checklist Items</h3>
+              <h3 className="text-lg font-semibold">Checklist Items</h3>
               <button
                 type="button"
                 onClick={handleAddChecklistItem}
@@ -1395,15 +1395,15 @@ const AddConfirmedQuotesFromVendor = () => {
               </button>
             </div>
             <table className="min-w-full ">
-              <thead className="bg-[#0B2F46]">
+              <thead className="bg-stone-200  ">
                 <tr>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-white border-b">
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-stone-800 border-b">
                     Sr. No.
                   </th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-white border-b">
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-stone-800 border-b">
                     Checks
                   </th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-white border-b">
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-stone-800 border-b">
                     Checkbox
                   </th>
                   {formData.checklist.length > 1 && (

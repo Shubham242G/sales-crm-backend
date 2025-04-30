@@ -513,15 +513,15 @@ const AddQuotesFromVendors = () => {
             </div>
             <div className="overflow-x-auto">
               <table className="min-w-full border border-gray-300 rounded-lg">
-                <thead className="bg-[#0B2F46]">
+                <thead className="bg-gradient-to-r from-[#FEF3C7] via-[#FEFCE8] to-[#FEF3C7] text-gray-900">
                   <tr>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
                       S.No.
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
                       Label
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
                       Markup Amount
                     </th>
                     {formData.markupDetails.length > 1 && (
@@ -547,7 +547,7 @@ const AddQuotesFromVendors = () => {
                           onChange={(e) =>
                             handleMarkupChange(index, "label", e.target.value)
                           }
-                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 transition duration-200"
                           placeholder="Enter label"
                         />
                       </td>
@@ -562,7 +562,7 @@ const AddQuotesFromVendors = () => {
                               e.target.value
                             )
                           }
-                          className="w-full border border-gray-300 bg-gray-50 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                          className="w-full border border-gray-300 bg-gray-50 rounded-md p-3 text-gray-600  transition duration-200"
                           placeholder="Enter markup amount"
                         />
                       </td>

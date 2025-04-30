@@ -3,7 +3,10 @@ import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell
 } from 'recharts';
 import { useDashboard } from '@/services/dashboard.service';
+import { useUserById } from '@/services/user.service'; // Import the missing hook
 import backgroundImage from "../../assets/background.jpg"
+import { getAuth } from '@/utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 // User roles
 type UserRole = 'sales' | 'operations' | 'admin';
@@ -253,6 +256,7 @@ const Dashboard: React.FC = () => {
   const [pageIndex, setPageIndex] = useState(1);
     const [pageSize, setPageSize] = useState(100);
     const [query, setQuery] = useState("");
+    const [userId, setUserId] = useState<string | null>(null);
     const searchObj = useMemo(
       () => ({
         ...(query && { query }),
@@ -314,6 +318,45 @@ const Dashboard: React.FC = () => {
       },
     }));
   };
+
+  const getUserId = async () => {
+    const decodedToken = await getAuth();
+    if (decodedToken?.token) {
+      setUserId(decodedToken.userId);
+    }
+  };
+
+  useEffect(() => {
+    getUserId();
+  }, []);
+
+  const { data: UserDataById } = useUserById(userId ?? '');
+  const navigate = useNavigate();
+
+  const [isAuthorized, setIsAuthorized] = useState(true);
+
+  const handleLogout = () => {
+    localStorage.removeItem("AUTH_TOKEN");
+    setIsAuthorized(false);
+    navigate("/");
+  };
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    role: "",
+  });
+
+  useEffect(() => {
+    if (UserDataById) {
+      setFormData({
+        name: UserDataById?.name || "",
+        email: UserDataById?.email || "",
+        role: UserDataById?.role || "",
+      });
+    }
+  }, [UserDataById]);
+
 
   const renderChart = () => {
     const fields = visibleFields[userRole];
@@ -387,11 +430,11 @@ const Dashboard: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen w-[98%] ml-auto  bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen  mx-auto 2xl:-ml-1 bg-gray-50 p-6">
+      <div className=" w-[100%] 2xl:w-[100%] 2xl:ml-0 xl:ml-4 mx-auto">
         {/* Header */}
         <div className=" bg-white rounded-2xl text-3xl md:text-4xl font-extrabold text-gray-800 h-30 md:h-40   text-center shadow-lg py-4 px-6 mb-10 tracking-wide">
-          <p className="text-gray-600 mt-10">Welcome to the Financial Dashboard</p>
+          <p className="text-gray-600 mt-10">Hello , {formData.name}</p>
         </div>
 
         {/* Financial Metrics Section */}
@@ -425,7 +468,7 @@ const Dashboard: React.FC = () => {
       </h2>
           <div className="text-center flex flex-col justify-center items-center h-full px-10">
             {quote ? (
-              <p className="text-3xl md:text-3xl font-semibold text-gray-800 mb-6">
+              <p className="text-2xl md:text-2xl font-semibold text-gray-800 mb-6">
                 "{quote.text}" — <span className="font-semibold">{quote.author}</span>
               </p>
             ) : (

@@ -9,6 +9,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { useUser, useDeleteUser, useUpdateUser } from "@/services/user.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import { ClassNames } from "@emotion/react";
 
 function Users() {
   const navigate = useNavigate();
@@ -72,19 +73,20 @@ function Users() {
       name: "Role",
       selector: (row: any) => row?.role || "N/A",
       width: "20%",
+      
     },
     {
       name: "Edit",
       width: "15%",
       selector: (row: any) =>
         (canView || canUpdate) && (
-          <Link
-            to={`/add-users/${row._id}`}
-            onClick={() => handleUpdate(row._id, row.data)}
-            className="text-black-500 text-lg p-[6px]"
-          >
-            <FaEye />
-          </Link>
+          <div className="ml-2"><Link
+          to={`/add-users/${row._id}`}
+          onClick={() => handleUpdate(row._id, row.data)}
+          className="text-black-500 text-lg p-[6px] hover:text-orange-500"
+        >
+          <FaEye />
+        </Link></div>
         ),
     },
     {
@@ -97,7 +99,7 @@ function Users() {
             onClick={() => handleDelete(row._id)}
             className="p-[6px] text-black-400 text-lg"
           >
-            <RiDeleteBin6Line />
+            <RiDeleteBin6Line className="ml-2"/>
           </button>
         ),
     },

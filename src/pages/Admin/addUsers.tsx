@@ -142,7 +142,7 @@ const AddNewUser = () => {
               />
             </div>
 
-            {/* <div className="relative">
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
@@ -161,7 +161,7 @@ const AddNewUser = () => {
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </div>
-            </div> */}
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

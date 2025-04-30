@@ -69,69 +69,69 @@ function CustomerLedger() {
     {
       name: "Quotes Id",
       selector: (row: any) => <h6>{row?.quotesId}</h6>,
-      width: "8%",
+      width: "10%",
     },
     {
       name: "Vendor Name",
       selector: (row: any) => <h6>{row?.vendorList?.label}</h6>,
-      width: "12%",
+      width: "10%",
     },
     {
       name: "RPFs Id",
       selector: (row: any) => <h6>{row?.rfpId}</h6>,
-      width: "8%",
+      width: "10%",
     },
     {
       name: "Status",
-      selector: (row: any) => <h6>{row?.status}</h6>,
-      width: "8%",
+      selector: (row: any) => <h6 className="" > { row?.status }</h6>,
+    width: "15%",
     },
-    {
-      name: "Service",
-      selector: (row: any) => (
-        <div className="flex justify-around">
-          {row?.serviceType?.map((e: any, index: number) => (
-            <div
-              key={index}
-              className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
-            >
-              {e}
-            </div>
-          ))}
-        </div>
-      ),
-      width: "20%",
-    },
-    {
-      name: "Amount",
-      selector: (row: any) => <h6>{row?.amount}</h6>,
-      width: "8%",
-    },
-    {
-      name: "Date Received",
-      selector: (row: any) => <h6>{row?.receivedDate}</h6>,
+{
+  name: "Service",
+    selector: (row: any) => (
+      <div className="flex-row mt-2 mb-2 justify-around ">
+        {row?.serviceType?.map((e: any, index: number) => (
+          <div
+            key={index}
+            className="border border-b-purple-300 py-1 text-gray-900 px-3 bg-gray-200 mt-2 text-center rounded-md"
+          >
+            {e}
+          </div>
+        ))}
+      </div>
+    ),
       width: "10%",
     },
-    // {
-    //   name: "Status",
-    //   selector: (row: any) => (
-    //     <div
-    //       className={`p-2 rounded-md text-white ${
-    //         row.status === "Pending"
-    //           ? "bg-yellow-200 text-yellow-500"
-    //           : row.status === "Reviewed"
-    //           ? "bg-green-300 text-green-600"
-    //           : "bg-red-200 text-red-600"
-    //       }`}
-    //     >
-    //       <h6>{row?.status}</h6>
-    //     </div>
-    //   ),
-    //   width: "12%",
-    // },
-    {
-      name: "Action",
+{
+  name: "Amount",
+    selector: (row: any) => <h6>{row?.amount}</h6>,
       width: "10%",
+    },
+{
+  name: "Date Received",
+    selector: (row: any) => <h6>{row?.receivedDate}</h6>,
+      width: "12%",
+    },
+// {
+//   name: "Status",
+//   selector: (row: any) => (
+//     <div
+//       className={`p-2 rounded-md text-white ${
+//         row.status === "Pending"
+//           ? "bg-yellow-200 text-yellow-500"
+//           : row.status === "Reviewed"
+//           ? "bg-green-300 text-green-600"
+//           : "bg-red-200 text-red-600"
+//       }`}
+//     >
+//       <h6>{row?.status}</h6>
+//     </div>
+//   ),
+//   width: "12%",
+// },
+{
+  name: "Action",
+    width: "10%",
       selector: (row: any) => (
         <div className="flex items-center gap-2">
           <Link
@@ -149,9 +149,9 @@ function CustomerLedger() {
         </div>
       ),
     },
-    {
-      name: "Convert to Customer Quote",
-      width: "14%",
+{
+  name: "Convert to Customer Quote",
+    width: "13%",
       selector: (row: any) => (
         <div>
           <button
@@ -167,50 +167,50 @@ function CustomerLedger() {
     },
   ];
 
-  return (
-    <div className="container px-6">
-      <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
-        <div className="search_boxes flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800">
-            Quotes from Vendor
-          </h2>
-          <div className="flex items-center justify-start gap-2">
-            <div className="w-full">
-              <input
-                type="search"
-                className="rounded-sm w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                placeholder="Search..."
-              />
-            </div>
-            <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
-              <FaFilter /> Filter
-            </button>
-            <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
-              <FaFileExport /> Export
-            </button>
-            <button
-              onClick={() => navigate("/addQuotesFromVendors")}
-              className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
-            >
-              <FaPlus />
-              <span>New quotes for vendors</span>
-            </button>
+return (
+  <div className="container px-6">
+    <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
+      <div className="search_boxes flex justify-between items-center">
+        <h2 className="text-xl font-semibold text-gray-800">
+          Quotes from Vendor
+        </h2>
+        <div className="flex items-center justify-start gap-2">
+          <div className="w-full">
+            <input
+              type="search"
+              className="rounded-sm w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+              placeholder="Search..."
+            />
           </div>
+          <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+            <FaFilter /> Filter
+          </button>
+          <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+            <FaFileExport /> Export
+          </button>
+          <button
+            onClick={() => navigate("/addQuotesFromVendors")}
+            className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+          >
+            <FaPlus />
+            <span>New quotes for vendors</span>
+          </button>
         </div>
-        <ReactTable
-          data={quotesFromVendors.data}
-          columns={columns}
-          loading={false}
-          totalRows={0}
-          onChangeRowsPerPage={setPageSize}
-          onChangePage={setPageIndex}
-          page={pageIndex}
-          rowsPerPageText={pageSize}
-          isServerPropsDisabled={false}
-        />
       </div>
+      <ReactTable
+        data={quotesFromVendors.data}
+        columns={columns}
+        loading={false}
+        totalRows={0}
+        onChangeRowsPerPage={setPageSize}
+        onChangePage={setPageIndex}
+        page={pageIndex}
+        rowsPerPageText={pageSize}
+        isServerPropsDisabled={false}
+      />
     </div>
-  );
+  </div>
+);
 }
 
 export default CustomerLedger;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MdChevronRight } from "react-icons/md";
-import home from "../../assets/sidebar/home.webp";
+import home from "../../assets/sidebar/home.png";
 import homew from "../../assets/sidebar/homew.webp"
 import ledger from "@/assets/slidericon/computer.png";
 import cart from "../../assets/slidericon/cart.png";
@@ -29,7 +29,7 @@ function Sidebar() {
       mainlink: "/",
       heading: "Dashboard",
       icon: home,
-      activeIcon: homew,
+      activeIcon: home,
       isActive: false,
       isArrow: false,
     },
@@ -82,26 +82,26 @@ function Sidebar() {
         },
       ],
     },
-    {
-      mainlink: "/",
-      heading: "Hierarchy",
-      icon: hierarchy,
-      activeIcon: hierarchy,
-      isActive: false,
-      isArrow: true,
-      dropArr: [
-        {
-          dropHead: "Roles",
-          link: "roleHierarchy",
-          plusLink: "/roleHierarchy",
-        },
-        {
-          dropHead: "role Modal",
-          link: "roleModal",
-          plusLink: "/newRoleModal",
-        },
-      ],
-    },
+    // {
+    //   mainlink: "/",
+    //   heading: "Hierarchy",
+    //   icon: hierarchy,
+    //   activeIcon: hierarchy,
+    //   isActive: false,
+    //   isArrow: true,
+    //   dropArr: [
+    //     {
+    //       dropHead: "Roles",
+    //       link: "roleHierarchy",
+    //       plusLink: "/roleHierarchy",
+    //     },
+    //     {
+    //       dropHead: "role Modal",
+    //       link: "roleModal",
+    //       plusLink: "/newRoleModal",
+    //     },
+    //   ],
+    // },
     {
       mainlink: "/",
       heading: "Sales",
@@ -282,28 +282,28 @@ function Sidebar() {
 
   return (
     <div className=" text-gray-850 bg-[#f7f8ff] h-full lg:h-[100vh] w-64 fixed overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-[#0B2F46]">
-      <div className="shadow-xl p-4">
+      <div className="shadow-xl  p-4">
         <img
           src={mainlogo}
           alt="mainlogo"
-          className="object-contain w-[168px] h-[178px] mx-auto"
+          className="object-contain w-[120px] h-[178px]  mx-auto"
         />
       </div>
-      <ul className="main-list w-full overflow-auto h-[100vh]">
+      <ul className="main-list w-full overflow-auto h-[100vh] mt-2">
         {filteredSidebarArr.map((el, index) => (
-          <li className="relative mt-4" key={index}>
+          <li className="relative mt-4 -mb-2 " key={index}>
             {el?.dropArr ? (
               <button
                 type="button"
                 className="flex text-gray-850 items-center p-3 w-full bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors justify-between"
                 onClick={() => handleDropShow(index)}
               >
-                <div className="icon w-6 h-2 mr-4 flex flex-row items-center gap-2">
+                <div className="icon w-6 h-2 mr-4   flex flex-row items-center gap-2">
                   <img
                     src={showdrop === index ? el.activeIcon : el.icon}
                     alt={el.heading}
                   />
-                  <h6 className=" flex-1 group-hover:text-white whitespace-nowrap">
+                  <h6 className=" flex-1 group-hover:text-white ml-1 whitespace-nowrap">
                     {el.heading}
                   </h6>
                 </div>
@@ -314,12 +314,12 @@ function Sidebar() {
             ) : (
               <Link
                 to={el?.mainlink ? el.mainlink : ""}
-                className="flex items-center p-3 w-full bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors"
+                className="flex items-center p-3 w-full  bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors"
               >
-                <div className="icon w-6 h-6 mr-2">
+                <div className="icon w-6 h-5 mr-2">
                   <img src={el?.icon} alt={el?.heading} />
                 </div>
-                <h6 className=" flex-1 whitespace-nowrap">
+                <h6 className=" flex-1 whitespace-nowrap ml-1 -mb-2">
                   {el?.heading}
                 </h6>
               </Link>

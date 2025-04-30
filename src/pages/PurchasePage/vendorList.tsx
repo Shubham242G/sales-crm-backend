@@ -3,7 +3,7 @@ import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { RiDeleteBin6Line, RiH6 } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus, FaFileImport } from "react-icons/fa";
 import {
   useVendorById,
@@ -151,9 +151,9 @@ function VendorList() {
     {
       name: "Company",
       selector: (row: any) => (
-        <div className="flex gap-1">
-          <FaMobileScreenButton className="text-[#938d8d]" />
-          {row.vendor?.companyName}
+        <div className="flex gap-1 ">
+          <h6>{row.vendor?.companyName}</h6>
+          
         </div>
       ),
       width: "15%",
@@ -161,9 +161,8 @@ function VendorList() {
     {
       name: "Location",
       selector: (row: any) => (
-        <div className="flex gap-1">
-          <FaMobileScreenButton className="text-[#938d8d]" />
-          {row?.location?.state}
+        <div className="flex gap-1 whitespace-pre-wrap">
+          <h6>{row?.location?.state}</h6>
         </div>
       ),
       width: "12%",
@@ -176,27 +175,27 @@ function VendorList() {
           {row.vendor?.phoneNumber}
         </div>
       ),
-      width: "12%",
+      width: "15%",
     },
     {
       name: "Email",
-      selector: (row: any) => row.vendor?.email,
-      width: "18%",
+      selector: (row: any) => ( <h6>{row.vendor?.email}</h6> ),
+      width: "23%",
     },
     {
       name: "Update",
-      width: "14%",
+      width: "10%",
       selector: (row: any) => (
         <div className="flex items-center gap-4">
           <Link to={`/add-vendor/${row?._id}`} title="View Vendor">
-            <FaEye className="text-lg text-gray-600 hover:text-black ml-4" />
+            <FaEye className="text-lg text-gray-600 hover:text-orange-500 ml-4" />
           </Link>
         </div>
       ),
     },
     {
       name: "Delete",
-      width: "14%",
+      width: "10%",
       selector: (row: any) => (
         <div className="flex items-center gap-4">
           <button
@@ -205,7 +204,7 @@ function VendorList() {
             className="text-lg  text-gray-600 hover:text-black ml-2"
             title="Delete Vendor"
           >
-            <RiDeleteBin6Line />
+            <RiDeleteBin6Line className="ml-2" />
           </button>
         </div>
       ),
@@ -320,6 +319,7 @@ function VendorList() {
           </div>
           {/* React Table */}
           <ReactTable
+            
             data={VendorData?.data}
             columns={filterColumns}
             loading={false}

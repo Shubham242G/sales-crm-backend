@@ -57,18 +57,18 @@ function Roles() {
     {
       name: "Hierarchy",
       selector: (row: any) => row.hierarchy || "N/A",
-      width: "12%",
+      width: "14%",
     },
     {
       name: "Edit",
-      width: "8%",
+      width: "12%",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => navigate(`/add-role/${row._id}`)}
-          className="text-black-500 text-lg p-[6px]"
+          className="text-black-500 text-lg p-[6px] hover:text-orange-500"
         >
-          <FaEye />
+          <FaEye  />
         </button>
       ),
     },
@@ -81,7 +81,7 @@ function Roles() {
           onClick={() => handleDelete(row._id)}
           className="p-[6px] text-black-400 text-lg"
         >
-          <RiDeleteBin6Line />
+          <RiDeleteBin6Line className="ml-1" />
         </button>
       ),
     },
