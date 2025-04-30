@@ -646,8 +646,7 @@ const AddEnquiryForm = () => {
   //   contact?.data &&
   //   contact?.data.map((item: any) => ({ value: item._id, label: item.name }));
 
-  // console.log(cab, "cab check ");
-  // console.log(banquet, "banquet check");
+
 
   //for resolving error for now
   const nameOptions = [{ value: "", label: "" }]
@@ -765,7 +764,6 @@ const AddEnquiryForm = () => {
                   name="area"
                   value={area}
                   onChange={(e) => {
-                    console.log("Area Input Changed: ", e.target.value)
                     setArea(e.target.value)
                   }}
                   placeholder="Area"

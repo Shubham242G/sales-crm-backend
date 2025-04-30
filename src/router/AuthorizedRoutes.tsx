@@ -44,7 +44,7 @@ import QuotesForVendorsView from "../pages/PurchasePage/quotesForVendorView";
 import Leads from "../pages/Sales/leads";
 import AddLeadsForm from "../pages/Sales/addLeads";
 import CustomerSales from "../pages/Sales/customer";
-import AddCustomer from "../pages/Sales/addCustomer";
+// import AddCustomer from "../pages/Sales/addCustomer";
 import QuotesForCustomer from "../pages/Sales/quotesToCustomer";
 import QuotesForCustomerView from "../pages/Sales/quotesToCustomerView";
 import DailyActivityReport from "../pages/DailyActivityReport/DailyActivityProject";
@@ -85,6 +85,9 @@ import SearchBar from "../pages/HotelSearch/hotelSearch";
 import Combiner from "@/pages/monthly/combiner";
 import ZohoInvoice from "@/pages/Sales/zoho_invoice_view";
 import InvoiceView from "@/pages/Sales/invoiceView";
+import AddCustomer from "@/pages/Sales/addCustomer";
+import VendorPurchaseBillView from "@/pages/Sales/vendorPurchaseBillView";
+import VendorPurchaseBillSingle from "@/pages/Sales/vendorPurchaseBillSingle";
 // import CalendarView from "@/pages/Calendar/CalendarView";
 
 export default function AuthorizedRoutes() {
@@ -139,6 +142,14 @@ export default function AuthorizedRoutes() {
           <Route
             path="/invoicesById/:id"
             element={< InvoiceView />}
+          ></Route>
+          <Route
+            path="/vendorPurchaseBill"
+            element={< VendorPurchaseBillView/>}
+          ></Route>
+          <Route
+            path="/vendorPurchaseBill/:id"
+            element={< VendorPurchaseBillSingle/>}
           ></Route>
           <Route
             path="/addQuotesFromVendors/:id"

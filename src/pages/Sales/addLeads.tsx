@@ -231,6 +231,7 @@ const AddNewLead = () => {
             <button
               type="button"
               className="px-6 py-3 border border-gray-300 rounded-md text-gray-700"
+              onClick={() => navigate(-1)}
             >
               Cancel
             </button>

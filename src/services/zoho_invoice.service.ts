@@ -1,102 +1,4 @@
 import { jsPDF } from "jspdf";
-// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-// import axios from "../libs/hooks/axios";
-// import { PaginationState } from "@tanstack/react-table";
-// import BASE_URL, {
-//   GeneralApiResponse,
-//   GeneralApiResponsePagination,
-// } from "./urls.service";
-
-// // Prefix for zoho invoice routes
-// const prefix = "/zohoInvoice";
-
-// export interface IZohoInvoice {
-//   invoice_id: string;
-//   invoice_number: string;
-//   date: string;
-//   status: string;
-//   customer_name: string;
-//   total: number;
-//   balance: number;
-//   currency_code: string;
-//   created_time: Date;
-//   updated_time: Date;
-//   pdf_url?: string;
-// }
-
-// export const useZohoInvoiceApiHook = () => {
-//   // Fetch all invoices with pagination + search
-//   const getAllZohoInvoices = async (pagination: PaginationState, searchObj: any) => {
-//     const query = new URLSearchParams({
-//       pageIndex: String(pagination.pageIndex),
-//       pageSize: String(pagination.pageSize),
-//       ...searchObj,
-//     }).toString();
-
-//     return axios.get<GeneralApiResponsePagination<IZohoInvoice>>(
-//       `${BASE_URL}${prefix}?${query}`
-//     );
-//   };
-
-//   // Fetch single invoice by ID
-//   const getZohoInvoiceById = async (id: string) => {
-//     return axios.get<GeneralApiResponse<IZohoInvoice>>(
-//       `${BASE_URL}${prefix}/${id}`
-//     );
-//   };
-
-//   // Sync Zoho invoices to DB (create/update)
-//   const syncInvoicesFromZoho = async () => {
-//     return axios.get<GeneralApiResponse<{ createdCount: number; updatedCount: number }>>(
-//       `${BASE_URL}${prefix}/sync`
-//     );
-//   };
-
-//   // Fetch PDF file URL for a given invoice
-//   const getInvoicePDFUrl = async (invoiceId: string) => {
-//     // This returns the URL to the invoice PDF
-//     return axios.get(`${BASE_URL}${prefix}/${invoiceId}/pdf`, {
-//       responseType: 'blob', // Ensures proper PDF download
-//     });
-//   };
-
-//   return {
-//     getAllZohoInvoices,
-//     getZohoInvoiceById,
-//     syncInvoicesFromZoho,
-//     getInvoicePDFUrl,
-//   };
-// };
-
-// // Hook to get all zoho invoices with pagination
-// export const useSyncZohoInvoices = (p0: { pageIndex: number; pageSize: number; }, filters: { toDate?: string | undefined; fromDate?: string | undefined; status?: string | undefined; customerName?: string | undefined; }) => {
-//   const queryClient = useQueryClient();
-//   const api = useZohoInvoiceApiHook();
-
-//   return useMutation({
-//     mutationFn: api.syncInvoicesFromZoho,
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["zoho-invoices"] });
-//     },
-//   });
-// };
-
-// // Hook to download invoice PDF
-// export const useInvoicePDFDownloader = () => {
-//   const api = useZohoInvoiceApiHook();
-
-//   const downloadInvoicePDF = async (invoiceId: string) => {
-//     const response = await api.getInvoicePDFUrl(invoiceId);
-
-//     const blob = new Blob([response.data], { type: "application/pdf" });
-//     const link = document.createElement("a");
-//     link.href = window.URL.createObjectURL(blob);
-//     link.download = `Invoice_${invoiceId}.pdf`;
-//     link.click();
-//   };
-
-//   return downloadInvoicePDF;
-// };
 
 import useAxiosAuth from "../libs/hooks/axios";
 import { usePagination } from "../libs/hooks/usePagination";
@@ -261,7 +163,6 @@ export const downloadZohoInvoicePdf = async (invoiceId: string) => {
     );
 
 
-    console.log(response.data, "check response data ")
 
      try{
       generatePdfFromJson(response.data.data); } 

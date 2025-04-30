@@ -255,19 +255,6 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Department
-              </label>
-              <input
-                type="text"
-                disabled={!value}
-                className="w-full border border-gray-300 rounded-md p-2"
-                placeholder="Enter Department"
-                value={formData.department}
-                onChange={handleChange("department")}
-              />
-            </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -396,6 +383,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
               <button
                 type="button"
                 className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+                onClick={() => navigate(-1)}
               >
                 Cancel
               </button>

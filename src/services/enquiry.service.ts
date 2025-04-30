@@ -19,72 +19,72 @@ export interface IEnqiry {
     phoneNumber: string;
     email: string;
     companyName: string
-    levelOfEnquiry:string;
-    enquiryType:string;
-    hotelPreferences:string;
+    levelOfEnquiry: string;
+    enquiryType: string;
+    hotelPreferences: string;
     hotelName: string;
     othersPreference: string;
     approxPassengers: string;
-    checkIn:string;
-    checkOut:string;
-    city:string;
-    area:string;
-    noOfRooms:string;
-    categoryOfHotel:string[];
+    checkIn: string;
+    checkOut: string;
+    city: string;
+    area: string;
+    noOfRooms: string;
+    categoryOfHotel: string[];
     priority: string;
-    occupancy:string[];
+    occupancy: string[];
     status: string;
-    banquet:{
-        date:string;
-        session:string;
-        seatingStyle:string;
-        avSetup:string;
-        menuType:string;
-        minPax:string;
-        seatingRequired:string;
+    banquet: {
+        date: string;
+        session: string;
+        seatingStyle: string;
+        avSetup: string;
+        menuType: string;
+        minPax: string;
+        seatingRequired: string;
     }[];
-    room:{
-        date:string;
-        noOfRooms:string;
-        roomCategory:string;
-        occupancy:string;
-        mealPlan:[];   
+    room: {
+        date: string;
+        noOfRooms: string;
+        roomCategory: string;
+        occupancy: string;
+        mealPlan: [];
     }[];
-    eventSetup:{
-        functionType:string;
-        setupRequired:string;
-        eventDates:{
-            startDate:string;
-            endDate:string; 
+    eventSetup: {
+        functionType: string;
+        setupRequired: string;
+        eventDates: {
+            startDate: string;
+            endDate: string;
         }[];
-       
-        eventStartDate:string;
+
+        eventStartDate: string;
         eventEndDate: string;
     };
-    airTickets:{
-        tripType:string;
-        numberOfPassengers:string;
-        fromCity:string;
-        toCity:string;
-        departureDate:string;
-        returnDate:string;
-        multiFromCity:string;
-        multiToCity:string;
-        multiDepartureDate:string;
+    airTickets: {
+        tripType: string;
+        numberOfPassengers: string;
+        fromCity: string;
+        toCity: string;
+        departureDate: string;
+        returnDate: string;
+        multiFromCity: string;
+        multiToCity: string;
+        multiDepartureDate: string;
     };
-    cab:{
-        date:string;
-        fromCity:string;
-        toCity:string;
-        vehicleType:string;
-        tripType:string;
-        noOfVehicles:string;
-        typeOfVehicle:string;
-        mealPlan:[];
+    cab: {
+        date: string;
+        fromCity: string;
+        toCity: string;
+        vehicleType: string;
+        tripType: string;
+        noOfVehicles: string;
+        typeOfVehicle: string;
+        mealPlan: [];
     }[];
-    billingAddress:string;
+    billingAddress: string;
 
-    
+
 }
 
 
@@ -137,7 +137,7 @@ export const useAddEnquiry = () => {
     return useMutation({
         mutationFn: api.addEnquiry,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["Enquiry"] });
+            queryClient.invalidateQueries({ queryKey: ["EnquiryAdd"] });
         },
     });
 };
@@ -159,7 +159,7 @@ export const useEnquiry = (searchObj: Record<string, any> = {}, getPaginationFro
 
 
     return useQuery({
-        queryKey: ["Enquiry", pagination, searchObj],
+        queryKey: ["EnquiryAll", pagination, searchObj],
         queryFn: () => api.getAllEnquiry(pagination, searchObj).then((res) => res?.data),
         initialData: {
             data: [],
@@ -176,7 +176,7 @@ export const usedeleteEnquiryById = () => {
     return useMutation({
         mutationFn: api.deleteEnquiryById,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["Enquiry"] });
+            queryClient.invalidateQueries({ queryKey: ["EnquiryDeleter"] });
             // toastSuccess(res);
         },
     });
@@ -189,7 +189,7 @@ export const useUpdateEnquiryById = () => {
     return useMutation({
         mutationFn: api.updateEnquiryById,
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["enquiry"] });
+            queryClient.invalidateQueries({ queryKey: ["enquiryById"] });
         },
     });
 };
@@ -198,13 +198,13 @@ export const useConvertEnquiryToRfp = () => {
     const api = useEnquiryApiHook();
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: api.convertToRfp,
-      onSuccess: (res) => {
-      
-        queryClient.invalidateQueries({ queryKey: ["Enquiry"] });
-      },
+        mutationFn: api.convertToRfp,
+        onSuccess: (res) => {
+
+            queryClient.invalidateQueries({ queryKey: ["EnquiryConvert"] });
+        },
     });
-  };
+};
 
 export const getExel = async () => {
     return axios.get(`${BASE_URL}${prefix}/getExel`);

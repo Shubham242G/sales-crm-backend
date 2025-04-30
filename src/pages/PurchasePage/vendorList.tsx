@@ -138,6 +138,16 @@ function VendorList() {
       ),
       width: "15%",
     },
+
+    {
+      name: "Display Name",
+      selector: (row: any) => (
+        <div className="flex gap-1 flex-col">
+          <h6>{row.vendor?.displayName}</h6>
+        </div>
+      ),
+      width: "15%",
+    },
     {
       name: "Company",
       selector: (row: any) => (

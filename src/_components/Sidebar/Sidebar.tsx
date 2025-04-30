@@ -136,7 +136,11 @@ function Sidebar() {
         },
         {
           dropHead: "Invoices",
-          link: "confirmedQuotes",
+          link: "/zohoInvoice",
+        },
+        {
+          dropHead: "Vendor Purchase Bill",
+          link: "/vendorPurchaseBill",
         },
         {
           dropHead: "Customer Outstanding",

@@ -81,7 +81,6 @@ function AddRoles() {
     );
 
   const {data: allRolesData} = useRoles(searchObj);
-  console.log(allRolesData?.data, "all roles data");
 const [parentRoleName, setParentRoleName] = useState<string>("");
 
 const allRoles = allRolesData?.data || [];

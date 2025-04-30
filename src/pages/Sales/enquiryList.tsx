@@ -46,6 +46,11 @@ function EnquiryLIst() {
   const [showFilters, setShowFilters] = useState(false);
   const { mutateAsync: convertEnquiryToRfp } = useConvertEnquiryToRfp();
 
+  const searchObj = useMemo(() => ({
+    ...(query && { query }),
+    pageIndex: pageIndex - 1,
+    pageSize,
+  }), [pageIndex, pageSize, query]);
   const searchObj = useMemo(
     () => ({
       ...(query && { query }),
@@ -67,16 +72,16 @@ function EnquiryLIst() {
 
 
 
-  const { data: EnquiryData, refetch } = useEnquiry(searchObj);
+  const { data: EnquiryData } = useEnquiry(searchObj);
 
   // useEffect(() => {
   //   const { data: EnquiryData } = useEnquiry(searchObj);
   //   setEnquiryData(EnquiryData);
   // }, [isUploading]);
   // console.log(EnquiryData, "check EnquiryData");
-  useEffect(() => {
-    setPageIndex(1);
-  }, [selectedEnquiryType, selectedLevel, selectedStatus]);
+  // useEffect(() => {
+  //   setPageIndex(1);
+  // }, [selectedEnquiryType, selectedLevel, selectedStatus]);
 
   const { mutateAsync: deleteEnquiry } = usedeleteEnquiryById();
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
@@ -109,7 +114,7 @@ function EnquiryLIst() {
 
       if (response.status === 200) {
         toastSuccess("Enquiries imported successfully!");
-        refetch();
+
       } else {
         toastError("Error importing file. Please try again.");
       }

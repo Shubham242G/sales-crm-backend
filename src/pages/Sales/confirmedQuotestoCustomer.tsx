@@ -270,8 +270,6 @@ function ConfirmedQuotestoCustomer() {
             columns={columns}
             loading={false}
             totalRows={0}
-            // loading={loading}
-            // totalRows={data.length}
             // onChangePage={handlePageChange}
             // onChangeRowsPerPage={handleRowsPerPageChange}
             // pagination

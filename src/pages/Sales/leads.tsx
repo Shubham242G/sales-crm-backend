@@ -464,6 +464,12 @@ function Leads() {
             page={pageIndex}
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
+          // loading={loading}
+          // totalRows={data.length}
+          // onChangePage={handlePageChange}
+          // onChangeRowsPerPage={handleRowsPerPageChange}
+          // paginationPerPage={rowsPerPage}
+          // paginationRowsPerPageOptions={[5, 10, 20]}
           />
         </div>
       </div>
