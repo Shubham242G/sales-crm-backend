@@ -1,0 +1,84 @@
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useZohoInvoiceById, useGenerateInvoicePdf } from '../../services/zoho_invoice.service';
+import { useVendorPurchaseBillById } from '@/services/vendorPurchaseBill.service';
+
+const VendorPurchaseBillSingle = () => {
+  const { id } = useParams();
+  const { data: vendorBill, isLoading, error } = useVendorPurchaseBillById(id||"")
+
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error || !vendorBill?.data) {
+    return (
+      <div className="container mx-auto p-4">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          Error loading vendorBill: {error?.message || 'Invoice not found'}
+        </div>
+      </div>
+    );
+  }
+
+
+  return (
+    <div className="container mx-auto p-4 max-w-3xl">
+      <div className="bg-gray-100 shadow-md rounded-lg p-6">
+        <h1 className="text-2xl font-bold mb-6">Invoice Details</h1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Order Number</h2>
+            <p className="text-gray-600">{vendorBill.data.bill_number}</p>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Vendor</h2>
+            <p className="text-gray-600">{vendorBill.data.vendor_name}</p>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Date</h2>
+            <p className="text-gray-600">{new Date(vendorBill.data.date).toLocaleDateString()}</p>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Status</h2>
+            <span className={`inline-block px-2 py-1 rounded text-sm capitalize 
+              ${vendorBill.data.status === 'paid' ? 'bg-green-100 text-green-800' : 
+                vendorBill.data.status === 'draft' ? 'bg-gray-100 text-gray-800' : 
+                'bg-yellow-100 text-yellow-800'}`}>
+              {vendorBill.data.status}
+            </span>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Total</h2>
+            <p className="text-gray-600">
+              {vendorBill.data.total.toFixed(2)} {vendorBill.data.currency_code}
+            </p>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Balance</h2>
+            <p className="text-gray-600">
+              {vendorBill.data.balance.toFixed(2)} {vendorBill.data.currency_code}
+            </p>
+          </div>
+        </div>cha
+
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-gray-700">Timestamps</h2>
+          <p className="text-gray-600">
+            Created: {new Date(vendorBill.data.created_time).toLocaleString()}
+          </p>
+        </div>
+
+  
+      </div>
+    </div>
+  );
+};
+
+export default VendorPurchaseBillSingle;

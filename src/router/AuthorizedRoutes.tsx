@@ -86,6 +86,8 @@ import Combiner from "@/pages/monthly/combiner";
 import ZohoInvoice from "@/pages/Sales/zoho_invoice_view";
 import InvoiceView from "@/pages/Sales/invoiceView";
 import AddCustomer from "@/pages/Sales/addCustomer";
+import VendorPurchaseBillView from "@/pages/Sales/vendorPurchaseBillView";
+import VendorPurchaseBillSingle from "@/pages/Sales/vendorPurchaseBillSingle";
 // import CalendarView from "@/pages/Calendar/CalendarView";
 
 export default function AuthorizedRoutes() {
@@ -140,6 +142,14 @@ export default function AuthorizedRoutes() {
           <Route
             path="/invoicesById/:id"
             element={< InvoiceView />}
+          ></Route>
+          <Route
+            path="/vendorPurchaseBill"
+            element={< VendorPurchaseBillView/>}
+          ></Route>
+          <Route
+            path="/vendorPurchaseBill/:id"
+            element={< VendorPurchaseBillSingle/>}
           ></Route>
           <Route
             path="/addQuotesFromVendors/:id"
