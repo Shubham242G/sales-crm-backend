@@ -1009,7 +1009,7 @@ const AddVendorForm = () => {
 
   //   setUploading(true);
   //   try {
-  //     const formData = new FormData();
+  //     const otherDetails = new FormData();
   //     selectedFiles.forEach((file, index) => {
   //       formData.append(`file${index}`, file);
   //     });
@@ -3297,7 +3297,7 @@ const AddVendorForm = () => {
                   {/* Tab Menu */}
                   <div className="mt-8 p-3">
                     <div className="border border-gray-400 bg-gray-50 ">
-                      <nav className="flex space-x-8  ">
+                      <nav className="flex space-x-8 mt-5 ml-2  ">
                         {["Other Details", "Address", "Contact Persons"].map(
                           (tab) => (
                             <button
@@ -4024,180 +4024,179 @@ const AddVendorForm = () => {
                                 </>
                               )}
                             </button>
-
-                            {isExpanded && (
-                              <div className="col-span-2 mt-8">
-                                <div className="space-y-8">
-                                  {/* Website URL */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="websiteUrl"
-                                    >
-                                      Website URL:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Globe className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="websiteUrl"
-                                        type="text"
-                                        value={otherDetails.websiteUrl}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            websiteUrl: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Website URL"
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+     {isExpanded && (
+                            <div className="col-span-2 mt-8">
+                              <div className="space-y-8 w-[400px]">
+                                {/* Website URL */}
+                                <div className="flex items-center ">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="websiteUrl"
+                                  >
+                                    Website URL:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Globe className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="websiteUrl"
+                                      type="text"
+                                      value={otherDetails.websiteUrl}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          websiteUrl: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Website URL"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
+                                </div>
 
-                                  {/* Department */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="department"
-                                    >
-                                      Department:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Building2 className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="department"
-                                        type="text"
-                                        value={otherDetails.department}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            department: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Department"
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+                                {/* Department */}
+                                <div className="flex items-center ">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="department"
+                                  >
+                                    Department:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Building2 className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="department"
+                                      type="text"
+                                      value={otherDetails.department}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          department: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Department"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
+                                </div>
 
-                                  {/* Designation */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="designation"
-                                    >
-                                      Designation:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <UserRound className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="designation"
-                                        type="text"
-                                        value={otherDetails.designation}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            designation: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Designation"
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+                                {/* Designation */}
+                                <div className="flex items-center ">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="designation"
+                                  >
+                                    Designation:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <UserRound className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="designation"
+                                      type="text"
+                                      value={otherDetails.designation}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          designation: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Designation"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
+                                </div>
 
-                                  {/* Twitter */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="twitter"
-                                    >
-                                      Twitter:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Twitter className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="twitter"
-                                        type="text"
-                                        value={otherDetails.twitter}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            twitter: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Twitter id..."
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+                                {/* Twitter */}
+                                <div className="flex items-center ">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="twitter"
+                                  >
+                                    Twitter:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Twitter className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="twitter"
+                                      type="text"
+                                      value={otherDetails.twitter}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          twitter: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Twitter id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
+                                </div>
 
-                                  {/* Skype */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="skype"
-                                    >
-                                      Skype:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <MessageCircle className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="skype"
-                                        type="text"
-                                        value={otherDetails.skype}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            skype: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter skype id..."
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+                                {/* Skype */}
+                                <div className="flex items-center ">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="skype"
+                                  >
+                                    Skype:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <MessageCircle className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="skype"
+                                      type="text"
+                                      value={otherDetails.skype}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          skype: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter skype id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
+                                </div>
 
-                                  {/* Facebook */}
-                                  <div className="flex items-center gap-6">
-                                    <label
-                                      className="w-32 text-base font-medium text-gray-700"
-                                      htmlFor="facebook"
-                                    >
-                                      Facebook:
-                                    </label>
-                                    <div className="w-full flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Facebook className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="facebook"
-                                        type="text"
-                                        value={otherDetails.facebook}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            facebook: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter facebook id..."
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
+                                {/* Facebook */}
+                                <div className="flex items-center">
+                                  <label
+                                    className="w-[200px] text-base font-medium text-gray-700"
+                                    htmlFor="facebook"
+                                  >
+                                    Facebook:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Facebook className="w-4 h-4 text-gray-400" />
                                     </div>
+                                    <input
+                                      id="facebook"
+                                      type="text"
+                                      value={otherDetails.facebook}
+                                      onChange={(e) =>
+                                        setOtherDetails({
+                                          ...otherDetails,
+                                          facebook: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter facebook id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
                                   </div>
                                 </div>
                               </div>
-                            )}
+                            </div>
+                          )}
                           </div>
                           {/* <div>
                             <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -4247,6 +4246,7 @@ const AddVendorForm = () => {
                             </h2>
                             {/* Attention */}
                             {/* <div className="flex items-center gap-6">
+<<<<<<< HEAD:src/pages/LedgerPage/addVendor.tsx
                               <span className=" min-w-32 text-base font-medium text-gray-700">
                                 Attention:
                               </span>
@@ -4262,6 +4262,23 @@ const AddVendorForm = () => {
                                 className="w-full border border-gray-300 rounded-md p-2 text-sm"
                               />
                             </div> */}
+=======
+                            <span className=" min-w-32 text-base font-medium text-gray-700">
+                              Attention:
+                            </span>
+                            <input
+                              type="text"
+                              value={otherDetails.attention}
+                              onChange={(e) =>
+                                setotherDetails({
+                                  ...otherDetails,
+                                  attention: e.target.value,
+                                })
+                              }
+                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                            />
+                          </div> */}
+>>>>>>> b0af8074cf553b79256fea24433d14070af2368e:src/pages/PurchasePage/addVendor.tsx
                             {/* Country / Region */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
@@ -4269,6 +4286,7 @@ const AddVendorForm = () => {
                                   Country / Region:
                                 </span>
                                 {/* <select
+<<<<<<< HEAD:src/pages/LedgerPage/addVendor.tsx
                                   value={formData.countryRegion}
                                   onChange={(e) =>
                                     setFormData({
@@ -4392,6 +4410,131 @@ const AddVendorForm = () => {
                                   </option>
                                   <option value="CL - Chile">CL - Chile</option>
                                 </select> */}
+=======
+                                value={otherDetails.countryRegion}
+                                onChange={(e) =>
+                                  setotherDetails({
+                                    ...otherDetails,
+                                    countryRegion: e.target.value,
+                                  })
+                                }
+                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Country/Region</option>
+                                <option value="US - United States">
+                                  US - United States
+                                </option>
+                                <option value="CA - Canada">CA - Canada</option>
+                                <option value="GB - United Kingdom">
+                                  GB - United Kingdom
+                                </option>
+                                <option value="AU - Australia">
+                                  AU - Australia
+                                </option>
+                                <option value="IN - India">IN - India</option>
+                                <option value="CN - China">CN - China</option>
+                                <option value="JP - Japan">JP - Japan</option>
+                                <option value="DE - Germany">
+                                  DE - Germany
+                                </option>
+                                <option value="FR - France">FR - France</option>
+                                <option value="IT - Italy">IT - Italy</option>
+                                <option value="ES - Spain">ES - Spain</option>
+                                <option value="BR - Brazil">BR - Brazil</option>
+                                <option value="MX - Mexico">MX - Mexico</option>
+                                <option value="ZA - South Africa">
+                                  ZA - South Africa
+                                </option>
+                                <option value="RU - Russia">RU - Russia</option>
+                                <option value="KR - South Korea">
+                                  KR - South Korea
+                                </option>
+                                <option value="AR - Argentina">
+                                  AR - Argentina
+                                </option>
+                                <option value="NG - Nigeria">
+                                  NG - Nigeria
+                                </option>
+                                <option value="EG - Egypt">EG - Egypt</option>
+                                <option value="SE - Sweden">SE - Sweden</option>
+                                <option value="NO - Norway">NO - Norway</option>
+                                <option value="FI - Finland">
+                                  FI - Finland
+                                </option>
+                                <option value="PL - Poland">PL - Poland</option>
+                                <option value="GR - Greece">GR - Greece</option>
+                                <option value="TR - Turkey">TR - Turkey</option>
+                                <option value="PH - Philippines">
+                                  PH - Philippines
+                                </option>
+                                <option value="TH - Thailand">
+                                  TH - Thailand
+                                </option>
+                                <option value="SG - Singapore">
+                                  SG - Singapore
+                                </option>
+                                <option value="HK - Hong Kong">
+                                  HK - Hong Kong
+                                </option>
+                                <option value="MY - Malaysia">
+                                  MY - Malaysia
+                                </option>
+                                <option value="KR - South Korea">
+                                  KR - South Korea
+                                </option>
+                                <option value="CH - Switzerland">
+                                  CH - Switzerland
+                                </option>
+                                <option value="BE - Belgium">
+                                  BE - Belgium
+                                </option>
+                                <option value="NL - Netherlands">
+                                  NL - Netherlands
+                                </option>
+                                <option value="PL - Poland">PL - Poland</option>
+                                <option value="UA - Ukraine">
+                                  UA - Ukraine
+                                </option>
+                                <option value="CZ - Czech Republic">
+                                  CZ - Czech Republic
+                                </option>
+                                <option value="SK - Slovakia">
+                                  SK - Slovakia
+                                </option>
+                                <option value="RO - Romania">
+                                  RO - Romania
+                                </option>
+                                <option value="BG - Bulgaria">
+                                  BG - Bulgaria
+                                </option>
+                                <option value="PT - Portugal">
+                                  PT - Portugal
+                                </option>
+                                <option value="AT - Austria">
+                                  AT - Austria
+                                </option>
+                                <option value="KE - Kenya">KE - Kenya</option>
+                                <option value="AE - United Arab Emirates">
+                                  AE - United Arab Emirates
+                                </option>
+                                <option value="SA - Saudi Arabia">
+                                  SA - Saudi Arabia
+                                </option>
+                                <option value="KW - Kuwait">KW - Kuwait</option>
+                                <option value="IQ - Iraq">IQ - Iraq</option>
+                                <option value="ID - Indonesia">
+                                  ID - Indonesia
+                                </option>
+                                <option value="VN - Vietnam">
+                                  VN - Vietnam
+                                </option>
+                                <option value="PE - Peru">PE - Peru</option>
+                                <option value="CO - Colombia">
+                                  CO - Colombia
+                                </option>
+                                <option value="CL - Chile">CL - Chile</option>
+                              </select> */}
+>>>>>>> b0af8074cf553b79256fea24433d14070af2368e:src/pages/PurchasePage/addVendor.tsx
                                 <Autocomplete
                                   disablePortal
                                   options={countryOptions}
@@ -4501,6 +4644,7 @@ const AddVendorForm = () => {
                                   State:
                                 </span>
                                 {/* <select
+<<<<<<< HEAD:src/pages/LedgerPage/addVendor.tsx
                                   value={formData.state}
                                   onChange={(e) =>
                                     setFormData({
@@ -4605,6 +4749,112 @@ const AddVendorForm = () => {
                                     TN - Tamil Nadu
                                   </option>
                                 </select> */}
+=======
+                                value={otherDetails.state}
+                                onChange={(e) =>
+                                  setotherDetails({
+                                    ...otherDetails,
+                                    state: e.target.value,
+                                  })
+                                }
+                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select State</option>
+                                <option value="AP - Andhra Pradesh">
+                                  AP - Andhra Pradesh
+                                </option>
+                                <option value="AR - Arunachal Pradesh">
+                                  AR - Arunachal Pradesh
+                                </option>
+                                <option value="AS - Assam">AS - Assam</option>
+                                <option value="BR - Bihar">BR - Bihar</option>
+                                <option value="CT - Chhattisgarh">
+                                  CT - Chhattisgarh
+                                </option>
+                                <option value="GA - Goa">GA - Goa</option>
+                                <option value="GJ - Gujarat">
+                                  GJ - Gujarat
+                                </option>
+                                <option value="HR - Haryana">
+                                  HR - Haryana
+                                </option>
+                                <option value="HP - Himachal Pradesh">
+                                  HP - Himachal Pradesh
+                                </option>
+                                <option value="JK - Jammu and Kashmir">
+                                  JK - Jammu and Kashmir
+                                </option>
+                                <option value="JH - Jharkhand">
+                                  JH - Jharkhand
+                                </option>
+                                <option value="KA - Karnataka">
+                                  KA - Karnataka
+                                </option>
+                                <option value="KL - Kerala">KL - Kerala</option>
+                                <option value="MP - Madhya Pradesh">
+                                  MP - Madhya Pradesh
+                                </option>
+                                <option value="MH - Maharashtra">
+                                  MH - Maharashtra
+                                </option>
+                                <option value="MN - Manipur">
+                                  MN - Manipur
+                                </option>
+                                <option value="ML - Meghalaya">
+                                  ML - Meghalaya
+                                </option>
+                                <option value="MZ - Mizoram">
+                                  MZ - Mizoram
+                                </option>
+                                <option value="NL - Nagaland">
+                                  NL - Nagaland
+                                </option>
+                                <option value="OD - Odisha">OD - Odisha</option>
+                                <option value="PB - Punjab">PB - Punjab</option>
+                                <option value="RJ - Rajasthan">
+                                  RJ - Rajasthan
+                                </option>
+                                <option value="SK - Sikkim">SK - Sikkim</option>
+                                <option value="TN - Tamil Nadu">
+                                  TN - Tamil Nadu
+                                </option>
+                                <option value="TS - Telangana">
+                                  TS - Telangana
+                                </option>
+                                <option value="UP - Uttar Pradesh">
+                                  UP - Uttar Pradesh
+                                </option>
+                                <option value="UK - Uttarakhand">
+                                  UK - Uttarakhand
+                                </option>
+                                <option value="WB - West Bengal">
+                                  WB - West Bengal
+                                </option>
+                                <option value="AN - Andaman and Nicobar Islands">
+                                  AN - Andaman and Nicobar Islands
+                                </option>
+                                <option value="CH - Chandigarh">
+                                  CH - Chandigarh
+                                </option>
+                                <option value="DN - Dadra and Nagar Haveli and Daman and Diu">
+                                  DN - Dadra and Nagar Haveli and Daman and Diu
+                                </option>
+                                <option value="DD - Lakshadweep">
+                                  DD - Lakshadweep
+                                </option>
+                                <option value="DL - Delhi">DL - Delhi</option>
+                                <option value="PY - Puducherry">
+                                  PY - Puducherry
+                                </option>
+                                <option value="LD - Ladakh">LD - Ladakh</option>
+                                <option value="LC - Lakshadweep">
+                                  LC - Lakshadweep
+                                </option>
+                                <option value="TN - Tamil Nadu">
+                                  TN - Tamil Nadu
+                                </option>
+                              </select> */}
+>>>>>>> b0af8074cf553b79256fea24433d14070af2368e:src/pages/PurchasePage/addVendor.tsx
                                 <Autocomplete
                                   disablePortal
                                   options={stateOptions}
@@ -4730,6 +4980,7 @@ const AddVendorForm = () => {
                             </div>
                             {/* Shipping Attention */}
                             {/* <div className="flex items-center gap-6">
+<<<<<<< HEAD:src/pages/LedgerPage/addVendor.tsx
                               <span className="min-w-32 text-base font-medium text-gray-700">
                                 Attention:
                               </span>
@@ -4745,6 +4996,23 @@ const AddVendorForm = () => {
                                 className="w-full border border-gray-300 rounded-md p-2 text-sm"
                               />
                             </div> */}
+=======
+                            <span className="min-w-32 text-base font-medium text-gray-700">
+                              Attention:
+                            </span>
+                            <input
+                              type="text"
+                              value={otherDetails.shippingAttention}
+                              onChange={(e) =>
+                                setotherDetails({
+                                  ...otherDetails,
+                                  shippingAttention: e.target.value,
+                                })
+                              }
+                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                            />
+                          </div> */}
+>>>>>>> b0af8074cf553b79256fea24433d14070af2368e:src/pages/PurchasePage/addVendor.tsx
                             {/* Shipping Country / Region */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
