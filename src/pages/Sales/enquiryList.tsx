@@ -65,6 +65,8 @@ function EnquiryLIst() {
     ]
   );
 
+
+
   const { data: EnquiryData, refetch } = useEnquiry(searchObj);
 
   // useEffect(() => {
@@ -180,6 +182,7 @@ function EnquiryLIst() {
         </div>
       ),
       width: "10%",
+    
     },
     {
       name: "Enquiry Type",
@@ -188,7 +191,7 @@ function EnquiryLIst() {
           <h6>{row.enquiryType}</h6>
         </div>
       ),
-      width: "5%",
+      width: "9%",
     },
     {
       name: "Loaction",
@@ -197,16 +200,16 @@ function EnquiryLIst() {
           <h6>{row.city}</h6>
         </div>
       ),
-      width: "10%",
+      width: "11%",
     },
     {
       name: "Level of Enquiry",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col p-2 rounded-md  ${row.levelOfEnquiry === "moderate"
-            ? "bg-yellow-200 text-white-100"
+          className={`flex gap-1 flex-col font-bold p-2 rounded-md  ${row.levelOfEnquiry === "moderate"
+            ? "bg-yellow-300 text-white-100"
             : row.levelOfEnquiry === "Not Urgent"
-              ? "bg-green-300 text-white-600"
+              ? "bg-green-400 text-white-600"
               : row.levelOfEnquiry === "urgent" && "bg-red-300 text-red-600"
             }`}
         >
@@ -231,7 +234,7 @@ function EnquiryLIst() {
           <h6>{moment(row.checkOut).format("YYYY-MM-DD")}</h6>
         </div>
       ),
-      width: "8%",
+      width: "10%",
     },
     {
       name: "Number of Rooms",
@@ -241,11 +244,11 @@ function EnquiryLIst() {
     {
       name: "Status",
       selector: (row: any) => (
-        <div className="flex gap-1">
-          {row?.status}
+        <div className="flex  gap-1">
+          <h6>{row?.status}</h6> 
         </div>
       ),
-      width: "16%",
+      width: "9%",
     },
     {
       name: "Edit",
@@ -255,7 +258,7 @@ function EnquiryLIst() {
           <div className="flex items-center gap-3">
             <Link
               to={`/addEnquiry/${row?._id}`}
-              className="p-[6px] text-black-400 text-lg flex items-center"
+              className=" text-black-400 text-lg flex items-center"
               onClick={() => handleUpdate(row._id, row.data)}
             >
               <FaEye />
@@ -265,11 +268,11 @@ function EnquiryLIst() {
     },
     {
       name: "Delete",
-      width: "6%",
+      width: "8%",
       selector: (row: any) =>
         canDelete && (
           <button
-            className="p-[6px] text-black-400 text-lg"
+            className=" text-black-400 text-lg"
             onClick={() => handleDelete(row._id)}
           >
             <RiDeleteBin6Line />
@@ -280,13 +283,13 @@ function EnquiryLIst() {
       name: "Convert to Enquiry",
       width: "10%",
       selector: (row: any) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center ">
           <Link
             to={`/add-sales-contact/${row?._id}`}
-            className="p-[6px] text-black-400 text-lg flex items-center"
+            className=" text-black-400 text-lg flex items-center"
           ></Link>
           <button
-            className="p-[6px] text-black-400 text-lg"
+            className=" text-black-400 text-lg"
             onClick={() => handleConvertToRfp(row._id)}
           >
             <SiConvertio />
@@ -428,7 +431,7 @@ function EnquiryLIst() {
 
         <ReactTable
           data={EnquiryData?.data}
-          columns={filterColumns}
+          columns={columns}
           loading={false}
           totalRows={EnquiryData?.total}
           onChangeRowsPerPage={setPageSize}
@@ -436,6 +439,7 @@ function EnquiryLIst() {
           page={pageIndex}
           rowsPerPageText={pageSize}
           isServerPropsDisabled={false}
+        
         />
       </div>
     </div>

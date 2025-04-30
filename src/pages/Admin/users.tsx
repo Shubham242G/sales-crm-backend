@@ -80,10 +80,10 @@ function Users() {
       width: "15%",
       selector: (row: any) =>
         (canView || canUpdate) && (
-          <div className="ml-2"><Link
+          <div className=""><Link
           to={`/add-users/${row._id}`}
           onClick={() => handleUpdate(row._id, row.data)}
-          className="text-black-500 text-lg p-[6px] hover:text-orange-500"
+          className="  text-black-500 text-lg  hover:text-orange-500"
         >
           <FaEye />
         </Link></div>
@@ -97,9 +97,9 @@ function Users() {
           <button
             type="button"
             onClick={() => handleDelete(row._id)}
-            className="p-[6px] text-black-400 text-lg"
+            className=" text-black-400 text-lg"
           >
-            <RiDeleteBin6Line className="ml-2"/>
+            <RiDeleteBin6Line className="hover:text-red-600"/>
           </button>
         ),
     },

@@ -170,6 +170,7 @@ function RfpList() {
       name: "Event Date",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
+        
           <h6>
             {row.eventDates?.length > 0
               ? new Date(row.eventDates[0].startDate).toDateString()
@@ -187,29 +188,32 @@ function RfpList() {
           {/* {row.fullName} */}
         </div>
       ),
-      width: "15%",
+      width: "12%",
     },
     {
       name: "Services",
       selector: (row: any) => (
-        <div className="flex justify-around ml-1">{row.serviceType}</div>
+        <div className="flex flex-wrap justify-around " >{row.serviceType.length >0 && row.serviceType.map((item: any, index: number) => <div key={index}
+        className="border border-b-purple-300 py-1  px-2 mt-1 bg-gray-200 rounded-md"> {item} </div>) }</div>
       ),
-      width: "10%",
+      width: "16%",
+
+      
     },
     {
       name: "Status",
       selector: (row: any) => (
         <div  className="flex  justify-around  "><h6 className="whitespace-normal break-words">{row.status}</h6></div>
       ),
-      width: "26%",
+      width: "20%",
     },
     {
       name: "Edit",
-      width: "8%",
+      width: "7%",
       selector: (row: any) => (
         <Link
           to={`/add-rfps/${row._id}`}
-          className="p-[6px] text-black-400 text-lg flex items-center"
+          className=" text-black-400 text-lg flex items-center  hover:text-orange-500"
           onClick={() => handleUpdate(row._id, row.data)}
         >
           <FaEye />
@@ -218,28 +222,28 @@ function RfpList() {
     },
     {
       name: "Delete",
-      width: "8%",
+      width: "7%",
       selector: (row: any) => (
         <Link
           to="/rfps"
-          className="p-[6px] text-black-400 text-lg"
+          className=" text-black-400 text-lg"
           onClick={() => handleDelete(row._id)}
         >
-          <RiDeleteBin6Line className="ml-3"/>
+          <RiDeleteBin6Line className="hover:text-red-600" />
         </Link>
       ),
     },
     {
       name: "Convert to Quotes from Vendor",
-      width: "10%",
+      width: "15%",
       selector: (row: any) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center ">
           <Link
             to={`/add-sales-contact/${row?._id}`}
-            className="p-[6px] text-black-400 text-lg flex items-center"
+            className="text-black-400 text-lg flex items-center"
           ></Link>
           <button
-            className="p-[6px] text-black-400 text-lg"
+            className="  text-black-400 text-lg"
             onClick={() => handleConvertRfptoQuotesFromVendor(row._id)}
           >
             <SiConvertio />

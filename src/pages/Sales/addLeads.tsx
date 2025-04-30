@@ -127,9 +127,9 @@ const AddNewLead = () => {
                   handleSelectChange("salutation", val.target.value)
                 }
                 value={formData.salutation}
-                className="border border-gray-300 bg-gray-50 rounded-md p-4 w-full text-gray-500 placeholder-gray-400"
+                className="border  border-gray-300 bg-gray-50 rounded-md p-4 w-full text-gray-500 placeholder-gray-400"
               >
-                <option value="" disabled hidden className="text-gray-400">
+                <option value="" disabled hidden className=" text-gray-400 ">
                   Salutation
                 </option>
                 {salutationOptions.map((option) => (

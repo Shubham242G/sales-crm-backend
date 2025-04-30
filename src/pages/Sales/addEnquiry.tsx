@@ -886,8 +886,8 @@ const AddEnquiryForm = () => {
 
               {/* Rate Required for (Occupancy) */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Rate Required for (Occupancy)</label>
-                <div className="flex space-x-4">
+                <label className="block text-sm font-medium text-gray-700 mt-1 mb-1">Rate Required for (Occupancy)</label>
+                <div className="flex space-x-4 mt-5">
                   <label className="flex items-center space-x-2">
                     <input
                       type="checkbox"
@@ -1173,7 +1173,7 @@ const AddEnquiryForm = () => {
           )}
 
           {/* Checkboxes to toggle visibility */}
-          <div className="flex gap-4 mb-4">
+          <div className="flex gap-4 ml-4 mb-4">
             <label className="inline-flex items-center">
               <input
                 type="checkbox"
@@ -1443,15 +1443,15 @@ const AddEnquiryForm = () => {
 
               <div className="overflow-x-auto">
                 <table className="min-w-full border-collapse">
-                  <thead className="bg-[#0B2F46] text-white">
+                  <thead className="bg-stone-200 text-gray-800">
                     <tr>
-                      <th className="px-4 py-2 text-left text-xs font-medium">Date</th>
+                      <th className="px-4 py-2 text-left text-xs font-bold">Date</th>
                       {isOutOfStation && <th className="px-4 py-2 text-left text-xs font-medium">From City</th>}
                       {isOutOfStation && <th className="px-4 py-2 text-left text-xs font-medium">To City</th>}
-                      <th className="px-4 py-2 text-left text-xs font-medium">No. of Vehicles</th>
-                      <th className="px-4 py-2 text-left text-xs font-medium">Type of Vehicle</th>
-                      <th className="px-4 py-2 text-left text-xs font-medium">Trip Type</th>
-                      <th className="px-4 py-2 text-left text-xs font-medium">Meal Plan</th>
+                      <th className="px-4 py-2 text-left text-xs font-bold">No. of Vehicles</th>
+                      <th className="px-4 py-2 text-left text-xs font-bold">Type of Vehicle</th>
+                      <th className="px-4 py-2 text-left text-xs font-bold">Trip Type</th>
+                      <th className="px-4 py-2 text-left text-xs font-bold">Meal Plan</th>
                     </tr>
                   </thead>
                   <tbody>

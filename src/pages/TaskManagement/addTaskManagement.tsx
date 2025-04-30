@@ -244,6 +244,8 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
 
 
 
+  console.log(canCreate, canUpdate , "check can create")
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -397,14 +399,14 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
               >
                 Cancel
               </button>
-              {((!id && canCreate) || (id && canUpdate)) && (
+              {
                 <button
                   type="submit"
                   className="px-4 py-2 bg-orange-500 text-white rounded-md"
                 >
                   Submit
                 </button>
-              )}
+              }
             </div>
           )}
         </form>

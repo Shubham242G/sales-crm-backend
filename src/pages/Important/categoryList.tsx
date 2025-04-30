@@ -76,7 +76,7 @@ function CategoryList() {
         <div className="flex items-center gap-3">
           <Link
             to={`/category2/${row?._id}`}
-            className="p-[6px] text-black-400 text-lg flex items-center"
+            className=" text-black-400 text-lg flex items-center"
           >
             <FaEye />
           </Link>
@@ -90,7 +90,7 @@ function CategoryList() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => handleDelete(row._id)}
-            className="p-[6px] text-black-400 text-lg flex items-center"
+            className=" text-black-400 text-lg flex items-center"
           >
             <RiDeleteBin6Line />
           </button>

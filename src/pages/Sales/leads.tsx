@@ -235,17 +235,17 @@ function Leads() {
     {
       name: "Contact Name",
       selector: (row: any) => (
-        <div className="flex gap-1 flex-col">
-          <h6>{row.firstName + " " + row.lastName}</h6>
+        <div className="flex gap-1 flex-col ">
+          <h6 className="ml-2">{row.firstName + " " + row.lastName}</h6>
         </div>
       ),
-      width: "18%",
+      width: "20%",
     },
-    {
-      name: "Account Manager",
-      selector: (row: any) => <div className="flex gap-1">{row.ownerName}</div>,
-      width: "13%",
-    },
+    // {
+    //   name: "Account Manager",
+    //   selector: (row: any) => <div className="flex gap-1">{row.ownerName}</div>,
+    //   width: "15%",
+    // },
     {
       name: "Mobile Number",
       selector: (row: any) => (
@@ -254,17 +254,17 @@ function Leads() {
           {row.phone}
         </div>
       ),
-      width: "15%",
+      width: "18%",
     },
     {
       name: "Company Name",
       selector: (row: any) => <div className="flex gap-1">{row.company}</div>,
-      width: "18%",
+      width: "22%",
     },
     {
       name: "Email",
       selector: (row: any) => row.email,
-      width: "20%",
+      width: "24%",
     },
     {
       name: "Edit",
@@ -273,7 +273,7 @@ function Leads() {
         <button
           type="button"
           onClick={() => navigate(`/add-leads/${row._id}`)}
-          className="text-black-500 text-lg p-[6px]"
+          className="text-black-500 text-lg "
         >
           <FaEye className="ml-1" />
         </button>
@@ -286,9 +286,9 @@ function Leads() {
         <button
           type="button"
           onClick={() => handleDelete(row._id)}
-          className="p-[6px] text-black-400 text-lg"
+          className=" text-black-400 text-lg"
         >
-          <RiDeleteBin6Line className="ml-3"/>
+          <RiDeleteBin6Line/>
         </button>
       ),
     },
@@ -436,12 +436,8 @@ function Leads() {
                 {isUploading ? "Importing..." : "Import"}
               </button>
 
-              {/* Advanced Search Button */}
-              <button 
-                onClick={handleModalOpen} 
-                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
-              >
-                Advanced Search
+              <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              AdvanceSearch
               </button>
 
               {/* Add New Lead Button */}

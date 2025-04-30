@@ -74,7 +74,7 @@ function QuotesForCustomer() {
           <h6>{row.quotesId || "N/A"}</h6>
         </div>
       ),
-      width: "12%",
+      width: "13%",
     },
     {
       name: "Customer Name",
@@ -83,23 +83,23 @@ function QuotesForCustomer() {
           <h6>{row.customerName || "N/A"}</h6>
         </div>
       ),
-      width: "15%",
+      width: "16%",
     },
     {
       name: "Service",
       selector: (row: IQuotesToCustomer) => (
-        <div className="flex justify-around">
+        <div className="flex justify-around gap-1 flex-col">
           {(row.serviceType || []).map((service: string, index: number) => (
             <div
               key={index}
-              className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
+              className="border border-b-purple-300 py-1 px-3 text-center  bg-gray-200 rounded-md"
             >
               {service}
             </div>
           ))}
         </div>
       ),
-      width: "25%",
+      width: "15%",
     },
     {
       name: "Amount",
@@ -108,7 +108,7 @@ function QuotesForCustomer() {
           <h6>{row.amount || "N/A"}</h6>
         </div>
       ),
-      width: "10%",
+      width: "12%",
     },
     {
       name: "Status",
@@ -117,12 +117,12 @@ function QuotesForCustomer() {
           <h6>{row.status || "N/A"}</h6>
         </div>
       ),
-      width: "10%",
+      width: "15%",
     },
     {
       name: "Total Amount",
       selector: (row: IQuotesToCustomer) => (
-        <div className="flex gap-1 flex-col">
+        <div className="flex gap-1  flex-col">
           <h6>{row.totalAmount || "N/A"}</h6>
         </div>
       ),
@@ -134,7 +134,7 @@ function QuotesForCustomer() {
       selector: (row: IQuotesToCustomer & { _id: string }) => (
         <button
           onClick={() => navigate(`/addQuotesToCustomer/${row._id}`)}
-          className="text-black-500 text-lg p-2 hover:bg-black-100 rounded-full transition duration-200"
+          className="text-black-500 text-lg  hover:bg-black-100 rounded-full transition duration-200 "
         >
           <FaEdit />
         </button>
@@ -142,11 +142,11 @@ function QuotesForCustomer() {
     },
     {
       name: "Delete",
-      width: "7%",
+      width: "10%",
       selector: (row: IQuotesToCustomer & { _id: string }) => (
         <button
           onClick={() => handleDelete(row._id)}
-          className="text-black-500 text-lg p-2 hover:bg-black-100 rounded-full transition duration-200"
+          className="text-black-500 text-lg  hover:bg-black-100 rounded-full transition duration-200"
         >
           <FaTrash />
         </button>

@@ -90,30 +90,30 @@ function CustomerSales() {
       name: "Customer Type",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.customerType}</h6>
+          <h6 >{row.customerType}</h6>
         </div>
       ),
-      width: "16%",
+      width: "13%",
     },
 
     {
       name: "Customer Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.companyName}</h6>
+          <h6 >{row.companyName}</h6>
         </div>
       ),
-      width: "16%",
+      width: "15%",
     },
 
     {
       name: "Display Name",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.displayName}</h6>
+          <h6 >{row.displayName}</h6>
         </div>
       ),
-      width: "16%",
+      width: "15%",
     },
 
     {
@@ -124,13 +124,13 @@ function CustomerSales() {
           {row.phoneNumber}
         </div>
       ),
-      width: "16%",
+      width: "17%",
     },
 
     {
       name: "Email",
-      selector: (row: any) => row.email,
-      width: "16%",
+      selector: (row: any) => (<h6>{row.email}</h6>),
+      width: "20%",
     },
     // {
     //   name: "Service",
@@ -168,7 +168,7 @@ function CustomerSales() {
           <div className="flex items-center gap-3">
             <Link
               to={`/add-customer/${row?._id}`}
-              className="p-[6px] text-black-400 text-lg flex items-center"
+              className=" text-black-400 text-lg flex items-center  hover:text-orange-500"
               onClick={() => handleUpdate(row._id, row.data)}
             >
               <FaEye />
@@ -185,7 +185,7 @@ function CustomerSales() {
             <button
               type="button"
               onClick={() => handleDelete(row._id)}
-              className="p-[6px] text-black-400 text-lg"
+              className=" text-black-400 text-lg "
               title="Delete Customer"
             >
               <RiDeleteBin6Line />

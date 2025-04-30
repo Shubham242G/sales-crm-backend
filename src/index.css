@@ -168,7 +168,49 @@ body{
   }
 }
 
+.rdt_TableCol_Sortable>div {
+  white-space: break-spaces !important;
+}
+
+.recharts-responsive-container{
+  margin-left: -220px !important;
+  margin-top: 40px !important;
+}
+
+.recharts-default-legend{
+  margin-left: 520px !important;
+  margin-top: 20px !important;
+}
+
+.rdt_TableHeadRow{
+
+justify-content: start !important;
+}
+
+
+.rdt_TableCol{
+ 
+justify-content: center !important;
+  
+}
+
+.rdt_TableCell{
+
+  justify-content: center !important;
+ 
+}
+
+.rdt_TableRow{
+  padding: 20px 0 !important;
+}
+
+
 .input {
   @apply border border-gray-300 rounded-lg p-2 w-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
+
+input::placeholder, select::placeholder,select, textarea::placeholder {
+  color: #666 !important;
+}
+
 

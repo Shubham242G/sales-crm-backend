@@ -61,7 +61,7 @@ function ConfirmedQuotesFromVendor() {
     {
       name: "Quotes Id",
       selector: (row: any) => (
-        <div className="flex gap-1 flex-col">
+        <div className="flex gap-1 flex-col ">
           <h6>{row.banquetEventOrders?.quotesId || "N/A"}</h6>
         </div>
       ),
@@ -79,25 +79,25 @@ function ConfirmedQuotesFromVendor() {
     {
       name: "RPFs Id",
       selector: (row: any) => (
-        <div className="flex gap-1 flex-col">
+        <div className="flex gap-1 flex-col ">
           <h6>{row.banquetEventOrders?.rfpId || "N/A"}</h6>
         </div>
       ),
-      width: "10%",
+      width: "13%",
     },
     {
       name: "Amount",
       selector: (row: any) => (
-        <div className="flex gap-1 flex-col">
+        <div className="flex gap-1 flex-col ">
           <h6>{row.banquetEventOrders?.amount || "N/A"}</h6>
         </div>
       ),
-      width: "10%",
+      width: "12%",
     },
     {
       name: "Date Received",
       selector: (row: any) => (
-        <div className="flex gap-1 flex-col">
+        <div className="flex gap-1 flex-col ">
           <h6>
             {row.banquetEventOrders?.receivedDate
               ? moment(row.banquetEventOrders.receivedDate).format("DD-MM-YYYY")
@@ -118,7 +118,7 @@ function ConfirmedQuotesFromVendor() {
               ? "bg-green-300 text-green-600"
               : row.banquetEventOrders?.status === "Rejected"
               ? "bg-red-200 text-red-600"
-              : "bg-gray-200 text-gray-600"
+              : "bg-gray-700 "
           }`}
         >
           <h6>{row.banquetEventOrders?.status || "N/A"}</h6>
@@ -133,9 +133,9 @@ function ConfirmedQuotesFromVendor() {
         <button
           type="button"
           onClick={() => navigate(`/add-ConfirmedQuotesFromVendor/${row._id}`)}
-          className="text-blue-500 text-lg p-2 hover:bg-blue-100 rounded-full transition duration-200"
+          className="text-lg  hover:bg-blue-100 rounded-full transition duration-200 "
         >
-          <FaEdit />
+           <FaEye className=" hover:text-orange-500"/>
         </button>
       ),
     },
@@ -146,9 +146,9 @@ function ConfirmedQuotesFromVendor() {
         <button
           type="button"
           onClick={() => handleDelete(row._id)}
-          className="text-red-500 text-lg p-2 hover:bg-red-100 rounded-full transition duration-200"
+          className=" text-lg  hover:bg-red-100 rounded-full transition duration-200"
         >
-          <FaTrash />
+         <RiDeleteBin6Line className="hover:text-red-500" />
         </button>
       ),
     },

@@ -178,7 +178,7 @@ function VendorList() {
       selector: (row: any) => (
         <div className="flex items-center gap-4">
           <Link to={`/add-vendor/${row?._id}`} title="View Vendor">
-            <FaEye className="text-lg text-gray-600 hover:text-orange-500 ml-4" />
+            <FaEye className="text-lg text-gray-600 hover:text-orange-500" />
           </Link>
         </div>
       ),
@@ -191,10 +191,10 @@ function VendorList() {
           <button
             type="button"
             onClick={() => handleDelete(row._id)}
-            className="text-lg  text-gray-600 hover:text-black ml-2"
+            className="text-lg  text-gray-600 hover:text-black "
             title="Delete Vendor"
           >
-            <RiDeleteBin6Line className="ml-2" />
+            <RiDeleteBin6Line className="hover:text-red-600"  />
           </button>
         </div>
       ),
@@ -263,7 +263,7 @@ function VendorList() {
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="rounded-sm w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  className="rounded-md w-full border px-4  border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-orange-500"
                   placeholder="Search by Location (State)..."
                 />
               </div>

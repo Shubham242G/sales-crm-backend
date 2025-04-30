@@ -108,7 +108,7 @@ function SearchBar() {
             </button>
             <button
               // onClick={handleSearch}
-              className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition"
+              className="bg-orange-500 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition"
             >
               Find venues
             </button>
@@ -437,18 +437,21 @@ function SearchBar() {
 
         {/* Results Section (Placeholder) */}
         <div>
-          <h2 className="text-lg font-semibold mb-4">Search Results</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <h3 className="text-xl font-bold">Sample Venue</h3>
-              <p className="text-gray-600">New York, NY</p>
-              <p className="text-gray-500">Type: Hotel | Capacity: 100</p>
-              <button className="mt-2 text-blue-500 hover:underline">
-                View Details
-              </button>
-            </div>
-          </div>
-        </div>
+  <h2 className="text-2xl font-bold mb-6 text-gray-800">Search Results</h2>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+    <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 border border-gray-100">
+      <div className="flex flex-col gap-2">
+        <h3 className="text-2xl font-semibold text-gray-800">Sample Venue</h3>
+        <p className="text-gray-600 text-sm">📍 New York, NY</p>
+        <p className="text-gray-500 text-sm">🏨 Type: Hotel | 👥 Capacity: 100</p>
+        <button className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition">
+          View Details
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
       </div>
     </div>
   );

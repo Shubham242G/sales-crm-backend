@@ -7,6 +7,7 @@ import { useUserById } from '@/services/user.service'; // Import the missing hoo
 import backgroundImage from "../../assets/background.jpg"
 import { getAuth } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
+import { Fullscreen } from 'lucide-react';
 
 // User roles
 type UserRole = 'sales' | 'operations' | 'admin';
@@ -223,6 +224,7 @@ const staticQuotes = [
   },
 ];  
 
+
 // Colors for chart sections
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -365,10 +367,10 @@ const Dashboard: React.FC = () => {
 
     if (chartType === 'Bar') {
       return (
-        <BarChart data={data}>
+        <BarChart  data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
-          <YAxis />
+          <XAxis dataKey="month"/>
+          <YAxis   width={500}/>
           <Tooltip />
           <Legend />
           {Object.entries(fields).map(([key, value]) =>
@@ -383,7 +385,7 @@ const Dashboard: React.FC = () => {
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
-          <YAxis />
+          <YAxis  width={500} />
           <Tooltip />
           <Legend />
           {userRole === 'sales' && (
@@ -506,10 +508,10 @@ const Dashboard: React.FC = () => {
 
         {/* Chart section */}
         <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-          <h2 className="text-xl font-semibold mb-4">{userRole.toUpperCase()} Dashboard</h2>
+          <h2 className="text-xl font-semibold mb-4">{userRole.toUpperCase()} DASHBOARD</h2>
 
           {/* Pick a chart type */}
-          <div className="flex gap-4 mb-4">
+          <div className="flex gap-4 mb-4 items-center">
             <label className="font-medium">Chart Type:</label>
             <select
               value={chartType}

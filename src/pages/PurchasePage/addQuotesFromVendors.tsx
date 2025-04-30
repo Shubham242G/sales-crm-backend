@@ -438,7 +438,7 @@ const AddQuotesFromVendors = () => {
                 value={formData.amount}
                 onChange={handleInputChange}
                 type="text"
-                className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 "
                 placeholder="Enter event details"
               />
             </div>
@@ -515,7 +515,7 @@ const AddQuotesFromVendors = () => {
             </div>
             <div className="overflow-x-auto">
               <table className="min-w-full border border-gray-300 rounded-lg">
-                <thead className="bg-gradient-to-r from-[#FEF3C7] via-[#FEFCE8] to-[#FEF3C7] text-gray-900">
+                <thead className="bg-stone-200 text-gray-900">
                   <tr>
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
                       S.No.

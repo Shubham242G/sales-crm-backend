@@ -71,7 +71,7 @@ function BanquetList() {
           <h6>{row.banquetName}</h6>
         </div>
       ),
-      width: "40%",
+     width: "40%",
     },
 
     {
@@ -89,12 +89,12 @@ function BanquetList() {
     },
     {
       name: "Edit",
-      width: "30%",
+      width: "20%",
       selector: (row: IBanquet) => (
         <div className="flex items-center gap-3">
           <Link
             to={`/banquet/${row?._id}`}
-            className="p-[6px] text-black-400 text-lg flex items-center"
+            className=" text-black-400 text-lg flex items-center"
           >
             <FaEye />
           </Link>
@@ -103,12 +103,12 @@ function BanquetList() {
     },
     {
       name: "Delete",
-      width: "30%",
+      width: "20%",
       selector: (row: IBanquet) => (
         <div className="flex items-center gap-3">
           <button
             onClick={() => handleDelete(row._id)}
-            className="p-[6px] text-black-400 text-lg flex items-center"
+            className=" text-black-400 text-lg flex items-center"
           >
             <RiDeleteBin6Line />
           </button>
@@ -179,7 +179,9 @@ function BanquetList() {
               )}
             </div>
           </div>
+
           {/* React Table */}
+         
           <ReactTable
             data={banquetData?.data}
             columns={filterColumns}
@@ -191,6 +193,7 @@ function BanquetList() {
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
           />
+         
         </div>
       </div>
     </>

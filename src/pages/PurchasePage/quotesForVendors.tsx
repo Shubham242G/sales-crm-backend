@@ -89,7 +89,7 @@ function CustomerLedger() {
 {
   name: "Service",
     selector: (row: any) => (
-      <div className="flex-row mt-2 mb-2 justify-around ">
+      <div className="flex-row  justify-around ">
         {row?.serviceType?.map((e: any, index: number) => (
           <div
             key={index}
@@ -136,15 +136,15 @@ function CustomerLedger() {
         <div className="flex items-center gap-2">
           <Link
             to={`/addQuotesFromVendors/${row._id}`}
-            className="p-[6px] text-black-400 text-lg"
+            className=" p-[3px] text-black-400 text-lg  hover:text-orange-500"
           >
             <FaEye />
           </Link>
           <button
-            className="p-[6px] text-black-400 text-lg"
+            className=" text-black-400 text-lg "
             onClick={() => handleDelete(row._id)}
           >
-            <RiDeleteBin6Line />
+            <RiDeleteBin6Line className="hover:text-red-500" />
           </button>
         </div>
       ),
@@ -157,7 +157,7 @@ function CustomerLedger() {
           <button
             type="button"
             onClick={() => handleConvertToCustomerQuote(row._id)}
-            className="text-lg text-black-400 hover:text-black-700 ml-7"
+            className="text-lg text-black-400 hover:text-black-700 "
             title="Convert to Customer Quote"
           >
             <SiConvertio />
@@ -178,7 +178,7 @@ return (
           <div className="w-full">
             <input
               type="search"
-              className="rounded-sm w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+              className="rounded-md w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
               placeholder="Search..."
             />
           </div>

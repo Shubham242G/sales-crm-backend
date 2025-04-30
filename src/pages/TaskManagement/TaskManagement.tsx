@@ -179,13 +179,13 @@ function TaskManagement() {
           <h6>{row.assignedToName ?? "NA"}</h6>
         </div>
       ),
-      width: "18%",
+      width: "25%",
     },
-    {
-      name: "Contact Owner",
-      selector: (row: any) => <div className="flex gap-1">{row.ownerName}</div>,
-      width: "12%",
-    },
+    // {
+    //   name: "Contact Owner",
+    //   selector: (row: any) => <div className="flex gap-1">{row.ownerName}</div>,
+    //   width: "12%",
+    // },
     {
       name: "Department",
       selector: (row: any) => (
@@ -194,61 +194,61 @@ function TaskManagement() {
           {row.department}
         </div>
       ),
-      width: "15%",
+      width: "20%",
     },
     {
       name: "Task Type",
       selector: (row: any) => <div className="flex gap-1">{row.taskType}</div>,
-      width: "18%",
+      width: "20%",
     },
     {
       name: "Task Title",
       selector: (row: any) => row.taskTitle,
-      width: "15%",
+      width: "20%",
     },
 
     {
       name: "Reassign",
-      width: "10%",
+      width: "15%",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => navigate(`/add-TaskManagement/${row._id}`)}
-          className="text-blue-500 text-lg p-[6px]"
+          className=" font-bold text-lg rounded-md "
         >
-          Reassign
+        🔁
         </button>
       ),
     },
 
-    {
-      name: "Edit",
-      width: "5%",
-      selector: (row: any) =>
-        (canView || canUpdate) && (
-          <Link
-            to={`/add-TaskManagement/${row._id}`}
-            onClick={() => handleUpdate(row._id, row.data)}
-            className="text-black-500 text-lg p-[6px]"
-          >
-            <FaEye />
-          </Link>
-        ),
-    },
-    {
-      name: "Delete",
-      width: "8%",
-      selector: (row: any) =>
-        canDelete && (
-          <button
-            type="button"
-            onClick={() => handleDelete(row._id)}
-            className="p-[6px] text-black-400 text-lg"
-          >
-            <RiDeleteBin6Line />
-          </button>
-        ),
-    },
+    // {
+    //   name: "Edit",
+    //   width: "5%",
+    //   selector: (row: any) =>
+    //     (canView || canUpdate) && (
+    //       <Link
+    //         to={`/add-TaskManagement/${row._id}`}
+    //         onClick={() => handleUpdate(row._id, row.data)}
+    //         className="text-black-500 text-lg p-[6px]"
+    //       >
+    //         <FaEye />
+    //       </Link>
+    //     ),
+    // },
+    // {
+    //   name: "Delete",
+    //   width: "8%",
+    //   selector: (row: any) =>
+    //     canDelete && (
+    //       <button
+    //         type="button"
+    //         onClick={() => handleDelete(row._id)}
+    //         className="p-[6px] text-black-400 text-lg"
+    //       >
+    //         <RiDeleteBin6Line />
+    //       </button>
+    //     ),
+    // },
   ];
 
   const filterColumns = columns.filter((item) => {

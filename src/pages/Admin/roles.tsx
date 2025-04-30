@@ -3,7 +3,7 @@ import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { RiDeleteBin6Line, RiH6 } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 import { usedeleteRolesById, useRoles } from "@/services/roles.service";
@@ -46,27 +46,28 @@ function Roles() {
   const columns = [
     {
       name: "Name",
-      selector: (row: any) => row.name,
-      width: "12%",
+      selector: (row: any) =>(<h6>{ row.name}</h6>),
+      width: "25%",
     },
     {
       name: "Role",
-      selector: (row: any) => row.roleName,
-      width: "12%",
+      selector: (row: any) =>(<h6>{ row.roleName}</h6>),
+      width: "25%",
     },
+    
     {
       name: "Hierarchy",
-      selector: (row: any) => row.hierarchy || "N/A",
-      width: "14%",
+      selector: (row: any) => (row.hierarchy ? <h6>{row.hierarchy}</h6> : <h6>{"N/A"}</h6>),
+      width: "20%",
     },
     {
       name: "Edit",
-      width: "12%",
+      width: "15%",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => navigate(`/add-role/${row._id}`)}
-          className="text-black-500 text-lg p-[6px] hover:text-orange-500"
+          className="text-black-500 text-lg  hover:text-orange-500"
         >
           <FaEye  />
         </button>
@@ -74,14 +75,14 @@ function Roles() {
     },
     {
       name: "Delete",
-      width: "8%",
+      width: "15%",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => handleDelete(row._id)}
-          className="p-[6px] text-black-400 text-lg"
+          className=" text-black-400 text-lg"
         >
-          <RiDeleteBin6Line className="ml-1" />
+          <RiDeleteBin6Line className="hover:text-red-600"/>
         </button>
       ),
     },

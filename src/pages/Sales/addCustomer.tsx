@@ -516,12 +516,12 @@ const AddCustomer = () => {
       prev.map((person, i) =>
         i === index
           ? {
-              ...person,
-              communicationChannels: {
-                ...person.communicationChannels,
-                [channel]: value,
-              },
-            }
+            ...person,
+            communicationChannels: {
+              ...person.communicationChannels,
+              [channel]: value,
+            },
+          }
           : person
       )
     );
@@ -854,7 +854,7 @@ const AddCustomer = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, salutation: e.target.value })
                       }
-                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                      className="w-full border border-gray-300 rounded-md p-2 text-gray-400 text-sm"
                     >
                       <option value="">Salutation</option>
                       <option value="Mr.">Mr.</option>
@@ -913,7 +913,7 @@ const AddCustomer = () => {
                         })
                       }
                       placeholder="Enter company name"
-                      className="w-full border border-gray-300 rounded-md p-2 text-sm mt-1"
+                      className="w-full border border-gray-300 rounded-md p-2 pl-3 text-sm mt-1"
                     />
                   </div>
                 </div>
@@ -934,7 +934,7 @@ const AddCustomer = () => {
                           displayName: e.target.value,
                         })
                       }
-                      className="w-full border border-gray-300 rounded-md p-2 text-sm" /* Changed to w-full */
+                      className="w-full border border-gray-300 rounded-md p-2 text-gray-400 text-sm" /* Changed to w-full */
                     >
                       <option value="">Select Display Name</option>
                       <option value="company">Company Name</option>
@@ -949,7 +949,7 @@ const AddCustomer = () => {
                     Email Address:
                   </span>
                   <div className="flex-1 relative">
-                    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                    {/* <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                       <svg
                         className="h-5 w-5 text-gray-400"
                         fill="none"
@@ -961,7 +961,7 @@ const AddCustomer = () => {
                       >
                         <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                    </div>
+                    </div> */}
                     <div className="w-96">
                       <input
                         type="email"
@@ -972,9 +972,8 @@ const AddCustomer = () => {
                         }}
                         onBlur={(e) => validateEmail(e.target.value)}
                         placeholder="Enter email address"
-                        className={`w-full border ${
-                          !isEmailValid ? "border-red-500" : "border-gray-300"
-                        } rounded-md p-2 pl-10 text-sm`}
+                        className={`w-full border ${!isEmailValid ? "border-red-500" : "border-gray-300"
+                          } rounded-md p-2 pl-3 text-sm`}
                       />
                       {!isEmailValid && (
                         <p className="text-red-500 text-sm mt-1">
@@ -1054,10 +1053,10 @@ const AddCustomer = () => {
 
                 {/* Communication Channels */}
                 <div className="flex items-center gap-6 mt-4">
-                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
+                  <span className="w-[200px] text-base font-medium text-gray-700 mt-2">
                     Communication Channels:
                   </span>
-                  <div className="flex gap-6">
+                  <div className="flex gap-6 mt-2">
                     <label className="flex items-center space-x-2">
                       <input
                         type="checkbox"
@@ -1102,11 +1101,10 @@ const AddCustomer = () => {
                             type="button"
                             key={tab}
                             onClick={() => setActiveTab(tab as any)}
-                            className={`pb-4 px-1 border-b-2 font-medium text-sm ${
-                              activeTab === tab
+                            className={`pb-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab
                                 ? "border-orange-500 text-orange-600"
                                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                            }`}
+                              }`}
                           >
                             {tab}
                           </button>
@@ -1143,17 +1141,21 @@ const AddCustomer = () => {
                                 }}
                                 renderInput={(params) => (
                                   <TextField
+
                                     {...params}
                                     label="Select GST Treatment"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "40px" },
+                                      style: { height: "36px" ,},
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
                                         height: "40px",
+                                        
                                       },
                                       "& .MuiInputLabel-root": {
+                                        fontSize: "14px",
+                                        marginTop: "-2px",
                                         transform:
                                           "translate(14px, 10px) scale(1)",
                                         "&.MuiInputLabel-shrink": {
@@ -1165,6 +1167,8 @@ const AddCustomer = () => {
                                         transform:
                                           "translate(14px, -9px) scale(0.75)",
                                       },
+                                     
+                                      
                                     }}
                                   />
                                 )}
@@ -1246,13 +1250,15 @@ const AddCustomer = () => {
                                     label="Select State"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "40px" },
+                                      style: { height: "36px" },
+                                      
                                     }}
                                     sx={{
-                                      "& .MuiInputBase-root": {
-                                        height: "40px",
-                                      },
+                                 
                                       "& .MuiInputLabel-root": {
+                                        fontSize: "14px",
+                                        marginTop: "-2px",
+                                    
                                         transform:
                                           "translate(14px, 10px) scale(1)",
                                         "&.MuiInputLabel-shrink": {
@@ -1295,7 +1301,7 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Enter PAN Number"
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 mt-1"
+                                className="w-full  border border-gray-300 rounded-md p-2 text-[14px] leading-14px focus:outline-none focus:ring-2 focus:ring-blue-400 mt-1"
                               />
                             </div>
                           </div>
@@ -1440,6 +1446,8 @@ const AddCustomer = () => {
                                           height: "40px",
                                         },
                                         "& .MuiInputLabel-root": {
+                                          fontSize: "14px",
+                                          marginTop: "-2px",
                                           transform:
                                             "translate(14px, 10px) scale(1)",
                                           "&.MuiInputLabel-shrink": {

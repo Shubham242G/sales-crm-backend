@@ -27,7 +27,7 @@ function ConfirmedQuotestoCustomer() {
           <h6>{row.quotesId}</h6>
         </div>
       ),
-      width: "10%",
+      width: "12%",
     },
     {
       name: "Vendor Name",
@@ -36,7 +36,7 @@ function ConfirmedQuotestoCustomer() {
           <h6>{row.name}</h6>
         </div>
       ),
-      width: "10%",
+      width: "13%",
     },
     {
       name: "RPFs Id",
@@ -51,11 +51,11 @@ function ConfirmedQuotestoCustomer() {
       name: "Service",
       selector: (row: any) => (
         <>
-          <div className="flex justify-around">
+          <div className="flex flex-wrap justify-around">
             {row.service.map((e: any, index: number) => (
               <div
                 key={index}
-                className="border border-b-purple-300 py-1 px-3 bg-gray-200 rounded-md"
+                className="border border-b-purple-300 py-1 px-2 mt-1 bg-gray-200 rounded-md"
               >
                 {e.name}
               </div>
@@ -63,7 +63,7 @@ function ConfirmedQuotestoCustomer() {
           </div>
         </>
       ),
-      width: "25%",
+      width: "16%",
     },
     {
       name: "Amount",
@@ -81,7 +81,7 @@ function ConfirmedQuotestoCustomer() {
           <h6>{row.submissionDate}</h6>
         </div>
       ),
-      width: "10%",
+      width: "14%",
     },
     {
       name: "Status",
@@ -89,10 +89,10 @@ function ConfirmedQuotestoCustomer() {
         <div
           className={`flex gap-1 flex-col p-2 rounded-md text-white ${
             row.status === "Pending"
-              ? "bg-yellow-200 text-yellow-500"
+              ? "bg-yellow-300 text-yellow-900"
               : row.status === "Reviewed"
-              ? "bg-green-300 text-green-600"
-              : "bg-red-200 text-red-600"
+              ? "bg-green-500 text-green-600"
+              : "bg-red-500 text-white-100"
           }`}
         >
           <h6>{row.status}</h6>
@@ -240,7 +240,7 @@ function ConfirmedQuotestoCustomer() {
               <div className="w-full">
                 <input
                   type="search"
-                  className="rounded-sm w-full border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  className="rounded-md w-full border px-4 border-gray-300 py-2   text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                   placeholder="Search..."
                 />
               </div>

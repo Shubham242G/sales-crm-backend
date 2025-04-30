@@ -459,7 +459,7 @@ const AddConfirmedQuotesFromVendor = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-semibold font-semibold text-black mb-2">
+              <label className="block text-sm  font-semibold text-black mb-2">
                 RFP Id
               </label>
               <input

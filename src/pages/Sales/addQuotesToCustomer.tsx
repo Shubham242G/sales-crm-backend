@@ -112,7 +112,7 @@ const AddQuotesToCustomerForm = () => {
         border: '1px solid #e5e7eb !important',
         boxShadow: '0 !important',
         color:"#000",
-        padding:'5px',
+        padding:'1px',
         fontFamily: "inter, sans-serif", 
         backgroundColor:'#fafafa',
         zindex:'9',
@@ -251,7 +251,7 @@ const AddQuotesToCustomerForm = () => {
                 formData.serviceType.includes(option.value)
               )}
               onChange={handleServiceTypeChange}
-              className="w-full bg-gray-50 mt-2 border border-gray-300 rounded-md"
+              className="w-full bg-gray-50 text-md border border-gray-300 rounded-md"
               classNamePrefix="select"
               placeholder="Select service types"
               styles={customStyles}
@@ -300,19 +300,19 @@ const AddQuotesToCustomerForm = () => {
               </div>
               <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-200 rounded-lg">
-                  <thead className="bg-[#0B2F46]">
+                  <thead className="bg-stone-300">
                     <tr>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
                         S.No.
                       </th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
                         Label
                       </th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
                         Charges
                       </th>
                       {formData.markupDetails.length > 1 && (
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
                           Actions
                         </th>
                       )}

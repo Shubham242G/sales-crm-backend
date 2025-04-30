@@ -5,14 +5,19 @@ import { defaultPageIndex, defaultPageSize, pageIndex, pageSize } from "@/common
 import { PaginationState } from "@tanstack/react-table";
 import { colors } from "@mui/material";
 import { spacing } from "react-select/dist/declarations/src/theme";
-import { WidthFull } from "@mui/icons-material";
+import { BorderRight, Margin, Padding, WidthFull } from "@mui/icons-material";
 import { max } from "lodash";
 import { s } from "vite/dist/node/types.d-aGj9QkWt";
+import { left } from "@popperjs/core";
 
 const customStyles: any = {
+
+ 
   table: {
     style: {
-      
+      whiteSpace: 'nowrap',       // ✅ Allows wrapping
+          wordBreak: 'break-word',    // ✅ Breaks long words
+          textAlign: 'center',   
       marginTop: "10px",
       borderTopLeftRadius: "8px",
       borderTopRightRadius: "8px",
@@ -22,7 +27,10 @@ const customStyles: any = {
         "0px 0px 0px 0px rgba(16, 24, 40, 0.06), 0px 1px 8px 0px rgba(16, 24, 40, 0.10)",
       overflow: "visible !important",
     },
+    
   },
+
+ 
 
   rows: {
     style: {
@@ -30,7 +38,6 @@ const customStyles: any = {
       // 	border: '1px solid #EAECF0',
       // },
       // borderRight: '1px solid #000',
-
       },
 
 
@@ -43,33 +50,35 @@ const customStyles: any = {
       borderBottomColor: "transparent",
       borderBottomStyle: "solid",
       background: "linear-gradient(to right, #fef3c7, #fefce8, #fef3c7)",
+      justifyContent:"space-between",
       // backgroundColor: "#0B2F46",
       // background: 'var(--Light Grayish Blue)',
-      
+
     },
   },
 
   headCells: {
     style: {
-      // fontSize: "15px",
-      // fontWeight: "600",
-      // // color: '#667085',
-      // paddingLeft: "25px",
-      // whiteSpace: "normal",
-      //  wordBreak: "break-word",
+     
       
-
-      border: "1px solid #e5e5e5",
+      borderRight: "1px solid #e5e5e5",
       // overflow: "unset",
          color: "grey-700",
          fontSize: '15px',
           fontWeight: '600',
-          paddingLeft: '25px',
+         
           overflow: 'unset',
-          whiteSpace: 'normal',       // ✅ Allows wrapping
+          whiteSpace: 'nowrap',       // ✅ Allows wrapping
           wordBreak: 'break-word',    // ✅ Breaks long words
-          textAlign: 'center',        // Optional: for centered text
+          textAlign: 'center',
+          
+         
+          paddingTop: '5px',
+                  // Optional: for centered text
         },
+
+
+
       },
   
 
@@ -77,15 +86,15 @@ const customStyles: any = {
   cells: {
     style: {
    
-      paddingLeft: "20px",
+     
       fontSize: "14px",
       fontWeight: "500",
       color: "#344054",
-      
+      Padding: "6px",
       h6: {   
         
-         whiteSpace: "normal",
-         wordBreak: "break-word",
+         whiteSpace: "normal",       // ✅ Allows wrapping
+        
           
    },
       // border: "1px solid #e5e5e5",
@@ -137,6 +146,7 @@ export const ReactTable = ({
 }) => {
 
   return (
+    
     <DataTable
       progressPending={loading}
       customStyles={customStyles}
@@ -151,6 +161,7 @@ export const ReactTable = ({
       onChangeRowsPerPage={onChangeRowsPerPage}
       paginationTotalRows={totalRows}
       responsive
-    />
+      />
+    
   )
 };

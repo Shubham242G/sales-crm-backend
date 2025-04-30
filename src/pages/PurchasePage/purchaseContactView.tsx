@@ -189,7 +189,7 @@ function PurchaseContactView() {
             className="p-[6px] text-black-400 text-lg"
             onClick={() => handleDelete(row._id)}
           >
-            <RiDeleteBin6Line />
+            <RiDeleteBin6Line className="hover:text-red-500" />
           </button>
         </div>
       ),
