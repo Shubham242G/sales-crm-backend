@@ -46,11 +46,7 @@ function EnquiryLIst() {
   const [showFilters, setShowFilters] = useState(false);
   const { mutateAsync: convertEnquiryToRfp } = useConvertEnquiryToRfp();
 
-  const searchObj = useMemo(() => ({
-    ...(query && { query }),
-    pageIndex: pageIndex - 1,
-    pageSize,
-  }), [pageIndex, pageSize, query]);
+ 
   const searchObj = useMemo(
     () => ({
       ...(query && { query }),

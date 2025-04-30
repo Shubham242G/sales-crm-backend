@@ -1460,22 +1460,26 @@ const AddVendorForm = () => {
                     </div>
 
                     {/* Display Name */}
-                    <div className="flex flex-col gap-[8px] lg:items-start md:items-center">
-                      <span className="text-[14px] font-medium text-black">
+                    <div className="flex flex-col gap-[8px] lg:items-start  md:items-center">
+                      <span className="text-[14px] font-medium text-black ">
                         Display Name:
                       </span>
                       <div className="w-full">
-                        <input
-                          type="text"
-                          value={vendor.displayName} 
+                        {" "}
+                        <select
+                          value={vendor.displayName}
                           onChange={(e) =>
                             setVendor({ ...vendor, displayName: e.target.value })
                           }
-                          placeholder="Enter Display Name"
-                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-2 text-sm"
-                        />
+                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-2 text-sm "
+                        >
+                          <option value="">Select Display Name</option>
+                          <option value="company">Company Name</option>
+                          <option value="contact">Contact Name</option>
+                        </select>
                       </div>
                     </div>
+
                     {/* Email Address */}
                     <div className="flex flex-col gap-[8px] lg:items-start md:items-center">
                       <span className="text-[14px] font-medium text-black ">
@@ -2076,31 +2080,31 @@ const AddVendorForm = () => {
 
 
                         {/* <div className="mb-4 mt-8">
-                            <label className="inline-flex items-center">
-                              <input
-                                type="checkbox"
-                                checked={isBanquetDetailsVisible}
-                                onChange={(e) =>
-                                  setIsBanquetDetailsVisible(e.target.checked)
-                                }
-                                className="form-checkbox"
-                              />
-                              <span className="ml-2">Do you have Banquet</span>
-                            </label>
-                          </div> */}
-
-                        <div className="mb-4 mt-8">
-                          {/* <label className="inline-flex items-center">
+                          <label className="inline-flex items-center">
                             <input
                               type="checkbox"
-                              checked={isRestaurantDetailsVisible}
+                              checked={isBanquetDetailsVisible}
                               onChange={(e) =>
-                                setIsRestaurantDetailsVisible(e.target.checked)
+                                setIsBanquetDetailsVisible(e.target.checked)
                               }
                               className="form-checkbox"
                             />
-                            <span className="ml-2">Do you have Restaurant</span>
-                          </label> */}
+                            <span className="ml-2">Do you have Banquet</span>
+                          </label>
+                        </div> */}
+
+                        <div className="mb-4 mt-8">
+                          {/* <label className="inline-flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={isRestaurantDetailsVisible}
+                            onChange={(e) =>
+                              setIsRestaurantDetailsVisible(e.target.checked)
+                            }
+                            className="form-checkbox"
+                          />
+                          <span className="ml-2">Do you have Restaurant</span>
+                        </label> */}
 
                           {isRestaurantDetailsVisible && (
                             <div className="border rounded-lg mt-8 p-6 shadow">
@@ -2293,22 +2297,22 @@ const AddVendorForm = () => {
                     )}
 
                     {/* {vendor.vendorType.includes("Banquet") && (
-                        <div>
-                          <div className="">
-                            <label className="inline-flex items-center">
-                              <input
-                                type="checkbox"
-                                checked={isBanquetDetailsVisible}
-                                onChange={(e) =>
-                                  setIsBanquetDetailsVisible(e.target.checked)
-                                }
-                                className="form-checkbox"
-                              />
-                              <span className="ml-2">Do you have Banquet</span>
-                            </label>
-                          </div>
+                      <div>
+                        <div className="">
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              checked={isBanquetDetailsVisible}
+                              onChange={(e) =>
+                                setIsBanquetDetailsVisible(e.target.checked)
+                              }
+                              className="form-checkbox"
+                            />
+                            <span className="ml-2">Do you have Banquet</span>
+                          </label>
                         </div>
-                      )} */}
+                      </div>
+                    )} */}
 
                     <div>
                       <label className="inline-flex items-center">
@@ -3473,302 +3477,302 @@ const AddVendorForm = () => {
                           </div>
                           {/* Currency */}
                           {/* <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="text-base font-medium text-gray-700">
-                                Currency:
-                              </span>
-                              <div className="w-full ml-16">
-                                {" "}
-                                Set width for consistency 
-                                <select
-                                  value={otherDetails.currency}
-                                  onChange={(e) =>
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      currency: e.target.value,
-                                    })
-                                  }
-                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                >
-                                  <option value="">Select Currency</option>
-                                  <option value="INR - Indian Rupee">
-                                    INR - Indian Rupee
-                                  </option>
-                                  <option value="USD - United States Dollar">
-                                    USD - United States Dollar
-                                  </option>
-                                  <option value="EUR - Euro">EUR - Euro</option>
-                                  <option value="JPY - Japanese Yen">
-                                    JPY - Japanese Yen
-                                  </option>
-                                  <option value="GBP - British Pound Sterling">
-                                    GBP - British Pound Sterling
-                                  </option>
-                                  <option value="AUD - Australian Dollar">
-                                    AUD - Australian Dollar
-                                  </option>
-                                  <option value="CAD - Canadian Dollar">
-                                    CAD - Canadian Dollar
-                                  </option>
-                                  <option value="CHF - Swiss Franc">
-                                    CHF - Swiss Franc
-                                  </option>
-                                  <option value="CNY - Chinese Yuan">
-                                    CNY - Chinese Yuan
-                                  </option>
-                                  <option value="HKD - Hong Kong Dollar">
-                                    HKD - Hong Kong Dollar
-                                  </option>
-                                </select>
-                              </div>
+                          <div className="flex items-center gap-6">
+                            <span className="text-base font-medium text-gray-700">
+                              Currency:
+                            </span>
+                            <div className="w-full ml-16">
+                              {" "}
+                               Set width for consistency 
+                              <select
+                                value={otherDetails.currency}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    currency: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Currency</option>
+                                <option value="INR - Indian Rupee">
+                                  INR - Indian Rupee
+                                </option>
+                                <option value="USD - United States Dollar">
+                                  USD - United States Dollar
+                                </option>
+                                <option value="EUR - Euro">EUR - Euro</option>
+                                <option value="JPY - Japanese Yen">
+                                  JPY - Japanese Yen
+                                </option>
+                                <option value="GBP - British Pound Sterling">
+                                  GBP - British Pound Sterling
+                                </option>
+                                <option value="AUD - Australian Dollar">
+                                  AUD - Australian Dollar
+                                </option>
+                                <option value="CAD - Canadian Dollar">
+                                  CAD - Canadian Dollar
+                                </option>
+                                <option value="CHF - Swiss Franc">
+                                  CHF - Swiss Franc
+                                </option>
+                                <option value="CNY - Chinese Yuan">
+                                  CNY - Chinese Yuan
+                                </option>
+                                <option value="HKD - Hong Kong Dollar">
+                                  HKD - Hong Kong Dollar
+                                </option>
+                              </select>
                             </div>
-                          </div> */}
+                          </div>
+                        </div> */}
 
                           {/* Opening Balance */}
                           {/* <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="w-32 text-base font-medium text-gray-700">
-                                Opening Balance:
-                              </span>
-                              <div className="flex gap-4">
-                                
-                                <div className="w-48">
-                                  <Autocomplete
-                                    disablePortal
-                                    options={stateOptions}
-                                    value={
-                                      stateOptions.find(
-                                        (option) =>
-                                          option.value ===
-                                          otherDetails.openingBalanceState
-                                      ) || null
-                                    }
-                                    onChange={(event, newValue) => {
-                                      setOtherDetails({
-                                        ...otherDetails,
-                                        openingBalanceState:
-                                          newValue?.value || "",
-                                      });
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        label="Select State"
-                                        InputProps={{
-                                          ...params.InputProps,
-                                          style: { height: "40px" },
-                                        }}
-                                        sx={{
-                                          "& .MuiInputBase-root": {
-                                            height: "40px",
-                                          },
-                                          "& .MuiInputLabel-root": {
-                                            transform:
-                                              "translate(14px, 10px) scale(1)",
-                                            "&.MuiInputLabel-shrink": {
-                                              transform:
-                                                "translate(14px, -9px) scale(0.75)",
-                                            },
-                                          },
-                                          "& .MuiInputLabel-root.Mui-focused": {
+                          <div className="flex items-center gap-6">
+                            <span className="w-32 text-base font-medium text-gray-700">
+                              Opening Balance:
+                            </span>
+                            <div className="flex gap-4">
+                              
+                              <div className="w-48">
+                                <Autocomplete
+                                  disablePortal
+                                  options={stateOptions}
+                                  value={
+                                    stateOptions.find(
+                                      (option) =>
+                                        option.value ===
+                                        otherDetails.openingBalanceState
+                                    ) || null
+                                  }
+                                  onChange={(event, newValue) => {
+                                    setOtherDetails({
+                                      ...otherDetails,
+                                      openingBalanceState:
+                                        newValue?.value || "",
+                                    });
+                                  }}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      label="Select State"
+                                      InputProps={{
+                                        ...params.InputProps,
+                                        style: { height: "40px" },
+                                      }}
+                                      sx={{
+                                        "& .MuiInputBase-root": {
+                                          height: "40px",
+                                        },
+                                        "& .MuiInputLabel-root": {
+                                          transform:
+                                            "translate(14px, 10px) scale(1)",
+                                          "&.MuiInputLabel-shrink": {
                                             transform:
                                               "translate(14px, -9px) scale(0.75)",
                                           },
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                </div>
-
-                                
+                                        },
+                                        "& .MuiInputLabel-root.Mui-focused": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      }}
+                                    />
+                                  )}
+                                />
                               </div>
+
+                              
                             </div>
-                          </div> */}
+                          </div>
+                        </div> */}
 
                           {/* Credit Limit */}
                           {/* <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="w-32 text-base font-medium text-gray-700">
-                                Credit Limit:
-                              </span>
-                              <div className="w-full">
-                                <TextField
-                                  label="Credit Limit"
-                                  value={otherDetails.creditLimit}
-                                  onChange={(e) =>
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      creditLimit: e.target.value,
-                                    })
-                                  }
-                                  InputProps={{
-                                    startAdornment: (
-                                      <div
-                                        className="absolute left-0 pl-3 text-gray-700 bg-gray-50 border-r border-gray-300 flex items-center"
-                                        style={{
-                                          height: "100%",
-                                          fontWeight: "500",
-                                          minWidth: "50px",
-                                        }}
-                                      >
-                                        {currencyOptions
-                                          .find(
-                                            (option) =>
-                                              option.value ===
-                                              otherDetails.currency
-                                          )
-                                          ?.value.split(" ")[0] || ""}
-                                      </div>
-                                    ),
-                                    style: {
-                                      paddingLeft: "60px",
-                                      height: "40px",
-                                    },
-                                  }}
-                                  sx={{
-                                    "& .MuiInputBase-root": {
-                                      height: "40px",
-                                    },
-                                    "& .MuiInputLabel-root": {
-                                      transform: "translate(14px, 10px) scale(1)",
-                                      "&.MuiInputLabel-shrink": {
-                                        transform:
-                                          "translate(14px, -9px) scale(0.75)",
-                                      },
-                                    },
-                                    "& .MuiInputLabel-root.Mui-focused": {
+                          <div className="flex items-center gap-6">
+                            <span className="w-32 text-base font-medium text-gray-700">
+                              Credit Limit:
+                            </span>
+                            <div className="w-full">
+                              <TextField
+                                label="Credit Limit"
+                                value={otherDetails.creditLimit}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    creditLimit: e.target.value,
+                                  })
+                                }
+                                InputProps={{
+                                  startAdornment: (
+                                    <div
+                                      className="absolute left-0 pl-3 text-gray-700 bg-gray-50 border-r border-gray-300 flex items-center"
+                                      style={{
+                                        height: "100%",
+                                        fontWeight: "500",
+                                        minWidth: "50px",
+                                      }}
+                                    >
+                                      {currencyOptions
+                                        .find(
+                                          (option) =>
+                                            option.value ===
+                                            otherDetails.currency
+                                        )
+                                        ?.value.split(" ")[0] || ""}
+                                    </div>
+                                  ),
+                                  style: {
+                                    paddingLeft: "60px",
+                                    height: "40px",
+                                  },
+                                }}
+                                sx={{
+                                  "& .MuiInputBase-root": {
+                                    height: "40px",
+                                  },
+                                  "& .MuiInputLabel-root": {
+                                    transform: "translate(14px, 10px) scale(1)",
+                                    "&.MuiInputLabel-shrink": {
                                       transform:
                                         "translate(14px, -9px) scale(0.75)",
                                     },
-                                  }}
-                                  fullWidth
-                                />
-                              </div>
+                                  },
+                                  "& .MuiInputLabel-root.Mui-focused": {
+                                    transform:
+                                      "translate(14px, -9px) scale(0.75)",
+                                  },
+                                }}
+                                fullWidth
+                              />
                             </div>
-                          </div> */}
+                          </div>
+                        </div> */}
 
                           {/* Payment Terms */}
                           {/* <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="text-base font-medium text-gray-700">
-                                Payment Terms:
-                              </span>
-                              <div className="w-full ml-4">
-                                {" "}
-                                Set width for consistency 
-                                <select
-                                  value={otherDetails.paymentTerms}
-                                  onChange={(e) =>
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      paymentTerms: e.target.value,
-                                    })
-                                  }
-                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                >
-                                  <option value="">Select Payment Terms</option>
-                                  <option value="Due on Receipt">
-                                    Due on Receipt
-                                  </option>
-                                  <option value="End of Month (EOM)">
-                                    End of Month (EOM)
-                                  </option>
-                                  <option value="Cash in Advance (CIA)">
-                                    Cash in Advance (CIA)
-                                  </option>
-                                  <option value="Cash on Delivery (COD)">
-                                    Cash on Delivery (COD)
-                                  </option>
-                                  <option value="Partial Payment">
-                                    Partial Payment
-                                  </option>
-                                  <option value="Progressive Payment">
-                                    Progressive Payment
-                                  </option>
-                                </select>
-                              </div>
+                          <div className="flex items-center gap-6">
+                            <span className="text-base font-medium text-gray-700">
+                              Payment Terms:
+                            </span>
+                            <div className="w-full ml-4">
+                              {" "}
+                              Set width for consistency 
+                              <select
+                                value={otherDetails.paymentTerms}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    paymentTerms: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Payment Terms</option>
+                                <option value="Due on Receipt">
+                                  Due on Receipt
+                                </option>
+                                <option value="End of Month (EOM)">
+                                  End of Month (EOM)
+                                </option>
+                                <option value="Cash in Advance (CIA)">
+                                  Cash in Advance (CIA)
+                                </option>
+                                <option value="Cash on Delivery (COD)">
+                                  Cash on Delivery (COD)
+                                </option>
+                                <option value="Partial Payment">
+                                  Partial Payment
+                                </option>
+                                <option value="Progressive Payment">
+                                  Progressive Payment
+                                </option>
+                              </select>
                             </div>
-                          </div> */}
+                          </div>
+                        </div> */}
 
                           {/* TDS */}
                           {/* <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="text-base font-medium text-gray-700">
-                                TDS:
-                              </span>
-                              <div className="w-full ml-24">
-                                {" "}
-                                Set width for consistency
-                                <select
-                                  value={otherDetails.tds}
-                                  onChange={(e) =>
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      tds: e.target.value,
-                                    })
-                                  }
-                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                >
-                                  <option value="">Select Price List</option>
-                                  <option value="Basic SEO Package">
-                                    Basic SEO Package
-                                  </option>
-                                  <option value="Social Media Management">
-                                    Social Media Management
-                                  </option>
-                                  <option value="Pay-Per-Click (PPC) Campaign Setup">
-                                    Pay-Per-Click (PPC) Campaign Setup
-                                  </option>
-                                  <option value="Content Writing">
-                                    Content Writing
-                                  </option>
-                                  <option value="Website Audit">
-                                    Website Audit
-                                  </option>
-                                </select>
-                              </div>
+                          <div className="flex items-center gap-6">
+                            <span className="text-base font-medium text-gray-700">
+                              TDS:
+                            </span>
+                            <div className="w-full ml-24">
+                              {" "}
+                               Set width for consistency
+                              <select
+                                value={otherDetails.tds}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    tds: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Price List</option>
+                                <option value="Basic SEO Package">
+                                  Basic SEO Package
+                                </option>
+                                <option value="Social Media Management">
+                                  Social Media Management
+                                </option>
+                                <option value="Pay-Per-Click (PPC) Campaign Setup">
+                                  Pay-Per-Click (PPC) Campaign Setup
+                                </option>
+                                <option value="Content Writing">
+                                  Content Writing
+                                </option>
+                                <option value="Website Audit">
+                                  Website Audit
+                                </option>
+                              </select>
                             </div>
-                          </div> */}
+                          </div>
+                        </div> */}
 
                           {/* Price List */}
                           {/* <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="text-base font-medium text-gray-700">
-                                Price List:
-                              </span>
-                              <div className="w-full ml-16">
-                                {" "}
-                                Set width for consistency 
-                                <select
-                                  value={otherDetails.priceList}
-                                  onChange={(e) =>
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      priceList: e.target.value,
-                                    })
-                                  }
-                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                >
-                                  <option value="">Select Price List</option>
-                                  <option value="Basic SEO Package">
-                                    Basic SEO Package
-                                  </option>
-                                  <option value="Social Media Management">
-                                    Social Media Management
-                                  </option>
-                                  <option value="Pay-Per-Click (PPC) Campaign Setup">
-                                    Pay-Per-Click (PPC) Campaign Setup
-                                  </option>
-                                  <option value="Content Writing">
-                                    Content Writing
-                                  </option>
-                                  <option value="Website Audit">
-                                    Website Audit
-                                  </option>
-                                </select>
-                              </div>
+                          <div className="flex items-center gap-6">
+                            <span className="text-base font-medium text-gray-700">
+                              Price List:
+                            </span>
+                            <div className="w-full ml-16">
+                              {" "}
+                               Set width for consistency 
+                              <select
+                                value={otherDetails.priceList}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    priceList: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Price List</option>
+                                <option value="Basic SEO Package">
+                                  Basic SEO Package
+                                </option>
+                                <option value="Social Media Management">
+                                  Social Media Management
+                                </option>
+                                <option value="Pay-Per-Click (PPC) Campaign Setup">
+                                  Pay-Per-Click (PPC) Campaign Setup
+                                </option>
+                                <option value="Content Writing">
+                                  Content Writing
+                                </option>
+                                <option value="Website Audit">
+                                  Website Audit
+                                </option>
+                              </select>
                             </div>
-                          </div> */}
+                          </div>
+                        </div> */}
 
                           {/* Enable Portal */}
                           <div className="flex items-center gap-6 mt-4">
@@ -3796,37 +3800,37 @@ const AddVendorForm = () => {
                           </div>
                           {/* Portal Language */}
                           {/* <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="text-base font-medium text-gray-700">
-                                Portal Language:
-                              </span>
-                              <div className="w-full ml-2">
-                                {" "}
-                                Set width for consistency 
-                                <select
-                                  value={otherDetails.portalLanguage}
-                                  onChange={(e) =>
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      portalLanguage: e.target.value,
-                                    })
-                                  }
-                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                >
-                                  <option value="">Select Portal Language</option>
-                                  <option value="English (EN)">
-                                    English (EN)
-                                  </option>
-                                  <option value="Spanish (ES)">
-                                    Espanol (ES)
-                                  </option>
-                                  <option value="French (FR)">French (FR)</option>
-                                  <option value="German (DE)">German (DE)</option>
-                                  <option value="Hindi (HI)">Hindi (HI)</option>
-                                </select>
-                              </div>
+                          <div className="flex items-center gap-6">
+                            <span className="text-base font-medium text-gray-700">
+                              Portal Language:
+                            </span>
+                            <div className="w-full ml-2">
+                              {" "}
+                               Set width for consistency 
+                              <select
+                                value={otherDetails.portalLanguage}
+                                onChange={(e) =>
+                                  setOtherDetails({
+                                    ...otherDetails,
+                                    portalLanguage: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              >
+                                <option value="">Select Portal Language</option>
+                                <option value="English (EN)">
+                                  English (EN)
+                                </option>
+                                <option value="Spanish (ES)">
+                                  Espanol (ES)
+                                </option>
+                                <option value="French (FR)">French (FR)</option>
+                                <option value="German (DE)">German (DE)</option>
+                                <option value="Hindi (HI)">Hindi (HI)</option>
+                              </select>
                             </div>
-                          </div> */}
+                          </div>
+                        </div> */}
 
                           {/* Documents Upload */}
                           <div className="col-span-2 mt-4">
@@ -4199,41 +4203,41 @@ const AddVendorForm = () => {
                           )}
                           </div>
                           {/* <div>
-                            <div style={{ display: "flex", flexWrap: "wrap" }}>
-                              {otherDetails &&
-                                otherDetails.documents.length > 0 &&
-                                otherDetails.documents.map(
-                                  (image: string, index) => (
-                                    <img
-                                      key={index}
-                                      style={{
-                                        height: 100,
-                                        width: 100,
-                                        objectFit: "cover",
-                                        border: "1px solid #ddd",
-                                        borderRadius: "5px",
-                                        marginTop: "10px",
-                                      }}
-                                      src={
-                                        image?.includes("base64")
-                                          ? image
-                                          : generateFilePath(image)
-                                      }
-                                      alt={`Image Preview ${index + 1}`}
-                                    />
-                                  )
-                                )}
-                            </div>
-                            <input
-                              type="file"
-                              accept="image/csv/*"
-                              multiple
-                              onChange={(e) =>
-                                handleImageUpload(e, setUploadFiles)
-                              }
-                              style={{ marginTop: "10px", display: "block" }}
-                            />
-                          </div> */}
+                          <div style={{ display: "flex", flexWrap: "wrap" }}>
+                            {otherDetails &&
+                              otherDetails.documents.length > 0 &&
+                              otherDetails.documents.map(
+                                (image: string, index) => (
+                                  <img
+                                    key={index}
+                                    style={{
+                                      height: 100,
+                                      width: 100,
+                                      objectFit: "cover",
+                                      border: "1px solid #ddd",
+                                      borderRadius: "5px",
+                                      marginTop: "10px",
+                                    }}
+                                    src={
+                                      image?.includes("base64")
+                                        ? image
+                                        : generateFilePath(image)
+                                    }
+                                    alt={`Image Preview ${index + 1}`}
+                                  />
+                                )
+                              )}
+                          </div>
+                          <input
+                            type="file"
+                            accept="image/csv/*"
+                            multiple
+                            onChange={(e) =>
+                              handleImageUpload(e, setUploadFiles)
+                            }
+                            style={{ marginTop: "10px", display: "block" }}
+                          />
+                        </div> */}
                         </div>
                       )}
 
@@ -4246,23 +4250,6 @@ const AddVendorForm = () => {
                             </h2>
                             {/* Attention */}
                             {/* <div className="flex items-center gap-6">
-<<<<<<< HEAD:src/pages/LedgerPage/addVendor.tsx
-                              <span className=" min-w-32 text-base font-medium text-gray-700">
-                                Attention:
-                              </span>
-                              <input
-                                type="text"
-                                value={formData.attention}
-                                onChange={(e) =>
-                                  setFormData({
-                                    ...formData,
-                                    attention: e.target.value,
-                                  })
-                                }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                              />
-                            </div> */}
-=======
                             <span className=" min-w-32 text-base font-medium text-gray-700">
                               Attention:
                             </span>
@@ -4278,7 +4265,6 @@ const AddVendorForm = () => {
                               className="w-full border border-gray-300 rounded-md p-2 text-sm"
                             />
                           </div> */}
->>>>>>> b0af8074cf553b79256fea24433d14070af2368e:src/pages/PurchasePage/addVendor.tsx
                             {/* Country / Region */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
@@ -4286,131 +4272,6 @@ const AddVendorForm = () => {
                                   Country / Region:
                                 </span>
                                 {/* <select
-<<<<<<< HEAD:src/pages/LedgerPage/addVendor.tsx
-                                  value={formData.countryRegion}
-                                  onChange={(e) =>
-                                    setFormData({
-                                      ...formData,
-                                      countryRegion: e.target.value,
-                                    })
-                                  }
-                                  className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                                >
-                                  <option value="">Select Country/Region</option>
-                                  <option value="US - United States">
-                                    US - United States
-                                  </option>
-                                  <option value="CA - Canada">CA - Canada</option>
-                                  <option value="GB - United Kingdom">
-                                    GB - United Kingdom
-                                  </option>
-                                  <option value="AU - Australia">
-                                    AU - Australia
-                                  </option>
-                                  <option value="IN - India">IN - India</option>
-                                  <option value="CN - China">CN - China</option>
-                                  <option value="JP - Japan">JP - Japan</option>
-                                  <option value="DE - Germany">
-                                    DE - Germany
-                                  </option>
-                                  <option value="FR - France">FR - France</option>
-                                  <option value="IT - Italy">IT - Italy</option>
-                                  <option value="ES - Spain">ES - Spain</option>
-                                  <option value="BR - Brazil">BR - Brazil</option>
-                                  <option value="MX - Mexico">MX - Mexico</option>
-                                  <option value="ZA - South Africa">
-                                    ZA - South Africa
-                                  </option>
-                                  <option value="RU - Russia">RU - Russia</option>
-                                  <option value="KR - South Korea">
-                                    KR - South Korea
-                                  </option>
-                                  <option value="AR - Argentina">
-                                    AR - Argentina
-                                  </option>
-                                  <option value="NG - Nigeria">
-                                    NG - Nigeria
-                                  </option>
-                                  <option value="EG - Egypt">EG - Egypt</option>
-                                  <option value="SE - Sweden">SE - Sweden</option>
-                                  <option value="NO - Norway">NO - Norway</option>
-                                  <option value="FI - Finland">
-                                    FI - Finland
-                                  </option>
-                                  <option value="PL - Poland">PL - Poland</option>
-                                  <option value="GR - Greece">GR - Greece</option>
-                                  <option value="TR - Turkey">TR - Turkey</option>
-                                  <option value="PH - Philippines">
-                                    PH - Philippines
-                                  </option>
-                                  <option value="TH - Thailand">
-                                    TH - Thailand
-                                  </option>
-                                  <option value="SG - Singapore">
-                                    SG - Singapore
-                                  </option>
-                                  <option value="HK - Hong Kong">
-                                    HK - Hong Kong
-                                  </option>
-                                  <option value="MY - Malaysia">
-                                    MY - Malaysia
-                                  </option>
-                                  <option value="KR - South Korea">
-                                    KR - South Korea
-                                  </option>
-                                  <option value="CH - Switzerland">
-                                    CH - Switzerland
-                                  </option>
-                                  <option value="BE - Belgium">
-                                    BE - Belgium
-                                  </option>
-                                  <option value="NL - Netherlands">
-                                    NL - Netherlands
-                                  </option>
-                                  <option value="PL - Poland">PL - Poland</option>
-                                  <option value="UA - Ukraine">
-                                    UA - Ukraine
-                                  </option>
-                                  <option value="CZ - Czech Republic">
-                                    CZ - Czech Republic
-                                  </option>
-                                  <option value="SK - Slovakia">
-                                    SK - Slovakia
-                                  </option>
-                                  <option value="RO - Romania">
-                                    RO - Romania
-                                  </option>
-                                  <option value="BG - Bulgaria">
-                                    BG - Bulgaria
-                                  </option>
-                                  <option value="PT - Portugal">
-                                    PT - Portugal
-                                  </option>
-                                  <option value="AT - Austria">
-                                    AT - Austria
-                                  </option>
-                                  <option value="KE - Kenya">KE - Kenya</option>
-                                  <option value="AE - United Arab Emirates">
-                                    AE - United Arab Emirates
-                                  </option>
-                                  <option value="SA - Saudi Arabia">
-                                    SA - Saudi Arabia
-                                  </option>
-                                  <option value="KW - Kuwait">KW - Kuwait</option>
-                                  <option value="IQ - Iraq">IQ - Iraq</option>
-                                  <option value="ID - Indonesia">
-                                    ID - Indonesia
-                                  </option>
-                                  <option value="VN - Vietnam">
-                                    VN - Vietnam
-                                  </option>
-                                  <option value="PE - Peru">PE - Peru</option>
-                                  <option value="CO - Colombia">
-                                    CO - Colombia
-                                  </option>
-                                  <option value="CL - Chile">CL - Chile</option>
-                                </select> */}
-=======
                                 value={otherDetails.countryRegion}
                                 onChange={(e) =>
                                   setotherDetails({
@@ -4534,7 +4395,6 @@ const AddVendorForm = () => {
                                 </option>
                                 <option value="CL - Chile">CL - Chile</option>
                               </select> */}
->>>>>>> b0af8074cf553b79256fea24433d14070af2368e:src/pages/PurchasePage/addVendor.tsx
                                 <Autocomplete
                                   disablePortal
                                   options={countryOptions}
@@ -4644,112 +4504,6 @@ const AddVendorForm = () => {
                                   State:
                                 </span>
                                 {/* <select
-<<<<<<< HEAD:src/pages/LedgerPage/addVendor.tsx
-                                  value={formData.state}
-                                  onChange={(e) =>
-                                    setFormData({
-                                      ...formData,
-                                      state: e.target.value,
-                                    })
-                                  }
-                                  className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                                >
-                                  <option value="">Select State</option>
-                                  <option value="AP - Andhra Pradesh">
-                                    AP - Andhra Pradesh
-                                  </option>
-                                  <option value="AR - Arunachal Pradesh">
-                                    AR - Arunachal Pradesh
-                                  </option>
-                                  <option value="AS - Assam">AS - Assam</option>
-                                  <option value="BR - Bihar">BR - Bihar</option>
-                                  <option value="CT - Chhattisgarh">
-                                    CT - Chhattisgarh
-                                  </option>
-                                  <option value="GA - Goa">GA - Goa</option>
-                                  <option value="GJ - Gujarat">
-                                    GJ - Gujarat
-                                  </option>
-                                  <option value="HR - Haryana">
-                                    HR - Haryana
-                                  </option>
-                                  <option value="HP - Himachal Pradesh">
-                                    HP - Himachal Pradesh
-                                  </option>
-                                  <option value="JK - Jammu and Kashmir">
-                                    JK - Jammu and Kashmir
-                                  </option>
-                                  <option value="JH - Jharkhand">
-                                    JH - Jharkhand
-                                  </option>
-                                  <option value="KA - Karnataka">
-                                    KA - Karnataka
-                                  </option>
-                                  <option value="KL - Kerala">KL - Kerala</option>
-                                  <option value="MP - Madhya Pradesh">
-                                    MP - Madhya Pradesh
-                                  </option>
-                                  <option value="MH - Maharashtra">
-                                    MH - Maharashtra
-                                  </option>
-                                  <option value="MN - Manipur">
-                                    MN - Manipur
-                                  </option>
-                                  <option value="ML - Meghalaya">
-                                    ML - Meghalaya
-                                  </option>
-                                  <option value="MZ - Mizoram">
-                                    MZ - Mizoram
-                                  </option>
-                                  <option value="NL - Nagaland">
-                                    NL - Nagaland
-                                  </option>
-                                  <option value="OD - Odisha">OD - Odisha</option>
-                                  <option value="PB - Punjab">PB - Punjab</option>
-                                  <option value="RJ - Rajasthan">
-                                    RJ - Rajasthan
-                                  </option>
-                                  <option value="SK - Sikkim">SK - Sikkim</option>
-                                  <option value="TN - Tamil Nadu">
-                                    TN - Tamil Nadu
-                                  </option>
-                                  <option value="TS - Telangana">
-                                    TS - Telangana
-                                  </option>
-                                  <option value="UP - Uttar Pradesh">
-                                    UP - Uttar Pradesh
-                                  </option>
-                                  <option value="UK - Uttarakhand">
-                                    UK - Uttarakhand
-                                  </option>
-                                  <option value="WB - West Bengal">
-                                    WB - West Bengal
-                                  </option>
-                                  <option value="AN - Andaman and Nicobar Islands">
-                                    AN - Andaman and Nicobar Islands
-                                  </option>
-                                  <option value="CH - Chandigarh">
-                                    CH - Chandigarh
-                                  </option>
-                                  <option value="DN - Dadra and Nagar Haveli and Daman and Diu">
-                                    DN - Dadra and Nagar Haveli and Daman and Diu
-                                  </option>
-                                  <option value="DD - Lakshadweep">
-                                    DD - Lakshadweep
-                                  </option>
-                                  <option value="DL - Delhi">DL - Delhi</option>
-                                  <option value="PY - Puducherry">
-                                    PY - Puducherry
-                                  </option>
-                                  <option value="LD - Ladakh">LD - Ladakh</option>
-                                  <option value="LC - Lakshadweep">
-                                    LC - Lakshadweep
-                                  </option>
-                                  <option value="TN - Tamil Nadu">
-                                    TN - Tamil Nadu
-                                  </option>
-                                </select> */}
-=======
                                 value={otherDetails.state}
                                 onChange={(e) =>
                                   setotherDetails({
@@ -4854,7 +4608,6 @@ const AddVendorForm = () => {
                                   TN - Tamil Nadu
                                 </option>
                               </select> */}
->>>>>>> b0af8074cf553b79256fea24433d14070af2368e:src/pages/PurchasePage/addVendor.tsx
                                 <Autocomplete
                                   disablePortal
                                   options={stateOptions}
@@ -4980,23 +4733,6 @@ const AddVendorForm = () => {
                             </div>
                             {/* Shipping Attention */}
                             {/* <div className="flex items-center gap-6">
-<<<<<<< HEAD:src/pages/LedgerPage/addVendor.tsx
-                              <span className="min-w-32 text-base font-medium text-gray-700">
-                                Attention:
-                              </span>
-                              <input
-                                type="text"
-                                value={formData.shippingAttention}
-                                onChange={(e) =>
-                                  setFormData({
-                                    ...formData,
-                                    shippingAttention: e.target.value,
-                                  })
-                                }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                              />
-                            </div> */}
-=======
                             <span className="min-w-32 text-base font-medium text-gray-700">
                               Attention:
                             </span>
@@ -5012,7 +4748,6 @@ const AddVendorForm = () => {
                               className="w-full border border-gray-300 rounded-md p-2 text-sm"
                             />
                           </div> */}
->>>>>>> b0af8074cf553b79256fea24433d14070af2368e:src/pages/PurchasePage/addVendor.tsx
                             {/* Shipping Country / Region */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
