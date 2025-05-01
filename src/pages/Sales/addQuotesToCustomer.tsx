@@ -10,15 +10,15 @@ import Select from "react-select";
 
 interface IMarkupItem {
   label: string;
-  markupAmount: string;
+  markupAmount: number;
 }
 
 interface IQuotesToCustomer {
   quotesId: string;
   customerName: string;
   serviceType: string[];
-  amount: string;
-  totalAmount: string;
+  amount: number;
+  totalAmount: number;
   markupDetails: IMarkupItem[];
 }
 
@@ -27,12 +27,12 @@ const AddQuotesToCustomerForm = () => {
     quotesId: "",
     customerName: "",
     serviceType: [],
-    amount: "",
-    totalAmount: "",
+    amount: 0,
+    totalAmount: 0,
     markupDetails: [
       {
         label: "",
-        markupAmount: "",
+        markupAmount: 0,
       },
     ],
   });
@@ -61,12 +61,12 @@ const AddQuotesToCustomerForm = () => {
         quotesId: data.quotesId || "",
         customerName: data.customerName || "",
         serviceType: Array.isArray(data.serviceType) ? data.serviceType : [],
-        amount: data.amount || "",
-        totalAmount: data.totalAmount || "",
+        amount: data.amount || 0,
+        totalAmount: data.totalAmount || 0,
         markupDetails:
           data?.markupDetails?.length > 0
             ? data?.markupDetails
-            : [{ label: "", markupAmount: "" }],
+            : [{ label: "", markupAmount: 0 }],
       });
     }
   }, [quotesToCustomerDataById]);
@@ -170,7 +170,7 @@ const AddQuotesToCustomerForm = () => {
   const handleAddMarkupRow = () => {
     setFormData((prev) => ({
       ...prev,
-      markupDetails: [...prev.markupDetails, { label: "", markupAmount: "" }],
+      markupDetails: [...prev.markupDetails, { label: "", markupAmount: 0}],
     }));
   };
 
@@ -378,7 +378,7 @@ const AddQuotesToCustomerForm = () => {
               <input
                 name="totalAmount"
                 value={formData.totalAmount}
-                type="text"
+                type="number"
                 className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
                 readOnly
               />

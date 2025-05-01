@@ -222,7 +222,7 @@ const staticQuotes = [
     text: "Opportunities don't happen, you create them.",
     author: "Chris Grosser"
   },
-];  
+];
 
 
 // Colors for chart sections
@@ -254,19 +254,19 @@ const Dashboard: React.FC = () => {
     admin: { totalRevenue: true, expenses: true, profit: true },
   });
   const [quote, setQuote] = useState<{ text: string; author: string } | null>(null);
-
+  const [userId, setUserId] = useState<string | null>(null);
   const [pageIndex, setPageIndex] = useState(1);
-    const [pageSize, setPageSize] = useState(100);
-    const [query, setQuery] = useState("");
-    const [userId, setUserId] = useState<string | null>(null);
-    const searchObj = useMemo(
-      () => ({
-        ...(query && { query }),
-        pageIndex: pageIndex - 1,
-        pageSize,
-      }),
-      [pageIndex, pageSize, query]
-    );
+  const [pageSize, setPageSize] = useState(100);
+  const [query, setQuery] = useState("");
+
+  const searchObj = useMemo(
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
   // Fetch dashboard data using the useDashboard hook
   const { data: dashboardData, isLoading } = useDashboard(searchObj);
 
@@ -299,7 +299,7 @@ const Dashboard: React.FC = () => {
 
     const interval = setInterval(checkDailyUpdate, 60000);
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, []);
 
   const getData = () => {
@@ -465,9 +465,9 @@ const Dashboard: React.FC = () => {
 
         {/* Thought of the Day Section */}
         <div className="bg-gradient-to-r from-blue-100 mt-10 via-white to-pink-100 p-10 rounded-2xl shadow-md mb-10 text-center" >
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-700 mb-6 ">
-        ✨Quote
-      </h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-700 mb-6 ">
+            ✨Quote
+          </h2>
           <div className="text-center flex flex-col justify-center items-center h-full px-10">
             {quote ? (
               <p className="text-2xl md:text-2xl font-semibold text-gray-800 mb-6">

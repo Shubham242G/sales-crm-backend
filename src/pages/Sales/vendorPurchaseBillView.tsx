@@ -1,13 +1,13 @@
 import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import { FaEye, FaFileDownload, FaFilter, FaFileExport, FaSync } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState, useMemo } from "react";
 import {
     useVendorPurchaseBills,
     useSyncVendorPurchaseBills,
     useGenerateVendorPurchaseBillPdf,
     downloadVendorPurchaseBillPdf,
-    usedeleteVendorPurchaseBillById
+    usedeleteVendorPurchaseBillById,
 } from "@/services/vendorPurchaseBill.service";
 import { toastSuccess, toastError } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
@@ -28,6 +28,8 @@ function VendorPurchaseBillView() {
     const [selectedStatus, setSelectedStatus] = useState("");
     const navigate = useNavigate()
 
+    const {id} = useParams<{ id: string }>()
+
     const filters = useMemo(() => ({
         ...(query && { query }),
         ...(selectedStatus && { status: selectedStatus }),
@@ -39,7 +41,6 @@ function VendorPurchaseBillView() {
 
     const syncBillsMutation = useSyncVendorPurchaseBills();
 
-    const { mutateAsync: generatePdfMutation } = useGenerateVendorPurchaseBillPdf();
 
     const { data: vendorBills, refetch, isLoading } = useVendorPurchaseBills(filters, false);
 
@@ -57,7 +58,7 @@ function VendorPurchaseBillView() {
     };
 
     const handleDownloadPDF = (billId: string) => {
-        downloadVendorPurchaseBillPdf(billId);
+        downloadVendorPurchaseBillPdf( billId );
     };
 
 

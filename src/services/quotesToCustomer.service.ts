@@ -14,13 +14,13 @@ export interface IQuotesToCustomer {
     quotesId: string;
     customerName: string;
     serviceType: [];
-    amount: string;
+    amount: number;
     status: string;
     markupDetails: {
       label: string;
       markupAmount: string;
     }[];
-    totalAmount: string;
+    totalAmount: number;
   }
 
 export const useQuotesToCustomerApiHook = () => {

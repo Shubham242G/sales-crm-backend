@@ -7,6 +7,7 @@ import BASE_URL, {
   GeneralApiResponsePagination,
 } from "./urls.service";
 import axios from "../libs/hooks/axios";
+import jsPDF from "jspdf";
 
 const prefix = "/vendor";
 export interface IVendor {
@@ -214,6 +215,12 @@ export const useVendorApiHook = () => {
     );
   };
 
+  const generatePdf = async (vendorId: string) => {
+      return axios.get(`${BASE_URL}${prefix}/pdf/${vendorId}`, {
+        responseType: "blob",
+      });
+    };
+
 
 
   const getAllVendorName = async () => {
@@ -239,6 +246,7 @@ export const useVendorApiHook = () => {
     convertVendorToSalesContact,
     getAllVendorName,
     bulkUpload,
+    generatePdf,
   };
 };
 
@@ -352,4 +360,39 @@ export const useVendorName = (
       message: "",
     } as unknown as GeneralApiResponsePagination<any>,
   });
+};
+
+
+// Generate PDF from JSON data
+const generatePdfFromJson = (vendorData: any) => {
+  const doc = new jsPDF();
+
+  // Set the title of the document
+  doc.setFontSize(18);
+  doc.text("Vendor", 20, 20);
+
+  // Add the bill data into the document
+  doc.setFontSize(12);
+
+  doc.text(`Vendor Name: ${vendorData.firstName}`, 20, 40);
+  doc.text(`Email: ${new Date(vendorData.bill_date).toLocaleDateString()}`, 20, 50);
+  doc.text(`Comapany Name: ${vendorData.vendor_name}`, 20, 60);
+  doc.text(`Phone Number: ${vendorData.currency_code} ${vendorData.total.toFixed(2)}`, 20, 70);
+  doc.text(`GST IN: ${vendorData.currency_code} ${vendorData.balance.toFixed(2)}`, 20, 80);
+  doc.text(`Location: ${vendorData.status}`, 20, 90);
+
+  // Save the generated PDF
+  doc.save(`VendorPurchaseBill_${vendorData.bill_id}.pdf`);
+};
+
+
+
+export const downloadVendorPurchaseBillPdf = async (billId: string) => {
+  const response = await axios.get(`${BASE_URL}${prefix}/bills/${billId}`);
+
+  try {
+    generatePdfFromJson(response.data.data);
+  } catch (error) {
+    console.error(error);
+  }
 };

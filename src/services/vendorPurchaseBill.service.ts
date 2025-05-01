@@ -194,8 +194,10 @@ const generatePdfFromJson = (billData: any) => {
   doc.save(`VendorPurchaseBill_${billData.bill_id}.pdf`);
 };
 
+
+
 export const downloadVendorPurchaseBillPdf = async (billId: string) => {
-  const response = await axios.get(`${BASE_URL}${prefix}/billsById/${billId}`);
+  const response = await axios.get(`${BASE_URL}${prefix}/bills/${billId}`);
 
   try {
     generatePdfFromJson(response.data.data);
