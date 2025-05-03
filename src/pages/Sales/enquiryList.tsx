@@ -10,6 +10,8 @@ import {
   FaPlus,
   FaFileImport,
   FaToggleOn,
+  FaCog,
+  FaColumns,
 } from "react-icons/fa";
 import {
   addEnquiryExel,
@@ -26,13 +28,16 @@ import moment from "moment";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { Switch } from "@mui/material";
 import { SiConvertio } from "react-icons/si";
-// import { useConvertRfpById } from "@/services/rfp.service";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import { c } from "vite/dist/node/types.d-aGj9QkWt";
+
+
 
 function EnquiryLIst() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [showColumnSelector, setShowColumnSelector] = useState(false);
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Enquiry");
@@ -46,6 +51,20 @@ function EnquiryLIst() {
   const [showFilters, setShowFilters] = useState(false);
   const { mutateAsync: convertEnquiryToRfp } = useConvertEnquiryToRfp();
 
+  // Column visibility state
+  const [visibleColumns, setVisibleColumns] = useState({
+    "Customer Name": true,
+    "Enquiry Type": true,
+    "Loaction": true,
+    "Level of Enquiry": true,
+    "Check-In": true,
+    "Check-Out": true,
+    "Number of Rooms": true,
+    "Status": true,
+    "Edit": canView || canUpdate,
+    "Delete": canDelete,
+    "Convert to Enquiry": true
+  });
  
   const searchObj = useMemo(
     () => ({
@@ -66,21 +85,21 @@ function EnquiryLIst() {
     ]
   );
 
-
-
   const { data: EnquiryData } = useEnquiry(searchObj);
-
-  // useEffect(() => {
-  //   const { data: EnquiryData } = useEnquiry(searchObj);
-  //   setEnquiryData(EnquiryData);
-  // }, [isUploading]);
-  // console.log(EnquiryData, "check EnquiryData");
-  // useEffect(() => {
-  //   setPageIndex(1);
-  // }, [selectedEnquiryType, selectedLevel, selectedStatus]);
-
   const { mutateAsync: deleteEnquiry } = usedeleteEnquiryById();
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
+
+  // Save column preferences to localStorage
+  useEffect(() => {
+    const savedColumns = localStorage.getItem('enquiryTableColumns');
+    if (savedColumns) {
+      setVisibleColumns(JSON.parse(savedColumns));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
+  }, [visibleColumns]);
 
   const handleImportClick = () => {
     fileInputRef.current?.click();
@@ -107,10 +126,8 @@ function EnquiryLIst() {
 
       const response = await addEnquiryExel(formData);
 
-
       if (response.status === 200) {
         toastSuccess("Enquiries imported successfully!");
-
       } else {
         toastError("Error importing file. Please try again.");
       }
@@ -166,6 +183,7 @@ function EnquiryLIst() {
       toastError(error);
     }
   };
+  
   const handleConvertToRfp = async (enquiryId: string) => {
     try {
       const { data: res } = await convertEnquiryToRfp(enquiryId);
@@ -174,6 +192,32 @@ function EnquiryLIst() {
       toastError(error);
     }
   };
+
+  // Toggle column visibility
+  const toggleColumnVisibility = (columnName: string) => {
+    setVisibleColumns(prev => ({
+      ...prev,
+      [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev]
+    }));
+  };
+
+  // Reset column visibility to default
+  const resetColumnVisibility = () => {
+    setVisibleColumns({
+      "Customer Name": true,
+      "Enquiry Type": true,
+      "Loaction": true,
+      "Level of Enquiry": true,
+      "Check-In": true,
+      "Check-Out": true,
+      "Number of Rooms": true,
+      "Status": true,
+      "Edit": canView || canUpdate,
+      "Delete": canDelete,
+      "Convert to Enquiry": true
+    });
+  };
+
   const columns = [
     {
       name: "Customer Name",
@@ -183,7 +227,6 @@ function EnquiryLIst() {
         </div>
       ),
       width: "10%",
-    
     },
     {
       name: "Enquiry Type",
@@ -245,7 +288,7 @@ function EnquiryLIst() {
     {
       name: "Status",
       selector: (row: any) => (
-        <div className="flex  gap-1">
+        <div className="flex gap-1">
           <h6>{row?.status}</h6> 
         </div>
       ),
@@ -259,7 +302,7 @@ function EnquiryLIst() {
           <div className="flex items-center gap-3">
             <Link
               to={`/addEnquiry/${row?._id}`}
-              className=" text-black-400 text-lg flex items-center"
+              className="text-black-400 text-lg flex items-center"
               onClick={() => handleUpdate(row._id, row.data)}
             >
               <FaEye />
@@ -273,7 +316,7 @@ function EnquiryLIst() {
       selector: (row: any) =>
         canDelete && (
           <button
-            className=" text-black-400 text-lg"
+            className="text-black-400 text-lg"
             onClick={() => handleDelete(row._id)}
           >
             <RiDeleteBin6Line />
@@ -284,13 +327,13 @@ function EnquiryLIst() {
       name: "Convert to Enquiry",
       width: "10%",
       selector: (row: any) => (
-        <div className="flex items-center ">
+        <div className="flex items-center">
           <Link
             to={`/add-sales-contact/${row?._id}`}
-            className=" text-black-400 text-lg flex items-center"
+            className="text-black-400 text-lg flex items-center"
           ></Link>
           <button
-            className=" text-black-400 text-lg"
+            className="text-black-400 text-lg"
             onClick={() => handleConvertToRfp(row._id)}
           >
             <SiConvertio />
@@ -299,6 +342,91 @@ function EnquiryLIst() {
       ),
     },
   ];
+
+  const calculateDynamicWidths = (columnsArray: any[]) => {
+    const visibleColumnsCount = columnsArray.length;
+    
+    if (visibleColumnsCount === 0) return columnsArray;
+    
+  
+    const columnsWithDynamicWidth = columnsArray.map(column => ({...column}));
+    
+    
+    const baseWidth = 100 / visibleColumnsCount; 
+
+    console.log(visibleColumnsCount, "visibleColumnsCount")
+    
+
+    const MIN_WIDTH = 8; 
+    const MAX_WIDTH = 20; 
+    
+    // Adjust column widths based on content type
+    columnsWithDynamicWidth.forEach(column => {
+      let allocatedWidth = baseWidth;
+      
+      // Columns that typically need less space
+      if (column.name === "Delete" || column.name === "Edit") {
+        allocatedWidth = Math.max(MIN_WIDTH, baseWidth ); 
+      } 
+      // Columns that might need more space
+      else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
+        allocatedWidth = Math.min(MAX_WIDTH, baseWidth ); 
+      }
+      
+      column.width = `${allocatedWidth}%`;
+    });
+
+    console.log(columnsWithDynamicWidth, "check the column width")
+    
+    return columnsWithDynamicWidth;
+  };
+
+  // Filter columns based on visibility
+  const visibleColumnsArray = columns.filter(column => 
+    visibleColumns[column.name as keyof typeof visibleColumns]
+  );
+  
+  // Apply dynamic widths to visible columns
+  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+
+  const ColumnSelector = () => (
+    <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-10 border border-gray-200 right-0 w-72">
+      <div className="flex flex-col gap-2">
+        <div className="flex justify-between items-center border-b pb-2 mb-2">
+          <h3 className="font-medium">Customize Columns</h3>
+          <button 
+            className="text-xs text-blue-600 hover:underline"
+            onClick={resetColumnVisibility}
+          >
+            Reset to Default
+          </button>
+        </div>
+        
+        <div className="max-h-80 overflow-y-auto">
+          {columns.map((column) => (
+            <div key={column.name} className="flex items-center justify-between py-2 border-b border-gray-100">
+              <span className="text-sm">{column.name}</span>
+              <Switch 
+                checked={visibleColumns[column.name as keyof typeof visibleColumns] || false}
+                onChange={() => toggleColumnVisibility(column.name)}
+                size="small"
+                color="primary"
+              />
+            </div>
+          ))}
+        </div>
+        
+        <div className="mt-2 flex justify-end">
+          <button 
+            className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+            onClick={() => setShowColumnSelector(false)}
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   const FilterDropdown = () => (
     <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-10 border border-gray-200">
@@ -331,19 +459,6 @@ function EnquiryLIst() {
           </select>
         </div>
 
-        {/* <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium">Status</label>
-          <select
-            className="p-2 border rounded-md"
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-          >
-            <option value="">All Statuses</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-        </div> */}
-
         <button
           className="mt-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md"
           onClick={() => {
@@ -358,24 +473,14 @@ function EnquiryLIst() {
     </div>
   );
 
-  const filterColumns = columns.filter((item) => {
-    if (item.name === "Delete") {
-      return canDelete;
-    } else if (item.name === "Edit") {
-      return canView || (canView && canUpdate);
-    } else {
-      return true;
-    }
-  });
-
   return (
-    <div className="container px-6">
-      <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
-        <div className="search_boxes flex justify-between items-center">
+    <div className="container px-6 w-full">
+      <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5 w-full">
+        <div className="search_boxes flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 w-full gap-3">
           <h2 className="text-xl font-semibold text-gray-800">Enquiry List</h2>
 
-          <div className="flex items-center justify-start gap-2">
-            <div className="w-full">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
+            <div className="min-w-[200px] flex-grow sm:flex-grow-0 sm:w-64">
               <input
                 type="search"
                 className="rounded-sm w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
@@ -386,7 +491,7 @@ function EnquiryLIst() {
 
             <div className="relative">
               <button
-                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50"
+                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <FaFilter /> Filter
@@ -394,8 +499,18 @@ function EnquiryLIst() {
               {showFilters && <FilterDropdown />}
             </div>
 
+            <div className="relative">
+              <button
+                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                onClick={() => setShowColumnSelector(!showColumnSelector)}
+              >
+                <FaColumns /> Columns
+              </button>
+              {showColumnSelector && <ColumnSelector />}
+            </div>
+
             <button
-              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
+              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
               onClick={handleExportEnquiries}
             >
               <FaFileExport /> Export
@@ -410,7 +525,7 @@ function EnquiryLIst() {
             />
 
             <button
-              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
+              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
               onClick={handleImportClick}
               disabled={isUploading}
             >
@@ -421,7 +536,7 @@ function EnquiryLIst() {
             {canCreate && (
               <button
                 onClick={() => navigate("/addEnquiry")}
-                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                className="flex items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300 whitespace-nowrap"
               >
                 <FaPlus />
                 <span>New Enquiry</span>
@@ -430,18 +545,19 @@ function EnquiryLIst() {
           </div>
         </div>
 
-        <ReactTable
-          data={EnquiryData?.data}
-          columns={columns}
-          loading={false}
-          totalRows={EnquiryData?.total}
-          onChangeRowsPerPage={setPageSize}
-          onChangePage={setPageIndex}
-          page={pageIndex}
-          rowsPerPageText={pageSize}
-          isServerPropsDisabled={false}
-        
-        />
+        <div className="w-full overflow-x-auto">
+          <ReactTable
+            data={EnquiryData?.data}
+            columns={filteredColumns}
+            loading={false}
+            totalRows={EnquiryData?.total}
+            onChangeRowsPerPage={setPageSize}
+            onChangePage={setPageIndex}
+            page={pageIndex}
+            rowsPerPageText={pageSize}
+            isServerPropsDisabled={false}
+          />
+        </div>
       </div>
     </div>
   );
