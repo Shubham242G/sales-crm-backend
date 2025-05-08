@@ -6,8 +6,8 @@ import { FaRegIdBadge } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 // import googleicn from '@/assets/LoginPages/googleicn.webp'
 import { Link, useNavigate } from "react-router-dom";
-import { toastError } from "@/utils/toast";
-import { loginUser } from "@/utils/auth";
+import { toastError, toastSuccess } from "@/utils/toast";
+import { loginUser, changePasswordUser } from "@/utils/auth";
 import { AuthContext } from "@/context/AuthProvider";
 
 export default function LoginPage() {
@@ -15,6 +15,9 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showChangePassword, setShowChangePassword] = useState(false);
 
   const handleDashboardRoute = () => {
     window.location.reload();
@@ -36,6 +39,45 @@ export default function LoginPage() {
       };
       let response = await loginUser(obj);
       if (response?.success) {
+
+        console.log(response, "check response value");
+      
+        if (password.split("-")[0] === "demo") {
+          setShowChangePassword(true);
+        } else {
+          setIsAuthorized(true);
+          navigate("/");
+        }
+      } else {
+        toastError(response?.msg);
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  } 
+
+  const handleChnagePassword = async () => {
+    try {
+      if (!newPassword || newPassword == "") {
+        toastError("Please Enter New Password");
+        return 0;
+      }
+
+      if(newPassword !== confirmPassword) {
+        toastError("Password Not Match");
+        return 0;
+      }
+      let obj = {
+        
+        email,
+        oldPassword: password,
+        newPassword,
+        confirmPassword: confirmPassword,
+      };
+      let response = await changePasswordUser(obj);
+      if (response?.success) {
+        toastSuccess("Password Changed Successfully");
+        setShowChangePassword(false);
         setIsAuthorized(true);
         navigate("/");
       } else {
@@ -138,21 +180,54 @@ export default function LoginPage() {
                     Login
                   </button>
 
-                  {/* <p className='my-4 text-graytext uppercase text-center or_line'>
-                OR
-              </p>
-              <button
-              type="button"
-                
-                className="bg-lightgrayy py-4 w-full flex items-center gap-3 font-medium justify-center mt-3  border border-[#e5e5e5]   rounded-md   hover:bg-transparent text-txtcolor"
-              >
-                {" "}
-           <img src={googleicn} alt="" className='w-[24px] h-[24px]' />     Login With Google
-              </button>
+                  {showChangePassword && (
+                    <div className="mt-5">
+                      <div className="flex flex-wrap -mx-3 items-center  ">
+                        <div className="w-full relative px-3 mb-3">
+                          <label
+                            className="block  tracking-wide text-txtcolor  font-medium mb-2"
+                            htmlFor="grid-first-name"
+                          >
+                            New Password<span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            className="appearance-none  text-sm font-normal block w-full  text-graytext border border-black rounded p-3 py-4  leading-tight focus:outline-none focus:border-blue-500"
+                            type="password"
+                            placeholder="New Password"
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            value={newPassword}
+                          />
+                        </div>
 
-              <p className='text-center mt-4 font-medium text-graytext text-lg'>
-                Don't Have An Account Yet ? <Link to="/sign-up" className='text-primarycolor underline '>Sign-up Here</Link>
-              </p> */}
+                      
+                        <div className="w-full relative px-3 mb-3">
+                          <label
+                            className="block  tracking-wide text-txtcolor  font-medium mb-2"
+                            htmlFor="grid-first-name"
+                          >
+                            Confirm Password<span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            className="appearance-none  text-sm font-normal block w-full  text-graytext border border-black rounded p-3 py-4  leading-tight focus:outline-none focus:border-blue-500"
+                            type="password"
+                            placeholder="Confirm Password"
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            value={confirmPassword}
+                          />
+                        </div>
+                      
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={handleChnagePassword}
+                        className="bg-red-600 py-4 w-full mt-3  border    rounded-md text-white font-bold tracking-widest uppercase"
+                      >
+                        {" "}
+                        Change Password
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -162,3 +237,5 @@ export default function LoginPage() {
     </>
   );
 }
+
+

@@ -4,7 +4,7 @@ import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaFilter, FaFileExport, FaPlus, FaFileImport } from "react-icons/fa";
+import { FaFilter, FaFileExport, FaPlus, FaFileImport, FaTasks } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoMdArrowDropdown } from "react-icons/io";
 import {
@@ -22,6 +22,8 @@ import { generateFilePath } from "@/services/urls.service";
 import { checkPermissionsForButtons } from "@/utils/permission";
 
 import AdvancedSearch, { SearchField } from "@/utils/advancedSearch";
+import { Modal } from "@mui/material";
+import { AiFillCloseSquare } from "react-icons/ai";
 
 function Leads() {
   const navigate = useNavigate();
@@ -230,8 +232,42 @@ function Leads() {
       setExportFields([]);
     }
   };
+  const [data, setData] = useState<any[]>([]);
+
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
+
+  console.log(selectedRows, "selectedRows", leadData, "check lead data");
 
   const columns = [
+    {
+      name: (
+        <input
+          type="checkbox"
+          onChange={(e) => {
+            const isChecked = e.target.checked;
+            if (isChecked) {
+              setSelectedRows(leadData.data.map((row:any) => row._id));
+            } else {
+              setSelectedRows([]);
+            }
+          }}
+        />
+      ),
+      cell: (row: any) => (
+        <input
+          type="checkbox"
+          checked={selectedRows.includes(row._id)}
+          onChange={() => {
+            if (selectedRows.includes(row._id)) {
+              setSelectedRows(selectedRows.filter((id) => id !== row._id));
+            } else {
+              setSelectedRows([...selectedRows, row._id]);
+            }
+          }}
+        />
+      ),
+      width: "5%",
+    },
     {
       name: "Contact Name",
       selector: (row: any) => (
@@ -294,6 +330,61 @@ function Leads() {
     },
   ];
 
+  const [isOpenAssign, setIsOpenAssign] = useState(false);
+  const [assignTaskName, setAssignTaskName] = useState("");
+  const [assignTaskUsers, setAssignTaskUsers] = useState<string[]>([]);
+
+  const handleAssignTask = async () => {
+    try {
+      if (selectedRows.length === 0) {
+        toastError("Please select at least one lead to assign.");
+        return;
+      }
+
+      setIsOpenAssign(true);
+    } catch (error) {
+      toastError("An error occurred while assigning task. Please try again.");
+    }
+  };
+
+  const handleAssignTaskNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAssignTaskName(e.target.value);
+  };
+
+  const handleAssignTaskNameSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (assignTaskName) {
+      setAssignTaskUsers((prevUsers) => [...prevUsers, assignTaskName]);
+      setAssignTaskName("");
+    }
+  };
+
+  const handleRemoveAssignTaskUser = (user: string) => {
+    setAssignTaskUsers((prevUsers) => prevUsers.filter((u) => u !== user));
+  };
+
+  const handleAssignTaskSubmit = async () => {
+    try {
+      if (selectedRows.length === 0 || assignTaskUsers.length === 0) {
+        toastError("Please select at least one lead and one user to assign.");
+        return;
+      }
+
+      // const { data: res } = await assignTask(selectedRows, assignTaskUsers);
+
+      // if (res?.message) {
+      //   toastSuccess(res.message);
+      //   setIsOpen(false);
+      //   setSelectedRows([]);
+      //   setAssignTaskUsers([]);
+      // }
+    } catch (error) {
+      toastError("An error occurred while assigning task. Please try again.");
+    }
+  };
+
+
+
   const filterColumns = columns.filter((item) => {
     if (item.name === "Delete") {
       return canDelete;
@@ -339,6 +430,14 @@ function Leads() {
               {/* Filter Button */}
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
+              </button>
+
+              {/* Assign Button */}
+              <button
+                className="w-80 flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
+                onClick={handleAssignTask}
+              >
+                <FaTasks /> <span className="whitespace-nowrap"> Assign Task </span>
               </button>
               
               {/* Export Button with Dropdown */}
@@ -622,6 +721,77 @@ function Leads() {
           </div>
         </div>
       )}
+
+
+
+      {isOpenAssign && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Assign Task to Multiple Users</h2>
+              <button
+                type="button"
+                className="text-black-500 text-lg"
+                onClick={() => setIsOpenAssign(false)}
+              >
+                <AiFillCloseSquare />
+              </button>
+            </div>
+            <form onSubmit={handleAssignTaskNameSubmit}>
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700">Enter User Name</label>
+                <input
+                  type="text"
+                  value={assignTaskName}
+                  onChange={handleAssignTaskNameChange}
+                  placeholder="Enter User Name"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+              <div className="mt-4 flex gap-2">
+                {assignTaskUsers.map((user) => (
+                  <div
+                    key={user}
+                    className="bg-blue-100 px-2 py-1 rounded-full cursor-pointer"
+                    onClick={() => handleRemoveAssignTaskUser(user)}
+                  >
+                    {user}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4">
+                <button
+                  type="submit"
+                  className="bg-blue-500 px-4 py-2 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
+                  // disabled={isLoading}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (assignTaskName) {
+                      setAssignTaskUsers((prevUsers) => [...prevUsers, assignTaskName]);
+                      setAssignTaskName("");
+                    }
+                  }}
+                >
+                  Add
+                </button>
+              </div>
+            </form>
+            <div className="mt-4">
+              <button
+                type="button"
+                className="bg-blue-500 px-4 py-2 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
+                onClick={handleAssignTaskSubmit}
+                // disabled={isLoading}
+              >
+                Assign Task
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
     </>
   );
 }

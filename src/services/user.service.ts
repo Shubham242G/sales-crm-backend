@@ -33,7 +33,13 @@ export interface IUser {
     role?: string;
     createdAt?: Date;
     updateAt?: Date;
+    isFirstLogin?: boolean;
 }
+
+export const changePasswordApi = async (obj: { oldPassword: string; newPassword: string; confirmPassword: string; id: string }) => {
+    return axiosAuth.patch<GeneralApiResponse>(`${BASE_URL}${prefix}/changePassword`, obj);
+};
+
 export const loginApi = async (obj: IUser) => {
     return axios.post(`${BASE_URL}${prefix}/login`, obj);
 };
@@ -111,6 +117,7 @@ export const useUserApiHook = () => {
         getUsers,
         getUserForSelect,
         addExcelData,
+        changePasswordApi,
     };
 };
 
@@ -202,3 +209,17 @@ export const useUpdateUser = () => {
         },
     });
 };
+
+// export const useChangePassword = ( obj: any) => {
+//     const queryClient = useQueryClient();
+//     const api = useUserApiHook();
+//     return useMutation({
+//         mutationFn: api.changePasswordApi,
+//         onSuccess: () => {
+//             queryClient.invalidateQueries({ queryKey: ["UserPasswordChange" ,obj] });
+//             // toastSuccess(res);
+//         },
+//     });
+// };
+
+

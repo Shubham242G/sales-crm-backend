@@ -12,6 +12,7 @@ import { ICustomer } from "./customer.service";
 const prefix = "/lead";
 export interface ILead {
     // Basic Details
+    _id: string,
     salutation: string,
     firstName: string,
     lastName: string,

@@ -1,6 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 import { toastError } from "./toast";
-import { loginApi } from "@/services/user.service"
+import { changePasswordApi, loginApi, } from "@/services/user.service"
+
+ 
+
 
 export const storeAuthData = async (value: any) => {
     try {
@@ -49,6 +52,18 @@ export const loginUser = async (formData: any) => {
         }
     } catch (err) {
         return { success: false, token: "", msg: toastError(err) };
+    }
+};
+
+export const changePasswordUser = async (formData: any) => {
+    try {
+        let { data: response } = await changePasswordApi(formData)
+        if (response) {
+            console.log(response, "response from auth.ts");
+            return { success: true, msg: "Password Changed Successfully" };
+        }
+    } catch (err) {
+        return { success: false, msg: toastError(err) };
     }
 };
 
