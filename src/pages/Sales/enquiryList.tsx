@@ -339,19 +339,7 @@ export default function EnquiryLIst() {
   // Column selector
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
-  const [visibleColumns, setVisibleColumns] = useState({
-    "Customer Name": true,
-    "Enquiry Type": true,
-    "Loaction": true,
-    "Level of Enquiry": true,
-    "Check-In": true,
-    "Check-Out": true,
-    "Number of Rooms": true,
-    "Status": true,
-    "Edit": canView || canUpdate,
-    "Delete": canDelete,
-    "Convert to Enquiry": true
-  }); 
+  // Removed duplicate declaration of visibleColumns
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumns');
     if (savedColumns) {
