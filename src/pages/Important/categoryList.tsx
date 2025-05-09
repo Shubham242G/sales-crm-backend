@@ -80,7 +80,8 @@ const [pageSize, setPageSize] = useState(10);
             to={`/category2/${row?._id}`}
             className=" text-black-400 text-lg flex items-center"
           >
-            <FaEye />
+           
+             <FaEye className=" hover:text-orange-500" />
           </Link>
         </div>
       ),
@@ -94,7 +95,8 @@ const [pageSize, setPageSize] = useState(10);
             onClick={() => handleDelete(row._id)}
             className=" text-black-400 text-lg flex items-center"
           >
-            <RiDeleteBin6Line />
+             <RiDeleteBin6Line className="hover:text-red-600"/>
+            
           </button>
         </div>
       ),

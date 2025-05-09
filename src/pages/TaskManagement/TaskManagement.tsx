@@ -190,8 +190,7 @@ function TaskManagement() {
       name: "Department",
       selector: (row: any) => (
         <div className="flex gap-1">
-          <FaMobileScreenButton className="text-[#938d8d]" />
-          {row.department}
+          <h6>{row.department}</h6>
         </div>
       ),
       width: "20%",

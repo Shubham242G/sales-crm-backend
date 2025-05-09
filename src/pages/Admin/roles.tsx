@@ -47,35 +47,35 @@ function Roles() {
     {
       name: "Name",
       selector: (row: any) =>(<h6>{ row.name}</h6>),
-      width: "25%",
+      width: "260px",
     },
     {
       name: "Role",
       selector: (row: any) =>(<h6>{ row.roleName}</h6>),
-      width: "25%",
+      width: "260px",
     },
     
     {
       name: "Hierarchy",
       selector: (row: any) => (row.hierarchy ? <h6>{row.hierarchy}</h6> : <h6>{"N/A"}</h6>),
-      width: "20%",
+      width: "240px",
     },
     {
       name: "Edit",
-      width: "15%",
+      width: "200px",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => navigate(`/add-role/${row._id}`)}
-          className="text-black-500 text-lg  hover:text-orange-500"
+          className="text-black-500 text-lg "
         >
-          <FaEye  />
+          <FaEye className=" hover:text-orange-500" />
         </button>
       ),
     },
     {
       name: "Delete",
-      width: "15%",
+      width: "200px",
       selector: (row: any) => (
         <button
           type="button"
@@ -83,6 +83,7 @@ function Roles() {
           className=" text-black-400 text-lg"
         >
           <RiDeleteBin6Line className="hover:text-red-600"/>
+          
         </button>
       ),
     },

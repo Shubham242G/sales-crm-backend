@@ -96,7 +96,8 @@ function BanquetList() {
             to={`/banquet/${row?._id}`}
             className=" text-black-400 text-lg flex items-center"
           >
-            <FaEye />
+         
+            <FaEye className=" hover:text-orange-500" />
           </Link>
         </div>
       ),
@@ -110,7 +111,8 @@ function BanquetList() {
             onClick={() => handleDelete(row._id)}
             className=" text-black-400 text-lg flex items-center"
           >
-            <RiDeleteBin6Line />
+           <RiDeleteBin6Line className="hover:text-red-600"/>
+       
           </button>
         </div>
       ),
