@@ -20,7 +20,7 @@
 
 import { toastError, toastSuccess } from "@/utils/toast"
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useAddEnquiry, useEnquiryById, useUpdateEnquiryById } from "@/services/enquiry.service"
 import moment from "moment"
@@ -28,6 +28,12 @@ import Select from "react-select"
 import type { ReactSelectFormat } from "@/services/urls.service"
 import { Autocomplete, TextField } from "@mui/material"
 import { checkPermissionsForButtons } from "@/utils/permission"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"; // Default styling
+import { format } from "date-fns";
+import { useUserName } from "@/services/user.service"
+import { useZohoCustomerById, useZohoCustomers } from "@/services/customer.service"
+import { SiReactquery } from "react-icons/si"
 
 interface Room {
   date: string
@@ -54,7 +60,6 @@ interface Cab {
   noOfVehicles: string
   vehicleType: string
   tripType: string
-  mealPlan: string[]
 }
 
 interface EventDates {
@@ -87,8 +92,12 @@ const AddEnquiryForm = () => {
 
   const { canView, canUpdate, canCreate } = checkPermissionsForButtons("Enquiry")
 
+  const { id } = useParams()
+
   const [companyName, setCompanyName] = useState("")
   const [firstName, setFirstName] = useState("")
+  const [assignTo, setAssignTo] = useState("")
+  const [displayName, setDisplayName] = useState("")
   const [lastName, setLastName] = useState("")
   const [salutation, setSalutation] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -128,7 +137,7 @@ const AddEnquiryForm = () => {
   const [checkOut, setCheckOut] = useState("")
   // const [categoryOfHotel, setCategoryOfHotel] = useState([]);
   // const [occupancy, setOccupancy] = useState([]);
-  const [billingAddress, setBillingAddress] = useState("")
+  const [billingInstructions, setBillingInstructions] = useState("")
 
   const [room, setRoom] = useState<Room[]>([])
   const [banquet, setBanquet] = useState<Banquet[]>([])
@@ -138,7 +147,29 @@ const AddEnquiryForm = () => {
 
   const { mutateAsync: addEnquiry } = useAddEnquiry()
   const { mutateAsync: updateEnquiryById } = useUpdateEnquiryById()
+  const { data: userNames } = useUserName()
+  const [query, setQuery] = useState("");
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(100);
 
+  const searchObj = useMemo(
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
+
+
+  const [customerId, setCustomerId] = useState("")
+  const { data: Customer } = useZohoCustomers(searchObj);
+  const { data: CustomerById } = useZohoCustomerById(customerId || "");
+
+
+
+
+  console.log(Customer, "check customer value in ENquiry Form ")
   // const { data: contact } = useContact({ pageIndex: 0 });
 
   // const { data: contactById } = useContactById(nameObj?.value || "");
@@ -179,49 +210,69 @@ const AddEnquiryForm = () => {
 
   const customStyles = {
     control: (base: any) => ({
-        ...base,
-        border: '2px solid #e5e7eb !important',
-        boxShadow: '0 !important',
-        color:"#000",
-        padding:'5px',
-        fontFamily: "satoshi, sans-serif", 
-        backgroundColor:'#fafafa',
-        zindex:'9',
-        minHeight:'30px',
-        '&:hover': {
-            border: '1px solid #e5e7eb !important',
-           
-        },
+      ...base,
+      border: '2px solid #e5e7eb !important',
+      boxShadow: '0 !important',
+      color: "#000",
+      padding: '5px',
+      fontFamily: "satoshi, sans-serif",
+      backgroundColor: '#fafafa',
+      zindex: '9',
+      minHeight: '30px',
+      '&:hover': {
+        border: '1px solid #e5e7eb !important',
 
-        menu: (provided:any) => ({
-            ...provided,
-            zIndex: 9999, // Increase the z-index here
-          }),
+      },
 
-          menuPortal: (provided:any) => ({ ...provided, zIndex: 5 }),
-      
-        
+      menu: (provided: any) => ({
+        ...provided,
+        zIndex: 9999, // Increase the z-index here
+      }),
+
+      menuPortal: (provided: any) => ({ ...provided, zIndex: 5 }),
+
+
     }),
-    option: (base:any) => ({
-        ...base,
-        cursor: "pointer",
-        background: "white",
-        color:"#000",
-        fontFamily: "'inter', sans-serif", 
-        zindex:'9',   // this was the mistake (I needed to remove this)
-        "&:hover": {
-           backgroundColor: "#687256",
-           color:"#fff",
-           fontFamily: "'inter', sans-serif", 
-         },
-})
+    option: (base: any) => ({
+      ...base,
+      cursor: "pointer",
+      background: "white",
+      color: "#000",
+      fontFamily: "'inter', sans-serif",
+      zindex: '9',   // this was the mistake (I needed to remove this)
+      "&:hover": {
+        backgroundColor: "#687256",
+        color: "#fff",
+        fontFamily: "'inter', sans-serif",
+      },
+    })
 
-}
+  }
+
+
+
+
+
+  useEffect(() => {
+
+
+    let customer = Customer?.data?.filter(
+      (item: any) => item.displayName === displayName
+    )
+    // setCustomerId(customer?._id || "")
+
+    console.log(customer, "check customer value")
+
+    setCompanyName(customer[0]?.companyName)
+
+
+
+  }, [displayName, Customer])
 
   const [isEventSetupVisible, setIsEventSetupVisible] = useState(false)
   const [isAirTicketVisible, setIsAirTicketVisible] = useState(false)
 
-  const { id } = useParams()
+
   const { data: enquiryDataById, isLoading } = useEnquiryById(id || "")
   useEffect(() => {
     if (checkIn && checkOut) {
@@ -230,10 +281,16 @@ const AddEnquiryForm = () => {
       const dates = []
 
       let currentDate = start
-      while (currentDate <= end) {
-        dates.push({ date: currentDate.toISOString().split("T")[0] })
+      for (
+        let currentDate = new Date(start);
+        currentDate < end;
         currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1))
+      ) {
+        dates.push({ date: currentDate.toISOString().split("T")[0] });
       }
+
+
+      console.log(dates.length, "check dates.length ")
 
       setRoom(
         dates.map((date) => ({
@@ -265,7 +322,6 @@ const AddEnquiryForm = () => {
           noOfVehicles: "",
           vehicleType: "",
           tripType: "",
-          mealPlan: [],
         })),
       )
     }
@@ -279,10 +335,13 @@ const AddEnquiryForm = () => {
         noOfRooms: noOfRooms,
         category: "",
         occupancy: row.occupancy,
-        mealPlan: [...row.mealPlan],
+        mealPlan: row.mealPlan,
       })),
     )
   }, [enquiryDataById, noOfRooms])
+
+
+
 
   useEffect(() => {
     setCab(
@@ -293,7 +352,6 @@ const AddEnquiryForm = () => {
         noOfVehicles: row.noOfVehicles,
         vehicleType: row.vehicleType,
         tripType: row.tripType,
-        mealPlan: [...row.mealPlan],
       })),
     )
     setBanquet(
@@ -309,7 +367,7 @@ const AddEnquiryForm = () => {
     )
   }, [enquiryDataById])
 
-  const handleMealPlanChange = (table: Room[] | Cab[], setTable: any, index: number, value: string): void => {
+  const handleMealPlanChange = (table: Room[], setTable: any, index: number, value: string): void => {
     const updatedTable: any = [...table]
     if (!updatedTable[index].mealPlan.includes(value)) {
       updatedTable[index].mealPlan.push(value)
@@ -321,7 +379,7 @@ const AddEnquiryForm = () => {
     setOccupancy((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]))
   }
 
-  const removeMealPlan = (table: Room[] | Cab[], setTable: any, index: number, value: string): void => {
+  const removeMealPlan = (table: Room[], setTable: any, index: number, value: string): void => {
     const updatedTable = [...table]
     updatedTable[index].mealPlan = updatedTable[index].mealPlan.filter((plan) => plan !== value)
     setTable(updatedTable)
@@ -337,7 +395,6 @@ const AddEnquiryForm = () => {
         noOfVehicles: "",
         vehicleType: "",
         tripType: "",
-        mealPlan: [],
       },
     ])
   }
@@ -389,6 +446,32 @@ const AddEnquiryForm = () => {
     }))
   }
 
+  const handleTimeChange = (index: number, field: keyof EventSetup["eventDates"][0], timeValue: string): void => {
+    if (!timeValue) return; // Skip if no time is provided
+
+    const updatedDates = [...eventSetup.eventDates];
+    const currentDateStr = updatedDates[index][field] as string;
+
+    // If no valid date exists, skip or initialize as needed
+    if (!currentDateStr) return;
+
+    // Parse the existing date and update time
+    const currentDate = moment(currentDateStr);
+    const [hours, minutes] = timeValue.split(':').map(Number);
+    currentDate.set({ hour: hours, minute: minutes, second: 0, millisecond: 0 });
+
+    // Update the state with the new date string (same format as handleDateChange)
+    updatedDates[index] = {
+      ...updatedDates[index],
+      [field]: currentDate.format('YYYY-MM-DDTHH:mm:ss.SSSZ'), // ISO format to match Date object
+    };
+
+    setEventSetup((prevState) => ({
+      ...prevState,
+      eventDates: updatedDates,
+    }));
+  };
+
   const navigate = useNavigate()
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -424,7 +507,7 @@ const AddEnquiryForm = () => {
         setLevelOfEnquiry(value)
         break
       case "billingAddress":
-        setBillingAddress(value)
+        setBillingInstructions(value)
         break
       default:
         break
@@ -452,7 +535,7 @@ const AddEnquiryForm = () => {
       setBanquet(enquiryDataById?.data?.banquet)
       setRoom([...enquiryDataById?.data?.room])
       //   setCab(enquiryDataById?.data?.cab)
-      setBillingAddress(enquiryDataById?.data?.billingAddress)
+      setBillingInstructions(enquiryDataById?.data?.billingInstructions || "")
       setCompanyName(enquiryDataById?.data?.companyName)
 
       setPhoneNumber(enquiryDataById?.data?.phoneNumber)
@@ -471,6 +554,8 @@ const AddEnquiryForm = () => {
       setLevelOfEnquiry(enquiryDataById?.data?.levelOfEnquiry)
       setEventSetup(enquiryDataById?.data?.eventSetup)
       setFirstName(enquiryDataById?.data?.firstName)
+      setAssignTo(enquiryDataById?.data?.assignTo)
+      setDisplayName(enquiryDataById?.data?.displayName)
       setLastName(enquiryDataById?.data?.lastName)
       setSalutation(enquiryDataById?.data?.salutation)
 
@@ -510,6 +595,8 @@ const AddEnquiryForm = () => {
         city: city,
         noOfRooms: noOfRooms,
         categoryOfHotel: categoryOfHotel,
+        assignTo: assignTo,
+        displayName: displayName,
         occupancy: occupancy,
         banquet: banquet,
         room: room,
@@ -523,10 +610,11 @@ const AddEnquiryForm = () => {
         },
         airTickets: airTickets,
         cab: cab,
-        billingAddress: billingAddress,
+        billingInstructions: billingInstructions,
         area: area,
       }
 
+      console.log("Room Details:", obj.checkIn, "checkout", obj.checkOut, "this one", obj, obj.eventSetup,)
 
 
 
@@ -577,10 +665,10 @@ const AddEnquiryForm = () => {
       //   })
       // })
 
-      
+
 
       if (id) {
-        
+
         const { data: res } = await updateEnquiryById({ id, obj })
 
         if (res?.message) {
@@ -651,7 +739,7 @@ const AddEnquiryForm = () => {
   //for resolving error for now
   const nameOptions = [{ value: "", label: "" }]
 
-
+  console.log(assignTo, "assignTo")
   return (
     <div className="bg-white min-h-screen">
       <div className="bg-white text-black py-4 px-6">
@@ -701,6 +789,49 @@ const AddEnquiryForm = () => {
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Last Name"
                   className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+
+              {/* Assign To */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Assign To
+                </label>
+                <select
+                  onChange={(e) => setAssignTo(e.target.value)}
+                  value={assignTo}
+                  name="assignTo"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                >
+
+                  {userNames.data.map((option: any) => (
+                    <option key={option.value} value={option.label}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Display Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Display Name
+                </label>
+                <Autocomplete
+                  freeSolo
+                  onChange={(e, value) => {
+                    setDisplayName(value);
+                    setQuery(value);
+                  }}
+                  value={displayName}
+                  options={Customer.data.map((option: any) => option.displayName)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  )}
                 />
               </div>
 
@@ -801,6 +932,17 @@ const AddEnquiryForm = () => {
               </div>
 
               {/* Check In */}
+              {/* <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Check In</label>
+                <input
+                  type="date"
+                  name="checkIn"
+                  value={moment(checkIn).format("YYYY-MM-DD")}
+                  onChange={(e) => setCheckIn(e.target.value)}
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div> */}
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Check In</label>
                 <input
@@ -808,6 +950,7 @@ const AddEnquiryForm = () => {
                   name="checkIn"
                   value={moment(checkIn).format("YYYY-MM-DD")}
                   onChange={(e) => setCheckIn(e.target.value)}
+                  onClick={(e) => (e.target as HTMLInputElement).showPicker()} // Trigger calendar on input click
                   className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
@@ -820,6 +963,7 @@ const AddEnquiryForm = () => {
                   name="checkOut"
                   value={moment(checkOut).format("YYYY-MM-DD")}
                   onChange={(e) => setCheckOut(e.target.value)}
+                  onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                   className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
@@ -843,25 +987,14 @@ const AddEnquiryForm = () => {
               {/* Hotel Preference */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Hotel Preference</label>
-                <select
+                <input
+                  type="text"
+                  name="othersPreference"
                   value={othersPreference}
                   onChange={(e) => setOthersPreference(e.target.value)}
-                  className="w-full border border-gray-300 bg-gray-50 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="">Select a Preference</option>
-                  <option value="preference1">Preference 1</option>
-                  <option value="preference2">Preference 2</option>
-                  <option value="other">Other</option>
-                </select>
-                {othersPreference === "other" && (
-                  <input
-                    type="text"
-                    placeholder="Enter Hotel Name"
-                    value={hotelName}
-                    onChange={(e) => setHotelName(e.target.value)}
-                    className="w-full border border-gray-300 rounded p-2 text-sm mt-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                )}
+                  placeholder="Preferences"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
               </div>
 
               {/* Hotel Category */}
@@ -1237,6 +1370,18 @@ const AddEnquiryForm = () => {
                         type="date"
                         value={date && date?.startDate ? moment(date?.startDate).format("YYYY-MM-DD") : ""}
                         onChange={(e) => handleDateChange(index, "startDate", e.target.value)}
+                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                        className="border border-gray-300 p-2 rounded w-full text-sm"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Event Start Time</label>
+                      <input
+                        type="time"
+                        value={date && date?.startDate ? moment(date?.startDate).format("HH:mm") : ""}
+                        onChange={(e) => handleTimeChange(index, "startDate", e.target.value)}
+                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                         className="border border-gray-300 p-2 rounded w-full text-sm"
                       />
                     </div>
@@ -1247,10 +1392,24 @@ const AddEnquiryForm = () => {
                         type="date"
                         value={moment(date.endDate).format("YYYY-MM-DD")}
                         onChange={(e) => handleDateChange(index, "endDate", e.target.value)}
+                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                        className="border border-gray-300 p-2 rounded w-full text-sm"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Event End Time</label>
+                      <input
+                        type="time"
+                        value={date && date?.endDate ? moment(date?.endDate).format("HH:mm") : ""}
+                        onChange={(e) => handleTimeChange(index, "endDate", e.target.value)}
+                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                         className="border border-gray-300 p-2 rounded w-full text-sm"
                       />
                     </div>
                   </div>
+
+
                 ))}
 
                 <button
@@ -1449,7 +1608,6 @@ const AddEnquiryForm = () => {
                       <th className="px-4 py-2 text-left text-xs font-bold">No. of Vehicles</th>
                       <th className="px-4 py-2 text-left text-xs font-bold">Type of Vehicle</th>
                       <th className="px-4 py-2 text-left text-xs font-bold">Trip Type</th>
-                      <th className="px-4 py-2 text-left text-xs font-bold">Meal Plan</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1567,36 +1725,6 @@ const AddEnquiryForm = () => {
                             <option value="Outstation">Outstation</option>
                           </select>
                         </td>
-
-                        <td className="px-4 py-2 text-sm border-b border-gray-200">
-                          <select
-                            onChange={(e) => handleMealPlanChange(cab, setCab, index, e.target.value)}
-                            className="border border-gray-300 p-1 rounded w-full text-sm"
-                          >
-                            <option value="">Select Meal Plan</option>
-                            {mealPlanOptions.map(
-                              (plan) =>
-                                !row.mealPlan.includes(plan) && (
-                                  <option key={plan} value={plan}>
-                                    {plan}
-                                  </option>
-                                ),
-                            )}
-                          </select>
-                          <div className="mt-2 flex flex-wrap gap-1">
-                            {row.mealPlan.map((plan) => (
-                              <span key={plan} className="inline-block bg-gray-100 px-2 py-1 text-xs rounded">
-                                {plan}{" "}
-                                <button
-                                  onClick={() => removeMealPlan(cab, setCab, index, plan)}
-                                  className="text-red-500 font-bold ml-1"
-                                >
-                                  x
-                                </button>
-                              </span>
-                            ))}
-                          </div>
-                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -1616,14 +1744,14 @@ const AddEnquiryForm = () => {
           {/* Billing Address and Submit Button */}
           <div className="bg-white rounded shadow-sm mb-6">
             <div className="p-4 border-b border-gray-200">
-              <h2 className="font-bold text-base">Billing Address</h2>
+              <h2 className="font-bold text-base">Billing Instructions</h2>
             </div>
             <div className="p-4">
               <textarea
-                name="billingAddress"
-                value={billingAddress}
-                onChange={(e) => setBillingAddress(e.target.value)}
-                placeholder="Enter Billing Address"
+                name="billingInstructions"
+                value={billingInstructions}
+                onChange={(e) => setBillingInstructions(e.target.value)}
+                placeholder="Enter Billing Instructions"
                 className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 rows={4}
               ></textarea>
@@ -1652,4 +1780,5 @@ const AddEnquiryForm = () => {
 }
 
 export default AddEnquiryForm
+
 

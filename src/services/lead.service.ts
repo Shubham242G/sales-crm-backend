@@ -19,7 +19,17 @@ export interface ILead {
     email: string,
     phone: string,
     company: string,
+    leadOwner: string,
+    displayName: string,
 }
+
+
+
+
+export interface Inew extends ILead {
+    id: string,
+}
+
 
 
 
@@ -39,6 +49,10 @@ export const useleadApiHook = () => {
         return axios.get<GeneralApiResponse<ILead>>(`${BASE_URL}${prefix}/getById/${id}`);
     };
 
+    const convertToEnquiry = async (id: any) => {
+        return axios.get<GeneralApiResponse<Inew>>(`${BASE_URL}${prefix}/convertToEnquiry/${id}`);
+    }
+
     const getAllLead = async (pagination: PaginationState, searchObj: any) => {
         const query = new URLSearchParams({
             pageIndex: String(pagination.pageIndex),
@@ -51,7 +65,7 @@ export const useleadApiHook = () => {
 
 
     const convertToContact = async (id: any) => {
-        return axios.post<GeneralApiResponse<ILead>>(`${BASE_URL}${prefix}/convert/${id}`);
+        return axios.get<GeneralApiResponse<ILead>>(`${BASE_URL}${prefix}/convertToContact/${id}`);
     }
 
     const getAllLeadName = async (searchObj: any) => {
@@ -80,7 +94,8 @@ export const useleadApiHook = () => {
         addLead,
         convertToContact,
         getAllLeadName,
-        getCompanyName
+        getCompanyName,
+        convertToEnquiry
 
     };
 };
@@ -96,7 +111,7 @@ export const useAddLead = () => {
     });
 };
 
-export const useLeadById = (id: string ,enabled: boolean = true) => {
+export const useLeadById = (id: string, enabled: boolean = true) => {
     const api = useleadApiHook();
 
     return useQuery({
@@ -149,21 +164,38 @@ export const useUpdateLeadById = () => {
 };
 
 
-export const convertToContact = async (id: any) => {
-    return axios.post<GeneralApiResponse<ILead>>(
-        `${BASE_URL}${prefix}/convert/${id}`
-    );
-};
+export const useConvertLeadToContact = () => {
+    const api = useleadApiHook();
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: api.convertToContact,
+        onSuccess: (res) => {
 
+            queryClient.invalidateQueries({ queryKey: ["LeadConvert"] });
+        },
+    });
+}
+
+export const useConvertLeadToEnquiry = () => {
+    const api = useleadApiHook();
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: api.convertToEnquiry,
+        onSuccess: (res) => {
+
+            queryClient.invalidateQueries({ queryKey: ["LeadConvertToEnquiry"] });
+        },
+    });
+}
 
 export const getExel = async (searchParams?: any) => {
     try {
-      const response = await axios.post(`${BASE_URL}${prefix}/getExel`, searchParams);
-      return response;
+        const response = await axios.post(`${BASE_URL}${prefix}/getExel`, searchParams);
+        return response;
     } catch (error) {
-      throw error;
+        throw error;
     }
-  };
+};
 
 
 export const addLeadExel = async (obj: any,) => {

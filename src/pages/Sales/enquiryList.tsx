@@ -65,7 +65,7 @@ function EnquiryLIst() {
     "Delete": canDelete,
     "Convert to Enquiry": true
   });
- 
+
   const searchObj = useMemo(
     () => ({
       ...(query && { query }),
@@ -85,7 +85,7 @@ function EnquiryLIst() {
     ]
   );
 
-  const { data: EnquiryData } = useEnquiry(searchObj);
+  const { data: EnquiryData, refetch } = useEnquiry(searchObj);
   const { mutateAsync: deleteEnquiry } = usedeleteEnquiryById();
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
 
@@ -166,6 +166,7 @@ function EnquiryLIst() {
         const { data: res } = await deleteEnquiry(id);
         if (res) {
           toastSuccess(res.message);
+          refetch();
         }
       }
     } catch (error) {
@@ -178,16 +179,21 @@ function EnquiryLIst() {
       const { data: res } = await updateEnquiry({ id, ...data });
       if (res) {
         toastSuccess(res.message);
+        refetch();
       }
     } catch (error) {
       toastError(error);
     }
   };
-  
+
   const handleConvertToRfp = async (enquiryId: string) => {
     try {
       const { data: res } = await convertEnquiryToRfp(enquiryId);
-      toastSuccess(res.message);
+      if (res) {
+        toastSuccess(res.message);
+        refetch();
+        navigate(`/add-rfps/${res.data.id}`, { replace: true });
+      }
     } catch (error) {
       toastError(error);
     }
@@ -224,6 +230,24 @@ function EnquiryLIst() {
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
           <h6>{row.firstName + " " + row.lastName}</h6>
+        </div>
+      ),
+      width: "10%",
+    },
+    {
+      name: "Assigned To",
+      selector: (row: any) => (
+        <div className="flex gap-1 flex-col">
+          <h6>{row.assignTo}</h6>
+        </div>
+      ),
+      width: "10%",
+    },
+    {
+      name: "Display Name",
+      selector: (row: any) => (
+        <div className="flex gap-1 flex-col">
+          <h6>{row.displayName}</h6>
         </div>
       ),
       width: "10%",
@@ -289,7 +313,7 @@ function EnquiryLIst() {
       name: "Status",
       selector: (row: any) => (
         <div className="flex gap-1">
-          <h6>{row?.status}</h6> 
+          <h6>{row?.status}</h6>
         </div>
       ),
       width: "9%",
@@ -324,7 +348,7 @@ function EnquiryLIst() {
         ),
     },
     {
-      name: "Convert to Enquiry",
+      name: "Generate RFP",
       width: "10%",
       selector: (row: any) => (
         <div className="flex items-center">
@@ -345,47 +369,47 @@ function EnquiryLIst() {
 
   const calculateDynamicWidths = (columnsArray: any[]) => {
     const visibleColumnsCount = columnsArray.length;
-    
+
     if (visibleColumnsCount === 0) return columnsArray;
-    
-  
-    const columnsWithDynamicWidth = columnsArray.map(column => ({...column}));
-    
-    
-    const baseWidth = 100 / visibleColumnsCount; 
+
+
+    const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
+
+
+    const baseWidth = 100 / visibleColumnsCount;
 
     console.log(visibleColumnsCount, "visibleColumnsCount")
-    
 
-    const MIN_WIDTH = 8; 
-    const MAX_WIDTH = 20; 
-    
+
+    const MIN_WIDTH = 8;
+    const MAX_WIDTH = 20;
+
     // Adjust column widths based on content type
     columnsWithDynamicWidth.forEach(column => {
       let allocatedWidth = baseWidth;
-      
+
       // Columns that typically need less space
       if (column.name === "Delete" || column.name === "Edit") {
-        allocatedWidth = Math.max(MIN_WIDTH, baseWidth ); 
-      } 
+        allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
+      }
       // Columns that might need more space
       else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-        allocatedWidth = Math.min(MAX_WIDTH, baseWidth ); 
+        allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
       }
-      
+
       column.width = `${allocatedWidth}%`;
     });
 
     console.log(columnsWithDynamicWidth, "check the column width")
-    
+
     return columnsWithDynamicWidth;
   };
 
   // Filter columns based on visibility
-  const visibleColumnsArray = columns.filter(column => 
+  const visibleColumnsArray = columns.filter(column =>
     visibleColumns[column.name as keyof typeof visibleColumns]
   );
-  
+
   // Apply dynamic widths to visible columns
   const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
 
@@ -394,19 +418,19 @@ function EnquiryLIst() {
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center border-b pb-2 mb-2">
           <h3 className="font-medium">Customize Columns</h3>
-          <button 
+          <button
             className="text-xs text-blue-600 hover:underline"
             onClick={resetColumnVisibility}
           >
             Reset to Default
           </button>
         </div>
-        
+
         <div className="max-h-80 overflow-y-auto">
           {columns.map((column) => (
             <div key={column.name} className="flex items-center justify-between py-2 border-b border-gray-100">
               <span className="text-sm">{column.name}</span>
-              <Switch 
+              <Switch
                 checked={visibleColumns[column.name as keyof typeof visibleColumns] || false}
                 onChange={() => toggleColumnVisibility(column.name)}
                 size="small"
@@ -415,9 +439,9 @@ function EnquiryLIst() {
             </div>
           ))}
         </div>
-        
+
         <div className="mt-2 flex justify-end">
-          <button 
+          <button
             className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
             onClick={() => setShowColumnSelector(false)}
           >

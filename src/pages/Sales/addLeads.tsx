@@ -9,6 +9,7 @@ import {
   useUpdateLeadById,
 } from "@/services/lead.service";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import { useUserName } from "@/services/user.service";
 
 const AddNewLead = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,8 @@ const AddNewLead = () => {
     email: "",
     phone: "",
     company: "",
+    leadOwner: "",
+    displayName: ""
   });
 
   const { id } = useParams();
@@ -27,6 +30,8 @@ const AddNewLead = () => {
   const { mutateAsync: addLead } = useAddLead();
   const { mutateAsync: updateLead } = useUpdateLeadById();
   const { data: leadDataById } = useLeadById(id || "");
+  const { data: userNames } = useUserName()
+ 
 
   const { canCreate, canView, canUpdate } = checkPermissionsForButtons("Leads");
 
@@ -39,6 +44,9 @@ const AddNewLead = () => {
         email: leadDataById.data.email || "",
         phone: leadDataById.data.phone || "",
         company: leadDataById.data.company || "",
+        leadOwner: leadDataById.data.leadOwner || "",
+        displayName: leadDataById.data.displayName || "",
+
       });
     }
   }, [leadDataById]);
@@ -155,6 +163,48 @@ const AddNewLead = () => {
                 placeholder="Enter first name"
                 className="w-full bg-gray-50 border border-gray-300 rounded-md p-4 placeholder-gray-400"
               />
+            </div>
+
+            {/* Display Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Display Name
+              </label>
+              <input
+                name={"displayName"}
+                value={formData.displayName}
+                onChange={(e) =>
+                  setFormData({ ...formData, displayName: e.target.value })
+                }
+                type="text"
+                placeholder="Enter display name"
+                className="w-full bg-gray-50 border border-gray-300 rounded-md p-4 placeholder-gray-400"
+              />
+            </div>
+
+
+
+            {/* Lead Owner */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Lead Owner
+              </label>
+              <select
+                onChange={(val) =>
+                  handleSelectChange("leadOwner", val.target.value)
+                }
+                value={formData.leadOwner}
+                className="border  border-gray-300 bg-gray-50 rounded-md p-4 w-full text-gray-500 placeholder-gray-400"
+              >
+                <option value="" disabled hidden className=" text-gray-400 ">
+                  Lead Owner
+                </option>
+                {userNames.data.map((option: any) => (
+                  <option key={option.value} value={option.label}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Last Name */}

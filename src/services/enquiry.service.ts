@@ -17,6 +17,7 @@ export interface IEnqiry {
     firstName: string;
     lastName: string;
     phoneNumber: string;
+    displayName: string;
     email: string;
     companyName: string
     levelOfEnquiry: string;
@@ -30,6 +31,8 @@ export interface IEnqiry {
     city: string;
     area: string;
     noOfRooms: string;
+    leadOwner: string;
+    assignTo: string;
     categoryOfHotel: string[];
     priority: string;
     occupancy: string[];
@@ -82,9 +85,13 @@ export interface IEnqiry {
         typeOfVehicle: string;
         mealPlan: [];
     }[];
-    billingAddress: string;
+    billingInstructions: string;
 
 
+}
+
+export interface Inew extends IEnqiry {
+    id: string,
 }
 
 
@@ -105,6 +112,8 @@ export const useEnquiryApiHook = () => {
         return axios.get<GeneralApiResponse<IEnqiry>>(`${BASE_URL}${prefix}/getById/${id}`);
     };
 
+    
+
 
 
     const getAllEnquiry = async (pagination: PaginationState, searchObj: any) => {
@@ -117,7 +126,7 @@ export const useEnquiryApiHook = () => {
     };
 
     const convertToRfp = async (id: any) => {
-        return axios.post<GeneralApiResponse<IEnqiry>>(`${BASE_URL}${prefix}/convert/${id}`);
+        return axios.post<GeneralApiResponse<Inew>>(`${BASE_URL}${prefix}/convert/${id}`);
     }
 
     return {
@@ -127,7 +136,6 @@ export const useEnquiryApiHook = () => {
         getEnquiryById,
         addEnquiry,
         convertToRfp
-
     };
 };
 

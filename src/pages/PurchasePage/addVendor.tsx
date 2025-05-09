@@ -189,6 +189,10 @@ interface IContactPersons {
   contactPersonWorkPhone: string;
   contactPersonMobilePhone: string;
   contactPersonMobile: string;
+  contactPersonDesignation: string;
+  contactPersonDepartment: string;
+  contactPersonDateOfBirth: string;
+  contactPersonAnniversary: string;
 }
 [];
 
@@ -379,6 +383,10 @@ const AddVendorForm = () => {
       contactPersonWorkPhone: "",
       contactPersonMobilePhone: "",
       contactPersonMobile: "",
+      contactPersonDesignation: "",
+      contactPersonDepartment: "",
+      contactPersonDateOfBirth: "",
+      contactPersonAnniversary: "",
     },
   ]);
 
@@ -511,6 +519,10 @@ const AddVendorForm = () => {
         contactPersonWorkPhone: "022-12345678",
         contactPersonMobilePhone: "+919876543211",
         contactPersonMobile: "+919876543211",
+        contactPersonDesignation: "Sales Manager",
+        contactPersonDepartment: "Sales",
+        contactPersonDateOfBirth: "1990-01-01",
+        contactPersonAnniversary: "2015-06-15",
       },
     ]);
 
@@ -783,6 +795,10 @@ const AddVendorForm = () => {
             contactPersonWorkPhone: "",
             contactPersonMobilePhone: "",
             contactPersonMobile: "",
+            contactPersonDesignation: "",
+            contactPersonDepartment: "",
+            contactPersonDateOfBirth: "",
+            contactPersonAnniversary: "",
           },
         ]
       );
@@ -1152,6 +1168,10 @@ const AddVendorForm = () => {
         contactPersonWorkPhone: "",
         contactPersonMobilePhone: "",
         contactPersonMobile: "",
+        contactPersonDesignation: "",
+        contactPersonDepartment: "",
+        contactPersonDateOfBirth: "",
+        contactPersonAnniversary: "",
       },
     ]);
   };
@@ -4028,179 +4048,179 @@ const AddVendorForm = () => {
                                 </>
                               )}
                             </button>
-     {isExpanded && (
-                            <div className="col-span-2 mt-8">
-                              <div className="space-y-8 w-[400px]">
-                                {/* Website URL */}
-                                <div className="flex items-center ">
-                                  <label
-                                    className="w-[200px] text-base font-medium text-gray-700"
-                                    htmlFor="websiteUrl"
-                                  >
-                                    Website URL:
-                                  </label>
-                                  <div className="w-96 flex">
-                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <Globe className="w-4 h-4 text-gray-400" />
+                            {isExpanded && (
+                              <div className="col-span-2 mt-8">
+                                <div className="space-y-8 w-[400px]">
+                                  {/* Website URL */}
+                                  <div className="flex items-center ">
+                                    <label
+                                      className="w-[200px] text-base font-medium text-gray-700"
+                                      htmlFor="websiteUrl"
+                                    >
+                                      Website URL:
+                                    </label>
+                                    <div className="w-96 flex">
+                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                        <Globe className="w-4 h-4 text-gray-400" />
+                                      </div>
+                                      <input
+                                        id="websiteUrl"
+                                        type="text"
+                                        value={otherDetails.websiteUrl}
+                                        onChange={(e) =>
+                                          setOtherDetails({
+                                            ...otherDetails,
+                                            websiteUrl: e.target.value,
+                                          })
+                                        }
+                                        placeholder="Enter Website URL"
+                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      />
                                     </div>
-                                    <input
-                                      id="websiteUrl"
-                                      type="text"
-                                      value={otherDetails.websiteUrl}
-                                      onChange={(e) =>
-                                        setOtherDetails({
-                                          ...otherDetails,
-                                          websiteUrl: e.target.value,
-                                        })
-                                      }
-                                      placeholder="Enter Website URL"
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    />
                                   </div>
-                                </div>
 
-                                {/* Department */}
-                                <div className="flex items-center ">
-                                  <label
-                                    className="w-[200px] text-base font-medium text-gray-700"
-                                    htmlFor="department"
-                                  >
-                                    Department:
-                                  </label>
-                                  <div className="w-96 flex">
-                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <Building2 className="w-4 h-4 text-gray-400" />
+                                  {/* Department */}
+                                  <div className="flex items-center ">
+                                    <label
+                                      className="w-[200px] text-base font-medium text-gray-700"
+                                      htmlFor="department"
+                                    >
+                                      Department:
+                                    </label>
+                                    <div className="w-96 flex">
+                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                        <Building2 className="w-4 h-4 text-gray-400" />
+                                      </div>
+                                      <input
+                                        id="department"
+                                        type="text"
+                                        value={otherDetails.department}
+                                        onChange={(e) =>
+                                          setOtherDetails({
+                                            ...otherDetails,
+                                            department: e.target.value,
+                                          })
+                                        }
+                                        placeholder="Enter Department"
+                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      />
                                     </div>
-                                    <input
-                                      id="department"
-                                      type="text"
-                                      value={otherDetails.department}
-                                      onChange={(e) =>
-                                        setOtherDetails({
-                                          ...otherDetails,
-                                          department: e.target.value,
-                                        })
-                                      }
-                                      placeholder="Enter Department"
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    />
                                   </div>
-                                </div>
 
-                                {/* Designation */}
-                                <div className="flex items-center ">
-                                  <label
-                                    className="w-[200px] text-base font-medium text-gray-700"
-                                    htmlFor="designation"
-                                  >
-                                    Designation:
-                                  </label>
-                                  <div className="w-96 flex">
-                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <UserRound className="w-4 h-4 text-gray-400" />
+                                  {/* Designation */}
+                                  <div className="flex items-center ">
+                                    <label
+                                      className="w-[200px] text-base font-medium text-gray-700"
+                                      htmlFor="designation"
+                                    >
+                                      Designation:
+                                    </label>
+                                    <div className="w-96 flex">
+                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                        <UserRound className="w-4 h-4 text-gray-400" />
+                                      </div>
+                                      <input
+                                        id="designation"
+                                        type="text"
+                                        value={otherDetails.designation}
+                                        onChange={(e) =>
+                                          setOtherDetails({
+                                            ...otherDetails,
+                                            designation: e.target.value,
+                                          })
+                                        }
+                                        placeholder="Enter Designation"
+                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      />
                                     </div>
-                                    <input
-                                      id="designation"
-                                      type="text"
-                                      value={otherDetails.designation}
-                                      onChange={(e) =>
-                                        setOtherDetails({
-                                          ...otherDetails,
-                                          designation: e.target.value,
-                                        })
-                                      }
-                                      placeholder="Enter Designation"
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    />
                                   </div>
-                                </div>
 
-                                {/* Twitter */}
-                                <div className="flex items-center ">
-                                  <label
-                                    className="w-[200px] text-base font-medium text-gray-700"
-                                    htmlFor="twitter"
-                                  >
-                                    Twitter:
-                                  </label>
-                                  <div className="w-96 flex">
-                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <Twitter className="w-4 h-4 text-gray-400" />
+                                  {/* Twitter */}
+                                  <div className="flex items-center ">
+                                    <label
+                                      className="w-[200px] text-base font-medium text-gray-700"
+                                      htmlFor="twitter"
+                                    >
+                                      Twitter:
+                                    </label>
+                                    <div className="w-96 flex">
+                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                        <Twitter className="w-4 h-4 text-gray-400" />
+                                      </div>
+                                      <input
+                                        id="twitter"
+                                        type="text"
+                                        value={otherDetails.twitter}
+                                        onChange={(e) =>
+                                          setOtherDetails({
+                                            ...otherDetails,
+                                            twitter: e.target.value,
+                                          })
+                                        }
+                                        placeholder="Enter Twitter id..."
+                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      />
                                     </div>
-                                    <input
-                                      id="twitter"
-                                      type="text"
-                                      value={otherDetails.twitter}
-                                      onChange={(e) =>
-                                        setOtherDetails({
-                                          ...otherDetails,
-                                          twitter: e.target.value,
-                                        })
-                                      }
-                                      placeholder="Enter Twitter id..."
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    />
                                   </div>
-                                </div>
 
-                                {/* Skype */}
-                                <div className="flex items-center ">
-                                  <label
-                                    className="w-[200px] text-base font-medium text-gray-700"
-                                    htmlFor="skype"
-                                  >
-                                    Skype:
-                                  </label>
-                                  <div className="w-96 flex">
-                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <MessageCircle className="w-4 h-4 text-gray-400" />
+                                  {/* Skype */}
+                                  <div className="flex items-center ">
+                                    <label
+                                      className="w-[200px] text-base font-medium text-gray-700"
+                                      htmlFor="skype"
+                                    >
+                                      Skype:
+                                    </label>
+                                    <div className="w-96 flex">
+                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                        <MessageCircle className="w-4 h-4 text-gray-400" />
+                                      </div>
+                                      <input
+                                        id="skype"
+                                        type="text"
+                                        value={otherDetails.skype}
+                                        onChange={(e) =>
+                                          setOtherDetails({
+                                            ...otherDetails,
+                                            skype: e.target.value,
+                                          })
+                                        }
+                                        placeholder="Enter skype id..."
+                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      />
                                     </div>
-                                    <input
-                                      id="skype"
-                                      type="text"
-                                      value={otherDetails.skype}
-                                      onChange={(e) =>
-                                        setOtherDetails({
-                                          ...otherDetails,
-                                          skype: e.target.value,
-                                        })
-                                      }
-                                      placeholder="Enter skype id..."
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    />
                                   </div>
-                                </div>
 
-                                {/* Facebook */}
-                                <div className="flex items-center">
-                                  <label
-                                    className="w-[200px] text-base font-medium text-gray-700"
-                                    htmlFor="facebook"
-                                  >
-                                    Facebook:
-                                  </label>
-                                  <div className="w-96 flex">
-                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <Facebook className="w-4 h-4 text-gray-400" />
+                                  {/* Facebook */}
+                                  <div className="flex items-center">
+                                    <label
+                                      className="w-[200px] text-base font-medium text-gray-700"
+                                      htmlFor="facebook"
+                                    >
+                                      Facebook:
+                                    </label>
+                                    <div className="w-96 flex">
+                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                        <Facebook className="w-4 h-4 text-gray-400" />
+                                      </div>
+                                      <input
+                                        id="facebook"
+                                        type="text"
+                                        value={otherDetails.facebook}
+                                        onChange={(e) =>
+                                          setOtherDetails({
+                                            ...otherDetails,
+                                            facebook: e.target.value,
+                                          })
+                                        }
+                                        placeholder="Enter facebook id..."
+                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      />
                                     </div>
-                                    <input
-                                      id="facebook"
-                                      type="text"
-                                      value={otherDetails.facebook}
-                                      onChange={(e) =>
-                                        setOtherDetails({
-                                          ...otherDetails,
-                                          facebook: e.target.value,
-                                        })
-                                      }
-                                      placeholder="Enter facebook id..."
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    />
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          )}
+                            )}
                           </div>
                           {/* <div>
                           <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -4399,12 +4419,19 @@ const AddVendorForm = () => {
                                   disablePortal
                                   options={countryOptions}
                                   sx={{ width: 600 }}
+                                  defaultValue={{
+                                    value: "IN - India",
+                                    label: "IN - India",
+                                  }}
                                   value={
                                     countryOptions.find(
                                       (option) =>
                                         option.value ===
                                         billingAddress.billingCountry
-                                    ) || null
+                                    ) || {
+                                      value: "IN - India",
+                                      label: "IN - India",
+                                    }
                                   }
                                   onChange={(event, newValue) => {
                                     setBillingAddress({
@@ -4415,7 +4442,7 @@ const AddVendorForm = () => {
                                   renderInput={(params) => (
                                     <TextField
                                       {...params}
-                                      label="Select Payment Terms"
+                                      label="Country"
                                       InputProps={{
                                         ...params.InputProps,
                                         style: { height: "40px" },
@@ -4628,7 +4655,7 @@ const AddVendorForm = () => {
                                   renderInput={(params) => (
                                     <TextField
                                       {...params}
-                                      label="Select Payment Terms"
+                                      label="Enter State"
                                       InputProps={{
                                         ...params.InputProps,
                                         style: { height: "40px" },
@@ -4757,13 +4784,19 @@ const AddVendorForm = () => {
                                 <Autocomplete
                                   disablePortal
                                   options={countryOptions}
-                                  sx={{ width: 600 }}
+                                  defaultValue={{
+                                    value: "IN - India",
+                                    label: "IN - India",
+                                  }}
                                   value={
                                     countryOptions.find(
                                       (option) =>
                                         option.value ===
                                         shippingAddress.shippingCountry
-                                    ) || null
+                                    ) || {
+                                      value: "IN - India",
+                                      label: "IN - India",
+                                    }
                                   }
                                   onChange={(event, newValue) => {
                                     setShippingAddress({
@@ -4774,7 +4807,7 @@ const AddVendorForm = () => {
                                   renderInput={(params) => (
                                     <TextField
                                       {...params}
-                                      label="Select Payment Terms"
+                                      label="Enter Country/Region"
                                       InputProps={{
                                         ...params.InputProps,
                                         style: { height: "40px" },
@@ -4882,7 +4915,7 @@ const AddVendorForm = () => {
                                   renderInput={(params) => (
                                     <TextField
                                       {...params}
-                                      label="Select Payment Terms"
+                                      label="Enter State"
                                       InputProps={{
                                         ...params.InputProps,
                                         style: { height: "40px" },
@@ -4995,6 +5028,19 @@ const AddVendorForm = () => {
                                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
                                     Mobile
                                   </th>
+                                  
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Department
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Designation
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Date of Birth
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Anniversary Date
+                                  </th>
                                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
                                     Actions
                                   </th>
@@ -5100,6 +5146,72 @@ const AddVendorForm = () => {
                                             e.target.value
                                           )
                                         }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Department */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="text"
+                                        value={person.contactPersonDepartment}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonDepartment",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Designation */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="text"
+                                        value={person.contactPersonDesignation}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonDesignation",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Date of Birth */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="date"
+                                        value={person.contactPersonDateOfBirth}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonDateOfBirth",
+                                            e.target.value
+                                          )
+                                        }
+                                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Anniversary Date */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="date"
+                                        value={person.contactPersonAnniversary}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonAnniversary",
+                                            e.target.value
+                                          )
+                                        }
+                                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                                         className="w-full border rounded p-1 text-sm"
                                       />
                                     </td>

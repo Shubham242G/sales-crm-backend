@@ -19,6 +19,7 @@ export interface IRPF {
     rfpId: string;
     serviceType: [],
     status: string,
+    displayName: string;
     eventDates: [
         {
         startDate: string,

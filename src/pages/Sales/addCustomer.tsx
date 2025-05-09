@@ -920,29 +920,17 @@ const AddCustomer = () => {
                 </div>
 
                 {/* Display Name */}
-                <div className="flex items-center gap-6">
-                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
-                    Display Name:
-                  </span>
-                  <div className="w-96">
-                    {" "}
-                    {/* Added matching width container */}
-                    <select
-                      value={formData.displayName}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          displayName: e.target.value,
-                        })
-                      }
-                      className="w-full border border-gray-300 rounded-md p-2 text-gray-400 text-sm" /* Changed to w-full */
-                    >
-                      <option value="">Select Display Name</option>
-                      <option value="company">Company Name</option>
-                      <option value="contact">Contact Name</option>
-                    </select>
-                  </div>
-                </div>
+                <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
+                <input
+                  type="text"
+                  name="displayName"
+                  value={formData.displayName}
+                  onChange={(e) => setFormData({...formData, displayName: e.target.value})}
+                  placeholder="Display Name"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
 
                 {/* Email Address */}
                 <div className="flex items-center gap-6">

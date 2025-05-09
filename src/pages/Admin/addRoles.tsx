@@ -28,7 +28,7 @@ interface Role {
   phoneNo: string;
   designation: string;
   department: string;
-  parentRoleName?: string; 
+  parentRoleName?: string;
 }
 
 // Permissions for each route
@@ -68,22 +68,22 @@ function AddRoles() {
       permissions: { create: false, view: false, update: false, delete: false },
     },
   ]);
-   const [pageIndex, setPageIndex] = useState(1);
-    const [pageSize, setPageSize] = useState(100);
-    const [query, setQuery] = useState("");
-    const searchObj = useMemo(
-      () => ({
-        ...(query && { query }),
-        pageIndex: pageIndex - 1,
-        pageSize,
-      }),
-      [pageIndex, pageSize, query]
-    );
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(100);
+  const [query, setQuery] = useState("");
+  const searchObj = useMemo(
+    () => ({
+      ...(query && { query }),
+      pageIndex: pageIndex - 1,
+      pageSize,
+    }),
+    [pageIndex, pageSize, query]
+  );
 
-  const {data: allRolesData} = useRoles(searchObj);
-const [parentRoleName, setParentRoleName] = useState<string>("");
+  const { data: allRolesData } = useRoles(searchObj);
+  const [parentRoleName, setParentRoleName] = useState<string>("");
 
-const allRoles = allRolesData?.data || [];
+  const allRoles = allRolesData?.data || [];
 
 
 
@@ -111,7 +111,7 @@ const allRoles = allRolesData?.data || [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if(!roleName || !description || !name ||  !designation || !department){
+    if (!roleName || !description || !name || !designation || !department) {
       return toastError("Please fill all the fields");
     }
     try {
@@ -193,12 +193,12 @@ const allRoles = allRolesData?.data || [];
       prevPermissions.map((rp, i) =>
         i === index
           ? {
-              ...rp,
-              permissions: {
-                ...rp.permissions,
-                [permissionType]: !rp.permissions[permissionType],
-              },
-            }
+            ...rp,
+            permissions: {
+              ...rp.permissions,
+              [permissionType]: !rp.permissions[permissionType],
+            },
+          }
           : rp
       )
     );
@@ -206,23 +206,23 @@ const allRoles = allRolesData?.data || [];
 
   return (
     <div className="bg-gray-100 min-h-screen w-[98%] ml-auto -mt-9  rounded-lg shadow-lg ">
-    <div className="container mx-auto p-10 ">
-      <h1 className="text-2xl font-bold mb-4">
-        {id ? "Edit Role" : "Add New Role"}
-      </h1>
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
-       
-        <div>
-          <label className="block font-medium mb-2">Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
-            placeholder="Enter Name"
-          />
-        </div>
-        <div>
+      <div className="container mx-auto p-10 ">
+        <h1 className="text-2xl font-bold mb-4">
+          {id ? "Edit Role" : "Add New Role"}
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
+
+          <div>
+            <label className="block font-medium mb-2">Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
+              placeholder="Enter Name"
+            />
+          </div>
+          {/* <div>
           <label className="block font-medium mb-2 ">Email</label>
           <input
             type="email"
@@ -251,8 +251,8 @@ const allRoles = allRolesData?.data || [];
             className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
             placeholder="Enter Department"
           />
-        </div>
-        <div>
+        </div> */}
+          {/* <div>
           <label className="block font-medium mb-2">Designation</label>
           <input
             type="text"
@@ -261,158 +261,156 @@ const allRoles = allRolesData?.data || [];
             className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
             placeholder="Enter Designation"
           />
-        </div>
+        </div> */}
+          <div>
+            <label className="block font-medium mb-2">Parent Role</label>
+            <Autocomplete
+              options={allRoles.map((r: any) => r.roleName).filter((r: any) => r !== roleName)}
+              value={parentRoleName}
+              onChange={(_, newValue) => setParentRoleName(newValue || "")}
+              renderInput={(params) => (
+                <TextField {...params} label="Parent Role (for hierarchy)" />
+              )}
+            />
+          </div>
+          <div>
+            <label className="block font-medium mb-4">Role Name</label>
+            <input
+              type="text"
+              value={roleName}
+              onChange={(e) => setRoleName(e.target.value.toUpperCase())}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
+              placeholder="Enter Role Name"
+            />
+          </div>
+          <div>
+            <label className="block font-medium mb-2">Description</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
+              placeholder="Enter Role Description"
+            ></textarea>
+          </div>
 
-        <div>
-
-       
-        <Autocomplete
-  options={allRoles.map((r:any) => r.roleName).filter((r:any) => r !== roleName)}
-  value={parentRoleName}
-  onChange={(_, newValue) => setParentRoleName(newValue || "")}
-  renderInput={(params) => (
-    <TextField {...params} label="Parent Role (for hierarchy)" />
-  )}
-/>
-</div>
-        <div>
-          <label className="block font-medium mb-4">Role Name</label>
-          <input
-            type="text"
-            value={roleName}
-            onChange={(e) => setRoleName(e.target.value.toUpperCase())}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
-            placeholder="Enter Role Name"
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-2">Description</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
-            placeholder="Enter Role Description"
-          ></textarea>
-        </div>
-
-        {/* Permissions Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 p-2 w-1/5">Routes</th>
-                <th className="border border-gray-300 p-2 w-2/5" colSpan={4}>
-                  Permissions
-                </th>
-                <th className="border border-gray-300 p-2 w-2/5" colSpan={4}>
-                  Actions
-                </th>
-                {/* <th className="border border-gray-300 p-2 w-[10%]">Edit</th>
+          {/* Permissions Table */}
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="border border-gray-300 p-2 w-1/5">Routes</th>
+                  <th className="border border-gray-300 p-2 w-2/5" colSpan={4}>
+                    Permissions
+                  </th>
+                  <th className="border border-gray-300 p-2 w-2/5" colSpan={4}>
+                    Actions
+                  </th>
+                  {/* <th className="border border-gray-300 p-2 w-[10%]">Edit</th>
                 <th className="border border-gray-300 p-2 w-[10%]">Delete</th> */}
-              </tr>
-              <tr className="bg-gray-50">
-                <th className="border border-gray-300 p-2"></th>
-                <th className="border border-gray-300 p-2 w-[17%]">Create</th>
-                <th className="border border-gray-300 p-2 w-[17%]">View</th>
-                <th className="border border-gray-300 p-2 w-[17%]">Update</th>
-                <th className="border border-gray-300 p-2 w-[17%]">Delete</th>
-                <th className="border border-gray-300 p-2 w-[6%]">Edit</th>
-                <th className="border border-gray-300 p-2 w-[10%]">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {permissions.map((rp, index) => (
-                <tr key={index} className="border border-gray-300">
-                  <td className="border border-gray-300 p-2 font-medium">
-                    {rp.isEditing ? (
-                      <input
-                        type="text"
-                        value={rp.routeName}
-                        onChange={(e) =>
-                          handleRouteNameChange(index, e.target.value)
-                        }
-                        onBlur={() => handleRouteBlur(index)}
-                        className="w-full p-1 border rounded"
-                        placeholder="Enter route name"
-                        autoFocus
-                      />
-                    ) : (
-                      <div className="flex items-center justify-between">
-                        <span>{rp.routeName}</span>
-                      </div>
-                    )}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    <input
-                      type="checkbox"
-                      checked={rp.permissions.create}
-                      onChange={() => handlePermissionChange(index, "create")}
-                    />
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    <input
-                      type="checkbox"
-                      checked={rp.permissions.view}
-                      onChange={() => handlePermissionChange(index, "view")}
-                    />
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    <input
-                      type="checkbox"
-                      checked={rp.permissions.update}
-                      onChange={() => handlePermissionChange(index, "update")}
-                    />
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    <input
-                      type="checkbox"
-                      checked={rp.permissions.delete}
-                      onChange={() => handlePermissionChange(index, "delete")}
-                    />
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    <button
-                      type="button"
-                      className="text-blue-500 hover:underline"
-                      onClick={() => handleEditClick(index)}
-                    >
-                      Edit
-                    </button>
-                  </td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    <button
-                      type="button"
-                      className="text-red-500 hover:underline"
-                      onClick={() => handleDeleteRoute(index)}
-                    >
-                      Delete
-                    </button>
-                  </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="button flex justify-between mt-5 mb-5 ">
-          <button
-            type="button"
-            className=" flex items-center px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
-            onClick={handleAddNewRoute}
-          >
-            <FaPlus className="mr-2" /> Add New Route
-          </button>
-        
+                <tr className="bg-gray-50">
+                  <th className="border border-gray-300 p-2"></th>
+                  <th className="border border-gray-300 p-2 w-[17%]">Create</th>
+                  <th className="border border-gray-300 p-2 w-[17%]">View</th>
+                  <th className="border border-gray-300 p-2 w-[17%]">Update</th>
+                  <th className="border border-gray-300 p-2 w-[17%]">Delete</th>
+                  <th className="border border-gray-300 p-2 w-[6%]">Edit</th>
+                  <th className="border border-gray-300 p-2 w-[10%]">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {permissions.map((rp, index) => (
+                  <tr key={index} className="border border-gray-300">
+                    <td className="border border-gray-300 p-2 font-medium">
+                      {rp.isEditing ? (
+                        <input
+                          type="text"
+                          value={rp.routeName}
+                          onChange={(e) =>
+                            handleRouteNameChange(index, e.target.value)
+                          }
+                          onBlur={() => handleRouteBlur(index)}
+                          className="w-full p-1 border rounded"
+                          placeholder="Enter route name"
+                          autoFocus
+                        />
+                      ) : (
+                        <div className="flex items-center justify-between">
+                          <span>{rp.routeName}</span>
+                        </div>
+                      )}
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <input
+                        type="checkbox"
+                        checked={rp.permissions.create}
+                        onChange={() => handlePermissionChange(index, "create")}
+                      />
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <input
+                        type="checkbox"
+                        checked={rp.permissions.view}
+                        onChange={() => handlePermissionChange(index, "view")}
+                      />
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <input
+                        type="checkbox"
+                        checked={rp.permissions.update}
+                        onChange={() => handlePermissionChange(index, "update")}
+                      />
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <input
+                        type="checkbox"
+                        checked={rp.permissions.delete}
+                        onChange={() => handlePermissionChange(index, "delete")}
+                      />
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <button
+                        type="button"
+                        className="text-blue-500 hover:underline"
+                        onClick={() => handleEditClick(index)}
+                      >
+                        Edit
+                      </button>
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <button
+                        type="button"
+                        className="text-red-500 hover:underline"
+                        onClick={() => handleDeleteRoute(index)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="button flex justify-between mt-5 mb-5 ">
+              <button
+                type="button"
+                className=" flex items-center px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                onClick={handleAddNewRoute}
+              >
+                <FaPlus className="mr-2" /> Add New Route
+              </button>
 
-        
-          <button
-            type="submit"
-            className="flex items-center px-4 py-2   bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
-          >
-            <FaSave className="mr-2" /> Save Role
-          </button>
-        </div>
-        </div>
-      </form>
-    </div>
+
+
+              <button
+                type="submit"
+                className="flex items-center px-4 py-2   bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+              >
+                <FaSave className="mr-2" /> Save Role
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

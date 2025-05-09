@@ -15,6 +15,7 @@ export interface IQuotesToCustomer {
     customerName: string;
     serviceType: [];
     amount: number;
+    displayName:string;
     status: string;
     markupDetails: {
       label: string;

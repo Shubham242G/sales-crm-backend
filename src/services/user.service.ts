@@ -101,6 +101,10 @@ export const useUserApiHook = () => {
         );
     };
 
+    const getAllUserName = async () => {
+        return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}/getAllUserName`);
+    };
+
     const addExcelData = async (obj: IUser) => {
         return axios.post<GeneralApiResponse>(
             `${BASE_URL}/sportsCenter/excelImportForSportcenter`,
@@ -118,6 +122,7 @@ export const useUserApiHook = () => {
         getUserForSelect,
         addExcelData,
         changePasswordApi,
+        getAllUserName,
     };
 };
 
@@ -167,7 +172,21 @@ export const useUserForSelect = (searchObj: Record<string, unknown> = {}) => {
     });
 };
 
-export const useUser = (
+export const useUserName = () => {
+  const api = useUserApiHook();
+  return useQuery({
+    queryKey: ["UserName"],
+    queryFn: () =>
+      api.getAllUserName().then((res: any) => res?.data),
+    initialData: {
+      data: [],
+      total: 0,
+      message: "",
+    } as unknown as GeneralApiResponsePagination<any>,
+  });
+};
+
+export const useUser= (
     searchObj: Record<string, unknown> = {},
     getPaginationFromParams = true
 ) => {
@@ -185,6 +204,8 @@ export const useUser = (
         },
     });
 };
+
+
 
 export const useDeleteUser = () => {
     const apis = useUserApiHook();

@@ -23,6 +23,7 @@ const AddRfpsForm = () => {
     //new fields
     rfpId: "",
     serviceType: [] as string[],
+    displayName: "",
     eventDates: [
       {
         startDate: "",
@@ -72,6 +73,7 @@ const AddRfpsForm = () => {
         eventDates: rfpDataById.data.eventDates || [
           { startDate: "", endDate: "" },
         ],
+        displayName: rfpDataById.data.displayName || "",
         eventDetails: rfpDataById.data.eventDetails || "",
         deadlineOfProposal: rfpDataById.data.deadlineOfProposal || "",
         vendorList: [...rfpDataById.data.vendorList],
@@ -217,12 +219,28 @@ const AddRfpsForm = () => {
                     name="eventDates"
                     value={moment(el.startDate).format("YYYY-MM-DD") || el.startDate || ""}
                     onChange={(e) => handleInputChangeEventDates(e, index, "start")}
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     type="date"
                     className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
                   />
                 </div>
               ))}
           </div>
+
+          
+            <div>
+              <label className="block text-sm font-medium text-black mb-1">
+                Display Name
+              </label>
+              <input
+                name="displayName"
+                value={formData.displayName}
+                onChange={handleInputChange}
+                type="text"
+                className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
+                placeholder="Enter display name"
+              />
+            </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
@@ -246,6 +264,7 @@ const AddRfpsForm = () => {
               <input
                 name="deadlineOfProposal"
                 value={formData.deadlineOfProposal ? moment(formData.deadlineOfProposal).format("YYYY-MM-DD") : ""}
+                onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                 onChange={handleInputChange}
                 type="date"
                 className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"

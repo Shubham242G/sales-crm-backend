@@ -18,6 +18,7 @@ export interface ISalesContact {
     lastName: string;
     phone: string;
     email: string;
+    displayName: string;
     company:string;
     salutation:string;
     vendorId?: string;

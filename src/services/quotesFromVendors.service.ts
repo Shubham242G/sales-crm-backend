@@ -12,6 +12,7 @@ const prefix = "/QuotesFromVendors";
 
 export interface IQuotesFromVendors {
   quotesId: string;
+  displayName: string;
   vendorList: {
     label: string;
     value: string;

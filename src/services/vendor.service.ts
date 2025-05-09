@@ -171,6 +171,10 @@ export interface IVendor {
     contactPersonWorkPhone: string;
     contactPersonMobilePhone: string;
     contactPersonMobile: string;
+    contactPersonDesignation: string;
+    contactPersonDepartment: string;
+    contactPersonDateOfBirth: string;
+    contactPersonAnniversary: string;
   }[];
 
   documents?: string;
@@ -230,6 +234,7 @@ export const useVendorApiHook = () => {
   };
 
 
+ 
 
 
   const bulkUpload = async (obj: any) => {

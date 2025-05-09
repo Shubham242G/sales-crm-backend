@@ -292,6 +292,8 @@ export interface ContactPerson {
 }
 
 export interface ICustomer {
+
+  _id: string;
   customerType: 'Business' | 'Individual' | string;
   address: Address;
   contactPerson: ContactPerson;

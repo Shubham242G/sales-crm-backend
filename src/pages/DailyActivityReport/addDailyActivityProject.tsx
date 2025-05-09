@@ -125,6 +125,7 @@ const AddDailyActivityReport = () => {
                 type="date"
                 className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                 value={dateOfVisit}
+                onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                 onChange={(e) => setDateOfVisit(e.target.value)}
               />
             </div>
@@ -209,6 +210,7 @@ const AddDailyActivityReport = () => {
               type="datetime-local"
               className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
               value={scheduleMeeting}
+              onClick={(e) => (e.target as HTMLInputElement).showPicker()}
               onChange={(e) => setScheduleMeeting(e.target.value)}
             />
           </div>

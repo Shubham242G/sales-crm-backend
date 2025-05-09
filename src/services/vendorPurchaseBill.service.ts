@@ -172,6 +172,8 @@ export const useGenerateVendorPurchaseBillPdf = () => {
   });
 };
 
+
+
 // Generate PDF from JSON data
 const generatePdfFromJson = (billData: any) => {
   const doc = new jsPDF();

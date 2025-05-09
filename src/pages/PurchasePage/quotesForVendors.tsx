@@ -77,6 +77,11 @@ function CustomerLedger() {
       width: "10%",
     },
     {
+      name: "Display Name",
+      selector: (row: any) => <h6>{row?.displayName}</h6>,
+      width: "10%",
+    },
+    {
       name: "RPFs Id",
       selector: (row: any) => <h6>{row?.rfpId}</h6>,
       width: "10%",

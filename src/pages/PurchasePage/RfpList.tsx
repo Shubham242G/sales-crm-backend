@@ -199,6 +199,14 @@ function RfpList() {
       
     },
     {
+      name: "Display Name",
+      selector: (row: any) => (
+        <div  className="flex  justify-around  "><h6 className="whitespace-normal break-words">{row.displayName}</h6></div>
+      ),
+      width: "20%",
+    },
+
+    {
       name: "Status",
       selector: (row: any) => (
         <div  className="flex  justify-around  "><h6 className="whitespace-normal break-words">{row.status}</h6></div>

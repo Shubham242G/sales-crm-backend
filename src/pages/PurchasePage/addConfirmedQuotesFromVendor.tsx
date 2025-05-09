@@ -530,6 +530,7 @@ const AddConfirmedQuotesFromVendor = () => {
                     },
                   })
                 }
+                onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                 className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                 disabled
               />
@@ -683,6 +684,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
@@ -724,6 +726,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
@@ -831,6 +834,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
@@ -850,6 +854,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
@@ -889,6 +894,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
@@ -910,6 +916,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>
@@ -1031,6 +1038,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                     placeholder="Enter coordination name"
                   />
@@ -1113,6 +1121,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         },
                       })
                     }
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
                   />
                 </div>

@@ -29,6 +29,7 @@ interface IShipppingAddress {
   serviceType: string[];
   rfpId: string;
   amount: string;
+  displayName: string;
   receivedDate: string;
   attachment: string[];
   eventDates: {
@@ -49,6 +50,7 @@ const AddQuotesFromVendors = () => {
     rfpId: "",
     amount: "",
     receivedDate: "",
+    displayName:"",
     attachment: [] as string[],
     eventDates: [
       {
@@ -148,6 +150,7 @@ const AddQuotesFromVendors = () => {
         receivedDate: quotesFromVendorsDataById?.data?.receivedDate || "",
         attachment: quotesFromVendorsDataById?.data?.attachment || [],
         serviceType: quotesFromVendorsDataById?.data?.serviceType || [],
+        displayName: quotesFromVendorsDataById?.data?.displayName || "",
         markupDetails:
           quotesFromVendorsDataById?.data?.markupDetails?.length > 0
             ? quotesFromVendorsDataById?.data?.markupDetails
@@ -381,6 +384,20 @@ const AddQuotesFromVendors = () => {
               />
             </div>
 
+            <div className="mb-3">
+            <label className="block text-sm font-medium text-black mb-1">
+              Display Name
+            </label>
+            <input
+              name={"displayName"}
+              value={formData.displayName}
+              onChange={handleInputChange}
+              type="text"
+              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+              placeholder="Enter Display Name"
+            />
+          </div>
+
             {/* Service Type and Event Date */}
 
             <div>
@@ -449,6 +466,7 @@ const AddQuotesFromVendors = () => {
                 value={formData.receivedDate}
                 onChange={handleInputChange}
                 type="date"
+                onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                 className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
               />
             </div>
