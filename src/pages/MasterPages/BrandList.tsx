@@ -101,7 +101,7 @@ function BrandList() {
       width: "15%",
       selector: (row: any) => (
         <h6
-          className={`text-white text-[0.75rem] py-1 px-3 rounded-sm ${
+          className={`text-white text-[0.75rem] py-1 px-3 rounded-md ${
             row.status ? "bg-greencolor" : "bg-red-500"
           }`}
         >
@@ -163,7 +163,7 @@ function BrandList() {
               <select
                 name=""
                 id=""
-                className="rounded-sm w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
               >
                 <option value="10">10</option>
                 <option value="20">20</option>
@@ -174,7 +174,7 @@ function BrandList() {
             <div className="w-[10%]">
               <input
                 type="search"
-                className="rounded-sm w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
               />
             </div>

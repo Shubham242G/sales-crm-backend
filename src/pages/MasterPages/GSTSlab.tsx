@@ -193,7 +193,7 @@ function GSTSlab() {
               <select
                 value={pagination.pageSize}
                 onChange={(e: any) => handleChangePageSize(e.target.value)}
-                className="rounded-sm w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
               >
                 <option value="1">1</option>
                 <option value="5">5</option>
@@ -206,7 +206,7 @@ function GSTSlab() {
             <div className="w-[10%]">
               <input
                 type="search"
-                className="rounded-sm w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
                 value={queryObj?.query || ""}
                 onChange={(e) => debounceFn(e.target.value)}

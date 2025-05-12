@@ -101,7 +101,7 @@ function CustomerSales() {
           <h6 >{row.customerType}</h6>
         </div>
       ),
-      width: "13%",
+     width: "200px",
     },
     {
       name: "Customer Name",
@@ -110,7 +110,7 @@ function CustomerSales() {
           <h6 >{row.companyName}</h6>
         </div>
       ),
-      width: "15%",
+      width: "180px",
     },
     {
       name: "Display Name",
@@ -119,7 +119,7 @@ function CustomerSales() {
           <h6 >{row.displayName}</h6>
         </div>
       ),
-      width: "15%",
+      width: "180px",
     },
     {
       name: "Branch location",
@@ -128,12 +128,12 @@ function CustomerSales() {
           {row.branchName}
         </div>
       ),
-      width: "17%",
+       width: "180px",
     },
     {
       name: "Email",
       selector: (row: any) => (<h6>{row.email}</h6>),
-      width: "20%",
+      width: "220px",
     },
     // {
     //   name: "Service",
@@ -165,7 +165,7 @@ function CustomerSales() {
     // },
     {
       name: "Edit",
-      width: "10%",
+       width: "100px",
       selector: (row: any) =>
         (canView || canUpdate) && (
           <div className="flex items-center gap-3">
@@ -181,7 +181,7 @@ function CustomerSales() {
     },
     {
       name: "Delete",
-      width: "10%",
+      width: "100px",
       selector: (row: any) =>
         canDelete && (
           <div className="flex items-center gap-3">
@@ -213,7 +213,7 @@ function CustomerSales() {
           <div className="flex items-center gap-2">
             <input
               type="search"
-              className="rounded-sm border px-4 py-2 placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+              className="rounded-md border px-4 py-2 placeholder-txtcolor focus:outline-none focus:border-buttnhover"
               placeholder="Search..."
               value={query}
               onChange={handleSearchInputChange}

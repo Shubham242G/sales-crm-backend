@@ -185,10 +185,10 @@ function VendorList() {
     {
       name: "Phone",
       selector: (row: any) => (
-        <div className="flex gap-1">
-          <FaMobileScreenButton className="text-[#938d8d]" />
+        <h6 className="flex gap-1"> <FaMobileScreenButton className="text-[#938d8d]" />
           {row.vendor?.phoneNumber}
-        </div>
+          </h6>
+         
       ),
       width: "160px",
     },
@@ -199,7 +199,7 @@ function VendorList() {
     },
     {
       name: "Update",
-      width: "120px",
+      width: "80px",
       selector: (row: any) => (
         <div className="flex items-center gap-4">
           <Link to={`/add-vendor/${row?._id}`} title="View Vendor">
@@ -210,7 +210,7 @@ function VendorList() {
     },
     {
       name: "Delete",
-      width: "120px",
+      width: "80px",
       selector: (row: any) => (
         <div className="flex items-center gap-4">
           <button
@@ -409,7 +409,7 @@ function VendorList() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   className="rounded-md w-full border px-4  border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-orange-500"
-                  placeholder="Search by Location (State)..."
+                  placeholder="Search by state"
                 />
               </div>
               {/* Buttons */}
@@ -425,7 +425,7 @@ function VendorList() {
                 Import
               </button>
 
- <div className="relative">
+            <div className="relative">
               <button
                 className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowColumnSelector(!showColumnSelector)}

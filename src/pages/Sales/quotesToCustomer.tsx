@@ -77,7 +77,7 @@ function QuotesForCustomer() {
           <h6>{row.quotesId || "N/A"}</h6>
         </div>
       ),
-      width: "170px",
+      width: "160px",
     },
     {
       name: "Customer Name",
@@ -86,7 +86,7 @@ function QuotesForCustomer() {
           <h6>{row.customerName || "N/A"}</h6>
         </div>
       ),
-      width: "190px",
+      width: "160px",
     },
     {
       name: "Service",
@@ -120,7 +120,7 @@ function QuotesForCustomer() {
           <h6>{row.displayName|| 0}</h6>
         </div>
       ),
-      width: "12%",
+      width: "140px",
     },
     {
       name: "Status",
@@ -195,7 +195,7 @@ function QuotesForCustomer() {
             <div className="w-full">
               <input
                 type="search"
-                className="rounded-sm w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
                 value={query}
                 onChange={handleSearchChange}

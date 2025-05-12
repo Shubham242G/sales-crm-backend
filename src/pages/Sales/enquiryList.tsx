@@ -201,7 +201,7 @@ export default function EnquiryLIst() {
           <h6>{row.firstName + " " + row.lastName}</h6>
         </div>
       ),
-      width: "10%",
+       width: "150px",
     },
     {
       name: "Assigned To",
@@ -210,7 +210,7 @@ export default function EnquiryLIst() {
           <h6>{row.assignTo}</h6>
         </div>
       ),
-      width: "10%",
+      width: "150px",
     },
     {
       name: "Display Name",
@@ -219,7 +219,7 @@ export default function EnquiryLIst() {
           <h6>{row.displayName}</h6>
         </div>
       ),
-      width: "10%",
+      width: "150px",
     },
     {
       name: "Enquiry Type",
@@ -505,7 +505,7 @@ export default function EnquiryLIst() {
             <div className="min-w-[200px] flex-grow sm:flex-grow-0 sm:w-64">
               <input
                 type="search"
-                className="rounded-sm w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
                 onChange={(e) => setQuery(e.target.value)}
               />

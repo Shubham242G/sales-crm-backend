@@ -4,7 +4,7 @@ import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaFilter, FaFileExport, FaPlus, FaFileImport, FaTasks } from "react-icons/fa";
+import { FaFilter, FaFileExport, FaPlus, FaFileImport, FaTasks, FaColumns } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoMdArrowDropdown } from "react-icons/io";
 import {
@@ -23,7 +23,7 @@ import { generateFilePath } from "@/services/urls.service";
 import { checkPermissionsForButtons } from "@/utils/permission";
 
 import AdvancedSearch, { SearchField } from "@/utils/advancedSearch";
-import { Modal } from "@mui/material";
+import { Modal, Switch } from "@mui/material";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { useMutation } from "@tanstack/react-query";
 import { SiConvertio } from "react-icons/si";
@@ -278,19 +278,20 @@ function Leads() {
 
   const columns = [
     {
-      name: (
-        <input
-          type="checkbox"
-          onChange={(e) => {
-            const isChecked = e.target.checked;
-            if (isChecked) {
-              setSelectedRows(leadData.data.map((row:any) => row._id));
-            } else {
-              setSelectedRows([]);
-            }
-          }}
-        />
-      ),
+      name:'Select',
+       
+      //   <input
+      //     type="checkbox"
+      //     onChange={(e) => {
+      //       const isChecked = e.target.checked;
+      //       if (isChecked) {
+      //         setSelectedRows(leadData.data.map((row:any) => row._id));
+      //       } else {
+      //         setSelectedRows([]);
+      //       }
+      //     }}
+      //   />
+    
       cell: (row: any) => (
         <input
           type="checkbox"
@@ -304,7 +305,7 @@ function Leads() {
           }}
         />
       ),
-      width: "5%",
+      width: "30px",
     },
     {
       name: "Contact Name",
@@ -313,7 +314,7 @@ function Leads() {
           <h6 className="ml-2">{row.firstName + " " + row.lastName}</h6>
         </div>
       ),
-      width: "220px",
+      width: "180px",
     },
     // {
     //   name: "Account Manager",
@@ -323,26 +324,26 @@ function Leads() {
     {
       name: "Mobile Number",
       selector: (row: any) => (
-        <div className="flex gap-1">
+        <h6 className="flex gap-1">
           <FaMobileScreenButton className="text-[#938d8d]" />
           {row.phone}
-        </div>
+        </h6>
       ),
-      width: "220px",
+      width: "190px",
     },
     {
       name: "Company Name",
-      selector: (row: any) => <div className="flex gap-1">{row.company}</div>,
-      width: "22%",
+      selector: (row: any) => <h6 className="flex gap-1">{row.company}</h6>,
+       width: "200px",
     },
     {
       name: "Display Name",
-      selector: (row: any) => <div className="flex gap-1">{row.displayName}</div>,
-      width: "22%",
+      selector: (row: any) => <h6>{row.displayName}</h6>,
+        width: "180px",
     },
     {
       name: "Email",
-      selector: (row: any) => row.email,
+      selector: (row: any) => <h6>{row.email}</h6>,
       width: "230px",
     },
     {
@@ -374,7 +375,7 @@ function Leads() {
     },
     {
       name: "Convert to contact",
-      width: "8%",
+     width: "140px",
       selector: (row: any) => (
         <button
           type="button"
@@ -387,7 +388,7 @@ function Leads() {
     },
     {
       name: "Convert to Enquiry",
-      width: "8%",
+     width: "140px",
       selector: (row: any) => (
         <button
           type="button"
@@ -466,6 +467,129 @@ function Leads() {
     }
   });
 
+     const [showColumnSelector, setShowColumnSelector] = useState(false);
+    // Toggle column visibility
+    const [visibleColumns, setVisibleColumns] = useState({
+      "Enquiry ID": true,
+      "Event Date": true,
+      "Deadline for proposal": true,
+      "Services": true,
+      "Status": true,
+      "Edit": canView || canUpdate,
+      "Delete": canDelete,
+      "Convert to Quotes from Vendor": true
+    }); 
+    useEffect(() => {
+      const savedColumns = localStorage.getItem('enquiryTableColumns');
+      if (savedColumns) {
+        setVisibleColumns(JSON.parse(savedColumns));
+      }
+    }, []);
+  
+    useEffect(() => {
+      localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
+    }, [visibleColumns]);
+    const toggleColumnVisibility = (columnName: string) => {
+      setVisibleColumns(prev => ({
+        ...prev,
+        [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev]
+      }));
+    };
+    const ColumnSelector = () => (
+      <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-10 border border-gray-200 right-0 w-72">
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between items-center border-b pb-2 mb-2">
+            <h3 className="font-medium">Customize Columns</h3>
+            <button 
+              className="text-xs text-blue-600 hover:underline"
+              onClick={resetColumnVisibility}
+            >
+              Reset to Default
+            </button>
+          </div>
+          
+          <div className="max-h-80 overflow-y-auto">
+            {columns.map((column) => (
+              <div key={String(column.name)} className="flex items-center justify-between py-2 border-b border-gray-100">
+                <span className="text-sm">{column.name}</span>
+                <Switch
+                  checked={visibleColumns[column.name as keyof typeof visibleColumns] || false}
+                  onChange={() => toggleColumnVisibility(String(column.name))}
+                  size="small"
+                  color="primary"
+                />
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-2 flex justify-end">
+            <button 
+              className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+              onClick={() => setShowColumnSelector(false)}
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  
+    const calculateDynamicWidths = (columnsArray: any[]) => {
+      const visibleColumnsCount = columnsArray.length;
+      
+      if (visibleColumnsCount === 0) return columnsArray;
+      
+      const columnsWithDynamicWidth = columnsArray.map(column => ({...column}));
+      
+      const baseWidth = 100 / visibleColumnsCount; 
+  
+      const MIN_WIDTH = 8; 
+      const MAX_WIDTH = 20; 
+  
+      columnsWithDynamicWidth.forEach(column => {
+        let allocatedWidth = baseWidth;
+  
+        // Columns that typically need less space
+        if (column.name === "Delete" || column.name === "Edit") {
+          allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
+        }
+        // Columns that might need more space
+        else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
+          allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
+        }
+  
+        column.width = `${allocatedWidth}%`;
+      });
+  
+      console.log(columnsWithDynamicWidth, "check the column width")
+      
+      return columnsWithDynamicWidth;
+    };
+  
+    // Filter columns based on visibility
+    const visibleColumnsArray = columns.filter(column => 
+      visibleColumns[column.name as keyof typeof visibleColumns]
+    );
+    
+    // Apply dynamic widths to visible columns
+    const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+  
+    const resetColumnVisibility = () => {
+      setVisibleColumns({
+         "Enquiry ID": true,
+      "Event Date": true,
+      "Deadline for proposal": true,
+      "Services": true,
+      "Status": true,
+      "Edit": canView || canUpdate,
+      "Delete": canDelete,
+      "Convert to Quotes from Vendor": true
+      });
+    };
+
+
+
+
   return (
     <>
       <div className="container px-6">
@@ -502,6 +626,16 @@ function Leads() {
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button>
+           <div className="relative">
+                            <button
+                              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                              onClick={() => setShowColumnSelector(!showColumnSelector)}
+                            >
+                              <FaColumns /> Columns
+                            </button>
+                            {showColumnSelector && <ColumnSelector />}
+                          </div>
+
 
               {/* Assign Button */}
               <button
@@ -626,7 +760,9 @@ function Leads() {
           {/* React Table */}
           <ReactTable
             data={leadData?.data}
-            columns={filterColumns}
+            
+ columns={filteredColumns}
+
             loading={false}
             totalRows={leadData?.total}
             onChangeRowsPerPage={setPageSize}
@@ -634,12 +770,7 @@ function Leads() {
             page={pageIndex}
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
-          // loading={loading}
-          // totalRows={data.length}
-          // onChangePage={handlePageChange}
-          // onChangeRowsPerPage={handleRowsPerPageChange}
-          // paginationPerPage={rowsPerPage}
-          // paginationRowsPerPageOptions={[5, 10, 20]}
+       
           />
         </div>
       </div>

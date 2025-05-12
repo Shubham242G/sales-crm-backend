@@ -127,7 +127,7 @@ export default function DebitCreditNote() {
     {
       name: "Tally",
       selector: () => (
-        // <h6 className="bg-greencolor text-white text-[0.75rem] py-1 p-3 rounded-sm">Unread</h6>,
+        // <h6 className="bg-greencolor text-white text-[0.75rem] py-1 p-3 rounded-md">Unread</h6>,
         <h6 className="bg-red-500 text-white text-[0.75rem] py-1 p-3 rounded-xl">
           Unread
         </h6>
@@ -244,7 +244,7 @@ export default function DebitCreditNote() {
               <select
                 name=""
                 id=""
-                className="rounded-sm w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
               >
                 <option value="10">10</option>
                 <option value="20">20</option>
@@ -255,7 +255,7 @@ export default function DebitCreditNote() {
             <div className="w-[10%]">
               <input
                 type="search"
-                className="rounded-sm w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
               />
             </div>

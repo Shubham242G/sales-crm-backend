@@ -78,7 +78,7 @@ export default function Agent() {
       name: "Status",
       width: "10%",
       selector: () => (
-        <h6 className="bg-greencolor text-white text-[0.75rem] py-1 p-3 rounded-sm">
+        <h6 className="bg-greencolor text-white text-[0.75rem] py-1 p-3 rounded-md">
           Active
         </h6>
       ),
@@ -198,7 +198,7 @@ export default function Agent() {
               <select
                 name=""
                 id=""
-                className="rounded-sm w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
               >
                 <option value="10">10</option>
                 <option value="20">20</option>
@@ -209,7 +209,7 @@ export default function Agent() {
             <div className="w-[10%]">
               <input
                 type="search"
-                className="rounded-sm w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
               />
             </div>

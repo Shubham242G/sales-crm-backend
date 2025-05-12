@@ -15,9 +15,9 @@ export default function Breadcrumb({pageTitle,addbuttn,excelbuttn,printbuttn,fil
     <li>
       {
         withLink ?
-        <Link to={addbuttnurl} className="bg-yellowcolor hover:bg-greencolor py-2 px-4 text-text15 h-[32px] font-medium text-white rounded-sm">+ Add</Link>
+        <Link to={addbuttnurl} className="bg-yellowcolor hover:bg-greencolor py-2 px-4 text-text15 h-[32px] font-medium text-white rounded-md">+ Add</Link>
         :
-        <button type="button" onClick={handleOpenCreateModal} className="bg-yellowcolor hover:bg-greencolor py-2 px-4 text-text15 h-[32px] font-medium text-white rounded-sm">+ Add {additionaltext}</button>
+        <button type="button" onClick={handleOpenCreateModal} className="bg-yellowcolor hover:bg-greencolor py-2 px-4 text-text15 h-[32px] font-medium text-white rounded-md">+ Add {additionaltext}</button>
       }
    
 </li>
@@ -27,7 +27,7 @@ export default function Breadcrumb({pageTitle,addbuttn,excelbuttn,printbuttn,fil
   {
     excelbuttn ?
     <li>
-    <Link to="/" className="bg-greencolor hover:bg-[#699834] py-2 px-3 text-text15 font-medium text-white rounded-sm">Export to Excel</Link>
+    <Link to="/" className="bg-greencolor hover:bg-[#699834] py-2 px-3 text-text15 font-medium text-white rounded-md">Export to Excel</Link>
 </li>
     :
     ""
@@ -35,7 +35,7 @@ export default function Breadcrumb({pageTitle,addbuttn,excelbuttn,printbuttn,fil
   {
     printbuttn ?
     <li>
-    <button type="button" className="bg-[#009efb] hover:bg-[#009ffbc7] py-[6px] px-5 text-text15 font-medium text-white rounded-sm flex items-center gap-2"> <FaPrint />Print</button>
+    <button type="button" className="bg-[#009efb] hover:bg-[#009ffbc7] py-[6px] px-5 text-text15 font-medium text-white rounded-md flex items-center gap-2"> <FaPrint />Print</button>
 </li>
     :
     ""
@@ -44,7 +44,7 @@ export default function Breadcrumb({pageTitle,addbuttn,excelbuttn,printbuttn,fil
   {
     filterbuttn ?
     <li>
-    <button type="button" onClick={handleOpenFilterModal} className="bg-yellowcolor hover:bg-greencolor h-[32px]  flex items-center gap-1 py-2 px-4 text-text15  font-medium text-white rounded-sm"><MdOutlineFilterAlt /> Filter</button>
+    <button type="button" onClick={handleOpenFilterModal} className="bg-yellowcolor hover:bg-greencolor h-[32px]  flex items-center gap-1 py-2 px-4 text-text15  font-medium text-white rounded-md"><MdOutlineFilterAlt /> Filter</button>
 </li>
     :
     ""

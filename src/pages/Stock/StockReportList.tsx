@@ -103,7 +103,7 @@ Stock: 6" // in active page its all about the product data dynamically from the 
               <select
                 name=""
                 id=""
-                className="rounded-sm w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
               >
                 <option value="10">10</option>
                 <option value="20">20</option>
@@ -114,7 +114,7 @@ Stock: 6" // in active page its all about the product data dynamically from the 
             <div className="w-[10%]">
               <input
                 type="search"
-                className="rounded-sm w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
               />
             </div>

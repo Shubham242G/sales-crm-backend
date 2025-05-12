@@ -331,10 +331,10 @@ function ZohoInvoiceView() {
                             type="search"
                             placeholder="Search customer..."
                             onChange={(e) => setQuery(e.target.value)}
-                            className="border border-gray-300 px-4 py-2 rounded-sm placeholder-gray-500"
+                            className="border border-gray-300 px-4 py-2 rounded-md placeholder-gray-500"
                         />
                         <select
-                            className="border border-gray-300 px-4 py-2 rounded-sm"
+                            className="border border-gray-300 px-4 py-2 rounded-md"
                             value={selectedStatus}
                             onChange={(e) => setSelectedStatus(e.target.value)}
                         >

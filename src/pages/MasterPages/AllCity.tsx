@@ -153,7 +153,7 @@ const [pageSize, setPageSize] = useState(10);
       name: "Status",
       width: "20%",
       selector: (row: any) => (
-        <h6 className={`${row.status == true ? "bg-greencolor" : "bg-red-400"} text-white text-[0.75rem] py-1 p-3 rounded-sm`}>{row.status ? "Active" : "In-Active"}</h6>
+        <h6 className={`${row.status == true ? "bg-greencolor" : "bg-red-400"} text-white text-[0.75rem] py-1 p-3 rounded-md`}>{row.status ? "Active" : "In-Active"}</h6>
       ),
     },
     {
@@ -215,7 +215,7 @@ const [pageSize, setPageSize] = useState(10);
               <select
                 value={pagination.pageSize}
                 onChange={(e: any) => handleChangePageSize(e.target.value)}
-                className="rounded-sm w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  focus:outline-none focus:border-buttnhover"
               >
                 <option value="1">1</option>
                 <option value="5">5</option>
@@ -228,7 +228,7 @@ const [pageSize, setPageSize] = useState(10);
             <div className="w-[10%]">
               <input
                 type="search"
-                className="rounded-sm w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border border-buttnhover p-2  placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
                 onChange={(e) => debounceFn(e.target.value)}
               />

@@ -15,8 +15,8 @@ const customStyles: any = {
 
   table: {
     style: {
-      whiteSpace: 'nowrap',       // ✅ Allows wrapping
-      wordBreak: 'break-word',    // ✅ Breaks long words
+      whiteSpace: 'nowrap',       
+      wordBreak: 'break-word',    
       textAlign: 'center',
       marginTop: "10px",
       borderTopLeftRadius: "8px",
@@ -51,76 +51,42 @@ const customStyles: any = {
       borderBottomStyle: "solid",
       background: "linear-gradient(to right, #fef3c7, #fefce8, #fef3c7)",
       justifyContent: "space-between",
-      // backgroundColor: "#0B2F46",
-      // background: 'var(--Light Grayish Blue)',
+      
 
     },
   },
 
+ 
+
+
   headCells: {
-  style: {
-    color: "#1f2937", // Tailwind's gray-800
-    fontSize: "15px",
-    fontWeight: 600,
-    whiteSpace: "nowrap",
-    wordBreak: "break-word",
-    textAlign: "center",
-    paddingTop: "10px",
-    paddingBottom: "10px",
-    paddingLeft: "12px",
-    paddingRight: "12px",
-    borderBottom: "2px solid #e5e7eb", // Tailwind gray-200
+    style: {
+
+      color: "grey-700",
+      fontSize: '15px',
+      fontWeight: '600',
+      overflow: 'unset',
+      whiteSpace: 'nowrap',       
+      wordBreak: 'break-word',    
+      textAlign: 'center',
+      paddingTop: '5px',
+      
+    },
   },
-},
 
-cells: {
-  style: {
-    fontSize: "14px",
-    fontWeight: 500,
-    color: "#344054", // Consistent dark gray
-    padding: "10px 12px", // Corrected "Padding" to "padding" and made spacing even
-    whiteSpace: "normal",
-    lineHeight: "1.6",
-    backgroundColor: "#ffffff", // Clean background
-    borderBottom: "1px solid #f3f4f6", // Soft bottom border
-    display: "flex",
-    alignItems: "center",
-    h6: {
-               whiteSpace: "normal",       
-         },
+
+
+  cells: {
+    style: {
+      fontSize: "14px",
+      fontWeight: "500",
+      color: "#344054",
+      Padding: "6px",
+      h6: {
+          whiteSpace: "normal",       
+      },
+    },
   },
-},
-  // headCells: {
-  //   style: {
-
-
-  //     // borderRight: "1px solid #e5e5e5",
-  //     // overflow: "unset",
-  //     color: "grey-700",
-  //     fontSize: '15px',
-  //     fontWeight: '600',
-  //     overflow: 'unset',
-  //     whiteSpace: 'nowrap',       // ✅ Allows wrapping
-  //     wordBreak: 'break-word',    // ✅ Breaks long words
-  //     textAlign: 'center',
-  //     paddingTop: '5px',
-  //     // Optional: for centered text
-  //   },
-  // },
-
-
-
-  // cells: {
-  //   style: {
-  //     fontSize: "14px",
-  //     fontWeight: "500",
-  //     color: "#344054",
-  //     Padding: "6px",
-  //     h6: {
-  //         whiteSpace: "normal",       
-  //     },
-  //   },
-  // },
 
 
 
