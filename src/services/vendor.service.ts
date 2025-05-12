@@ -9,6 +9,7 @@ import BASE_URL, {
 import axios from "../libs/hooks/axios";
 import jsPDF from "jspdf";
 
+
 const prefix = "/vendor";
 export interface IVendor {
   vendor: {
@@ -226,6 +227,12 @@ export const useVendorApiHook = () => {
     };
 
 
+   const syncVendors = async () => {
+     return axios.post<GeneralApiResponse<{ createdCount: number, updatedCount: number }>>(`${BASE_URL}${prefix}/sync`);
+   };   
+
+
+
 
   const getAllVendorName = async () => {
 
@@ -252,6 +259,7 @@ export const useVendorApiHook = () => {
     getAllVendorName,
     bulkUpload,
     generatePdf,
+    syncVendors,
   };
 };
 
@@ -333,6 +341,17 @@ export const useBulkUpload = () => {
 }
 
 
+export const useSyncZohoVendors = () => {
+  const queryClient = useQueryClient();
+  const api = useVendorApiHook();
+
+  return useMutation({
+    mutationFn: api.syncVendors,
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ["zohoVendors"] });
+    },
+  });
+};
 
 
 export const useConvertVendorToSalesContact = () => {

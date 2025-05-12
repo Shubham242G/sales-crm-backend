@@ -12,11 +12,12 @@ import {
   useUpdateVendorById,
   useConvertVendorToSalesContact,
   useBulkUpload,
-  
+  useSyncZohoVendors
 } from "@/services/vendor.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { SiConvertio } from "react-icons/si";
+import { useSyncZohoInvoices } from "@/services/zoho_invoice.service";
 
 function VendorList() {
   const navigate = useNavigate();
@@ -49,6 +50,8 @@ function VendorList() {
   const { mutateAsync: convertVendorToSalesContact } =
     useConvertVendorToSalesContact();
 
+    const syncVendorsMutation = useSyncZohoVendors();
+
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Vendors");
 
@@ -59,6 +62,16 @@ function VendorList() {
   // Handle Import button click
   const handleImportClick = () => {
     fileInputRef.current?.click();
+  };
+
+   const handleSyncVendors = async () => {
+          try {
+              const result = await syncVendorsMutation.mutateAsync();
+              toastSuccess(`Successfully synced! Created: ${result.data.data.createdCount}, Updated: ${result.data.data.updatedCount}`);
+              refetch(); // Refresh the data after sync
+          } catch (error) {
+              toastError("Failed to sync invoices");
+          }
   };
 
   const handleFileChange = async (
@@ -209,7 +222,8 @@ function VendorList() {
           </button>
         </div>
       ),
-    }
+    },
+    
     // {
     //   name: "Convert to Sales Contact",
     //   width: "14%",
@@ -302,7 +316,7 @@ function VendorList() {
                 onChange={handleFileChange}
               />
 
-              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300" onClick={()=>handleSyncVendors()}>
                 <FaFileExport /> Export
               </button>
 
