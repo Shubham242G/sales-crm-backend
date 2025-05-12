@@ -6,6 +6,7 @@ import {
   FaFilter,
   FaFileExport,
   FaPlus,
+  FaEye,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
@@ -15,6 +16,7 @@ import {
   usedeleteQuotesToCustomerById,
 } from "@/services/quotesToCustomer.service";
 import { toastError, toastSuccess } from "@/utils/toast";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 interface IQuotesToCustomer {
   _id: string;
@@ -75,7 +77,7 @@ function QuotesForCustomer() {
           <h6>{row.quotesId || "N/A"}</h6>
         </div>
       ),
-      width: "13%",
+      width: "170px",
     },
     {
       name: "Customer Name",
@@ -84,23 +86,23 @@ function QuotesForCustomer() {
           <h6>{row.customerName || "N/A"}</h6>
         </div>
       ),
-      width: "16%",
+      width: "190px",
     },
     {
       name: "Service",
       selector: (row: IQuotesToCustomer) => (
-        <div className="flex justify-around gap-1 flex-col">
+        <div className="flex flex-wrap justify-around">
           {(row.serviceType || []).map((service: string, index: number) => (
             <div
               key={index}
-              className="border border-b-purple-300 py-1 px-3 text-center  bg-gray-200 rounded-md"
+              className="bg-purple-100 text-purple-800 text-sm px-3 py-1 mb-1 rounded-full border border-purple-300 shadow-sm"
             >
               {service}
             </div>
           ))}
         </div>
       ),
-      width: "15%",
+      width: "180px",
     },
     {
       name: "Amount",
@@ -109,7 +111,7 @@ function QuotesForCustomer() {
           <h6>{row.amount || 0}</h6>
         </div>
       ),
-      width: "12%",
+      width: "130px",
     },
     {
       name: "Display Name",
@@ -127,7 +129,7 @@ function QuotesForCustomer() {
           <h6>{row.status || "N/A"}</h6>
         </div>
       ),
-      width: "15%",
+      width: "180px",
     },
     {
       name: "Total Amount",
@@ -136,29 +138,31 @@ function QuotesForCustomer() {
           <h6>{row.totalAmount || "N/A"}</h6>
         </div>
       ),
-      width: "12%",
+      width: "130px",
     },
     {
       name: "Edit",
-      width: "7%",
-      selector: (row: IQuotesToCustomer & { _id: string }) => (
+      width: "100px",
+            selector: (row: IQuotesToCustomer & { _id: string }) => (
         <button
           onClick={() => navigate(`/addQuotesToCustomer/${row._id}`)}
           className="text-black-500 text-lg  hover:bg-black-100 rounded-full transition duration-200 "
         >
-          <FaEdit />
+            
+            <FaEye className=" hover:text-orange-500" />
         </button>
       ),
     },
     {
       name: "Delete",
-      width: "10%",
+      width: "100px",
       selector: (row: IQuotesToCustomer & { _id: string }) => (
         <button
           onClick={() => handleDelete(row._id)}
           className="text-black-500 text-lg  hover:bg-black-100 rounded-full transition duration-200"
         >
-          <FaTrash />
+            <RiDeleteBin6Line className="hover:text-red-600"/>
+                   
         </button>
       ),
     },

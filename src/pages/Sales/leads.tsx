@@ -313,7 +313,7 @@ function Leads() {
           <h6 className="ml-2">{row.firstName + " " + row.lastName}</h6>
         </div>
       ),
-      width: "20%",
+      width: "220px",
     },
     // {
     //   name: "Account Manager",
@@ -328,7 +328,7 @@ function Leads() {
           {row.phone}
         </div>
       ),
-      width: "18%",
+      width: "220px",
     },
     {
       name: "Company Name",
@@ -343,31 +343,32 @@ function Leads() {
     {
       name: "Email",
       selector: (row: any) => row.email,
-      width: "24%",
+      width: "230px",
     },
     {
       name: "Edit",
-      width: " 8%",
+      width: "140px",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => navigate(`/add-leads/${row._id}`)}
           className="text-black-500 text-lg "
         >
-          <FaEye className="ml-1" />
+          
+          <FaEye className=" hover:text-orange-500" />
         </button>
       ),
     },
     {
       name: "Delete",
-      width: "8%",
+      width: "140px",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => handleDelete(row._id)}
           className=" text-black-400 text-lg"
         >
-          <RiDeleteBin6Line />
+            <RiDeleteBin6Line className="hover:text-red-600" />
         </button>
       ),
     },
@@ -394,6 +395,7 @@ function Leads() {
           className=" text-black-400 text-lg"
         >
           <SiConvertio />
+           
         </button>
       ),
     },

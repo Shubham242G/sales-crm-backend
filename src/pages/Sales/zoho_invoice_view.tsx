@@ -294,7 +294,8 @@ function ZohoInvoiceView() {
             selector: (row: any) => (
 
                 <Link to={`/invoicesById/${row.invoice_id}`} className="text-lg text-black-400 p-1">
-                    <FaEye />
+  
+          <FaEye className=" hover:text-orange-500" />
                 </Link>
 
             ),
@@ -313,7 +314,7 @@ function ZohoInvoiceView() {
                 </button>
 
             ),
-            width: "8%",
+            width: "10%",
         },
     ];
 

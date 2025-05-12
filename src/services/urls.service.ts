@@ -1,5 +1,7 @@
 
 ////// live url
+
+
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_VERSION}`
 export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`
 export const NEXT_APP_BASE_URL = `${process.env.NEXT_PUBLIC_APP_API_URL}`
@@ -10,6 +12,8 @@ export const generateFilePath = (fileName: any) => {
   return `${process.env.NEXT_PUBLIC_API_URL}/uploads/${fileName}`;
 };
 
+
+console.log("BASE_URL", BASE_URL)
 
 export default BASE_URL
 

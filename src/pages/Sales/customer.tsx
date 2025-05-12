@@ -191,7 +191,8 @@ function CustomerSales() {
               className=" text-black-400 text-lg "
               title="Delete Customer"
             >
-              <RiDeleteBin6Line />
+              <RiDeleteBin6Line className="hover:text-red-600"/>
+              
             </button>
           </div>
         ),

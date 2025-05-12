@@ -31,13 +31,11 @@ import { SiConvertio } from "react-icons/si";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { c } from "vite/dist/node/types.d-aGj9QkWt";
 
-
-
-function EnquiryLIst() {
+export default function EnquiryLIst() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [showColumnSelector, setShowColumnSelector] = useState(false);
+ 
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Enquiry");
@@ -90,16 +88,7 @@ function EnquiryLIst() {
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
 
   // Save column preferences to localStorage
-  useEffect(() => {
-    const savedColumns = localStorage.getItem('enquiryTableColumns');
-    if (savedColumns) {
-      setVisibleColumns(JSON.parse(savedColumns));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
-  }, [visibleColumns]);
+ 
 
   const handleImportClick = () => {
     fileInputRef.current?.click();
@@ -199,30 +188,10 @@ function EnquiryLIst() {
     }
   };
 
-  // Toggle column visibility
-  const toggleColumnVisibility = (columnName: string) => {
-    setVisibleColumns(prev => ({
-      ...prev,
-      [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev]
-    }));
-  };
+  
 
   // Reset column visibility to default
-  const resetColumnVisibility = () => {
-    setVisibleColumns({
-      "Customer Name": true,
-      "Enquiry Type": true,
-      "Loaction": true,
-      "Level of Enquiry": true,
-      "Check-In": true,
-      "Check-Out": true,
-      "Number of Rooms": true,
-      "Status": true,
-      "Edit": canView || canUpdate,
-      "Delete": canDelete,
-      "Convert to Enquiry": true
-    });
-  };
+
 
   const columns = [
     {
@@ -256,10 +225,10 @@ function EnquiryLIst() {
       name: "Enquiry Type",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{row.enquiryType}</h6>
+          <h6 className="capitalize" >{row.enquiryType}</h6>
         </div>
       ),
-      width: "9%",
+      width: "150px",
     },
     {
       name: "Loaction",
@@ -268,7 +237,7 @@ function EnquiryLIst() {
           <h6>{row.city}</h6>
         </div>
       ),
-      width: "11%",
+      width: "150px",
     },
     {
       name: "Level of Enquiry",
@@ -281,19 +250,19 @@ function EnquiryLIst() {
               : row.levelOfEnquiry === "urgent" && "bg-red-300 text-red-600"
             }`}
         >
-          <h6>{row.levelOfEnquiry}</h6>
+          <h5 className="capitalize">{row.levelOfEnquiry}</h5>
         </div>
       ),
-      width: "10%",
+      width: "150px",
     },
     {
       name: "Check-In",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{moment(row.checkIn).format("YYYY-MM-DD")}</h6>
+          <h5>{moment(row.checkIn).format("YYYY-MM-DD")}</h5>
         </div>
       ),
-      width: "9%",
+      width: "150px",
     },
     {
       name: "Check-Out",
@@ -302,12 +271,12 @@ function EnquiryLIst() {
           <h6>{moment(row.checkOut).format("YYYY-MM-DD")}</h6>
         </div>
       ),
-      width: "10%",
+      width: "150px",
     },
     {
       name: "Number of Rooms",
       selector: (row: any) => row.noOfRooms,
-      width: "8%",
+      width: "150px",
     },
     {
       name: "Status",
@@ -316,11 +285,11 @@ function EnquiryLIst() {
           <h6>{row?.status}</h6>
         </div>
       ),
-      width: "9%",
+      width: "150px",
     },
     {
       name: "Edit",
-      width: "6%",
+      width: "110px",
       selector: (row: any) =>
         (canView || canUpdate) && (
           <div className="flex items-center gap-3">
@@ -336,7 +305,7 @@ function EnquiryLIst() {
     },
     {
       name: "Delete",
-      width: "8%",
+      width: "110px",
       selector: (row: any) =>
         canDelete && (
           <button
@@ -349,7 +318,7 @@ function EnquiryLIst() {
     },
     {
       name: "Generate RFP",
-      width: "10%",
+      width: "150px",
       selector: (row: any) => (
         <div className="flex items-center">
           <Link
@@ -367,52 +336,26 @@ function EnquiryLIst() {
     },
   ];
 
-  const calculateDynamicWidths = (columnsArray: any[]) => {
-    const visibleColumnsCount = columnsArray.length;
+  // Column selector
+  const [showColumnSelector, setShowColumnSelector] = useState(false);
+  // Toggle column visibility
+  // Removed duplicate declaration of visibleColumns
+  useEffect(() => {
+    const savedColumns = localStorage.getItem('enquiryTableColumns');
+    if (savedColumns) {
+      setVisibleColumns(JSON.parse(savedColumns));
+    }
+  }, []);
 
-    if (visibleColumnsCount === 0) return columnsArray;
-
-
-    const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
-
-
-    const baseWidth = 100 / visibleColumnsCount;
-
-    console.log(visibleColumnsCount, "visibleColumnsCount")
-
-
-    const MIN_WIDTH = 8;
-    const MAX_WIDTH = 20;
-
-    // Adjust column widths based on content type
-    columnsWithDynamicWidth.forEach(column => {
-      let allocatedWidth = baseWidth;
-
-      // Columns that typically need less space
-      if (column.name === "Delete" || column.name === "Edit") {
-        allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
-      }
-      // Columns that might need more space
-      else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-        allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
-      }
-
-      column.width = `${allocatedWidth}%`;
-    });
-
-    console.log(columnsWithDynamicWidth, "check the column width")
-
-    return columnsWithDynamicWidth;
+  useEffect(() => {
+    localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
+  }, [visibleColumns]);
+  const toggleColumnVisibility = (columnName: string) => {
+    setVisibleColumns(prev => ({
+      ...prev,
+      [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev]
+    }));
   };
-
-  // Filter columns based on visibility
-  const visibleColumnsArray = columns.filter(column =>
-    visibleColumns[column.name as keyof typeof visibleColumns]
-  );
-
-  // Apply dynamic widths to visible columns
-  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
-
   const ColumnSelector = () => (
     <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-10 border border-gray-200 right-0 w-72">
       <div className="flex flex-col gap-2">
@@ -451,6 +394,61 @@ function EnquiryLIst() {
       </div>
     </div>
   );
+
+  const calculateDynamicWidths = (columnsArray: any[]) => {
+    const visibleColumnsCount = columnsArray.length;
+    
+    if (visibleColumnsCount === 0) return columnsArray;
+    
+    const columnsWithDynamicWidth = columnsArray.map(column => ({...column}));
+    
+    const baseWidth = 100 / visibleColumnsCount; 
+
+    const MIN_WIDTH = 8; 
+    const MAX_WIDTH = 20; 
+    columnsWithDynamicWidth.forEach(column => {
+      let allocatedWidth = baseWidth;
+
+      // Columns that typically need less space
+      if (column.name === "Delete" || column.name === "Edit") {
+        allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
+      }
+      // Columns that might need more space
+      else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
+        allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
+      }
+
+      column.width = `${allocatedWidth}%`;
+    });
+
+    console.log(columnsWithDynamicWidth, "check the column width")
+    
+    return columnsWithDynamicWidth;
+  };
+
+  // Filter columns based on visibility
+  const visibleColumnsArray = columns.filter(column => 
+    visibleColumns[column.name as keyof typeof visibleColumns]
+  );
+  
+  // Apply dynamic widths to visible columns
+  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+
+  const resetColumnVisibility = () => {
+    setVisibleColumns({
+      "Customer Name": true,
+      "Enquiry Type": true,
+      "Loaction": true,
+      "Level of Enquiry": true,
+      "Check-In": true,
+      "Check-Out": true,
+      "Number of Rooms": true,
+      "Status": true,
+      "Edit": canView || canUpdate,
+      "Delete": canDelete,
+      "Convert to Enquiry": true
+    });
+  };
 
   const FilterDropdown = () => (
     <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-10 border border-gray-200">
@@ -586,5 +584,3 @@ function EnquiryLIst() {
     </div>
   );
 }
-
-export default EnquiryLIst;

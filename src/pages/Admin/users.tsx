@@ -61,23 +61,23 @@ function Users() {
   const columns = [
     {
       name: "Name",
-      selector: (row: any) => row?.name || "N/A",
-      width: "25%",
+      selector: (row: any) => ( <h6>{row?.name || "N/A"}</h6>),
+      width: "239px",
     },
     {
       name: "Email",
-      selector: (row: any) => row?.email || "N/A",
-      width: "25%",
+      selector: (row: any) => ( <h6>{row?.email || "N/A"}</h6>),
+      width: "320px",
     },
     {
       name: "Role",
-      selector: (row: any) => row?.role || "N/A",
-      width: "20%",
+      selector: (row: any) => ( <h6>{row?.role || "N/A"}</h6>),
+      width: "210px",
       
     },
     {
       name: "Edit",
-      width: "15%",
+      width: "200px",
       selector: (row: any) =>
         (canView || canUpdate) && (
           <div className=""><Link
@@ -91,7 +91,7 @@ function Users() {
     },
     {
       name: "Delete",
-      width: "15%",
+      width: "200px",
       selector: (row: any) =>
         canDelete && (
           <button
