@@ -178,6 +178,7 @@ function CustomerLedger() {
   const [visibleColumns, setVisibleColumns] = useState({
     "Quotes Id": true,
     "Vendor Name": true,
+    "Display Name": true,
     "RPFs Id": true,
     "Status": true,
     "Service": true,
@@ -286,6 +287,7 @@ function CustomerLedger() {
     setVisibleColumns({
       "Quotes Id": true,
       "Vendor Name": true,
+      "Display Name": true,
       "RPFs Id": true,
       "Status": true,
       "Service": true,

@@ -247,16 +247,14 @@ function ConfirmedQuotesFromVendor() {
     const [showColumnSelector, setShowColumnSelector] = useState(false);
     // Toggle column visibility
     const [visibleColumns, setVisibleColumns] = useState({
-      "Quotes ID": true,
-      "Submission Date": true,
-      "RFP ID": true,
-      "Name": true,
+       "Quotes Id": true,
+      "Vendor Name": true,
+      "RPFs Id": true,
       "Amount": true,
-      "Services": true,
+      "Date Received": true,
       "Status": true,
       "Edit": true, 
       "Delete": true, 
-      "Convert to Quotes from Vendor": true
     }); 
     useEffect(() => {
       const savedColumns = localStorage.getItem('enquiryTableColumns');
@@ -355,16 +353,15 @@ function ConfirmedQuotesFromVendor() {
   
     const resetColumnVisibility = () => {
       setVisibleColumns({
-        "Quotes ID": true,
-      "Submission Date": true,
-      "RFP ID": true,
-      "Name": true,
+      "Quotes Id": true,
+      "Vendor Name": true,
+      "RPFs Id": true,
       "Amount": true,
-      "Services": true,
+      "Date Received": true,
       "Status": true,
       "Edit": true, 
       "Delete": true, 
-      "Convert to Quotes from Vendor": true
+     
       });
     };
 

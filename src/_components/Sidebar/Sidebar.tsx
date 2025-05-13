@@ -201,6 +201,11 @@ function Sidebar() {
           link: "MyTask",
           plusLink: "/add-TaskManagement",
         },
+         {
+          dropHead: "Task Management",
+          link: "TaskManagement",
+          plusLink: "/TaskManagement",
+        },
       ],
     },
     {

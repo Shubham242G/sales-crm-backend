@@ -59,8 +59,8 @@ export default function EnquiryLIst() {
     "Check-Out": true,
     "Number of Rooms": true,
     "Status": true,
-    "Edit": canView || canUpdate,
-    "Delete": canDelete,
+    "Edit": canView || canUpdate || true,
+    "Delete": canDelete || true,
     "Convert to Enquiry": true
   });
 
@@ -444,8 +444,8 @@ export default function EnquiryLIst() {
       "Check-Out": true,
       "Number of Rooms": true,
       "Status": true,
-      "Edit": canView || canUpdate,
-      "Delete": canDelete,
+      "Edit": canView || canUpdate || true,
+      "Delete": canDelete || true,
       "Convert to Enquiry": true
     });
   };
@@ -498,7 +498,7 @@ export default function EnquiryLIst() {
   return (
     <div className="container px-6 w-full">
       <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5 w-full">
-        <div className="search_boxes flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 w-full gap-3">
+        <div className="search_boxes flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-3">
           <h2 className="text-xl font-semibold text-gray-800">Enquiry List</h2>
 
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">

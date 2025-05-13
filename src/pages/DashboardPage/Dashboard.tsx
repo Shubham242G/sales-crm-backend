@@ -365,10 +365,10 @@ const Dashboard: React.FC = () => {
 
     if (chartType === 'Bar') {
       return (
-        <BarChart  data={data}>
+        <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month"/>
-          <YAxis   width={500}/>
+          <XAxis dataKey="month" />
+          <YAxis width={500} />
           <Tooltip />
           <Legend />
           {Object.entries(fields).map(([key, value]) =>
@@ -383,7 +383,7 @@ const Dashboard: React.FC = () => {
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
-          <YAxis  width={500} />
+          <YAxis width={500} />
           <Tooltip />
           <Legend />
           {userRole === 'sales' && (
@@ -413,13 +413,13 @@ const Dashboard: React.FC = () => {
       if (userRole === 'admin') {
         return (
           <PieChart>
-            <Pie data={pieData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" dataKey="value" label>
+            <Pie data={pieData} cx="72%" cy="50%" outerRadius={110} fill="#8884d8" dataKey="value" label>
               {pieData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
             <Tooltip />
-            <Legend />
+            <Legend  />
           </PieChart>
         );
       } else {
@@ -432,7 +432,7 @@ const Dashboard: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen  mx-auto 2xl:-ml-1 bg-gray-50 p-6">
+    <div className="min-h-screen  mx-auto 2xl:-ml-1 bg-gray-50 -mt-9 p-6">
       <div className=" w-[100%] 2xl:w-[100%] 2xl:ml-0 xl:ml-4 mx-auto">
         {/* Header */}
         <div className=" bg-white rounded-2xl text-3xl md:text-4xl font-extrabold text-gray-800 h-30 md:h-40   text-center shadow-lg py-4 px-6 mb-10 tracking-wide">

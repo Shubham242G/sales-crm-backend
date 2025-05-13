@@ -159,7 +159,7 @@ const AddNewUser = () => {
                 className="absolute inset-y-0 right-4 flex items-center cursor-pointer mt-6"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {showPassword ? <EyeOff size={0} /> : <Eye size={20} />}
               </div>
             </div>
 

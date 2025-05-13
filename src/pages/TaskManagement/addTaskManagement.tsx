@@ -4,7 +4,7 @@ import {
   useTaskManagementById,
   useUpdateTaskManagementById,
 } from "@/services/tastManagement.service";
-import { useUser } from "@/services/user.service";
+import { useUser, useUserName } from "@/services/user.service";
 import { getAuth } from "@/utils/auth";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { useEffect, useState } from "react";
@@ -53,12 +53,15 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
   const { mutateAsync: updateTaskManagement } = useUpdateTaskManagementById();
   const { data: TaskManagementDataById } = useTaskManagementById(id || "");
 
-  const { data: userData } = useUser();
+  const { data: userData } = useUserName();
+
+
+  console.log(userData, "check userData");
 
   const usersOptions =
     userData?.data.map((user: any) => ({
-      label: user.name,
-      value: user._id,
+      label: user.label,
+      value: user.value,
     })) || [];
 
   const previousAssigneeArr = formData.reassignments.map(
@@ -67,7 +70,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
 
 
   const reassigningOptions = usersOptions.filter(
-    (user) =>
+    (user:any) =>
       user.value !== formData.assignedTo &&
       !previousAssigneeArr.includes(user.value)
   );
@@ -266,9 +269,9 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
                 onChange={handleChange("assignedTo")}
               >
                 <option value="">Selet Employee</option>
-                {usersOptions.map((user) => (
+                {usersOptions.map((user:{label:string,value:string}) => (
                   <option key={user.value} value={user.value}>
-                    {user.label}
+                    {user?.label}
                   </option>
                 ))}
               </select>
@@ -455,7 +458,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
                           onChange={handleReassignChange("reAssignedTo")}
                         >
                           <option value="">Select Employee</option>
-                          {reassigningOptions.map((user) => (
+                          {reassigningOptions.map((user: { label: string; value: string }) => (
                             <option key={user.value} value={user.value}>
                               {user.label}
                             </option>

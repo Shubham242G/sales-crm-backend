@@ -470,14 +470,17 @@ function Leads() {
      const [showColumnSelector, setShowColumnSelector] = useState(false);
     // Toggle column visibility
     const [visibleColumns, setVisibleColumns] = useState({
-      "Enquiry ID": true,
-      "Event Date": true,
-      "Deadline for proposal": true,
-      "Services": true,
-      "Status": true,
-      "Edit": canView || canUpdate,
-      "Delete": canDelete,
-      "Convert to Quotes from Vendor": true
+      "Select": true,
+      "Contact Name": true,
+      "Mobile Number": true,
+      "Company Name": true,
+      "Display Name": true,
+      "Email": true,
+      "Edit": canView || canUpdate || true,
+     "Delete": canDelete ||true,
+     "Convert to contact": true,
+     "Convert to Enquiry": true,
+    
     }); 
     useEffect(() => {
       const savedColumns = localStorage.getItem('enquiryTableColumns');
@@ -576,14 +579,16 @@ function Leads() {
   
     const resetColumnVisibility = () => {
       setVisibleColumns({
-         "Enquiry ID": true,
-      "Event Date": true,
-      "Deadline for proposal": true,
-      "Services": true,
-      "Status": true,
-      "Edit": canView || canUpdate,
-      "Delete": canDelete,
-      "Convert to Quotes from Vendor": true
+      "Select": true,
+      "Contact Name": true,
+      "Mobile Number": true,
+      "Company Name": true,
+      "Display Name": true,
+      "Email": true,
+      "Edit": canView || canUpdate || true,
+     "Delete": canDelete ||true,
+     "Convert to contact": true,
+     "Convert to Enquiry": true,
       });
     };
 
@@ -592,11 +597,11 @@ function Leads() {
 
   return (
     <>
-      <div className="container px-6">
+      <div className="container px-6 ">
         <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
-          <div className="search_boxes flex justify-between items-center">
+          <div className="search_boxes ">
             {/* Heading on the Left */}
-            <h2 className="text-xl font-semibold text-gray-800">Leads List</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-5">Leads List</h2>
 
             {/* Search and Buttons on the Right */}
             <div className="flex items-center justify-start gap-2">
@@ -618,7 +623,7 @@ function Leads() {
                   className="relative right-8 cursor-pointer"
                   onClick={() => refetch()}
                 >
-                  <IoSearchOutline />
+                 
                 </div>
               </div>
 

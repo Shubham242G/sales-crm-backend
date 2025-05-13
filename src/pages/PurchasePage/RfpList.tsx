@@ -278,9 +278,10 @@ function RfpList() {
       "Event Date": true,
       "Deadline for proposal": true,
       "Services": true,
+      "Display Name": true,
       "Status": true,
-      "Edit": canView || canUpdate,
-      "Delete": canDelete,
+      "Edit": canView || canUpdate || true,
+      "Delete": canDelete || true,
       "Convert to Quotes from Vendor": true
     }); 
     useEffect(() => {
@@ -380,14 +381,15 @@ function RfpList() {
   
     const resetColumnVisibility = () => {
       setVisibleColumns({
-        "RFPID": true,
-        "Event Date": true,
-        "Deadline for proposal": true,
-        "Services": true,
-        "Status": true,
-        "Edit": canView || canUpdate,
-        "Delete": canDelete,
-        "Convert to Quotes from Vendor": true
+         "RFPID": true,
+      "Event Date": true,
+      "Deadline for proposal": true,
+      "Services": true,
+      "Display Name": true,
+      "Status": true,
+      "Edit": canView || canUpdate || true,
+      "Delete": canDelete || true,
+      "Convert to Quotes from Vendor": true
       });
     };
   

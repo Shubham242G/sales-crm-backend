@@ -267,8 +267,8 @@ function VendorList() {
     "Location": true,
     "Phone": true,
     "Email": true,
-    "Update": canView || canUpdate,
-    "Delete": canDelete
+    "Update": canView || canUpdate || true,
+    "Delete": canDelete || true,
   }); 
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumns');
@@ -367,14 +367,14 @@ function VendorList() {
 
   const resetColumnVisibility = () => {
     setVisibleColumns({
-      "Vendor Name": true,
+    "Vendor Name": true,
     "Display Name": true,
     "Company": true,
     "Location": true,
     "Phone": true,
     "Email": true,
-    "Update": canView || canUpdate,
-    "Delete": canDelete
+    "Update": canView || canUpdate || true,
+    "Delete": canDelete || true ,
     });
   };
 

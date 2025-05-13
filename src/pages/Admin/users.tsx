@@ -115,8 +115,8 @@ function Users() {
     "Name": true,
     "Email": true,
     "Role": true,
-    "Edit": canView || canUpdate,
-    "Delete": canDelete,
+    "Edit": canView || canUpdate || true,
+    "Delete": canDelete || true,
   });
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumns');
@@ -218,8 +218,8 @@ function Users() {
     "Name": true,
     "Email": true,
     "Role": true,
-    "Edit": canView || canUpdate,
-    "Delete": canDelete,
+    "Edit": canView || canUpdate || true,
+    "Delete": canDelete || true,
     });
   };
 
