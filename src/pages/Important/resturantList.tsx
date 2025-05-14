@@ -270,7 +270,7 @@ function ResturantList() {
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
-              All Resturant List
+              All Restaurant List
             </h2>
 
             {/* Search and Buttons on the Right */}
@@ -307,7 +307,7 @@ function ResturantList() {
                   className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
                 >
                   <FaPlus />
-                  <span>New Resturant</span>
+                  <span>New Restaurant</span>
                 </button>
               )}
             </div>

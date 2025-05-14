@@ -108,7 +108,7 @@ const AddResturant = () => {
         ) : (
           <form onSubmit={handleSubmit}>
             {/* Category Details Section */}
-            <h2 className="text-lg font-semibold mb-4">Resturant</h2>
+            <h2 className="text-lg font-semibold mb-4">Restaurant</h2>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Floor

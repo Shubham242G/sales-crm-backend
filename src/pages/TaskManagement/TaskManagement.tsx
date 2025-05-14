@@ -426,9 +426,7 @@ function TaskManagement() {
 
           <ReactTable
             data={TaskManagementData.data}
-          
- columns={filteredColumns}
-
+            columns={filteredColumns}
             loading={false}
             totalRows={TaskManagementData?.total}
             onChangeRowsPerPage={setPageSize}

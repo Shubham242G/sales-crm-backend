@@ -50,7 +50,7 @@ function SearchBar() {
     <div className="min-h-screen bg-gray-100 font-sans">
       {/* Header */}
       <header className="bg-white p-4 shadow-md">
-        <h1 className="text-xl font-bold text-gray-800">
+        <h1 className="text-xl font-bold text-gray-800 ml-4">
           Find Meeting Venues, Request Quotes, and Book Event Space
         </h1>
       </header>
@@ -94,6 +94,7 @@ function SearchBar() {
               type="number"
               name="eventSize"
               placeholder="Event size"
+              min={0}
               value={searchData.eventSize}
               onChange={handleSearchChange}
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -152,7 +153,7 @@ function SearchBar() {
                   Maximum radius
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   name="maxRadius"
                   placeholder="Enter radius"
                   value={filters.maxRadius}

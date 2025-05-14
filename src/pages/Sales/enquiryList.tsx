@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useStatusById } from "@/services/status.service";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import AdvancedSearch, { SearchField } from "@/utils/advancedSearch";
 import {
   FaFilter,
   FaFileExport,
@@ -63,11 +64,16 @@ export default function EnquiryLIst() {
     "Delete": canDelete || true,
     "Convert to Enquiry": true
   });
-
+ const [isOpen, setIsOpen] = useState(false);
+    const [advancedSearchParams, setAdvancedSearchParams] = useState("");
+      const [searchQuery, setSearchQuery] = useState("");
+   
   const searchObj = useMemo(
     () => ({
       ...(query && { query }),
       ...(selectedEnquiryType && { enquiryType: selectedEnquiryType }),
+       ...(searchQuery && { query: searchQuery }),
+       ...(advancedSearchParams && { advancedSearch: advancedSearchParams }),
       ...(selectedLevel && { levelOfEnquiry: selectedLevel }),
       ...(selectedStatus && { status: selectedStatus }),
       pageIndex: pageIndex - 1,
@@ -80,6 +86,7 @@ export default function EnquiryLIst() {
       selectedEnquiryType,
       selectedLevel,
       selectedStatus,
+      advancedSearchParams,
     ]
   );
 
@@ -132,6 +139,7 @@ export default function EnquiryLIst() {
       }
     }
   };
+ 
 
   const handleExportEnquiries = async () => {
     try {
@@ -144,6 +152,7 @@ export default function EnquiryLIst() {
       link.click();
       link.remove();
       toastSuccess("Enquries exported successfully!");
+      
     } catch (error) {
       toastError("Failed to export enquiries. Please try again.");
     }
@@ -189,6 +198,9 @@ export default function EnquiryLIst() {
   };
 
   
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
 
   // Reset column visibility to default
 
@@ -494,7 +506,70 @@ export default function EnquiryLIst() {
       </div>
     </div>
   );
-
+  const searchFields: SearchField[] = [
+  { key: "firstName", label: "First Name", type: "text" },
+    { key: "lastName", label: "Last Name", type: "text" },
+    { key: "email", label: "Email", type: "text" },
+    { key: "company", label: "Company Name", type: "text" },
+    { key: "phone", label: "Phone", type: "text" },
+  {
+    key: 'enquiryType',
+    label: 'Enquiry Type',
+    type: 'select',
+    options: [
+      { value: 'Corporate', label: 'Corporate' },
+      { value: 'Individual', label: 'Individual' },
+      { value: 'Group', label: 'Group' },
+      { value: 'Room', label: 'Room' },
+      { value: 'Banquet', label: 'Banquet' },
+      { value: 'Both', label: 'Both' },
+    ],
+  },
+  {
+    key: 'city',
+    label: 'Location',
+    type: 'text',
+  },
+  {
+    key: 'levelOfEnquiry',
+    label: 'Level of Enquiry',
+    type: 'select',
+    options: [
+      { value: 'urgent', label: 'Urgent' },
+      { value: 'moderate', label: 'Moderate' },
+      { value: 'Not Urgent', label: 'Not Urgent' },
+    ],
+  },
+  
+  {
+    key: 'checkIn',
+    label: 'Check-In',
+    type:'date',
+  },
+  {
+    key: 'checkOut',
+    label: 'Check-Out',
+    type: 'date',
+  },
+  {
+    key: 'noOfRooms',
+    label: 'Number of Rooms',
+    type: 'number',
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    type: 'select',
+    options: [
+      // Add status options as needed
+    ],
+  },
+];
+  
+ const handleModalOpen = () => {
+    setIsOpen(true);
+  };
+ 
   return (
     <div className="container px-6 w-full">
       <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5 w-full">
@@ -508,8 +583,10 @@ export default function EnquiryLIst() {
                 className="rounded-md w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
                 onChange={(e) => setQuery(e.target.value)}
+                
               />
             </div>
+           
 
             <div className="relative">
               <button
@@ -520,7 +597,9 @@ export default function EnquiryLIst() {
               </button>
               {showFilters && <FilterDropdown />}
             </div>
-
+             <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+                AdvanceSearch
+              </button>
             <div className="relative">
               <button
                 className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
@@ -580,6 +659,32 @@ export default function EnquiryLIst() {
             isServerPropsDisabled={false}
           />
         </div>
+         {/* Advanced Search Modal */}
+        {isOpen && (
+        <>
+          <div className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
+            onClick={handleModalOpen}>
+          </div>
+
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+            <AdvancedSearch
+              fields={searchFields}
+              onSearch={(values) => {
+                setAdvancedSearchParams(values);
+                setIsOpen(false);
+                refetch();
+              }}
+              onClear={() => {
+                setIsOpen(false);
+                setAdvancedSearchParams("");
+                refetch();
+              }}
+          
+            />
+          </div>
+        </>
+      )}
+
       </div>
     </div>
   );

@@ -2,13 +2,14 @@ import React, { useContext, useState } from "react";
 import loginimg from "@/assets/LoginPages/loginimg.webp";
 import loginlogo from "@/assets/LoginPages/biglogo.webp";
 import logo from "@/assets/mainlogo/logo.png";
-import { FaRegIdBadge } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaRegIdBadge } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 // import googleicn from '@/assets/LoginPages/googleicn.webp'
 import { Link, useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { loginUser, changePasswordUser } from "@/utils/auth";
 import { AuthContext } from "@/context/AuthProvider";
+import { colors } from "@mui/material";
 
 export default function LoginPage() {
   const { isAuthorized, setIsAuthorized } = useContext(AuthContext);
@@ -18,6 +19,7 @@ export default function LoginPage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showChangePassword, setShowChangePassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleDashboardRoute = () => {
     window.location.reload();
@@ -41,7 +43,7 @@ export default function LoginPage() {
       if (response?.success) {
 
         console.log(response, "check response value");
-      
+
         if (password.split("-")[0] === "demo") {
           setShowChangePassword(true);
         } else {
@@ -54,7 +56,7 @@ export default function LoginPage() {
     } catch (error) {
       toastError(error);
     }
-  } 
+  }
 
   const handleChnagePassword = async () => {
     try {
@@ -63,12 +65,12 @@ export default function LoginPage() {
         return 0;
       }
 
-      if(newPassword !== confirmPassword) {
+      if (newPassword !== confirmPassword) {
         toastError("Password Not Match");
         return 0;
       }
       let obj = {
-        
+
         email,
         oldPassword: password,
         newPassword,
@@ -90,17 +92,17 @@ export default function LoginPage() {
 
   return (
     <>
-    
-    <header className="w-full border-b border-gray-200 px-8 h-[75px]  bg-white">
-      <div className="max-w-screen-xl  mt-4 flex items-center justify-between">
-        <img
-          src={logo}
-          alt="360 Icon"
-          className="h-[80px]  object-contain"
-        />
-        
-      </div>
-    </header>
+
+      <header className="w-full border-b border-gray-200 px-8 h-[75px]  bg-white">
+        <div className="max-w-screen-xl  mt-4 flex items-center justify-between">
+          <img
+            src={logo}
+            alt="360 Icon"
+            className="h-[80px]  object-contain"
+          />
+
+        </div>
+      </header>
       <div className="login_box pt-[6%]">
         <div className="flex justify-center items-center">
           {/* <div className="w-1/2">
@@ -128,8 +130,8 @@ export default function LoginPage() {
                   Log-In Your Account
                 </h2>
                 <p className="text-sm text-gray-600">
-          Welcome back to <span className="font-semibold text-black">360 Solution</span>. Please log in to access your account.
-        </p>
+                  Welcome back to <span className="font-semibold text-black">360 Solution</span>. Please log in to access your account.
+                </p>
 
                 <div className="form mt-5">
                   <div className="flex flex-wrap -mx-3 items-center  ">
@@ -147,7 +149,7 @@ export default function LoginPage() {
                         onChange={(e) => setEmail(e.target.value)}
                         value={email}
                       />
-                      <FaRegIdBadge className="absolute right-5 top-[50%] text-2xl text-[#e1e1e1]" />
+                     
                     </div>
                     <div className="w-full relative px-3 mb-3">
                       <label
@@ -158,7 +160,7 @@ export default function LoginPage() {
                       </label>
                       <input
                         className="appearance-none  text-sm font-normal block w-full  text-graytext border border-black rounded p-3 py-4  leading-tight focus:outline-none focus:border-blue-500"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
                         onChange={(e) => setPassword(e.target.value)}
                         value={password}
@@ -167,7 +169,14 @@ export default function LoginPage() {
 
                 <Link to="/forgot-password" className='text-red-500'>Forgot Password ?</Link>
                 </p> */}
-                      <MdOutlineRemoveRedEye className="absolute right-5 top-[50%] text-2xl text-[#e1e1e1]" />
+                      <span
+                        onClick={() => setShowPassword(!showPassword)}
+                       className="absolute right-[25px] top-[60%] translate-y-[-15%] cursor-pointer text-[#e1e1e1] text-[20px] hover:text-red-500"
+
+                      >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      </span>
+
                     </div>
                   </div>
 
@@ -199,7 +208,7 @@ export default function LoginPage() {
                           />
                         </div>
 
-                      
+
                         <div className="w-full relative px-3 mb-3">
                           <label
                             className="block  tracking-wide text-txtcolor  font-medium mb-2"
@@ -215,7 +224,7 @@ export default function LoginPage() {
                             value={confirmPassword}
                           />
                         </div>
-                      
+
                       </div>
 
                       <button
