@@ -598,16 +598,16 @@ function Leads() {
       <div className="container px-6 ">
         <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
           <div className="search_boxes ">
-            {/* Heading on the Left */}
-            <h2 className="text-xl font-semibold text-gray-800 mb-5">Leads List</h2>
-
             {/* Search and Buttons on the Right */}
-            <div className="flex items-center justify-start gap-2">
+            <div className="flex gap-2">
               {/* Search Box */}
               <div className="w-full flex items-center">
+                {/* Heading on the Left */}
+            <h2 className="text-xl font-semibold text-gray-800 ">Leads List</h2>
+
                 <input
                   type="search"
-                  className="rounded-md w-[250px] border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  className="rounded-md w-[250px] border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover ml-6"
                   placeholder="Search by contact name"
                   value={searchQuery}
                   onChange={handleSearchInput}
@@ -626,9 +626,9 @@ function Leads() {
               </div>
 
               {/* Filter Button */}
-              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
-              </button>
+              </button> */}
               <div className="relative">
                 <button
                   className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
@@ -642,7 +642,7 @@ function Leads() {
 
               {/* Assign Button */}
               <button
-                className="w-80 flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
+                className="w-80 flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
                 onClick={handleAssignTask}
               >
                 <FaTasks /> <span className="whitespace-nowrap"> Assign Task </span>
@@ -743,19 +743,24 @@ function Leads() {
                 {isUploading ? "Importing..." : "Import"}
               </button>
 
-              <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
-                Advance Search
-              </button>
+            
+               {/* Advanced Search */}
+        <button
+          onClick={handleModalOpen}
+          className="flex items-center adv-srch gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+        >
+          Advance Search
+        </button>
 
-              {/* Add New Lead Button */}
-              {canCreate && (
-                <button
-                  onClick={() => navigate("/add-leads")}
-                  className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
-                >
-                  <FaPlus />
-                  <span>New Lead</span>
-                </button>
+             {/* Add New Lead */}
+             {canCreate && (
+          <button
+            onClick={() => navigate("/add-leads")}
+            className="flex items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300 whitespace-nowrap"
+          >
+            <FaPlus />
+            <span>New Lead</span>
+          </button>
               )}
             </div>
           </div>

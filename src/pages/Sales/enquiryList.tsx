@@ -589,12 +589,12 @@ export default function EnquiryLIst() {
            
 
             <div className="relative">
-              <button
+              {/* <button
                 className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <FaFilter /> Filter
-              </button>
+              </button> */}
               {showFilters && <FilterDropdown />}
             </div>
              <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">

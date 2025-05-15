@@ -452,9 +452,9 @@ function RfpList() {
                             {showColumnSelector && <ColumnSelector />}
                           </div>
               {/* Buttons */}
-              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
-              </button>
+              </button> */}
               <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>

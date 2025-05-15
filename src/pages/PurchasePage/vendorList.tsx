@@ -151,7 +151,7 @@ function VendorList() {
           <h6>{row.vendor?.firstName}</h6>
         </div>
       ),
-      width: "15%",
+      width: "20px",
     },
 
     {
@@ -161,7 +161,7 @@ function VendorList() {
           <h6>{row.vendor?.displayName}</h6>
         </div>
       ),
-      width: "15%",
+      width: "20px",
     },
     {
       name: "Company",
@@ -171,7 +171,7 @@ function VendorList() {
           
         </div>
       ),
-      width: "15%",
+      width: "20px",
     },
     {
       name: "Location",
@@ -180,7 +180,7 @@ function VendorList() {
           <h6>{row?.location?.state}</h6>
         </div>
       ),
-      width: "12%",
+      width: "20px",
     },
     {
       name: "Phone",
@@ -190,12 +190,12 @@ function VendorList() {
           </h6>
          
       ),
-      width: "15%",
+      width: "20px",
     },
     {
       name: "Email",
       selector: (row: any) => ( <h6>{row.vendor?.email}</h6> ),
-      width: "23%",
+      width: "20px",
     },
     {
       name: "Update",
@@ -413,9 +413,9 @@ function VendorList() {
                 />
               </div>
               {/* Buttons */}
-              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+             {/* {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
-              </button>
+              </button> */} 
               {/* Import Button */}
               <button
                 className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
@@ -465,7 +465,7 @@ function VendorList() {
           <ReactTable
             
             data={VendorData?.data}
-            columns={filterColumns}
+            columns={filteredColumns}
             loading={false}
             totalRows={VendorData?.total}
             onChangeRowsPerPage={setPageSize}
