@@ -75,12 +75,12 @@ export const useQuotesFromVendorsApiHook = () => {
     pagination: PaginationState,
     searchObj: any
   ) => {
-    // const query = new URLSearchParams({
-    //     pageIndex: String(pagination.pageIndex),
-    //     pageSize: String(pagination.pageSize),
-    //     ...searchObj,
-    // }).toString();
-    return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}`);
+    const query = new URLSearchParams({
+      pageIndex: String(pagination.pageIndex),
+      pageSize: String(pagination.pageSize),
+      ...searchObj,
+    }).toString();
+    return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}?${query}`);
   };
 
   const convertQuotesFromVendorToQuotesToCustomer = async (id: string) => {

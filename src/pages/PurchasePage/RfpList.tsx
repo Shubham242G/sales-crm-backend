@@ -37,6 +37,7 @@ function RfpList() {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
 
   const searchObj = useMemo(
     () => ({
@@ -48,9 +49,11 @@ function RfpList() {
   );
 
 
+
+
   // const {data: useEnquiryByIdData} = useEnquiryById(enquiryId);
 
-  const { data: RfpData, isLoading } = useRfp(searchObj);
+  const { data: RfpData, isLoading, refetch} = useRfp(searchObj);
   const { mutateAsync: deleteRfp } = usedeleteRfpById();
   const { mutateAsync: updateRfp } = useUpdateRfpById();
 
@@ -71,6 +74,8 @@ function RfpList() {
       toastError(error);
     }
   };
+
+
 
   // Handle file selection and upload
   // const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +127,11 @@ function RfpList() {
   // };
 
   //
+
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
+
 
   const handleConvertRfptoQuotesFromVendor = async (id: string) => {
     try {
@@ -423,6 +433,13 @@ function RfpList() {
                   type="search"
                   className="rounded-md w-full border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                   placeholder="Search..."
+                  value={query}
+                  onChange={handleSearchInput}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      refetch();
+                    }
+                  }}
                 />
               </div>
               <div className="relative">

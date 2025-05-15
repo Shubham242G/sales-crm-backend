@@ -68,7 +68,7 @@ function Leads() {
     [pageIndex, pageSize, searchQuery, advancedSearchParams]
   );
 
-  const { data: leadData, refetch, } = useLead(searchObj);
+  const { data: leadData, refetch } = useLead(searchObj);
   const { mutateAsync: deleteLead } = usedeleteLeadById();
   const { mutateAsync: convertLead } = useConvertLeadToContact();
   const { mutateAsync: convertToEnquiry } = useConvertLeadToEnquiry();

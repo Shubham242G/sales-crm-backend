@@ -30,7 +30,7 @@ function CustomerLedger() {
     }),
     [pageIndex, pageSize, query]
   );
-  const { data: quotesFromVendors, isLoading } = useQuotesFromVendors(searchObj);
+  const { data: quotesFromVendors, isLoading, refetch } = useQuotesFromVendors(searchObj);
 
 
 
@@ -41,6 +41,10 @@ function CustomerLedger() {
     usedeleteQuotesFromVendorsById();
 
   const navigate = useNavigate();
+
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
 
   const handleDelete = async (id: string) => {
     try {
@@ -311,6 +315,13 @@ function CustomerLedger() {
                 type="search"
                 className="rounded-md w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
+                value={query}
+                  onChange={handleSearchInput}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      refetch();
+                    }
+                  }}
               />
             </div>
             <div className="relative">

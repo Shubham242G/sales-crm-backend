@@ -43,7 +43,7 @@ function HotelList() {
   const handlePageChange = (newPage: any) => {
     setPageIndex(newPage);
   };
-  const { data: hotelData } = useHotel(searchObj);
+  const { data: hotelData, refetch } = useHotel(searchObj);
   const { mutateAsync: deleteHotel } = usedeleteHotelById();
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
@@ -61,6 +61,9 @@ function HotelList() {
     } catch (error) {
       toastError(error);
     }
+
+    
+
     // if (confirm("Are you sure you want to delete this Hotel?")) {
     //     deleteHotel(id, {
     //         onSuccess: () => {
@@ -73,6 +76,10 @@ function HotelList() {
     //         },
     //     });
     // }
+  };
+
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
   };
 
   // ledger details modal
@@ -294,6 +301,13 @@ function HotelList() {
                   type="search"
                   className="rounded-md w-full border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                   placeholder="Search..."
+                  value={query}
+                  onChange={handleSearchInput}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      refetch();
+                    }
+                  }}
                 />
               </div>
                <div className="relative">

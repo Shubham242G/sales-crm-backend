@@ -2725,7 +2725,8 @@ const AddVendorForm = () => {
                                     Rate
                                   </label>
                                   <input
-                                    type="text"
+                                    type="number"
+                                    min={0}
                                     placeholder="Enter rate"
                                     value={service.rate}
                                     onChange={(e) => {
