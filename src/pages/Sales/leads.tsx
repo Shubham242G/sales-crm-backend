@@ -348,28 +348,27 @@ function Leads() {
     },
     {
       name: "Edit",
-      width: "140px",
+      width: " 8%",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => navigate(`/add-leads/${row._id}`)}
           className="text-black-500 text-lg "
         >
-
-          <FaEye className=" hover:text-orange-500" />
+          <FaEye className="ml-1" />
         </button>
       ),
     },
     {
       name: "Delete",
-      width: "140px",
+      width: "8%",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => handleDelete(row._id)}
           className=" text-black-400 text-lg"
         >
-          <RiDeleteBin6Line className="hover:text-red-600" />
+          <RiDeleteBin6Line />
         </button>
       ),
     },
@@ -396,7 +395,6 @@ function Leads() {
           className=" text-black-400 text-lg"
         >
           <SiConvertio />
-
         </button>
       ),
     },
@@ -746,7 +744,7 @@ function Leads() {
               </button>
 
               <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
-                AdvanceSearch
+                Advance Search
               </button>
 
               {/* Add New Lead Button */}

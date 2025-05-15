@@ -111,7 +111,7 @@ function AddRoles() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!roleName || !description || !name || !designation || !department) {
+    if (!roleName || !description || !name) {
       return toastError("Please fill all the fields");
     }
     try {
@@ -138,6 +138,7 @@ function AddRoles() {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/roles");
+          console.log(roleName,"rolename", name, "name",);
         }
       }
     } catch (error) {

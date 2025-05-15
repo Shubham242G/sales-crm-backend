@@ -995,18 +995,18 @@ const AddCustomer = () => {
                                                 </svg>
                                             </div>
                                             <div className="w-44">
-                                                <input
-                                                    type="tel"
-                                                    value={formData.workPhone}
-                                                    onChange={(e) =>
-                                                        setFormData({
-                                                            ...formData,
-                                                            workPhone: e.target.value,
-                                                        })
-                                                    }
-                                                    placeholder="Work Phone"
-                                                    className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
-                                                />
+                                            <input
+  type="tel"
+  value={formData.workPhone}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      workPhone: e.target.value.replace(/\D/g, '').slice(0, 10), // ✅ Allow only digits, max 10
+    })
+  }
+  placeholder="Work Phone"
+  className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
+/>
                                             </div>
                                         </div>
 
@@ -1026,15 +1026,18 @@ const AddCustomer = () => {
                                                 </svg>
                                             </div>
                                             <div className="w-48">
-                                                <input
-                                                    type="tel"
-                                                    value={formData.mobile}
-                                                    onChange={(e) =>
-                                                        setFormData({ ...formData, mobile: e.target.value })
-                                                    }
-                                                    placeholder="Mobile"
-                                                    className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
-                                                />
+                                            <input
+  type="tel"
+  value={formData.mobile}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      mobile: e.target.value.replace(/\D/g, '').slice(0, 10), // ✅ Digits only, max 10
+    })
+  }
+  placeholder="Mobile"
+  className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
+/>
                                             </div>
                                         </div>
                                     </div>
@@ -2465,7 +2468,7 @@ const AddCustomer = () => {
                                                                 renderInput={(params) => (
                                                                     <TextField
                                                                         {...params}
-                                                                        label="Select Payment Terms"
+                                                                        label="State"
                                                                         InputProps={{
                                                                             ...params.InputProps,
                                                                             style: { height: "40px" },
@@ -2500,16 +2503,16 @@ const AddCustomer = () => {
                                                                 Pin Code:
                                                             </span>
                                                             <input
-                                                                type="text"
-                                                                value={formData.pinCode}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        pinCode: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
+  type="text"
+  value={formData.pinCode}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      pinCode: e.target.value.replace(/\D/g, '').slice(0, 6), 
+    })
+  }
+  className="w-full border border-gray-300 rounded-md p-2 text-sm"
+/>
                                                         </div>
                                                     </div>
                                                     {/* Phone */}
@@ -2519,16 +2522,16 @@ const AddCustomer = () => {
                                                                 Phone:
                                                             </span>
                                                             <input
-                                                                type="text"
-                                                                value={formData.phoneNumber}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        phoneNumber: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
+  type="text"
+  value={formData.phoneNumber}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      phoneNumber: e.target.value.replace(/\D/g, '').slice(0, 10), // ✅ Allow only digits, max 10 characters
+    })
+  }
+  className="w-full border border-gray-300 rounded-md p-2 text-sm"
+/>
                                                         </div>
                                                     </div>
                                                     {/* Fax Number */}
@@ -2947,7 +2950,7 @@ const AddCustomer = () => {
                                                                 renderInput={(params) => (
                                                                     <TextField
                                                                         {...params}
-                                                                        label="Select Payment Terms"
+                                                                        label="State"
                                                                         InputProps={{
                                                                             ...params.InputProps,
                                                                             style: { height: "40px" },
@@ -2982,16 +2985,16 @@ const AddCustomer = () => {
                                                                 Pin Code:
                                                             </span>
                                                             <input
-                                                                type="text"
-                                                                value={formData.shippingPinCode}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        shippingPinCode: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
+  type="text"
+  value={formData.shippingPinCode}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      shippingPinCode: e.target.value.replace(/\D/g, '').slice(0, 6), // ✅ Only digits, max 6 characters
+    })
+  }
+  className="w-full border border-gray-300 rounded-md p-2 text-sm"
+/>
                                                         </div>
                                                     </div>
                                                     {/* Shipping Phone */}
@@ -3001,16 +3004,16 @@ const AddCustomer = () => {
                                                                 Phone:
                                                             </span>
                                                             <input
-                                                                type="text"
-                                                                value={formData.shippingPhoneNumber}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        shippingPhoneNumber: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
+  type="text"
+  value={formData.shippingPhoneNumber}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      shippingPhoneNumber: e.target.value.replace(/\D/g, '').slice(0, 10), // ✅ Allow only digits, limit to 10
+    })
+  }
+  className="w-full border border-gray-300 rounded-md p-2 text-sm"
+/>
                                                         </div>
                                                     </div>
                                                     {/* Shipping Fax Number */}

@@ -1549,7 +1549,7 @@ const AddVendorForm = () => {
                             onChange={(e) =>
                               setVendor({
                                 ...vendor,
-                                landLine: e.target.value,
+                                landLine: e.target.value.replace(/\D/g, '').slice(0, 10), // only numbers, max 10 digits
                               })
                             }
                             placeholder="Work Phone"
@@ -1572,7 +1572,10 @@ const AddVendorForm = () => {
                             type="tel"
                             value={vendor.phoneNumber}
                             onChange={(e) =>
-                              setVendor({ ...vendor, phoneNumber: e.target.value })
+                              setVendor({
+                                ...vendor,
+                                phoneNumber: e.target.value.replace(/\D/g, '').slice(0, 10), // only numbers, max 10 digits
+                              })
                             }
                             placeholder="Mobile"
                             className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm pl-10"
@@ -1762,7 +1765,7 @@ const AddVendorForm = () => {
                           <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
                             <div className="flex justify-between items-center mb-6">
                               <h2 className="text-xl font-bold">Room Details </h2>
-                              <div>
+                              {/* <div>
                                 <label className="inline-flex items-center">
                                   <input
                                     type="checkbox"
@@ -1772,7 +1775,7 @@ const AddVendorForm = () => {
                                   />
                                   <span className="ml-2 text-sm">Do you have Rooms</span>
                                 </label>
-                              </div>
+                              </div> */}
                             </div>
 
                             {/* new room details   */}
@@ -1870,6 +1873,7 @@ const AddVendorForm = () => {
                                               </label>
                                               <input
                                                 type="number"
+                                                min={0} 
                                                 placeholder="Enter number of rooms"
                                                 value={room.numberOfRooms}
                                                 onChange={(e) => {
@@ -1888,7 +1892,8 @@ const AddVendorForm = () => {
                                               Size (LXBXH)
                                             </label>
                                             <input
-                                              type="text"
+                                              type="number"
+                                              min={0}
                                               placeholder="Enter size"
                                               value={room.roomSize}
                                               onChange={(e) => {
@@ -1932,7 +1937,8 @@ const AddVendorForm = () => {
 
                                                 <div className="flex">
                                                   <input
-                                                    type="text"
+                                                    type="number"
+                                                    min={0}
                                                     placeholder="Enter price"
                                                     value={price.roomPrice}
                                                     onChange={(e) => {
@@ -2457,7 +2463,8 @@ const AddVendorForm = () => {
                                       Size (LXBXH)
                                     </label>
                                     <input
-                                      type="text"
+                                      type="number"
+                                      min={0}
                                       placeholder="To be discus development time"
                                       value={banquet.banquetSize}
                                       onChange={(e) => {
@@ -2494,7 +2501,8 @@ const AddVendorForm = () => {
                                     </label>
                                     <div className="flex">
                                       <input
-                                        type="text"
+                                        type="number"
+                                        min={0}
                                         placeholder="Enter veg price"
                                         value={banquet.banquetVegPrice}
                                         onChange={(e) => {
@@ -2516,8 +2524,9 @@ const AddVendorForm = () => {
                                     </label>
                                     <div className="flex">
                                       <input
-                                        type="text"
+                                        type="number"
                                         placeholder="Enter nonveg price"
+                                        min={0}
                                         value={banquet.banquetNonVegPrice}
                                         onChange={(e) => {
                                           const newBanquet = [...banquets];
@@ -2572,8 +2581,9 @@ const AddVendorForm = () => {
                                         Size LXBXH
                                       </label>
                                       <input
-                                        type="text"
+                                        type="number"
                                         placeholder="Enter Size"
+                                        min={0}
                                         value={banquet.prefuntionAreaSize}
                                         onChange={(e) => {
                                           const newBanquet = [...banquets];
@@ -4695,7 +4705,7 @@ const AddVendorForm = () => {
                                   onChange={(e) =>
                                     setBillingAddress({
                                       ...billingAddress,
-                                      billingPincode: e.target.value,
+                                      billingPincode: e.target.value.replace(/\D/g, '').slice(0, 7),
                                     })
                                   }
                                   className="w-full border border-gray-300 rounded-md p-2 text-sm"
@@ -4710,11 +4720,11 @@ const AddVendorForm = () => {
                                 </span>
                                 <input
                                   type="text"
-                                  value={billingAddress.billingPhone}
+                                  value={billingAddress.billingPincode}
                                   onChange={(e) =>
                                     setBillingAddress({
                                       ...billingAddress,
-                                      billingPhone: e.target.value,
+                                      billingPincode: e.target.value.replace(/\D/g, '').slice(0, 10), // only digits, max 10
                                     })
                                   }
                                   className="w-full border border-gray-300 rounded-md p-2 text-sm"
@@ -4728,7 +4738,7 @@ const AddVendorForm = () => {
                                   Fax Number:
                                 </span>
                                 <input
-                                  type="text"
+                                  type="number"
                                   value={billingAddress.billingFaxNumber}
                                   onChange={(e) =>
                                     setBillingAddress({
@@ -4955,7 +4965,7 @@ const AddVendorForm = () => {
                                   onChange={(e) =>
                                     setShippingAddress({
                                       ...shippingAddress,
-                                      shippingPincode: e.target.value,
+                                      shippingPincode: e.target.value.replace(/\D/g, '').slice(0, 7),
                                     })
                                   }
                                   className="w-full border border-gray-300 rounded-md p-2 text-sm"
@@ -4974,7 +4984,7 @@ const AddVendorForm = () => {
                                   onChange={(e) =>
                                     setShippingAddress({
                                       ...shippingAddress,
-                                      shippingPhone: e.target.value,
+                                      shippingPhone: e.target.value.replace(/\D/g, '').slice(0, 10), // only digits, max 10
                                     })
                                   }
                                   className="w-full border border-gray-300 rounded-md p-2 text-sm"
@@ -4988,7 +4998,7 @@ const AddVendorForm = () => {
                                   Fax Number:
                                 </span>
                                 <input
-                                  type="text"
+                                  type="number"
                                   value={shippingAddress.shippingFaxNumber}
                                   onChange={(e) =>
                                     setShippingAddress({
@@ -5028,7 +5038,7 @@ const AddVendorForm = () => {
                                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
                                     Mobile
                                   </th>
-                                  
+
                                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
                                     Department
                                   </th>

@@ -266,9 +266,10 @@ const AddNewLead = () => {
               <input
                 name={"phone"}
                 value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
+                onChange={(e) => {
+                  const numericValue = e.target.value.replace(/\D/g, '').slice(0, 10); // ✅ Allow only digits and limit to 10
+                  setFormData({ ...formData, phone: numericValue });
+                }}
                 type="text"
                 placeholder="Enter mobile number"
                 className="w-full border bg-gray-50 border-gray-300 rounded-md p-4 placeholder-gray-400"

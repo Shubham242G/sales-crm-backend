@@ -151,7 +151,7 @@ function VendorList() {
           <h6>{row.vendor?.firstName}</h6>
         </div>
       ),
-      width: "180px",
+      width: "15%",
     },
 
     {
@@ -161,7 +161,7 @@ function VendorList() {
           <h6>{row.vendor?.displayName}</h6>
         </div>
       ),
-      width: "180px",
+      width: "15%",
     },
     {
       name: "Company",
@@ -171,7 +171,7 @@ function VendorList() {
           
         </div>
       ),
-      width: "180px",
+      width: "15%",
     },
     {
       name: "Location",
@@ -180,7 +180,7 @@ function VendorList() {
           <h6>{row?.location?.state}</h6>
         </div>
       ),
-      width: "150px",
+      width: "12%",
     },
     {
       name: "Phone",
@@ -190,12 +190,12 @@ function VendorList() {
           </h6>
          
       ),
-      width: "160px",
+      width: "15%",
     },
     {
       name: "Email",
       selector: (row: any) => ( <h6>{row.vendor?.email}</h6> ),
-      width: "230px",
+      width: "23%",
     },
     {
       name: "Update",
@@ -465,7 +465,7 @@ function VendorList() {
           <ReactTable
             
             data={VendorData?.data}
-            columns={filteredColumns}
+            columns={filterColumns}
             loading={false}
             totalRows={VendorData?.total}
             onChangeRowsPerPage={setPageSize}

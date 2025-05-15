@@ -985,7 +985,8 @@ const AddConfirmedQuotesFromVendor = () => {
                     AV Vendor Number
                   </label>
                   <input
-                    type="text"
+                    type="number"
+                    min={0}
                     value={formData.banquetEventOrdersSecond.avVendorNo}
                     onChange={(e) =>
                       setFormData({
@@ -1005,7 +1006,8 @@ const AddConfirmedQuotesFromVendor = () => {
                     Expected Number of Seating
                   </label>
                   <input
-                    type="text"
+                    type="number"
+                    min={0}
                     value={formData.banquetEventOrdersSecond.expNumberOfSeating}
                     onChange={(e) =>
                       setFormData({
@@ -1048,7 +1050,7 @@ const AddConfirmedQuotesFromVendor = () => {
                     Hotel Coordination Number
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     value={
                       formData.banquetEventOrdersSecond.hotelCoordinationNo
                     }
@@ -1138,7 +1140,8 @@ const AddConfirmedQuotesFromVendor = () => {
                   Sr. No.
                 </label>
                 <input
-                  type="text"
+                  type="number"
+                  min={0}
                   value={formData.menuSelection.srNo}
                   onChange={(e) =>
                     setFormData({
@@ -1225,7 +1228,8 @@ const AddConfirmedQuotesFromVendor = () => {
                   Sr. No.
                 </label>
                 <input
-                  type="text"
+                  type="number"
+                  min={0}
                   value={formData.eventFlow.srNo}
                   onChange={(e) =>
                     setFormData({
@@ -1312,7 +1316,8 @@ const AddConfirmedQuotesFromVendor = () => {
                   Sr. No.
                 </label>
                 <input
-                  type="text"
+                  type="number"
+                  min={0}
                   value={formData.audioVisual.srNo}
                   onChange={(e) =>
                     setFormData({

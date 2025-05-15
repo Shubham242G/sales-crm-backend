@@ -452,7 +452,8 @@ const AddQuotesFromVendors = () => {
                 name={"amount"}
                 value={formData.amount}
                 onChange={handleInputChange}
-                type="text"
+                type="number"
+                min={0}
                 className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 "
                 placeholder="Enter event details"
               />
@@ -571,7 +572,8 @@ const AddQuotesFromVendors = () => {
                       </td>
                       <td className="px-6 py-4 border-b">
                         <input
-                          type="text"
+                          type="number"
+                          min={0}
                           value={item.markupAmount}
                           onChange={(e) =>
                             handleMarkupChange(
