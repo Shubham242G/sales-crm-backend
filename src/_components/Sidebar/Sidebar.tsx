@@ -238,22 +238,22 @@ function Sidebar() {
         },
       ],
     },
-    {
-      mainlink: "/zohoInvoice",
-      heading: "zohoInvoice",
-      icon: ledger,
-      activeIcon: ledgerw,
-      isActive: false,
-      isArrow: true,
-      dropArr: [
-        {
-          dropHead: "Zoho Invoice",
-          link: "zohoInvoice",
-        },
+  //   {
+  //     mainlink: "/zohoInvoice",
+  //     heading: "zohoInvoice",
+  //     icon: ledger,
+  //     activeIcon: ledgerw,
+  //     isActive: false,
+  //     isArrow: true,
+  //     dropArr: [
+  //       {
+  //         dropHead: "Zoho Invoice",
+  //         link: "zohoInvoice",
+  //       },
 
-      ],
-    }
-  ]);
+  //     ],
+  //   }
+]);
 
   const [showdrop, setShowDrop] = useState(null);
 
