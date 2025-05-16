@@ -645,7 +645,7 @@ function Leads() {
                 className="w-80 flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
                 onClick={handleAssignTask}
               >
-                <FaTasks /> <span className="whitespace-nowrap"> Assign Task </span>
+                <FaTasks /> <span className="whitespace-nowrap"> Assign Lead </span>
               </button>
 
               {/* Export Button with Dropdown */}

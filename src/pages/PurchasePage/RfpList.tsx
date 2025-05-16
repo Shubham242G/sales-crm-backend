@@ -432,7 +432,7 @@ function RfpList() {
                 <input
                   type="search"
                   className="rounded-md w-full border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                  placeholder="Search..."
+                  placeholder="Search by RFPID"
                   value={query}
                   onChange={handleSearchInput}
                   onKeyPress={(e) => {

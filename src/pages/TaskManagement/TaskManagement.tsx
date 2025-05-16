@@ -394,7 +394,7 @@ function TaskManagement() {
                   type="search"
                   onChange={(e) => setQuery(e.target.value)}
                   className="rounded-md w-[250px] border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                  placeholder="Search by contact name"
+                  placeholder="Search by Assigned To"
                 />
 
               </div>

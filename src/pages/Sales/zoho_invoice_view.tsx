@@ -277,7 +277,7 @@ function ZohoInvoiceView() {
         },
         {
             name: "Status",
-            selector: (row: any) => <StatusBadge status={row.status} />,
+            selector: (row: any) => <h6 className="capitalize "><StatusBadge status={row.status} /></h6>,
             width: "12%",
         },
         {
@@ -576,10 +576,10 @@ function ZohoInvoiceView() {
                 </div>
 
                 <ReactTable
-                    data={data?.data || []}
+                    data={data?.data.slice(0, pageSize) || []}
                     columns={filteredColumns}
                     loading={isLoading || syncInvoicesMutation.isPending}
-                    totalRows={data?.total || 0}
+                    totalRows={data?.total}
                     onChangeRowsPerPage={setPageSize}
                     onChangePage={setPageIndex}
                     page={pageIndex}
