@@ -28,6 +28,8 @@ export interface IEnqiry {
     approxPassengers: string;
     checkIn: string;
     checkOut: string;
+    banquetDate: string;
+    banquetTime:string;
     city: string;
     area: string;
     noOfRooms: string;
@@ -39,7 +41,7 @@ export interface IEnqiry {
     status: string;
     banquet: {
         date: string;
-        session: string;
+        session: string[];
         seatingStyle: string;
         avSetup: string;
         menuType: string;

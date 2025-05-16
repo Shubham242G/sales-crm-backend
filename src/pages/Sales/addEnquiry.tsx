@@ -45,7 +45,7 @@ interface Room {
 
 interface Banquet {
   date: string
-  session: string
+  session: string[]
   seatingStyle: string
   avSetup: string
   menuType: string
@@ -134,7 +134,10 @@ const AddEnquiryForm = () => {
   const [area, setArea] = useState("")
   const [noOfRooms, setNoOfRooms] = useState("")
   const [checkIn, setCheckIn] = useState("")
+  const [banquetDate, setBanquetDate] = useState("");
+  const [banquetTime, setBanquetTime] = useState("");
   const [checkOut, setCheckOut] = useState("")
+  const [needCab, setNeedCab] = useState(false);
   // const [categoryOfHotel, setCategoryOfHotel] = useState([]);
   // const [occupancy, setOccupancy] = useState([]);
   const [billingInstructions, setBillingInstructions] = useState("")
@@ -165,6 +168,28 @@ const AddEnquiryForm = () => {
   const [customerId, setCustomerId] = useState("")
   const { data: Customer } = useZohoCustomers(searchObj);
   const { data: CustomerById } = useZohoCustomerById(customerId || "");
+
+  const handleSessionChange = (index: number, values: string[]) => {
+    setBanquet((prev: any) =>
+      prev.map((row: any, i: any) =>
+        i === index ? { ...row, session: values } : row
+      )
+    );
+  };
+
+  const sessionOptions = [
+    { value: "Hi Tea", label: "Hi Tea" },
+    { value: "AMT/Lunch/PMT", label: "AMT/Lunch/PMT" },
+    { value: "Lunch", label: "Lunch" },
+    { value: "Dinner", label: "Dinner" },
+    { value: "Rental only", label: "Rental only" },
+  ];
+
+  banquet.forEach((item: any, index) => {
+    if (typeof item.session === "string") {
+      banquet[index].session = item.session.split(",").map((s: any) => s.trim());
+    }
+  });
 
 
 
@@ -303,17 +328,6 @@ const AddEnquiryForm = () => {
         })),
       )
 
-      setBanquet(
-        dates.map((date) => ({
-          date: date.date,
-          session: "",
-          seatingStyle: "",
-          avSetup: "",
-          menuType: "",
-          minPax: "",
-          seatingRequired: "",
-        })),
-      )
       setCab(
         dates.map((date) => ({
           date: date.date,
@@ -326,6 +340,34 @@ const AddEnquiryForm = () => {
       )
     }
   }, [checkIn, checkOut, noOfRooms])
+
+  useEffect(() => {
+    if (banquetDate) {
+      setBanquet((prev: any) => {
+
+        const existingIndex = prev.findIndex((row: any) => moment(row.date).isSame(banquetDate, 'day'));
+        const newRow = {
+          date: banquetDate,
+          session: "",
+          seatingStyle: "",
+          avSetup: "",
+          menuType: "",
+          minPax: "",
+          seatingRequired: "",
+        };
+
+        if (existingIndex !== -1) {
+
+          const updated = [...prev];
+          updated[existingIndex] = { ...updated[existingIndex], date: banquetDate };
+          return updated;
+        }
+
+        // Else, replace all with just the new row
+        return [newRow];
+      });
+    }
+  }, [banquetDate]);
 
   useEffect(() => {
     setRoom(
@@ -532,7 +574,13 @@ const AddEnquiryForm = () => {
         eventStartDate: eventSetup?.eventStartDate || "",
         eventEndDate: eventSetup?.eventEndDate || "",
       })
-      setBanquet(enquiryDataById?.data?.banquet)
+      setBanquet(enquiryDataById?.data?.banquet
+        ? enquiryDataById.data.banquet.map((item: any) => ({
+          ...item,
+          session: Array.isArray(item.session) ? item.session : [item.session].filter(Boolean)
+        }))
+        : []
+      )
       setRoom([...enquiryDataById?.data?.room])
       //   setCab(enquiryDataById?.data?.cab)
       setBillingInstructions(enquiryDataById?.data?.billingInstructions || "")
@@ -558,6 +606,8 @@ const AddEnquiryForm = () => {
       setDisplayName(enquiryDataById?.data?.displayName)
       setLastName(enquiryDataById?.data?.lastName)
       setSalutation(enquiryDataById?.data?.salutation)
+      setBanquetDate(enquiryDataById?.data?.banquetDate)
+      setBanquetTime(enquiryDataById?.data?.banquetTime)
 
       setIsOutOfStation(!!enquiryDataById?.data?.cab?.some((c: Cab) => c.fromCity && c.toCity))
 
@@ -589,6 +639,8 @@ const AddEnquiryForm = () => {
         othersPreference: othersPreference,
         hotelName: hotelName,
         approxPassengers: approxPassengers,
+        banquetDate: banquetDate,
+        banquetTime: banquetTime,
         // hotelPreferences: hotelPreferences,
         checkIn: checkIn,
         checkOut: checkOut,
@@ -872,7 +924,7 @@ const AddEnquiryForm = () => {
               </div>
 
               {/* City */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
                 <input
                   type="text"
@@ -882,10 +934,10 @@ const AddEnquiryForm = () => {
                   placeholder="City"
                   className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
-              </div>
+              </div> */}
 
               {/* Area */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Area</label>
                 <input
                   type="text"
@@ -897,10 +949,10 @@ const AddEnquiryForm = () => {
                   placeholder="Area"
                   className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
-              </div>
+              </div> */}
 
               {/* Number of Rooms */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Number of Rooms</label>
                 <input
                   type="number"
@@ -910,7 +962,7 @@ const AddEnquiryForm = () => {
                   placeholder="Number of Rooms"
                   className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
-              </div>
+              </div> */}
 
               {/* Enquiry Type */}
               <div>
@@ -940,30 +992,63 @@ const AddEnquiryForm = () => {
                 />
               </div> */}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Check In</label>
-                <input
-                  type="date"
-                  name="checkIn"
-                  value={moment(checkIn).format("YYYY-MM-DD")}
-                  onChange={(e) => setCheckIn(e.target.value)}
-                  onClick={(e) => (e.target as HTMLInputElement).showPicker()} // Trigger calendar on input click
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
+              {/* Show Check In only after Enquiry Type is selected */}
+              {(enquiryType === 'room' || enquiryType === 'both') && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Check In</label>
+                  <input
+                    type="date"
+                    name="checkIn"
+                    value={moment(checkIn).format("YYYY-MM-DD")}
+                    onChange={(e) => setCheckIn(e.target.value)}
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              )}
 
               {/* Check Out */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Check Out</label>
-                <input
-                  type="date"
-                  name="checkOut"
-                  value={moment(checkOut).format("YYYY-MM-DD")}
-                  onChange={(e) => setCheckOut(e.target.value)}
-                  onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
+              {(enquiryType === 'room' || enquiryType === 'both') && checkIn && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Check Out</label>
+                  <input
+                    type="date"
+                    name="checkOut"
+                    value={moment(checkOut).format("YYYY-MM-DD")}
+                    onChange={(e) => setCheckOut(e.target.value)}
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              )}
+
+              {(enquiryType === 'banquet' || enquiryType === 'both') && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Banquet Date</label>
+                  <input
+                    type="date"
+                    name="banquetDate"
+                    value={banquetDate}
+                    onChange={(e) => setBanquetDate(e.target.value)}
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              )}
+
+              {(enquiryType === 'banquet' || enquiryType === 'both') && banquetDate && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Banquet Time</label>
+                  <input
+                    type="time"
+                    name="banquetTime"
+                    value={banquetTime}
+                    onChange={(e) => setBanquetTime(e.target.value)}
+                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              )}
+
 
               {/* Level of Enquiry */}
               <div>
@@ -1187,7 +1272,7 @@ const AddEnquiryForm = () => {
                 <h2 className="font-bold text-base">Banquet</h2>
               </div>
               <div className="p-4">
-                <div className="overflow-x-auto">
+                <div className="">
                   <table className="min-w-full border-collapse">
                     <thead className="bg-[#0B2F46] text-white">
                       <tr>
@@ -1206,42 +1291,62 @@ const AddEnquiryForm = () => {
                           <td className="px-4 py-2 text-sm border-b border-gray-200">
                             {moment(row.date).format("YYYY-MM-DD")}
                           </td>
-                          <td className="px-4 py-2 text-sm border-b border-gray-200">
-                            <input
-                              type="text"
-                              value={row?.session}
-                              onChange={(e) => handleTableChange(banquet, setBanquet, index, "session", e.target.value)}
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                          <td className="px-4 py-2 text-sm border-b border-gray-200 relative">
+                            <Select
+                              isMulti
+                              options={sessionOptions}
+                              value={sessionOptions.filter(option => row.session.includes(option.value))}
+                              onChange={(selected) => handleSessionChange(index, selected.map(opt => opt.value))}
+                              className="text-sm z-99"
+                              classNamePrefix="react-select"
+                              styles={{
+                                menu: (provided) => ({
+                                  ...provided,
+
+                                }),
+                              }}
                             />
                           </td>
                           <td className="px-4 py-2 text-sm border-b border-gray-200">
-                            <input
-                              type="text"
-                              value={row?.seatingStyle}
-                              onChange={(e) =>
-                                handleTableChange(banquet, setBanquet, index, "seatingStyle", e.target.value)
-                              }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
-                            />
-                          </td>
+  <select
+    value={row?.seatingStyle}
+    onChange={(e) =>
+      handleTableChange(banquet, setBanquet, index, "seatingStyle", e.target.value)
+    }
+    className="border border-gray-300 p-1 rounded w-full text-sm"
+  >
+    <option value="">Select</option>
+    <option value="Theater">Theater</option>
+    <option value="Clusters">Clusters</option>
+    <option value="Theaters and Clusters">Theaters and Clusters</option>
+    <option value="Mix">Mix</option>
+  </select>
+</td>
                           <td className="px-4 py-2 text-sm border-b border-gray-200">
-                            <input
-                              type="text"
-                              value={row?.avSetup}
-                              onChange={(e) => handleTableChange(banquet, setBanquet, index, "avSetup", e.target.value)}
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
-                            />
-                          </td>
-                          <td className="px-4 py-2 text-sm border-b border-gray-200">
-                            <input
-                              type="text"
-                              value={row?.menuType}
-                              onChange={(e) =>
-                                handleTableChange(banquet, setBanquet, index, "menuType", e.target.value)
-                              }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
-                            />
-                          </td>
+  <select
+    value={row?.avSetup}
+    onChange={(e) => handleTableChange(banquet, setBanquet, index, "avSetup", e.target.value)}
+    className="border border-gray-300 p-1 rounded w-full text-sm"
+  >
+    <option value="">Select</option>
+    <option value="Yes">Yes</option>
+    <option value="No">No</option>
+  </select>
+</td>
+<td className="px-4 py-2 text-sm border-b border-gray-200">
+  <select
+    value={row?.menuType}
+    onChange={(e) =>
+      handleTableChange(banquet, setBanquet, index, "menuType", e.target.value)
+    }
+    className="border border-gray-300 p-1 rounded w-full text-sm"
+  >
+    <option value="">Select</option>
+    <option value="Veg">Veg</option>
+    <option value="Non-Veg">Non-Veg</option>
+    <option value="Mix">Mix</option>
+  </select>
+</td>
                           <td className="px-4 py-2 text-sm border-b border-gray-200">
                             <input
                               type="number"
@@ -1252,7 +1357,7 @@ const AddEnquiryForm = () => {
                           </td>
                           <td className="px-4 py-2 text-sm border-b border-gray-200">
                             <input
-                              type="text"
+                              type="number"
                               value={row?.seatingRequired}
                               onChange={(e) =>
                                 handleTableChange(banquet, setBanquet, index, "seatingRequired", e.target.value)
@@ -1554,189 +1659,210 @@ const AddEnquiryForm = () => {
             </div>
           )}
 
-          {/* Cab Table */}
-          <div className="bg-white rounded shadow-sm mb-6">
-            <div className="p-4 border-b border-gray-200">
-              <h2 className="font-bold text-base">Cab</h2>
-            </div>
-            <div className="p-4">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-                <div className="flex items-center gap-4">
-                  <label className="text-sm font-medium text-gray-700">Trip Type:</label>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={!isOutOfStation}
-                      onChange={handleCabTypeChange}
-                      className="form-checkbox h-4 w-4 text-blue-600"
-                    />
-                    <span className="text-sm">Local</span>
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={isOutOfStation}
-                      onChange={handleCabTypeChange}
-                      className="form-checkbox h-4 w-4 text-blue-600"
-                    />
-                    <span className="text-sm">Out of Station</span>
-                  </label>
-                </div>
 
-                {/* Approx Passengers */}
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm font-medium text-gray-700">Approx Number of Passengers:</label>
-                  <input
-                    type="number"
-                    value={approxPassengers}
-                    onChange={(e) => setApproxPassengers(e.target.value)}
-                    className="border border-gray-300 p-2 rounded w-full text-sm"
-                  />
-                </div>
-              </div>
 
-              <div className="overflow-x-auto">
-                <table className="min-w-full border-collapse">
-                  <thead className="bg-stone-200 text-gray-800">
-                    <tr>
-                      <th className="px-4 py-2 text-left text-xs font-bold">Date</th>
-                      {isOutOfStation && <th className="px-4 py-2 text-left text-xs font-medium">From City</th>}
-                      {isOutOfStation && <th className="px-4 py-2 text-left text-xs font-medium">To City</th>}
-                      <th className="px-4 py-2 text-left text-xs font-bold">No. of Vehicles</th>
-                      <th className="px-4 py-2 text-left text-xs font-bold">Type of Vehicle</th>
-                      <th className="px-4 py-2 text-left text-xs font-bold">Trip Type</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cab.map((row, index) => (
-                      <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                        <td className="px-4 py-2 text-sm border-b border-gray-200">
-                          <input
-                            type="date"
-                            value={moment(row?.date).format("YYYY-MM-DD") || row?.date}
-                            onChange={(e) => handleTableChange(cab, setCab, index, "date", e.target.value)}
-                            className="border border-gray-300 p-1 rounded w-full text-sm"
-                          />
-                        </td>
-
-                        {isOutOfStation && (
-                          <td className="px-4 py-2 text-sm border-b border-gray-200">
-                            <Autocomplete
-                              options={cityOptions}
-                              getOptionLabel={(option) => option.label}
-                              value={cityOptions.find((option) => option.value === row?.fromCity) || null}
-                              onChange={(event, newValue) =>
-                                handleTableChange(cab, setCab, index, "fromCity", newValue?.value || "")
-                              }
-                              isOptionEqualToValue={(option, value) => option.value === value.value}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  className="w-full"
-                                  variant="outlined"
-                                  size="small"
-                                  sx={{
-                                    "& .MuiOutlinedInput-root": {
-                                      padding: "0px",
-                                      fontSize: "0.875rem",
-                                    },
-                                  }}
-                                />
-                              )}
-                            />
-                          </td>
-                        )}
-
-                        {isOutOfStation && (
-                          <td className="px-4 py-2 text-sm border-b border-gray-200">
-                            <Autocomplete
-                              options={cityOptions}
-                              getOptionLabel={(option) => option.label}
-                              value={cityOptions.find((option) => option.value === row?.toCity) || null}
-                              onChange={(event, newValue) =>
-                                handleTableChange(cab, setCab, index, "toCity", newValue?.value || "")
-                              }
-                              isOptionEqualToValue={(option, value) => option.value === value.value}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  className="w-full"
-                                  variant="outlined"
-                                  size="small"
-                                  sx={{
-                                    "& .MuiOutlinedInput-root": {
-                                      padding: "0px",
-                                      fontSize: "0.875rem",
-                                    },
-                                  }}
-                                />
-                              )}
-                            />
-                          </td>
-                        )}
-
-                        <td className="px-4 py-2 text-sm border-b border-gray-200">
-                          <input
-                            type="number"
-                            value={row?.noOfVehicles}
-                            onChange={(e) => handleTableChange(cab, setCab, index, "noOfVehicles", e.target.value)}
-                            className="border border-gray-300 p-1 rounded w-full text-sm"
-                          />
-                        </td>
-
-                        <td className="px-4 py-2 text-sm border-b border-gray-200">
-                          <Autocomplete
-                            options={vehicleTypeOptions}
-                            getOptionLabel={(option) => option.label}
-                            value={vehicleTypeOptions.find((option) => option.value === row?.vehicleType) || null}
-                            onChange={(event, newValue) =>
-                              handleTableChange(cab, setCab, index, "vehicleType", newValue?.value || "")
-                            }
-                            isOptionEqualToValue={(option, value) => option.value === value.value}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                className="w-full"
-                                variant="outlined"
-                                size="small"
-                                sx={{
-                                  "& .MuiOutlinedInput-root": {
-                                    padding: "0px",
-                                    fontSize: "0.875rem",
-                                  },
-                                }}
-                              />
-                            )}
-                          />
-                        </td>
-
-                        <td className="px-4 py-2 text-sm border-b border-gray-200">
-                          <select
-                            value={row?.tripType}
-                            onChange={(e) => handleTableChange(cab, setCab, index, "tripType", e.target.value)}
-                            className="border border-gray-300 p-1 rounded w-full text-sm"
-                          >
-                            <option value="">Select Trip Type</option>
-                            <option value="Airport Transfer">Airport Transfer</option>
-                            <option value="Hourly Rental">Hourly Rental</option>
-                            <option value="Outstation">Outstation</option>
-                          </select>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              <button
-                type="button"
-                onClick={addCabRow}
-                className="bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 mt-3 rounded"
-              >
-                Add a Date
-              </button>
-            </div>
+          {/* Need Cab Checkbox */}
+          <div className="mb-4">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 ml-4">
+              <input
+                type="checkbox"
+                checked={needCab}
+                onChange={(e) => setNeedCab(e.target.checked)}
+                className="form-checkbox h-4 w-4 text-blue-600"
+              />
+              Need Cab?
+            </label>
           </div>
+
+          {/* Cab Table */}
+
+
+          {needCab && (
+            <div className="bg-white rounded shadow-sm mb-6">
+              <div className="bg-white rounded shadow-sm mb-6">
+                <div className="p-4 border-b border-gray-200">
+                  <h2 className="font-bold text-base">Cab</h2>
+                </div>
+                <div className="p-4">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-4">
+                      <label className="text-sm font-medium text-gray-700">Trip Type:</label>
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={!isOutOfStation}
+                          onChange={handleCabTypeChange}
+                          className="form-checkbox h-4 w-4 text-blue-600"
+                        />
+                        <span className="text-sm">Local</span>
+                      </label>
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={isOutOfStation}
+                          onChange={handleCabTypeChange}
+                          className="form-checkbox h-4 w-4 text-blue-600"
+                        />
+                        <span className="text-sm">Out of Station</span>
+                      </label>
+                    </div>
+
+                    {/* Approx Passengers */}
+                    <div className="flex flex-col gap-1">
+                      <label className="text-sm font-medium text-gray-700">Approx Number of Passengers:</label>
+                      <input
+                        type="number"
+                        value={approxPassengers}
+                        onChange={(e) => setApproxPassengers(e.target.value)}
+                        className="border border-gray-300 p-2 rounded w-full text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full border-collapse">
+                      <thead className="bg-stone-200 text-gray-800">
+                        <tr>
+                          <th className="px-4 py-2 text-left text-xs font-bold">Date</th>
+                          {isOutOfStation && <th className="px-4 py-2 text-left text-xs font-medium">From City</th>}
+                          {isOutOfStation && <th className="px-4 py-2 text-left text-xs font-medium">To City</th>}
+                          <th className="px-4 py-2 text-left text-xs font-bold">No. of Vehicles</th>
+                          <th className="px-4 py-2 text-left text-xs font-bold">Type of Vehicle</th>
+                          <th className="px-4 py-2 text-left text-xs font-bold">Trip Type</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {cab.map((row, index) => (
+                          <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                              <input
+                                type="date"
+                                value={moment(row?.date).format("YYYY-MM-DD") || row?.date}
+                                onChange={(e) => handleTableChange(cab, setCab, index, "date", e.target.value)}
+                                className="border border-gray-300 p-1 rounded w-full text-sm"
+                              />
+                            </td>
+
+                            {isOutOfStation && (
+                              <td className="px-4 py-2 text-sm border-b border-gray-200">
+                                <Autocomplete
+                                  options={cityOptions}
+                                  getOptionLabel={(option) => option.label}
+                                  value={cityOptions.find((option) => option.value === row?.fromCity) || null}
+                                  onChange={(event, newValue) =>
+                                    handleTableChange(cab, setCab, index, "fromCity", newValue?.value || "")
+                                  }
+                                  isOptionEqualToValue={(option, value) => option.value === value.value}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      className="w-full"
+                                      variant="outlined"
+                                      size="small"
+                                      sx={{
+                                        "& .MuiOutlinedInput-root": {
+                                          padding: "0px",
+                                          fontSize: "0.875rem",
+                                        },
+                                      }}
+                                    />
+                                  )}
+                                />
+                              </td>
+                            )}
+
+                            {isOutOfStation && (
+                              <td className="px-4 py-2 text-sm border-b border-gray-200">
+                                <Autocomplete
+                                  options={cityOptions}
+                                  getOptionLabel={(option) => option.label}
+                                  value={cityOptions.find((option) => option.value === row?.toCity) || null}
+                                  onChange={(event, newValue) =>
+                                    handleTableChange(cab, setCab, index, "toCity", newValue?.value || "")
+                                  }
+                                  isOptionEqualToValue={(option, value) => option.value === value.value}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      className="w-full"
+                                      variant="outlined"
+                                      size="small"
+                                      sx={{
+                                        "& .MuiOutlinedInput-root": {
+                                          padding: "0px",
+                                          fontSize: "0.875rem",
+                                        },
+                                      }}
+                                    />
+                                  )}
+                                />
+                              </td>
+                            )}
+
+                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                              <input
+                                type="number"
+                                value={row?.noOfVehicles}
+                                onChange={(e) => handleTableChange(cab, setCab, index, "noOfVehicles", e.target.value)}
+                                className="border border-gray-300 p-1 rounded w-full text-sm"
+                              />
+                            </td>
+
+                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                              <Autocomplete
+                                options={vehicleTypeOptions}
+                                getOptionLabel={(option) => option.label}
+                                value={vehicleTypeOptions.find((option) => option.value === row?.vehicleType) || null}
+                                onChange={(event, newValue) =>
+                                  handleTableChange(cab, setCab, index, "vehicleType", newValue?.value || "")
+                                }
+                                isOptionEqualToValue={(option, value) => option.value === value.value}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    className="w-full"
+                                    variant="outlined"
+                                    size="small"
+                                    sx={{
+                                      "& .MuiOutlinedInput-root": {
+                                        padding: "0px",
+                                        fontSize: "0.875rem",
+                                      },
+                                    }}
+                                  />
+                                )}
+                              />
+                            </td>
+
+                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                              <select
+                                value={row?.tripType}
+                                onChange={(e) => handleTableChange(cab, setCab, index, "tripType", e.target.value)}
+                                className="border border-gray-300 p-1 rounded w-full text-sm"
+                              >
+                                <option value="">Select Trip Type</option>
+                                <option value="Airport Transfer">Airport Transfer</option>
+                                <option value="Hourly Rental">Hourly Rental</option>
+                                <option value="Outstation">Outstation</option>
+                              </select>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={addCabRow}
+                    className="bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 mt-3 rounded"
+                  >
+                    Add a Date
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Billing Address and Submit Button */}
           <div className="bg-white rounded shadow-sm mb-6">
