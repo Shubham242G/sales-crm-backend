@@ -313,8 +313,8 @@ function CustomerLedger() {
             <div className="w-full">
               <input
                 type="search"
-                className="rounded-md w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                placeholder="Search..."
+                className="rounded-md w-[250px] border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                placeholder="Search by Vendor name"
                 value={query}
                   onChange={handleSearchInput}
                   onKeyPress={(e) => {
@@ -352,7 +352,7 @@ function CustomerLedger() {
           data={quotesFromVendors.data}
           columns={filteredColumns}
           loading={false}
-          totalRows={0}
+          totalRows={quotesFromVendors.total}
           onChangeRowsPerPage={setPageSize}
           onChangePage={setPageIndex}
           page={pageIndex}

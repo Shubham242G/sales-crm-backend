@@ -13,6 +13,7 @@ import {
   FaToggleOn,
   FaCog,
   FaColumns,
+  FaTasks,
 } from "react-icons/fa";
 import {
   addEnquiryExel,
@@ -569,9 +570,18 @@ export default function EnquiryLIst() {
  const handleModalOpen = () => {
     setIsOpen(true);
   };
+
+  const [isOpenAssign, setIsOpenAssign] = useState(false);
+
+
+  const handleAssignTask = () => {
+    setIsOpenAssign(true); 
+  };
+
+  
  
   return (
-    <div className="container px-6 w-full">
+    <div className="container mx-auto w-full">
       <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5 w-full">
         <div className="search_boxes flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-3">
           <h2 className="text-xl font-semibold text-gray-800">Enquiry List</h2>
@@ -588,18 +598,25 @@ export default function EnquiryLIst() {
             </div>
            
 
-            <div className="relative">
+            {/* <div className="relative">
               {/* <button
                 className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <FaFilter /> Filter
-              </button> */}
+              </button> 
               {showFilters && <FilterDropdown />}
-            </div>
+            </div> */}
              <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
-                AdvanceSearch
+                Advance Search
               </button>
+
+                      <button
+                              className="w-48 flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+                              onClick={handleAssignTask}
+                            >
+                            <span className="whitespace-nowrap"> Assign To Ops Team </span>
+                            </button>
             <div className="relative">
               <button
                 className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"

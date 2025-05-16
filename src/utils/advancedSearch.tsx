@@ -69,7 +69,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                 {field.label}
               </label>
               
-              {/* <select
+              <select
                 className="border border-gray-300 rounded-md text-sm px-2 py-1"
                 value={conditions[field.key] || "contains"}
                 onChange={(e) => handleConditionChange(field.key, e.target.value)}
@@ -84,7 +84,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                     <option value="lessThan">Less Than</option>
                   </>
                 )}
-              </select> */}
+              </select>
             </div>
             
             {field.type === "select" && field.options ? (

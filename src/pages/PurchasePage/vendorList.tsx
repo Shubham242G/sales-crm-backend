@@ -408,8 +408,8 @@ function VendorList() {
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="rounded-md w-full border px-4  border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-orange-500"
-                  placeholder="Search by state"
+                  className="rounded-md w-[250px] border px-4  border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-orange-500"
+                  placeholder="Search by Vendor Name "
                 />
               </div>
               {/* Buttons */}

@@ -756,7 +756,7 @@ const AddEnquiryForm = () => {
                 <select
                   onChange={(val) => handleSelectChange("salutation", val.target.value)}
                   value={salutation}
-                  className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                 >
                   {salutationOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -775,7 +775,7 @@ const AddEnquiryForm = () => {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="First Name"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                 />
               </div>
 
@@ -801,7 +801,7 @@ const AddEnquiryForm = () => {
                   onChange={(e) => setAssignTo(e.target.value)}
                   value={assignTo}
                   name="assignTo"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                 >
 
                   {userNames.data.map((option: any) => (
@@ -817,22 +817,19 @@ const AddEnquiryForm = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Display Name
                 </label>
-                <Autocomplete
-                  freeSolo
-                  onChange={(e, value) => {
-                    setDisplayName(value);
-                    setQuery(value);
-                  }}
+                <select
                   value={displayName}
-                  options={Customer.data.map((option: any) => option.displayName)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  )}
-                />
+                  onChange={(e) => {
+                    setDisplayName(e.target.value);
+                  }}
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                >
+                  {Customer.data.map((option: any) => (
+                    <option key={option.displayName} value={option.displayName}>
+                      {option.displayName}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {/* Company Name */}
