@@ -67,7 +67,7 @@ function TaskManagement() {
     CurrentUser();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string) => { 
     try {
       if (window.confirm("Are you sure you want to delete this contact?")) {
         const { data: res } = await deleteTaskManagement(id);
