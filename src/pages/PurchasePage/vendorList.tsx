@@ -393,32 +393,32 @@ function VendorList() {
       /> */}
 
       <div className="container px-6">
-        <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
-          <div className="search_boxes flex justify-between items-center">
+           <div className=" table_container rounded-xl px-3 py-1.5 ">
+          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm  mb-2  -mt-8 ">
             {/* Heading on the Left */}
-            <h2 className="text-xl font-semibold text-gray-800">
+            <h2 className="text-lg font-semibold -ml-8 text-gray-800">
               All Vendor List
             </h2>
 
             {/* Search and Buttons on the Right */}
-            <div className="flex items-center justify-start gap-2">
+            <div className="flex items-center justify-start gap-2 ">
               {/* Search Box (updated to filter by location.state) */}
               <div className="w-full">
                 <input
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="rounded-md w-[250px] border px-4  border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-orange-500"
+                  className="rounded-md w-[250px] border px-3  border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-orange-500"
                   placeholder="Search by Vendor Name "
                 />
               </div>
               {/* Buttons */}
-             {/* {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+             {/* {/* <button className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */} 
               {/* Import Button */}
               <button
-                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
                 onClick={handleImportClick}
               >
                 <FaFileImport />
@@ -427,7 +427,7 @@ function VendorList() {
 
             <div className="relative">
               <button
-                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowColumnSelector(!showColumnSelector)}
               >
                 <FaColumns /> Columns
@@ -445,7 +445,7 @@ function VendorList() {
                 onChange={handleFileChange}
               />
 
-              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300" onClick={()=>handleSyncVendors()}>
+              <button className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300" onClick={()=>handleSyncVendors()}>
                 <FaFileExport /> Export
               </button>
 
@@ -453,7 +453,7 @@ function VendorList() {
               {canCreate && (
                 <button
                   onClick={() => navigate("/add-vendor")}
-                  className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                  className="flex w-full items-center justify-center gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 border border-gray-300"
                 >
                   <FaPlus />
                   <span>New Vendor</span>
@@ -462,6 +462,7 @@ function VendorList() {
             </div>
           </div>
           {/* React Table */}
+           <div className="   shadow-xl -ml-14 -mr-9  text-sm   h-[580px] overflow-y-auto ">
           <ReactTable
             
             data={VendorData?.data}
@@ -474,6 +475,7 @@ function VendorList() {
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
           />
+          </div>
         </div>
       </div>
 

@@ -15,6 +15,8 @@ import ledgerw from "@/assets/sidebar/ledgerw.png";
 import { useSidebar } from "../../provider/SidebarContext";
 import { Link } from "react-router-dom";
 import mainlogo from "../../assets/mainlogo/favicon-9.png";
+import  logosm from "../../assets/header/360solutions_white_text_high_quality.png";
+
 import { getAuth } from "@/utils/auth";
 import { useRolesById, useRolesByRole } from "@/services/roles.service";
 import {
@@ -79,6 +81,7 @@ function Sidebar() {
         {
           dropHead: "Confirmed Quotes",
           link: "confirmedQuotes",
+          plusLink: "/add-ConfirmedQuotesFromVendor",
         },
       ],
     },
@@ -133,6 +136,7 @@ function Sidebar() {
         {
           dropHead: "Confirmed Quotes",
           link: "/confirmedQuotesToCustomer",
+          
         },
         {
           dropHead: "Invoices",
@@ -291,24 +295,35 @@ function Sidebar() {
 
 
   return (
-    <div className=" text-gray-850 bg-[#f7f8ff] h-full lg:h-[100vh] w-64 fixed overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-[#0B2F46]">
-      <div className="shadow-xl  p-4">
+    <>
+    <div className=" flex justify-center  fixed z-10 h-[48px] bg-[#21263C] w-[260px]">
+      <img
+        src={logosm}
+        alt="logosm"
+        className=" w-12 h-7 -ml-14 mt-3"
+      />
+      <h1 className="mt-4 text-sm text-white">A MICE COMPANY</h1>
+      </div>
+    <div className=" text-gray-850 bg-[#f7f8ff] h-full lg:h-[100vh]  w-[210px] fixed border-r-2">
+      
+      <div className="  mt-14 p-2 ml-9  w-[130px] h-[120px]    ">
         <img
           src={mainlogo}
           alt="mainlogo"
-          className="object-contain w-[120px] h-[178px]  mx-auto"
+          className=" mx-auto"
         />
       </div>
+     
       <ul className="main-list w-full overflow-auto h-[100vh] mt-2">
         {filteredSidebarArr.map((el, index) => (
-          <li className="relative mt-4 -mb-2 " key={index}>
+          <li className="relative mt-4 -mb-2 ml-2 text-sm " key={index}>
             {el?.dropArr ? (
               <button
                 type="button"
                 className="flex text-gray-850 items-center p-3 w-full bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors justify-between"
                 onClick={() => handleDropShow(index)}
               >
-                <div className="icon w-6 h-2 mr-4   flex flex-row items-center gap-2">
+                <div className="icon w-5 h-3 mr-4   flex flex-row items-center gap-2">
                   <img
                     src={showdrop === index ? el.activeIcon : el.icon}
                     alt={el.heading}
@@ -326,7 +341,7 @@ function Sidebar() {
                 to={el?.mainlink ? el.mainlink : ""}
                 className="flex items-center p-3 w-full  bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors"
               >
-                <div className="icon w-6 h-5 mr-2">
+                <div className="icon w-5 h-3 mr-2">
                   <img src={el?.icon} alt={el?.heading} />
                 </div>
                 <h6 className=" flex-1 whitespace-nowrap ml-1 -mb-2">
@@ -354,7 +369,7 @@ function Sidebar() {
                                 to={ele.plusLink}
                                 className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
                               >
-                                <span className="bg-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-medium leading-none">
+                                <span className="bg-white rounded-full w-5 h-5 -ml-5 flex items-center justify-center text-xs font-medium leading-none">
                                   +
                                 </span>
                               </Link>
@@ -371,6 +386,7 @@ function Sidebar() {
         ))}
       </ul>
     </div>
+    </>
   );
 }
 

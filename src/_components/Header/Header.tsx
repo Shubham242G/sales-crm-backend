@@ -66,15 +66,15 @@ function Header() {
 
   return (
     <>
-      <header className="w-full h-full">
+      <header className="w-full h-full ">  
         <div className="flex flex-row">
-          <div className="w-full">
-            <div className="right_header flex justify-end shadow-lg bg-white px-5 py-4 h-full border-b border-white">
+          <div className="w-[100vw]  h-[49px] ">
+            <div className="right_header flex justify-end bg-[#21263C] px-5 py-4 h-full border-b border-white">
               <div className="button_group flex gap-4 items-center">
                 {/* Notification Button */}
                 <button
                   type="button"
-                  className="text-secondarycolor flex items-center text-2xl relative"
+                  className="text-secondarycolor flex items-center text-2xl relative "
                   onClick={handleNotification}
                 >
                   {notificationCount > 0 && (
@@ -82,7 +82,7 @@ function Header() {
                       {notificationCount}
                     </p>
                   )}
-                  <FaBell />
+                  <FaBell className="text-white z-40 w-[20px] h-[20px] " />
                 </button>
 
                 {/* User Dropdown Button with Name */}
@@ -90,10 +90,10 @@ function Header() {
                   <button
                     type="button"
                     onClick={() => setLoginDrop(!loginDrop)}
-                    className="flex items-center gap-2 py-2 px-4 rounded-md font-medium text-black hover:bg-orange-500 hover:text-white"
+                    className="flex items-center gap-2 py-1  px-4 rounded-md font-medium text-white bg-orange-500 hover:text-white"
                   >
                     <span className="text-sm font-semibold">{formData?.name}</span>
-                    <IoChevronDown className="text-lg text-gray-500" />
+                    <IoChevronDown className="text-lg text-white" />
                   </button>
 
                   {/* Dropdown Menu */}

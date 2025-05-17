@@ -7,100 +7,175 @@ import { colors } from "@mui/material";
 import { spacing } from "react-select/dist/declarations/src/theme";
 import { BorderRight, Margin, Padding, WidthFull } from "@mui/icons-material";
 import { max } from "lodash";
-import { s } from "vite/dist/node/types.d-aGj9QkWt";
+import { i, s } from "vite/dist/node/types.d-aGj9QkWt";
 import { left } from "@popperjs/core";
+import { grey } from "@mui/material/colors";
 
+// const customStyles: any = {
+
+
+//   table: {
+//     style: {
+//       whiteSpace: 'nowrap',       
+//       wordBreak: 'break-word',    
+//       textAlign: 'center',
+//       marginTop: "10px",
+//       borderTopLeftRadius: "8px",
+//       borderTopRightRadius: "8px",
+//       border: "1px solid #EAECF0",
+//       backgroundColor: "#FFF",
+//       boxShadow:
+//         "0px 0px 0px 0px rgba(16, 24, 40, 0.06), 0px 1px 8px 0px rgba(16, 24, 40, 0.10)",
+//       overflow: "visible !important",
+//     },
+
+//   },
+
+
+
+//   rows: {
+//     style: {
+//       // '&:not(:last-of-type)': {
+//       // 	border: '1px solid #EAECF0',
+//       // },
+//       // borderRight: '1px solid #000',
+//     },
+
+
+//   },
+
+//   headRow: {
+//     style: {
+
+//       borderBottomWidth: "0",
+//       borderBottomColor: "transparent",
+//       borderBottomStyle: "solid",
+//       background: "linear-gradient(to right, #fef3c7, #fefce8, #fef3c7)",
+//       justifyContent: "space-between",
+      
+
+//     },
+//   },
+
+ 
+
+
+//   headCells: {
+//     style: {
+
+//       color: "grey-700",
+//       fontSize: '15px',
+//       fontWeight: '600',
+//       overflow: 'unset',
+//       whiteSpace: 'nowrap',       
+//       wordBreak: 'break-word',    
+//       textAlign: 'center',
+//       paddingTop: '5px',
+      
+//     },
+//   },
+
+
+
+//   cells: {
+//     style: {
+//       fontSize: "14px",
+//       fontWeight: "500",
+//       color: "#344054",
+//       Padding: "6px",
+//       h6: {
+//           whiteSpace: "normal",       
+//       },
+//     },
+//   },
+
+
+
+//   pagination: {
+//     style: {
+//       color: '#f97316',
+//       borderBottomLeftRadius: "8px",
+//       borderBottomRightRadius: "8px",
+//       border: "1px solid #EAECF0",
+//       backgroundColor: "#FFF",
+//       boxShadow:
+//         " 0px 0px 0px 0px rgba(16, 24, 40, 0.06), 0px 1px 8px 0px rgba(16, 24, 40, 0.10)",
+//     },
+
+//   },
+// };
 const customStyles: any = {
-
-
   table: {
     style: {
-      whiteSpace: 'nowrap',       
-      wordBreak: 'break-word',    
+      whiteSpace: 'nowrap',
+      wordBreak: 'break-word',
       textAlign: 'center',
       marginTop: "10px",
       borderTopLeftRadius: "8px",
       borderTopRightRadius: "8px",
       border: "1px solid #EAECF0",
-      backgroundColor: "#FFF",
-      boxShadow:
-        "0px 0px 0px 0px rgba(16, 24, 40, 0.06), 0px 1px 8px 0px rgba(16, 24, 40, 0.10)",
-      overflow: "visible !important",
+      backgroundColor: "#FFFFFF",
+      boxShadow: "0px 1px 8px rgba(16, 24, 40, 0.10)",
+      fontFamily: "'Inter', sans-serif",
+      
     },
-
   },
-
-
 
   rows: {
     style: {
-      // '&:not(:last-of-type)': {
-      // 	border: '1px solid #EAECF0',
-      // },
-      // borderRight: '1px solid #000',
+      minHeight: '25px',
+      borderBottom: '1px solid #F2F4F7',
+      '&:hover': {
+        backgroundColor: '#F9FAFB',
+      },
     },
-
-
   },
 
   headRow: {
     style: {
-
-      borderBottomWidth: "0",
-      borderBottomColor: "transparent",
-      borderBottomStyle: "solid",
-      background: "linear-gradient(to right, #fef3c7, #fefce8, #fef3c7)",
-      justifyContent: "space-between",
-      
-
+      background: "#F2F4F7",
+      borderBottom: "1px solid #EAECF0",
+      fontFamily: "'Inter', sans-serif",
+      position : "sticky",
+       fontSize: '13px',
+      top: 0,
     },
   },
-
- 
-
 
   headCells: {
     style: {
-
-      color: "grey-700",
-      fontSize: '15px',
-      fontWeight: '600',
-      overflow: 'unset',
-      whiteSpace: 'nowrap',       
-      wordBreak: 'break-word',    
+      color: '#475467',
+      fontSize: '13px',
+      fontWeight: 600,
       textAlign: 'center',
-      paddingTop: '5px',
-      
+      padding: '10px',
+      whiteSpace: 'nowrap',
     },
   },
 
-
-
   cells: {
     style: {
-      fontSize: "14px",
+      fontSize: "13px",
       fontWeight: "500",
       color: "#344054",
-      Padding: "6px",
-      h6: {
+      padding: "2px",
+      textAlign: 'center',
+        h6: {
           whiteSpace: "normal",       
       },
     },
   },
 
-
-
   pagination: {
     style: {
-      color: '#f97316',
+      color: '#475467',
+      borderTop: '1px solid #EAECF0',
       borderBottomLeftRadius: "8px",
       borderBottomRightRadius: "8px",
-      border: "1px solid #EAECF0",
-      backgroundColor: "#FFF",
-      boxShadow:
-        " 0px 0px 0px 0px rgba(16, 24, 40, 0.06), 0px 1px 8px 0px rgba(16, 24, 40, 0.10)",
+      backgroundColor: "#FFFFFF",
+      boxShadow: "0px -1px 8px rgba(16, 24, 40, 0.10)",
+      fontFamily: "'Inter', sans-serif",
     },
-
   },
 };
 

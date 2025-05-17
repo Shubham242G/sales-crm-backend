@@ -228,16 +228,17 @@ function Users() {
 
   return (
     <>
-      <div className="container px-6">
-        <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
-          <div className="search_boxes flex justify-between items-center">
-            <h2 className="text-xl ml-1 font-semibold text-[#2a2929]">Users List</h2>
+     <div className="container ">
+        <div className=" table_container rounded-xl px-4 py-2  ">
+          <div></div>
+          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm -ml-5 mb-2 -mt-8">
+            <h2 className="text-lg ml-1 font-semibold text-[#2a2929]">Users List</h2>
 
             <div className="flex items-center justify-start gap-2">
-              <div className="w-full flex items-center ">
+              <div className="w-full flex items-center">
                 <input
                   type="search"
-                  className="rounded-md w-[250px] border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  className="rounded-md border px-3 py-1.5 w-[200px] border-gray-300 placeholder-gray-500 text-sm focus:outline-none focus:border-orange-500"
                   placeholder="Search by Username"
                   onChange={(e) => setQuery(e.target.value)}
                 />
@@ -249,7 +250,7 @@ function Users() {
 
               <div className="relative">
                 <button
-                  className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                  className="flex items-center gap-1 px-4 py-1.5 text-sm rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                   onClick={() => setShowColumnSelector(!showColumnSelector)}
                 >
                   <FaColumns /> Columns
@@ -259,7 +260,7 @@ function Users() {
 
               <button
                 onClick={() => navigate("/add-users")}
-                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                className="flex w-full items-center py-1.5 justify-center gap-1 px-3  text-white rounded-md bg-orange-500 border border-gray-300"
               >
                 <FaPlus />
                 <span>New User</span>
@@ -267,11 +268,11 @@ function Users() {
             </div>
           </div>
 
+
+         <div className=" table_container shadow-lg   -ml-9  text-sm   h-[590px] -mr-4 overflow-y-auto ">
           <ReactTable
             data={UserData?.data}
-            
- columns={filteredColumns}
-
+            columns={filteredColumns}
             loading={false}
             totalRows={UserData?.total}
             onChangeRowsPerPage={setPageSize}
@@ -280,6 +281,7 @@ function Users() {
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
           />
+        </div>
         </div>
       </div>
     </>
