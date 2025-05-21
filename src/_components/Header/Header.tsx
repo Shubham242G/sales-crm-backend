@@ -68,8 +68,8 @@ function Header() {
     <>
       <header className="w-full h-full ">  
         <div className="flex flex-row">
-          <div className="w-[100vw]  h-[49px] ">
-            <div className="right_header flex justify-end bg-[#21263C] px-5 py-4 h-full border-b border-white">
+          <div className="w-[100vw]  h-[48px] ">
+            <div className="right_header flex justify-end bg-[#21263C] px-5 py-4 h-full ">
               <div className="button_group flex gap-4 items-center">
                 {/* Notification Button */}
                 <button

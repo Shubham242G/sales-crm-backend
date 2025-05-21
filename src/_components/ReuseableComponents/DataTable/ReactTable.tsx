@@ -10,6 +10,8 @@ import { max } from "lodash";
 import { i, s } from "vite/dist/node/types.d-aGj9QkWt";
 import { left } from "@popperjs/core";
 import { grey } from "@mui/material/colors";
+import { h } from "vue";
+import { Bold } from "lucide-react";
 
 // const customStyles: any = {
 
@@ -110,24 +112,24 @@ const customStyles: any = {
       whiteSpace: 'nowrap',
       wordBreak: 'break-word',
       textAlign: 'center',
-      marginTop: "10px",
       borderTopLeftRadius: "8px",
       borderTopRightRadius: "8px",
       border: "1px solid #EAECF0",
       backgroundColor: "#FFFFFF",
       boxShadow: "0px 1px 8px rgba(16, 24, 40, 0.10)",
-      fontFamily: "'Inter', sans-serif",
-      
+    fontFamily: "'Satoshi_Regular', 'Zoho_Puvi_SemiBold', Arial, sans-serif",
+   
+   
     },
   },
 
   rows: {
     style: {
-      minHeight: '25px',
-      borderBottom: '1px solid #F2F4F7',
-      '&:hover': {
-        backgroundColor: '#F9FAFB',
-      },
+     
+      // borderBottom: '1px solid #F2F4F7',
+      // '&:hover': {
+      //   backgroundColor: '#F9FAFB',
+      // },
     },
   },
 
@@ -135,34 +137,37 @@ const customStyles: any = {
     style: {
       background: "#F2F4F7",
       borderBottom: "1px solid #EAECF0",
-      fontFamily: "'Inter', sans-serif",
-      position : "sticky",
-       fontSize: '13px',
-      top: 0,
+      fontFamily: "'Satoshi_Regular', 'Zoho_Puvi_SemiBold', Arial, sans-serif",
+       fontSize: '12px',
+       
+    
     },
   },
 
   headCells: {
     style: {
-      color: '#475467',
-      fontSize: '13px',
+      color: '#6C7A99' ,
+      fontSize: '12px',
       fontWeight: 600,
       textAlign: 'center',
-      padding: '10px',
-      whiteSpace: 'nowrap',
+      padding: '8px',
+      letterSpacing: '0.5px',
+      
+      
     },
   },
 
   cells: {
     style: {
       fontSize: "13px",
-      fontWeight: "500",
-      color: "#344054",
+      color: "#000000",
+      
       padding: "2px",
       textAlign: 'center',
         h6: {
           whiteSpace: "normal",       
       },
+      
     },
   },
 
@@ -175,6 +180,7 @@ const customStyles: any = {
       backgroundColor: "#FFFFFF",
       boxShadow: "0px -1px 8px rgba(16, 24, 40, 0.10)",
       fontFamily: "'Inter', sans-serif",
+     
     },
   },
 };
@@ -188,10 +194,15 @@ export const ReactTable = ({
   onChangePage,
   rowsPerPageText,
   page,
+  check,
   paginationRowsPerPageOptions,
   isServerPropsDisabled = false,
   pageIndexKey = String(pageIndex),
   pageSizeKey = String(pageSize),
+  className="",
+  selectableRows ,
+  onSelectedRowsChange,
+   
 }: {
   data: any;
   columns: any;
@@ -205,11 +216,17 @@ export const ReactTable = ({
   isServerPropsDisabled?: boolean;
   pageIndexKey?: string;
   pageSizeKey?: string;
+  check?: boolean;
+  className?: string;
+  selectableRows?: boolean;
+  onSelectedRowsChange?: any;
+  
 }) => {
 
   return (
 
     <DataTable
+   
       progressPending={loading}
       customStyles={customStyles}
       columns={columns}
@@ -218,11 +235,16 @@ export const ReactTable = ({
       pagination
       paginationDefaultPage={page}
       paginationServer={!isServerPropsDisabled}
-      paginationRowsPerPageOptions={[1, 5, 10, 20, 30, 40, 50, 100, 200, 500]}
+      paginationRowsPerPageOptions={[10, 20, 30, 40, 50, 100, 200, 500]}
       onChangePage={onChangePage}
       onChangeRowsPerPage={onChangeRowsPerPage}
       paginationTotalRows={totalRows}
       responsive
+      selectableRows= {selectableRows }
+       fixedHeader
+      fixedHeaderScrollHeight="538px"
+      className={className}
+      onSelectedRowsChange={onSelectedRowsChange}
     />
 
   )
