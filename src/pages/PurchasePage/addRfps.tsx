@@ -23,6 +23,7 @@ const AddRfpsForm = () => {
     //new fields
     rfpId: "",
     serviceType: [] as string[],
+    leadId: "",
     displayName: "",
     eventDates: [
       {
@@ -59,6 +60,7 @@ const AddRfpsForm = () => {
   const { data: vendorNames } = useVendorName();
 
 
+  console.log(vendorNames, "vendorNames");
 
   const option = vendorNames?.data?.map((el: any) => ({
     value: el._id || el.Name, // Use _id if available, else displayName for uniqueness
@@ -74,6 +76,7 @@ const AddRfpsForm = () => {
           { startDate: "", endDate: "" },
         ],
         displayName: rfpDataById.data.displayName || "",
+        leadId: rfpDataById.data.leadId || "",
         eventDetails: rfpDataById.data.eventDetails || "",
         deadlineOfProposal: rfpDataById.data.deadlineOfProposal || "",
         vendorList: [...rfpDataById.data.vendorList],
@@ -94,12 +97,14 @@ const AddRfpsForm = () => {
 
         if (res?.message) {
           toastSuccess(res.message);
+          console.log("leadID===>", formData.leadId)
           navigate("/rfps");
         }
       } else {
         const { data: res } = await addRfp(obj);
         if (res?.message) {
           toastSuccess(res.message);
+          console.log("leadID===>", formData.leadId)
           navigate("/rfps");
         }
       }
@@ -181,7 +186,7 @@ const AddRfpsForm = () => {
     }
   }, [vendorData]);
   const optionConvertor = (displayName: string) => {
-    return `${displayName} `;
+    return { displayName };
   };
 
   return (
@@ -227,20 +232,20 @@ const AddRfpsForm = () => {
               ))}
           </div>
 
-          
-            <div>
-              <label className="block text-sm font-medium text-black mb-1">
-                Display Name
-              </label>
-              <input
-                name="displayName"
-                value={formData.displayName}
-                onChange={handleInputChange}
-                type="text"
-                className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
-                placeholder="Enter display name"
-              />
-            </div>
+
+          <div>
+            <label className="block text-sm font-medium text-black mb-1">
+              Display Name
+            </label>
+            <input
+              name="displayName"
+              value={formData.displayName}
+              onChange={handleInputChange}
+              type="text"
+              className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
+              placeholder="Enter display name"
+            />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>

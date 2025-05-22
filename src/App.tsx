@@ -6,14 +6,16 @@ import RoutesPage from "./router/RoutesPage";
 import { AuthProvider } from "@/context/AuthProvider";
 
 function App() {
-  return (
-      <AuthProvider>
+  return (<div className="h-screen">
+    <AuthProvider>
       <Toaster />
-        <SidebarProvider>
-          <RoutesPage />
-        </SidebarProvider>
-      </AuthProvider>
-     
+      <SidebarProvider>
+        <RoutesPage />
+      </SidebarProvider>
+    </AuthProvider>
+  </div>
+
+
 
   );
 }

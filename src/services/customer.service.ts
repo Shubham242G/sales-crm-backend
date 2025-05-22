@@ -268,6 +268,8 @@ import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination } from "./ur
 import { PaginationState } from "@tanstack/react-table";
 import { usePagination } from "../libs/hooks/usePagination";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Type } from "typescript";
+import { TypeObject } from "@mui/material/styles/createPalette";
 const prefix = "/customer";
 
 export interface Address {
@@ -284,6 +286,7 @@ export interface ContactPerson {
   salutation?: string;
   first_name: string;
   last_name: string;
+  leadId?: TypeObject;
   email: string;
   phone?: string;
   mobile?: string;
@@ -300,10 +303,11 @@ export interface ICustomer {
   salutation: string;
   firstName: string;
   lastName: string;
+  leadId?: string;
   companyName: string;
   displayName: string;
   email: string;
-  workPhone: string;
+  phone: string;
   mobile: string;
   panNumber: string;
   placeOfSupply: string;
@@ -343,6 +347,10 @@ export interface ICustomer {
   twitter: string;
   skype: string;
   facebook: string;
+}
+
+export interface Inew extends ICustomer {
+    id: string,
 }
 
 export const useZohoCustomerApiHook = () => {

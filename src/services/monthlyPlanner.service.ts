@@ -12,6 +12,7 @@ const prefix = "/monthlyPlanner";
 export interface ImonthlyPlanner {
     // Basic Details
     salutation: string,
+    leadId: string,
     clientName: string,
     agenda: string,
     email: string,

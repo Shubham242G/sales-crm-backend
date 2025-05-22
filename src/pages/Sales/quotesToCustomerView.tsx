@@ -12,6 +12,7 @@ function QuotesForCustomerView() {
     placeOfSupply: "",
     paymentTerms: "",
     priceList: "",
+    leadId: "",
     portalLanguage: "",
     attention: "",
     countryRegion: "",

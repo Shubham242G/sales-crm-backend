@@ -30,6 +30,7 @@ interface IConfirmedQuotes {
     hotelName: string;
     eventCoordinatorReportingTime: string;
     clientsCompanyName: string;
+    leadId: string;
     onsiteClientName: string;
     salesPersonName: string;
     expectedPax: string;
@@ -105,6 +106,7 @@ const AddConfirmedQuotesFromVendor = () => {
       eventCoordinatorName: "",
       eventDate: "",
       hotelName: "",
+      leadId: "",
       eventCoordinatorReportingTime: "",
       clientsCompanyName: "",
       onsiteClientName: "",
@@ -182,6 +184,7 @@ const AddConfirmedQuotesFromVendor = () => {
             data.banquetEventOrders?.eventCoordinatorReportingTime || "",
           clientsCompanyName: data.banquetEventOrders?.clientsCompanyName || "",
           onsiteClientName: data.banquetEventOrders?.onsiteClientName || "",
+          leadId: data.banquetEventOrders?.leadId || "",
           salesPersonName: data.banquetEventOrders?.salesPersonName || "",
           expectedPax: data.banquetEventOrders?.expectedPax || "",
           quotesId: data.banquetEventOrders?.quotesId || "",

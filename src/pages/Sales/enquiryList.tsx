@@ -45,6 +45,7 @@ export default function EnquiryLIst() {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
+  const [leadId, setLeadId] = useState("");
   const [selectedEnquiryType, setSelectedEnquiryType] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");

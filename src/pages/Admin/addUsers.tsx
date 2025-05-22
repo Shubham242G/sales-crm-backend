@@ -1,7 +1,7 @@
 import { toastError, toastSuccess } from "@/utils/toast";
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Phone } from "lucide-react";
 import {
   useAddUser,
   useUserById,
@@ -17,6 +17,7 @@ const AddNewUser = () => {
     email: "",
     role: "",
     password: "",
+    phone: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -49,6 +50,7 @@ const AddNewUser = () => {
         email: UserDataById.email || "",
         role: UserDataById.role || "",
         password: UserDataById.password || "",
+        phone: UserDataById.phone || "",
       });
     } else {
       setFormData((prev) => ({
@@ -90,6 +92,7 @@ const AddNewUser = () => {
           setFormData(obj);
           toastSuccess(res.message);
           navigate("/users");
+          console.log(formData.password, "Password", formData);
         }
       }
     } catch (error) {
@@ -142,7 +145,7 @@ const AddNewUser = () => {
               />
             </div>
 
-            <div className="relative">
+            {/* <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
@@ -161,7 +164,29 @@ const AddNewUser = () => {
               >
                 {showPassword ? <EyeOff size={0} /> : <Eye size={20} />}
               </div>
-            </div>
+            </div> */}
+
+<div>
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Phone Number
+  </label>
+  <input
+    type={"tel"}
+    value={formData.phone}
+    name="phone"
+    onChange={(e) => {
+      const cleanedValue = e.target.value.replace(/\D/g, "");
+      if (cleanedValue.length <= 10) {
+        setFormData(prev => ({
+          ...prev,
+          phone: cleanedValue
+        }));
+      }
+    }}
+    placeholder="Enter phone number"
+    className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
+  />
+</div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

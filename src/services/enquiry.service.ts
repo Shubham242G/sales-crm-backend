@@ -6,7 +6,10 @@ import BASE_URL, { GeneralApiResponse, GeneralApiResponsePagination } from "./ur
 import axios from "../libs/hooks/axios";
 import { CHARGE_TYPE } from "@/common/constant.common";
 import axiosAuth from "./axios.service";
+import { TypeObject } from "@mui/material/styles/createPalette";
 // import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
+
+
 
 
 const prefix = "/enquiry";
@@ -22,6 +25,7 @@ export interface IEnqiry {
     companyName: string
     levelOfEnquiry: string;
     enquiryType: string;
+    leadId: string;
     hotelPreferences: string;
     hotelName: string;
     othersPreference: string;
@@ -29,7 +33,7 @@ export interface IEnqiry {
     checkIn: string;
     checkOut: string;
     banquetDate: string;
-    banquetTime:string;
+    banquetTime: string;
     city: string;
     area: string;
     noOfRooms: string;
@@ -41,6 +45,7 @@ export interface IEnqiry {
     status: string;
     banquet: {
         date: string;
+        time: string;
         session: string[];
         seatingStyle: string;
         avSetup: string;
@@ -114,7 +119,7 @@ export const useEnquiryApiHook = () => {
         return axios.get<GeneralApiResponse<IEnqiry>>(`${BASE_URL}${prefix}/getById/${id}`);
     };
 
-    
+
 
 
 

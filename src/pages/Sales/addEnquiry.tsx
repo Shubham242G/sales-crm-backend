@@ -298,6 +298,10 @@ const AddEnquiryForm = () => {
   const [isAirTicketVisible, setIsAirTicketVisible] = useState(false)
 
 
+  const handleDeleteRow = (idx: number, setTable: any) => {
+    setTable((prev: any) => prev.filter((_: any, i: number) => i !== idx));
+  };
+
   const { data: enquiryDataById, isLoading } = useEnquiryById(id || "")
   useEffect(() => {
     if (checkIn && checkOut) {
@@ -437,6 +441,23 @@ const AddEnquiryForm = () => {
         noOfVehicles: "",
         vehicleType: "",
         tripType: "",
+      },
+    ])
+  }
+
+  const addBanquetRow = () => {
+    const nextDate = new Date(banquet[banquet.length - 1]?.date || new Date())
+    nextDate.setDate(nextDate.getDate() + 1)
+    setBanquet((prev) => [
+      ...prev,
+      {
+        date: nextDate.toISOString().split("T")[0], // nextDate ,
+        session: [],
+        seatingStyle: "",
+        avSetup: "",
+        menuType: "",
+        minPax: "",
+        seatingRequired: "",
       },
     ])
   }
@@ -1226,6 +1247,14 @@ const AddEnquiryForm = () => {
                                   ))}
                               </div>
                             </td>
+                            <td>
+                              <button
+                                onClick={() => handleDeleteRow(index, setRoom)}
+                                className="text-red-500 font-bold"
+                              >
+                                Remove
+                              </button>
+                            </td>
                           </tr>
                         ))}
                     </tbody>
@@ -1308,45 +1337,45 @@ const AddEnquiryForm = () => {
                             />
                           </td>
                           <td className="px-4 py-2 text-sm border-b border-gray-200">
-  <select
-    value={row?.seatingStyle}
-    onChange={(e) =>
-      handleTableChange(banquet, setBanquet, index, "seatingStyle", e.target.value)
-    }
-    className="border border-gray-300 p-1 rounded w-full text-sm"
-  >
-    <option value="">Select</option>
-    <option value="Theater">Theater</option>
-    <option value="Clusters">Clusters</option>
-    <option value="Theaters and Clusters">Theaters and Clusters</option>
-    <option value="Mix">Mix</option>
-  </select>
-</td>
+                            <select
+                              value={row?.seatingStyle}
+                              onChange={(e) =>
+                                handleTableChange(banquet, setBanquet, index, "seatingStyle", e.target.value)
+                              }
+                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                            >
+                              <option value="">Select</option>
+                              <option value="Theater">Theater</option>
+                              <option value="Clusters">Clusters</option>
+                              <option value="Theaters and Clusters">Theaters and Clusters</option>
+                              <option value="Mix">Mix</option>
+                            </select>
+                          </td>
                           <td className="px-4 py-2 text-sm border-b border-gray-200">
-  <select
-    value={row?.avSetup}
-    onChange={(e) => handleTableChange(banquet, setBanquet, index, "avSetup", e.target.value)}
-    className="border border-gray-300 p-1 rounded w-full text-sm"
-  >
-    <option value="">Select</option>
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-  </select>
-</td>
-<td className="px-4 py-2 text-sm border-b border-gray-200">
-  <select
-    value={row?.menuType}
-    onChange={(e) =>
-      handleTableChange(banquet, setBanquet, index, "menuType", e.target.value)
-    }
-    className="border border-gray-300 p-1 rounded w-full text-sm"
-  >
-    <option value="">Select</option>
-    <option value="Veg">Veg</option>
-    <option value="Non-Veg">Non-Veg</option>
-    <option value="Mix">Mix</option>
-  </select>
-</td>
+                            <select
+                              value={row?.avSetup}
+                              onChange={(e) => handleTableChange(banquet, setBanquet, index, "avSetup", e.target.value)}
+                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                            >
+                              <option value="">Select</option>
+                              <option value="Yes">Yes</option>
+                              <option value="No">No</option>
+                            </select>
+                          </td>
+                          <td className="px-4 py-2 text-sm border-b border-gray-200">
+                            <select
+                              value={row?.menuType}
+                              onChange={(e) =>
+                                handleTableChange(banquet, setBanquet, index, "menuType", e.target.value)
+                              }
+                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                            >
+                              <option value="">Select</option>
+                              <option value="Veg">Veg</option>
+                              <option value="Non-Veg">Non-Veg</option>
+                              <option value="Mix">Mix</option>
+                            </select>
+                          </td>
                           <td className="px-4 py-2 text-sm border-b border-gray-200">
                             <input
                               type="number"
@@ -1365,6 +1394,14 @@ const AddEnquiryForm = () => {
                               className="border border-gray-300 p-1 rounded w-full text-sm"
                             />
                           </td>
+                          <td>
+                            <button
+                              onClick={() => handleDeleteRow(index, setBanquet)}
+                              className="text-red-500 font-bold"
+                            >
+                              Remove
+                            </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -1372,31 +1409,7 @@ const AddEnquiryForm = () => {
                 </div>
                 <button
                   type="button"
-                  onClick={() => {
-                    if (banquet?.length > 0) {
-                      const filledRow = banquet.find(
-                        (row) =>
-                          row.session ||
-                          row.seatingStyle ||
-                          row.avSetup ||
-                          row.menuType ||
-                          (row.minPax && Number.parseInt(row.minPax) > 0) ||
-                          row.seatingRequired,
-                      )
-                      if (filledRow) {
-                        setBanquet(
-                          banquet.map((originalRow) => ({
-                            ...filledRow,
-                            date: originalRow.date,
-                          })),
-                        )
-                      } else {
-                        alert("Please fill in at least one row before applying to all days.")
-                      }
-                    } else {
-                      alert("No banquet data available.")
-                    }
-                  }}
+                  onClick={addBanquetRow}
                   className="bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 mt-3 rounded"
                 >
                   Same for All Days
@@ -1846,6 +1859,14 @@ const AddEnquiryForm = () => {
                                 <option value="Outstation">Outstation</option>
                               </select>
                             </td>
+                            <td>
+                              <button
+                                onClick={() => handleDeleteRow(index, setCab)}
+                                className="text-red-500 font-bold"
+                              >
+                                Remove
+                              </button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -1903,5 +1924,3 @@ const AddEnquiryForm = () => {
 }
 
 export default AddEnquiryForm
-
-

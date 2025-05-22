@@ -36,6 +36,7 @@ interface IVendor {
   firstName: string;
   lastName: string;
   email: string;
+  leadId: string;
   companyName: string;
   contactName: string;
   contactOwner: string;
@@ -201,6 +202,7 @@ const AddVendorForm = () => {
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
+  const [leadId, setLeadId] = useState("");
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Vendors");
@@ -228,6 +230,7 @@ const AddVendorForm = () => {
     lastName: "",
     contactName: "",
     contactOwner: "",
+    leadId: "",
     panNumber: "",
     gst: "",
     vendorType: [],
@@ -400,6 +403,7 @@ const AddVendorForm = () => {
       contactName: "John Doe",
       contactOwner: "Jane Smith",
       panNumber: "ABCDE1234F",
+      leadId: "12345",
       gst: "27ABCDE1234F1Z5",
       vendorType: ["Hotel"],
       landLine: "022-12345678",
@@ -1480,25 +1484,21 @@ const AddVendorForm = () => {
                     </div>
 
                     {/* Display Name */}
-                    <div className="flex flex-col gap-[8px] lg:items-start  md:items-center">
-                      <span className="text-[14px] font-medium text-black ">
-                        Display Name:
-                      </span>
-                      <div className="w-full">
-                        {" "}
-                        <select
-                          value={vendor.displayName}
-                          onChange={(e) =>
-                            setVendor({ ...vendor, displayName: e.target.value })
-                          }
-                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-2 text-sm "
-                        >
-                          <option value="">Select Display Name</option>
-                          <option value="company">Company Name</option>
-                          <option value="contact">Contact Name</option>
-                        </select>
-                      </div>
-                    </div>
+                    <div>
+            <label className="block text-sm font-medium text-black mb-1">
+              Display Name
+            </label>
+            <input
+              name="displayName"
+              value={vendor.displayName}
+              onChange={(e) =>
+                setVendor({ ...vendor, displayName: e.target.value })
+              }
+              type="text"
+              className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
+              placeholder="Enter display name"
+            />
+          </div>
 
                     {/* Email Address */}
                     <div className="flex flex-col gap-[8px] lg:items-start md:items-center">

@@ -1,7 +1,7 @@
 import {
-    useAddCustomer,
-    useZohoCustomerById,
-    updateCustomerById,
+  useAddCustomer,
+  useZohoCustomerById,
+  updateCustomerById,
 } from "@/services/customer.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import React, { useEffect, useState } from "react";
@@ -10,503 +10,527 @@ import { useRef } from "react";
 import { generateFilePath } from "@/services/urls.service";
 import { Autocomplete, TextField } from "@mui/material";
 import {
-    ChevronUp,
-    ChevronDown,
-    Globe,
-    Building2,
-    UserRound,
-    Twitter,
-    MessageCircle,
-    Facebook,
+  ChevronUp,
+  ChevronDown,
+  Globe,
+  Building2,
+  UserRound,
+  Twitter,
+  MessageCircle,
+  Facebook,
 } from "lucide-react";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import { TypeObject } from "@mui/material/styles/createPalette";
+import { Type } from "typescript";
+import { AirplanemodeActiveSharp } from "@mui/icons-material";
 
 //comment
 
 interface ICustomerForm {
-    customerType: string;
-    salutation: string;
-    firstName: string;
-    lastName: string;
-    companyName: string;
-    displayName: string;
-    email: string;
-    workPhone: string;
-    mobile: string;
-    panNumber: string;
-    placeOfSupply: string;
-    prefersEmail: boolean;
-    prefersSms: boolean;
-    gstTreatment: string;
-    openingBalanceState: string;
-    openingBalance: string;
-    creditLimit: string;
-    taxPreference: string;
-    currency: string;
-    paymentTerms: string;
-    priceList: string;
-    enablePortal: boolean;
-    portalLanguage: string;
-    // attention: string;
-    countryRegion: string;
-    addressStreet1: string;
-    addressStreet2: string;
-    city: string;
-    state: string;
-    phoneNumber: string;
-    pinCode: string;
-    faxNumber: string;
-    // shippingAttention: string;
-    shippingCountryRegion: string;
-    shippingAddressStreet1: string;
-    shippingAddressStreet2: string;
-    shippingCity: string;
-    shippingState: string;
-    shippingPhoneNumber: string;
-    shippingPinCode: string;
-    shippingFaxNumber: string;
-    documentArray: string[];
-    websiteUrl: string;
-    department: string;
-    designation: string;
-    skype: string;
-    facebook: string;
-    twitter: string;
+  customerType: string;
+  salutation: string;
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  displayName: string;
+  email: string;
+  phone: string;
+  mobile: string;
+  panNumber: string;
+  placeOfSupply: string;
+  leadId: string;
+  prefersEmail: boolean;
+  prefersSms: boolean;
+  gstTreatment: string;
+  openingBalanceState: string;
+  openingBalance: string;
+  creditLimit: string;
+  taxPreference: string;
+  currency: string;
+  paymentTerms: string;
+  priceList: string;
+  enablePortal: boolean;
+  portalLanguage: string;
+  // attention: string;
+  countryRegion: string;
+  addressStreet1: string;
+  addressStreet2: string;
+  city: string;
+  state: string;
+  phoneNumber: string;
+  pinCode: string;
+  faxNumber: string;
+  // shippingAttention: string;
+  shippingCountryRegion: string;
+  shippingAddressStreet1: string;
+  shippingAddressStreet2: string;
+  shippingCity: string;
+  shippingState: string;
+  shippingPhoneNumber: string;
+  shippingPinCode: string;
+  shippingFaxNumber: string;
+  documentArray: string[];
+  websiteUrl: string;
+  department: string;
+  designation: string;
+  skype: string;
+  facebook: string;
+  twitter: string;
 
-    // communicationChannels: string[];
-    // contactPersonsSalutation: string;
-    // contactPersonsFirstName: string;
-    // contactPersonsLastName: string;
-    // contactPersonsEmail: string;
-    // contactPersonsWorkPhone: string;
-    // contactPersonsMobile: string;
-    // contactPersonsCommunicationChannels: string[];
+  // communicationChannels: string[];
+  // contactPersonsSalutation: string;
+  // contactPersonsFirstName: string;
+  // contactPersonsLastName: string;
+  // contactPersonsEmail: string;
+  // contactPersonsWorkPhone: string;
+  // contactPersonsMobile: string;
+  // contactPersonsCommunicationChannels: string[];
 }
 type communicationChannelsProps = {
-    prefersEmail: boolean;
-    prefersSms: boolean;
+  prefersEmail: boolean;
+  prefersSms: boolean;
 };
 
 interface IContactPerson {
-    salutation: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    workPhone: string;
-    mobilePhone: string;
-    communicationChannels: communicationChannelsProps;
+  salutation: string;
+  firstName: string;
+  leadId: string;
+  lastName: string;
+  email: string;
+  workPhone: string;
+  mobilePhone: string;
+  communicationChannels: communicationChannelsProps;
 }
 
 const AddCustomer = () => {
-    const [activeTab, setActiveTab] = useState<
-        "Other Details" | "Address" | "Contact Persons"
-    >("Other Details");
-    const [formData, setFormData] = useState<ICustomerForm>({
-        customerType: "Business",
+  const [activeTab, setActiveTab] = useState<
+    "Other Details" | "Address" | "Contact Persons"
+  >("Other Details");
+  const [formData, setFormData] = useState<ICustomerForm>({
+    customerType: "Business",
+    salutation: "",
+    firstName: "",
+    lastName: "",
+    companyName: "",
+    displayName: "",
+    email: "",
+    phone: "",
+    mobile: "",
+    panNumber: "",
+    leadId: "",
+    placeOfSupply: "",
+    prefersEmail: false,
+    prefersSms: false,
+    gstTreatment: "",
+    taxPreference: "Taxable",
+    currency: "",
+    paymentTerms: "",
+    priceList: "",
+    enablePortal: false,
+    portalLanguage: "",
+    openingBalanceState: "",
+    openingBalance: "",
+    creditLimit: "",
+    // attention: "",
+    countryRegion: "",
+    addressStreet1: "",
+    addressStreet2: "",
+    city: "",
+    state: "",
+    phoneNumber: "",
+    pinCode: "",
+    faxNumber: "",
+    // shippingAttention: "",
+    shippingCountryRegion: "",
+    shippingAddressStreet1: "",
+    shippingAddressStreet2: "",
+    shippingCity: "",
+    shippingState: "",
+    shippingPhoneNumber: "",
+    shippingPinCode: "",
+    shippingFaxNumber: "",
+    documentArray: [],
+    websiteUrl: "",
+    department: "",
+    designation: "",
+    skype: "",
+    facebook: "",
+    twitter: "",
+    // communicationChannels: [],
+    // contactPersonsSalutation: "",
+    // contactPersonsFirstName: "",
+    // contactPersonsLastName: "",
+    // contactPersonsEmail: "",
+    // contactPersonsWorkPhone: "",
+    // contactPersonsMobile: "",
+    // contactPersonsCommunicationChannels: "",
+  });
+
+  const [contactPersons, setContactPersons] = useState<IContactPerson[]>([
+    {
+      salutation: "",
+      firstName: "",
+      lastName: "",
+      leadId: "",
+      email: "",
+      workPhone: "",
+      mobilePhone: "",
+      communicationChannels: { prefersEmail: true, prefersSms: false },
+    },
+  ]);
+
+  const handleAddContactPerson = () => {
+    setContactPersons([
+      ...contactPersons,
+      {
         salutation: "",
         firstName: "",
         lastName: "",
-        companyName: "",
-        displayName: "",
         email: "",
+        leadId: "",
         workPhone: "",
-        mobile: "",
-        panNumber: "",
-        placeOfSupply: "",
-        prefersEmail: false,
-        prefersSms: false,
-        gstTreatment: "",
-        taxPreference: "Taxable",
-        currency: "",
-        paymentTerms: "",
-        priceList: "",
-        enablePortal: false,
-        portalLanguage: "",
-        openingBalanceState: "",
-        openingBalance: "",
-        creditLimit: "",
-        // attention: "",
-        countryRegion: "",
-        addressStreet1: "",
-        addressStreet2: "",
-        city: "",
-        state: "",
-        phoneNumber: "",
-        pinCode: "",
-        faxNumber: "",
-        // shippingAttention: "",
-        shippingCountryRegion: "",
-        shippingAddressStreet1: "",
-        shippingAddressStreet2: "",
-        shippingCity: "",
-        shippingState: "",
-        shippingPhoneNumber: "",
-        shippingPinCode: "",
-        shippingFaxNumber: "",
-        documentArray: [],
-        websiteUrl: "",
-        department: "",
-        designation: "",
-        skype: "",
-        facebook: "",
-        twitter: "",
-        // communicationChannels: [],
-        // contactPersonsSalutation: "",
-        // contactPersonsFirstName: "",
-        // contactPersonsLastName: "",
-        // contactPersonsEmail: "",
-        // contactPersonsWorkPhone: "",
-        // contactPersonsMobile: "",
-        // contactPersonsCommunicationChannels: "",
-    });
-
-    const [contactPersons, setContactPersons] = useState<IContactPerson[]>([
-        {
-            salutation: "",
-            firstName: "",
-            lastName: "",
-            email: "",
-            workPhone: "",
-            mobilePhone: "",
-            communicationChannels: { prefersEmail: true, prefersSms: false },
-        },
+        mobilePhone: "",
+        communicationChannels: { prefersEmail: true, prefersSms: false },
+      },
     ]);
+  };
 
-    const handleAddContactPerson = () => {
-        setContactPersons([
-            ...contactPersons,
-            {
-                salutation: "",
-                firstName: "",
-                lastName: "",
-                email: "",
-                workPhone: "",
-                mobilePhone: "",
-                communicationChannels: { prefersEmail: true, prefersSms: false },
-            },
-        ]);
-    };
+  const handleDeleteContactPerson = (index: number) => {
+    const newContacts = [...contactPersons];
+    newContacts.splice(index, 1);
+    setContactPersons(newContacts);
+  };
 
-    const handleDeleteContactPerson = (index: number) => {
-        const newContacts = [...contactPersons];
-        newContacts.splice(index, 1);
-        setContactPersons(newContacts);
-    };
+  const handleContactPersonChange = (
+    index: number,
+    field: keyof IContactPerson,
+    value: string | string[]
+  ) => {
+    const newContacts = [...contactPersons];
+    newContacts[index][field] = value as never;
+    setContactPersons(newContacts);
+  };
 
-    const handleContactPersonChange = (
-        index: number,
-        field: keyof IContactPerson,
-        value: string | string[]
-    ) => {
-        const newContacts = [...contactPersons];
-        newContacts[index][field] = value as never;
-        setContactPersons(newContacts);
-    };
+  // const handleChannelChange = (
+  //   index: number,
+  //   channel: string,
+  //   checked: boolean
+  // ) => {
+  //   const newContacts = [...contactPersons];
+  //   if (checked) {
+  //     newContacts[index].communicationChannels.push(channel);
+  //   } else {
+  //     newContacts[index].communicationChannels = newContacts[
+  //       index
+  //     ].communicationChannels.filter((c) => c !== channel);
+  //   }
+  //   setContactPersons(newContacts);
+  // };
 
-    // const handleChannelChange = (
-    //   index: number,
-    //   channel: string,
-    //   checked: boolean
-    // ) => {
-    //   const newContacts = [...contactPersons];
-    //   if (checked) {
-    //     newContacts[index].communicationChannels.push(channel);
-    //   } else {
-    //     newContacts[index].communicationChannels = newContacts[
-    //       index
-    //     ].communicationChannels.filter((c) => c !== channel);
-    //   }
-    //   setContactPersons(newContacts);
-    // };
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { mutateAsync: addCustomer } = useAddCustomer();
+  const { mutateAsync: updateCustomer } = updateCustomerById();
+  const { data: customerDataById } = useZohoCustomerById(id || "");
 
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [isEmailValid, setIsEmailValid] = useState(true);
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const { mutateAsync: addCustomer } = useAddCustomer();
-    const { mutateAsync: updateCustomer } = updateCustomerById();
-    const { data: customerDataById } = useZohoCustomerById(id || "");
+  //for file upload
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadFiles, setUploadFiles] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-    //for file upload
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-    const [uploading, setUploading] = useState(false);
-    const [uploadFiles, setUploadFiles] = useState<string[]>([]);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+  // Update your useEffect to use optional chaining
+  useEffect(() => {
+    if (customerDataById) {
+      const apiData = customerDataById.data;
 
-    // Update your useEffect to use optional chaining
-    useEffect(() => {
-        if (customerDataById) {
-            const apiData = customerDataById.data;
+      console.log(apiData, "checking the api data");
 
-            if (apiData?.contactPersons) {
-                setContactPersons(
-                    apiData.contactPersons.map((person: any) => ({
-                        salutation: person.salutation || "",
-                        firstName: person.firstName || "",
-                        lastName: person.lastName || "",
-                        email: person.email || "",
-                        workPhone: person.workPhone || "",
-                        mobilePhone: person.mobilePhone || "",
-                        communicationChannels: person.communicationChannels || [],
-                    }))
-                );
-            }
+      if (apiData?.contactPersons) {
+        setContactPersons(
+          apiData.contactPersons.map((person: any) => ({
+            salutation: person.salutation || "",
+            firstName: person.firstName || "",
+            lastName: person.lastName || "",
+            email: person.email || "",
+            leadId: person.leadId || "",
+            workPhone: person.workPhone || "",
+            mobilePhone: person.mobilePhone || "",
+            communicationChannels: person.communicationChannels || [],
+          }))
+        );
+      }
 
-            setFormData((prev) => ({
-                ...prev,
-                email: apiData?.email || "",
-                workPhone: apiData?.workPhone || "",
-                mobile: apiData?.mobile || "",
-                panNumber: apiData?.panNumber || "",
-                placeOfSupply: apiData?.placeOfSupply || "",
-                companyName: apiData?.companyName || "",
-                displayName: apiData?.displayName || "",
-                customerType: apiData?.customerType || "",
-                salutation: apiData?.salutation || "",
-                firstName: apiData?.firstName || "",
-                lastName: apiData?.lastName || "",
-                taxPreference: apiData?.taxPreference || "",
-                gstTreatment: apiData?.gstTreatment || "",
-                openingBalanceState: apiData?.openingBalanceState || "",
-                openingBalance: apiData?.openingBalance || "",
-                creditLimit: apiData?.creditLimit || "",
-                enablePortal: apiData?.enablePortal || false,
-                currency: apiData?.currency || "",
-                paymentTerms: apiData?.paymentTerms || "",
-                priceList: apiData?.priceList || "",
-                portalLanguage: apiData?.portalLanguage || "",
-                // attention: apiData?.attention || "",
-                countryRegion: apiData?.countryRegion || "",
-                addressStreet1: apiData?.addressStreet1 || "",
-                addressStreet2: apiData?.addressStreet2 || "",
-                pinCode: apiData?.pinCode || "",
-                city: apiData?.city || "",
-                state: apiData?.state || "",
-                prefersEmail: apiData?.prefersEmail,
-                prefersSms: apiData?.prefersSms,
-                phoneNumber: apiData?.phoneNumber || "",
-                faxNumber: apiData?.faxNumber || "",
-                // shippingAttention: apiData?.shippingAttention || "",
-                shippingCountryRegion: apiData?.shippingCountryRegion || "",
-                shippingAddressStreet1: apiData?.shippingAddressStreet1 || "",
-                shippingAddressStreet2: apiData?.shippingAddressStreet2 || "",
-                shippingCity: apiData?.shippingCity || "",
-                shippingState: apiData?.shippingState || "",
-                shippingPinCode: apiData?.shippingPinCode || "",
-                shippingPhoneNumber: apiData?.shippingPhoneNumber || "",
-                shippingFaxNumber: apiData?.shippingFaxNumber || "",
-                documentArray: apiData?.documentArray || [],
-                websiteUrl: apiData?.websiteUrl || "",
-                department: apiData?.department || "",
-                designation: apiData?.designation || "",
-                twitter: apiData?.twitter || "",
-                skype: apiData?.skype || "",
-                facebook: apiData?.facebook || "",
-                // communicationChannels: apiData?.communicationChannels || [],
-                // contactPersonsSalutation: apiData?.contactPersonsSalutation || "",
-                // contactPersonsFirstName: apiData?.contactPersonsFirstName || "",
-                // contactPersonsLastName: apiData?.contactPersonsLastName || "",
-                // contactPersonsEmail: apiData?.contactPersonsEmail || "",
-                // contactPersonsWorkPhone: apiData?.contactPersonsWorkPhone || "",
-                // contactPersonsMobile: apiData?.contactPersonsMobile || "",
-                // contactPersonsCommunicationChannels: apiData?. contactPersonsCommunicationChannels || "",
-            }));
+      setFormData((prev) => ({
+        ...prev,
+
+        email: apiData?.email || "",
+        phone: apiData?.phone || "",
+        mobile: apiData?.mobile || "",
+        panNumber: apiData?.panNumber || "",
+        placeOfSupply: apiData?.placeOfSupply || "",
+        companyName: apiData?.companyName || "",
+        displayName: apiData?.displayName || "",
+        customerType: apiData?.customerType || "",
+        salutation: apiData?.salutation || "",
+        leadId: String(apiData?.leadId || ""),
+        firstName: apiData?.firstName || "",
+        lastName: apiData?.lastName || "",
+        taxPreference: apiData?.taxPreference || "",
+        gstTreatment: apiData?.gstTreatment || "",
+        openingBalanceState: apiData?.openingBalanceState || "",
+        openingBalance: apiData?.openingBalance || "",
+        creditLimit: apiData?.creditLimit || "",
+        enablePortal: apiData?.enablePortal || false,
+        currency: apiData?.currency || "",
+        paymentTerms: apiData?.paymentTerms || "",
+        priceList: apiData?.priceList || "",
+        portalLanguage: apiData?.portalLanguage || "",
+        // attention: apiData?.attention || "",
+        countryRegion: apiData?.countryRegion || "",
+        addressStreet1: apiData?.addressStreet1 || "",
+        addressStreet2: apiData?.addressStreet2 || "",
+        pinCode: apiData?.pinCode || "",
+        city: apiData?.city || "",
+        state: apiData?.state || "",
+        prefersEmail: apiData?.prefersEmail,
+        prefersSms: apiData?.prefersSms,
+        phoneNumber: apiData?.phoneNumber || "",
+        faxNumber: apiData?.faxNumber || "",
+        // shippingAttention: apiData?.shippingAttention || "",
+        shippingCountryRegion: apiData?.shippingCountryRegion || "",
+        shippingAddressStreet1: apiData?.shippingAddressStreet1 || "",
+        shippingAddressStreet2: apiData?.shippingAddressStreet2 || "",
+        shippingCity: apiData?.shippingCity || "",
+        shippingState: apiData?.shippingState || "",
+        shippingPinCode: apiData?.shippingPinCode || "",
+        shippingPhoneNumber: apiData?.shippingPhoneNumber || "",
+        shippingFaxNumber: apiData?.shippingFaxNumber || "",
+        documentArray: apiData?.documentArray || [],
+        websiteUrl: apiData?.websiteUrl || "",
+        department: apiData?.department || "",
+        designation: apiData?.designation || "",
+        twitter: apiData?.twitter || "",
+        skype: apiData?.skype || "",
+        facebook: apiData?.facebook || "",
+        // communicationChannels: apiData?.communicationChannels || [],
+        // contactPersonsSalutation: apiData?.contactPersonsSalutation || "",
+        // contactPersonsFirstName: apiData?.contactPersonsFirstName || "",
+        // contactPersonsLastName: apiData?.contactPersonsLastName || "",
+        // contactPersonsEmail: apiData?.contactPersonsEmail || "",
+        // contactPersonsWorkPhone: apiData?.contactPersonsWorkPhone || "",
+        // contactPersonsMobile: apiData?.contactPersonsMobile || "",
+        // contactPersonsCommunicationChannels: apiData?. contactPersonsCommunicationChannels || "",
+      }));
+    }
+  }, [customerDataById]);
+
+
+  console.log(formData.salutation, "checking the salutation");
+
+  //for file select
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const newFiles = Array.from(files);
+
+      // Validate file size and total count
+      const validFiles = newFiles.filter((file) => {
+        if (file.size > 10 * 1024 * 1024) {
+          // 10MB in bytes
+          toastError(`File ${file.name} is larger than 10MB`);
+          return false;
         }
-    }, [customerDataById]);
+        return true;
+      });
 
-    //for file select
-    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (files) {
-            const newFiles = Array.from(files);
+      if (selectedFiles.length + validFiles.length > 10) {
+        toastError("You can only upload a maximum of 10 files");
+        return;
+      }
 
-            // Validate file size and total count
-            const validFiles = newFiles.filter((file) => {
-                if (file.size > 10 * 1024 * 1024) {
-                    // 10MB in bytes
-                    toastError(`File ${file.name} is larger than 10MB`);
-                    return false;
-                }
-                return true;
-            });
+      setSelectedFiles((prev) => [...prev, ...validFiles]);
+    }
+  };
 
-            if (selectedFiles.length + validFiles.length > 10) {
-                toastError("You can only upload a maximum of 10 files");
-                return;
-            }
+  //for uploading files
+  const handleFileUpload = async () => {
+    if (selectedFiles.length === 0) {
+      toastError("Please select files to upload");
+      return;
+    }
 
-            setSelectedFiles((prev) => [...prev, ...validFiles]);
-        }
-    };
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      selectedFiles.forEach((file, index) => {
+        formData.append(`file${index}`, file);
+      });
 
-    //for uploading files
-    const handleFileUpload = async () => {
-        if (selectedFiles.length === 0) {
-            toastError("Please select files to upload");
-            return;
-        }
+      // Replace this URL with your actual upload endpoint
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-        setUploading(true);
-        try {
-            const formData = new FormData();
-            selectedFiles.forEach((file, index) => {
-                formData.append(`file${index}`, file);
-            });
+      if (response.ok) {
+        toastSuccess("Files uploaded successfully");
+        setSelectedFiles([]);
+      } else {
+        throw new Error("Upload failed");
+      }
+    } catch (error) {
+      toastError("Error uploading files");
+    } finally {
+      setUploading(false);
+    }
+  };
 
-            // Replace this URL with your actual upload endpoint
-            const response = await fetch("/api/upload", {
-                method: "POST",
-                body: formData,
-            });
+  //to remove a file from selection
+  const handleRemoveFile = (index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+  };
 
-            if (response.ok) {
-                toastSuccess("Files uploaded successfully");
-                setSelectedFiles([]);
-            } else {
-                throw new Error("Upload failed");
-            }
-        } catch (error) {
-            toastError("Error uploading files");
-        } finally {
-            setUploading(false);
-        }
-    };
+  const validateEmail = (email: string) => {
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setIsEmailValid(isValid);
+  };
 
-    //to remove a file from selection
-    const handleRemoveFile = (index: number) => {
-        setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
-    };
+  const handleImageUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setImageState: React.Dispatch<React.SetStateAction<string[]>>
+  ) => {
+    const files = e.target.files;
+    if (files) {
+      const fileReaders: Promise<string>[] = Array.from(files).map((file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            if (reader.result) resolve(reader.result as string);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      });
 
-    const validateEmail = (email: string) => {
-        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        setIsEmailValid(isValid);
-    };
+      Promise.all(fileReaders)
+        .then((base64Images) => {
+          setImageState((prevImages) => [...prevImages, ...base64Images]);
+        })
+        .catch((error) => {
+        });
+    }
+  };
 
-    const handleImageUpload = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        setImageState: React.Dispatch<React.SetStateAction<string[]>>
-    ) => {
-        const files = e.target.files;
-        if (files) {
-            const fileReaders: Promise<string>[] = Array.from(files).map((file) => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        if (reader.result) resolve(reader.result as string);
-                    };
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
-            });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      // Email validation
+      // if (!isEmailValid) {
+      //   toastError("Please enter a valid email address");
+      //   return;
+      // }
 
-            Promise.all(fileReaders)
-                .then((base64Images) => {
-                    setImageState((prevImages) => [...prevImages, ...base64Images]);
-                })
-                .catch((error) => {
-                });
-        }
-    };
+      // Required fields validation
+      const requiredFields = {
+        customerType: "Customer type",
+        displayName: "Display name",
+        email: "Email",
+        companyName: "Company name",
+        leadId: "Lead",
+        addressStreet1: "Address",
+        city: "City",
+        state: "State",
+        countryRegion: "Country/Region",
+        pinCode: "PIN code",
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            // Email validation
-            // if (!isEmailValid) {
-            //   toastError("Please enter a valid email address");
-            //   return;
-            // }
-
-            // Required fields validation
-            const requiredFields = {
-                customerType: "Customer type",
-                displayName: "Display name",
-                email: "Email",
-                companyName: "Company name",
-                addressStreet1: "Address",
-                city: "City",
-                state: "State",
-                countryRegion: "Country/Region",
-                pinCode: "PIN code",
-            };
-
-            // for (const [field, label] of Object.entries(requiredFields)) {
-            //   if (!formData[field as keyof ICustomerForm]) {
-            //     toastError(`${label} is required`);
-            //     return;
-            //   }
-            // }
-
-            // Phone number validation
-            // const phoneRegex = /^\d{10}$/;
-            // if (formData.workPhone && !phoneRegex.test(formData.workPhone.replace(/[-\s]/g, ''))) {
-            //   toastError("Please enter a valid work phone number");
-            //   return;
-            // }
-            // if (formData.mobile && !phoneRegex.test(formData.mobile.replace(/[-\s]/g, ''))) {
-            //   toastError("Please enter a valid mobile number");
-            //   return;
-            // }
-
-            // // PAN number validation (Indian PAN format)
-            // const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
-            // if (formData.panNumber && !panRegex.test(formData.panNumber)) {
-            //   toastError("Please enter a valid PAN number");
-            //   return;
-            // }
-
-            // PIN code validation
-            // const pinCodeRegex = /^\d{6}$/;
-            // if (formData.pinCode && !pinCodeRegex.test(formData.pinCode)) {
-            //   toastError("Please enter a valid 6-digit PIN code");
-            //   return;
-            // }
-
-            // Contact persons validation
-            // if (contactPersons.length > 0) {
-            //   for (let i = 0; i < contactPersons.length; i++) {
-            //     const person = contactPersons[i];
-            //     if (person.firstName && !person.lastName) {
-            //       toastError(`Please enter last name for contact person ${i + 1}`);
-            //       return;
-            //     }
-            //     if (person.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email)) {
-            //       toastError(`Please enter a valid email for contact person ${i + 1}`);
-            //       return;
-            //     }
-            //     if (person.workPhone && !phoneRegex.test(person.workPhone.replace(/[-\s]/g, ''))) {
-            //       toastError(`Please enter a valid work phone for contact person ${i + 1}`);
-            //       return;
-            //     }
-            //   }
-            // }
-
-            // Prepare data for submission
-            const submissionData = {
-                ...formData,
-                contactPersons: contactPersons,
-                documentArray: uploadFiles,
-            };
+      };
 
 
 
-            // Handle create/update based on whether we have an ID
-            if (id) {
-                await updateCustomer({
-                    id,
-                    obj: submissionData,
-                });
-                toastSuccess("Customer updated successfully");
-                navigate("/customer-sales");
-            } else {
-                await addCustomer(submissionData);
-                toastSuccess("Customer added successfully");
-                navigate("/customer-sales");
-            }
-        } catch (error) {
-            toastError(error);
-        }
-    };
+      // for (const [field, label] of Object.entries(requiredFields)) {
+      //   if (!formData[field as keyof ICustomerForm]) {
+      //     toastError(`${label} is required`);
+      //     return;
+      //   }
+      // }
+
+      // Phone number validation
+      // const phoneRegex = /^\d{10}$/;
+      // if (formData.workPhone && !phoneRegex.test(formData.workPhone.replace(/[-\s]/g, ''))) {
+      //   toastError("Please enter a valid work phone number");
+      //   return;
+      // }
+      // if (formData.mobile && !phoneRegex.test(formData.mobile.replace(/[-\s]/g, ''))) {
+      //   toastError("Please enter a valid mobile number");
+      //   return;
+      // }
+
+      // // PAN number validation (Indian PAN format)
+      // const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+      // if (formData.panNumber && !panRegex.test(formData.panNumber)) {
+      //   toastError("Please enter a valid PAN number");
+      //   return;
+      // }
+
+      // PIN code validation
+      // const pinCodeRegex = /^\d{6}$/;
+      // if (formData.pinCode && !pinCodeRegex.test(formData.pinCode)) {
+      //   toastError("Please enter a valid 6-digit PIN code");
+      //   return;
+      // }
+
+      // Contact persons validation
+      // if (contactPersons.length > 0) {
+      //   for (let i = 0; i < contactPersons.length; i++) {
+      //     const person = contactPersons[i];
+      //     if (person.firstName && !person.lastName) {
+      //       toastError(`Please enter last name for contact person ${i + 1}`);
+      //       return;
+      //     }
+      //     if (person.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email)) {
+      //       toastError(`Please enter a valid email for contact person ${i + 1}`);
+      //       return;
+      //     }
+      //     if (person.workPhone && !phoneRegex.test(person.workPhone.replace(/[-\s]/g, ''))) {
+      //       toastError(`Please enter a valid work phone for contact person ${i + 1}`);
+      //       return;
+      //     }
+      //   }
+      // }
+
+      // Prepare data for submission
+      const submissionData = {
+        ...formData,
+        contactPersons: contactPersons,
+        documentArray: uploadFiles,
+      };
+
+
+
+      // Handle create/update based on whether we have an ID
+      if (id) {
+        await updateCustomer({
+          id,
+          obj: submissionData,
+        });
+        toastSuccess("Customer updated successfully");
+        navigate("/customer-sales");
+        console.log("LeadId----->", formData.leadId)
+
+      } else {
+        await addCustomer(submissionData);
+
+        toastSuccess("Customer added successfully");
+        navigate("/customer-sales");
+        console.log("LeadId----->", formData.leadId)
+      }
+    } catch (error) {
+      toastError(error);
+    }
+  };
 
   const handleChannelChange = (
     index: number,
@@ -528,318 +552,318 @@ const AddCustomer = () => {
     );
   };
 
-    const copyBillingAddress = () => {
-        setFormData({
-            ...formData,
-            shippingCountryRegion: formData.countryRegion,
-            shippingAddressStreet1: formData.addressStreet1,
-            shippingAddressStreet2: formData.addressStreet2,
-            shippingCity: formData.city,
-            shippingState: formData.state,
-            shippingPinCode: formData.pinCode,
-            shippingPhoneNumber: formData.phoneNumber,
-            shippingFaxNumber: formData.faxNumber,
-        });
-    };
+  const copyBillingAddress = () => {
+    setFormData({
+      ...formData,
+      shippingCountryRegion: formData.countryRegion,
+      shippingAddressStreet1: formData.addressStreet1,
+      shippingAddressStreet2: formData.addressStreet2,
+      shippingCity: formData.city,
+      shippingState: formData.state,
+      shippingPinCode: formData.pinCode,
+      shippingPhoneNumber: formData.phoneNumber,
+      shippingFaxNumber: formData.faxNumber,
+    });
+  };
 
-    const { canView, canUpdate, canCreate } =
-        checkPermissionsForButtons("Customers");
+  const { canView, canUpdate, canCreate } =
+    checkPermissionsForButtons("Customers");
 
-    // console.log(formData.openingBalance, "checking the opening balance");
+  // console.log(formData.openingBalance, "checking the opening balance");
 
-    const gstOptions = [
-        {
-            value: "registered_regular",
-            label: "Registered Business - Business that is registered under GST",
-        },
-        {
-            value: "registered_composite",
-            label:
-                "Registered Business - Composition (Business that is registered under the Composition Scheme in GST)",
-        },
-        {
-            value: "unregistered",
-            label:
-                "Unregistered Business - Business that is not registered under GST",
-        },
-        {
-            value: "consumer",
-            label: "Consumer - A consumer that is a regular customer",
-        },
-        {
-            value: "overseas",
-            label:
-                "Overseas - A person with whom you do import or export of supplies outside India",
-        },
-        {
-            value: "deemed_export",
-            label:
-                "Deemed Export - Supply of goods to an Export Oriented Unit or against Advanced Authorization/Export Promotion Capital Goods",
-        },
-        {
-            value: "special_economic_zone",
-            label:
-                "Tax Deductors - Departments of the State/Central government, governmental agencies or local authorities",
-        },
-        {
-            value: "special_economic_zone_developer",
-            label:
-                "SEZ Developer - A person/organization who owns at least 26% of the equity in creating business units in a Special Economic Zone (SEZ)",
-        },
-    ];
+  const gstOptions = [
+    {
+      value: "registered_regular",
+      label: "Registered Business - Business that is registered under GST",
+    },
+    {
+      value: "registered_composite",
+      label:
+        "Registered Business - Composition (Business that is registered under the Composition Scheme in GST)",
+    },
+    {
+      value: "unregistered",
+      label:
+        "Unregistered Business - Business that is not registered under GST",
+    },
+    {
+      value: "consumer",
+      label: "Consumer - A consumer that is a regular customer",
+    },
+    {
+      value: "overseas",
+      label:
+        "Overseas - A person with whom you do import or export of supplies outside India",
+    },
+    {
+      value: "deemed_export",
+      label:
+        "Deemed Export - Supply of goods to an Export Oriented Unit or against Advanced Authorization/Export Promotion Capital Goods",
+    },
+    {
+      value: "special_economic_zone",
+      label:
+        "Tax Deductors - Departments of the State/Central government, governmental agencies or local authorities",
+    },
+    {
+      value: "special_economic_zone_developer",
+      label:
+        "SEZ Developer - A person/organization who owns at least 26% of the equity in creating business units in a Special Economic Zone (SEZ)",
+    },
+  ];
 
-    const stateOptions = [
-        {
-            value: "[AN] - Andaman and Nicobar Islands",
-            label: "[AN] - Andaman and Nicobar Islands",
-        },
-        { value: "[AP] - Andhra Pradesh", label: "[AP] - Andhra Pradesh" },
-        { value: "[AR] - Arunachal Pradesh", label: "[AR] - Arunachal Pradesh" },
-        { value: "[AS] - Assam", label: "[AS] - Assam" },
-        { value: "[BR] - Bihar", label: "[BR] - Bihar" },
-        { value: "[CH] - Chandigarh", label: "[CH] - Chandigarh" },
-        { value: "[CG] - Chhattisgarh", label: "[CG] - Chhattisgarh" },
-        {
-            value: "[DH] - Dadra and Nagar Haveli and Daman and Diu",
-            label: "[DH] - Dadra and Nagar Haveli and Daman and Diu",
-        },
-        { value: "[DL] - Delhi", label: "[DL] - Delhi" },
-        { value: "[GA] - Goa", label: "[GA] - Goa" },
-        { value: "[GJ] - Gujarat", label: "[GJ] - Gujarat" },
-        { value: "[HR] - Haryana", label: "[HR] - Haryana" },
-        { value: "[HP] - Himachal Pradesh", label: "[HP] - Himachal Pradesh" },
-        { value: "[JK] - Jammu and Kashmir", label: "[JK] - Jammu and Kashmir" },
-        { value: "[JH] - Jharkhand", label: "[JH] - Jharkhand" },
-        { value: "[KA] - Karnataka", label: "[KA] - Karnataka" },
-        { value: "[KL] - Kerala", label: "[KL] - Kerala" },
-        { value: "[LA] - Ladakh", label: "[LA] - Ladakh" },
-        { value: "[LD] - Lakshadweep", label: "[LD] - Lakshadweep" },
-        { value: "[MP] - Madhya Pradesh", label: "[MP] - Madhya Pradesh" },
-        { value: "[MH] - Maharashtra", label: "[MH] - Maharashtra" },
-        { value: "[MN] - Manipur", label: "[MN] - Manipur" },
-        { value: "[ML] - Meghalaya", label: "[ML] - Meghalaya" },
-        { value: "[MZ] - Mizoram", label: "[MZ] - Mizoram" },
-        { value: "[NL] - Nagaland", label: "[NL] - Nagaland" },
-        { value: "[OD] - Odisha", label: "[OD] - Odisha" },
-        { value: "[PY] - Puducherry", label: "[PY] - Puducherry" },
-        { value: "[PB] - Punjab", label: "[PB] - Punjab" },
-        { value: "[RJ] - Rajasthan", label: "[RJ] - Rajasthan" },
-        { value: "[SK] - Sikkim", label: "[SK] - Sikkim" },
-        { value: "[TN] - Tamil Nadu", label: "[TN] - Tamil Nadu" },
-        { value: "[TS] - Telangana", label: "[TS] - Telangana" },
-        { value: "[TR] - Tripura", label: "[TR] - Tripura" },
-        { value: "[UP] - Uttar Pradesh", label: "[UP] - Uttar Pradesh" },
-        { value: "[UK] - Uttarakhand", label: "[UK] - Uttarakhand" },
-        { value: "[WB] - West Bengal", label: "[WB] - West Bengal" },
-    ];
+  const stateOptions = [
+    {
+      value: "[AN] - Andaman and Nicobar Islands",
+      label: "[AN] - Andaman and Nicobar Islands",
+    },
+    { value: "[AP] - Andhra Pradesh", label: "[AP] - Andhra Pradesh" },
+    { value: "[AR] - Arunachal Pradesh", label: "[AR] - Arunachal Pradesh" },
+    { value: "[AS] - Assam", label: "[AS] - Assam" },
+    { value: "[BR] - Bihar", label: "[BR] - Bihar" },
+    { value: "[CH] - Chandigarh", label: "[CH] - Chandigarh" },
+    { value: "[CG] - Chhattisgarh", label: "[CG] - Chhattisgarh" },
+    {
+      value: "[DH] - Dadra and Nagar Haveli and Daman and Diu",
+      label: "[DH] - Dadra and Nagar Haveli and Daman and Diu",
+    },
+    { value: "[DL] - Delhi", label: "[DL] - Delhi" },
+    { value: "[GA] - Goa", label: "[GA] - Goa" },
+    { value: "[GJ] - Gujarat", label: "[GJ] - Gujarat" },
+    { value: "[HR] - Haryana", label: "[HR] - Haryana" },
+    { value: "[HP] - Himachal Pradesh", label: "[HP] - Himachal Pradesh" },
+    { value: "[JK] - Jammu and Kashmir", label: "[JK] - Jammu and Kashmir" },
+    { value: "[JH] - Jharkhand", label: "[JH] - Jharkhand" },
+    { value: "[KA] - Karnataka", label: "[KA] - Karnataka" },
+    { value: "[KL] - Kerala", label: "[KL] - Kerala" },
+    { value: "[LA] - Ladakh", label: "[LA] - Ladakh" },
+    { value: "[LD] - Lakshadweep", label: "[LD] - Lakshadweep" },
+    { value: "[MP] - Madhya Pradesh", label: "[MP] - Madhya Pradesh" },
+    { value: "[MH] - Maharashtra", label: "[MH] - Maharashtra" },
+    { value: "[MN] - Manipur", label: "[MN] - Manipur" },
+    { value: "[ML] - Meghalaya", label: "[ML] - Meghalaya" },
+    { value: "[MZ] - Mizoram", label: "[MZ] - Mizoram" },
+    { value: "[NL] - Nagaland", label: "[NL] - Nagaland" },
+    { value: "[OD] - Odisha", label: "[OD] - Odisha" },
+    { value: "[PY] - Puducherry", label: "[PY] - Puducherry" },
+    { value: "[PB] - Punjab", label: "[PB] - Punjab" },
+    { value: "[RJ] - Rajasthan", label: "[RJ] - Rajasthan" },
+    { value: "[SK] - Sikkim", label: "[SK] - Sikkim" },
+    { value: "[TN] - Tamil Nadu", label: "[TN] - Tamil Nadu" },
+    { value: "[TS] - Telangana", label: "[TS] - Telangana" },
+    { value: "[TR] - Tripura", label: "[TR] - Tripura" },
+    { value: "[UP] - Uttar Pradesh", label: "[UP] - Uttar Pradesh" },
+    { value: "[UK] - Uttarakhand", label: "[UK] - Uttarakhand" },
+    { value: "[WB] - West Bengal", label: "[WB] - West Bengal" },
+  ];
 
-    const currencyOptions = [
-        { value: "INR - Indian Rupee", label: "INR - Indian Rupee" },
-        {
-            value: "USD - United States Dollar",
-            label: "USD - United States Dollar",
-        },
-        { value: "EUR - Euro", label: "EUR - Euro" },
-        { value: "JPY - Japanese Yen", label: "JPY - Japanese Yen" },
-        {
-            value: "GBP - British Pound Sterling",
-            label: "GBP - British Pound Sterling",
-        },
-        { value: "AUD - Australian Dollar", label: "AUD - Australian Dollar" },
-        { value: "CAD - Canadian Dollar", label: "CAD - Canadian Dollar" },
-        { value: "CHF - Swiss Franc", label: "CHF - Swiss Franc" },
-        { value: "CNY - Chinese Yuan", label: "CNY - Chinese Yuan" },
-        { value: "HKD - Hong Kong Dollar", label: "HKD - Hong Kong Dollar" },
-        { value: "NZD - New Zealand Dollar", label: "NZD - New Zealand Dollar" },
-        { value: "SGD - Singapore Dollar", label: "SGD - Singapore Dollar" },
-        { value: "KRW - South Korean Won", label: "KRW - South Korean Won" },
-        { value: "THB - Thai Baht", label: "THB - Thai Baht" },
-        { value: "ZAR - South African Rand", label: "ZAR - South African Rand" },
-        { value: "BRL - Brazilian Real", label: "BRL - Brazilian Real" },
-        { value: "MXN - Mexican Peso", label: "MXN - Mexican Peso" },
-        { value: "MYR - Malaysian Ringgit", label: "MYR - Malaysian Ringgit" },
-        { value: "IDR - Indonesian Rupiah", label: "IDR - Indonesian Rupiah" },
-        { value: "SAR - Saudi Riyal", label: "SAR - Saudi Riyal" },
-    ];
+  const currencyOptions = [
+    { value: "INR - Indian Rupee", label: "INR - Indian Rupee" },
+    {
+      value: "USD - United States Dollar",
+      label: "USD - United States Dollar",
+    },
+    { value: "EUR - Euro", label: "EUR - Euro" },
+    { value: "JPY - Japanese Yen", label: "JPY - Japanese Yen" },
+    {
+      value: "GBP - British Pound Sterling",
+      label: "GBP - British Pound Sterling",
+    },
+    { value: "AUD - Australian Dollar", label: "AUD - Australian Dollar" },
+    { value: "CAD - Canadian Dollar", label: "CAD - Canadian Dollar" },
+    { value: "CHF - Swiss Franc", label: "CHF - Swiss Franc" },
+    { value: "CNY - Chinese Yuan", label: "CNY - Chinese Yuan" },
+    { value: "HKD - Hong Kong Dollar", label: "HKD - Hong Kong Dollar" },
+    { value: "NZD - New Zealand Dollar", label: "NZD - New Zealand Dollar" },
+    { value: "SGD - Singapore Dollar", label: "SGD - Singapore Dollar" },
+    { value: "KRW - South Korean Won", label: "KRW - South Korean Won" },
+    { value: "THB - Thai Baht", label: "THB - Thai Baht" },
+    { value: "ZAR - South African Rand", label: "ZAR - South African Rand" },
+    { value: "BRL - Brazilian Real", label: "BRL - Brazilian Real" },
+    { value: "MXN - Mexican Peso", label: "MXN - Mexican Peso" },
+    { value: "MYR - Malaysian Ringgit", label: "MYR - Malaysian Ringgit" },
+    { value: "IDR - Indonesian Rupiah", label: "IDR - Indonesian Rupiah" },
+    { value: "SAR - Saudi Riyal", label: "SAR - Saudi Riyal" },
+  ];
 
-    const paymentTermsOptions = [
-        { value: "Advance Paid", label: "Advance Paid" },
-        { value: "CC Auth Provided", label: "CC Auth Provided" },
-        { value: "Due on Receipt", label: "Due on Receipt" },
-        {
-            value: "Bill To Company Extras Direct",
-            label: "Bill To Company Extras Direct",
-        },
-        { value: "Entire Bill To Company", label: "Entire Bill To Company" },
-        { value: "30 Days", label: "30 Days" },
-        { value: "45 Days", label: "45 Days" },
-        { value: "Direct From Guest", label: "Direct From Guest" },
-        { value: "Due End Of The Month", label: "Due End Of The Month" },
-        { value: "Due End Of Next Month", label: "Due End Of Next Month" },
-    ];
+  const paymentTermsOptions = [
+    { value: "Advance Paid", label: "Advance Paid" },
+    { value: "CC Auth Provided", label: "CC Auth Provided" },
+    { value: "Due on Receipt", label: "Due on Receipt" },
+    {
+      value: "Bill To Company Extras Direct",
+      label: "Bill To Company Extras Direct",
+    },
+    { value: "Entire Bill To Company", label: "Entire Bill To Company" },
+    { value: "30 Days", label: "30 Days" },
+    { value: "45 Days", label: "45 Days" },
+    { value: "Direct From Guest", label: "Direct From Guest" },
+    { value: "Due End Of The Month", label: "Due End Of The Month" },
+    { value: "Due End Of Next Month", label: "Due End Of Next Month" },
+  ];
 
-    const priceListOptions = [
-        {
-            value: "HEALTHCARE VEDARK [10% Markdown]",
-            label: "HEALTHCARE VEDARK [10% Markdown]",
-        },
-        { value: "Basic SEO Package", label: "Basic SEO Package" },
-        { value: "Social Media Management", label: "Social Media Management" },
-        {
-            value: "Pay-Per-Click (PPC) Campaign Setup",
-            label: "Pay-Per-Click (PPC) Campaign Setup",
-        },
-        { value: "Content Writing", label: "Content Writing" },
-        { value: "Website Audit", label: "Website Audit" },
-    ];
+  const priceListOptions = [
+    {
+      value: "HEALTHCARE VEDARK [10% Markdown]",
+      label: "HEALTHCARE VEDARK [10% Markdown]",
+    },
+    { value: "Basic SEO Package", label: "Basic SEO Package" },
+    { value: "Social Media Management", label: "Social Media Management" },
+    {
+      value: "Pay-Per-Click (PPC) Campaign Setup",
+      label: "Pay-Per-Click (PPC) Campaign Setup",
+    },
+    { value: "Content Writing", label: "Content Writing" },
+    { value: "Website Audit", label: "Website Audit" },
+  ];
 
-    const languageOptions = [
-        { value: "EN - English", label: "EN - English - Hello" },
-        { value: "ES - Spanish", label: "ES - Spanish - Hola" },
-        {
-            value: "ZH - Chinese (Mandarin)",
-            label: "ZH - Chinese (Mandarin) - 你好 (Nǐ hǎo)",
-        },
-        { value: "HI - Hindi", label: "HI - Hindi - नमस्ते (Namaste)" },
-        { value: "AR - Arabic", label: "AR - Arabic - مرحبا (Marhaban)" },
-        { value: "BN - Bengali", label: "BN - Bengali - হ্যালো (Hyālō)" },
-        { value: "PT - Portuguese", label: "PT - Portuguese - Olá" },
-        { value: "RU - Russian", label: "RU - Russian - Привет (Privet)" },
-        {
-            value: "JA - Japanese",
-            label: "JA - Japanese - こんにちは (Konnichiwa)",
-        },
-        { value: "DE - German", label: "DE - German - Hallo" },
-        {
-            value: "KO - Korean",
-            label: "KO - Korean - 안녕하세요 (Annyeonghaseyo)",
-        },
-        { value: "FR - French", label: "FR - French - Bonjour" },
-        { value: "IT - Italian", label: "IT - Italian - Ciao" },
-        { value: "TR - Turkish", label: "TR - Turkish - Merhaba" },
-        { value: "VI - Vietnamese", label: "VI - Vietnamese - Xin chào" },
-        { value: "PL - Polish", label: "PL - Polish - Witaj" },
-        {
-            value: "PA - Punjabi",
-            label: "PA - Punjabi - ਸਤ ਸ੍ਰੀ ਅਕਾਲ (Sat Sri Akal)",
-        },
-        { value: "UR - Urdu", label: "UR - Urdu - سلام (Salaam)" },
-        {
-            value: "FA - Persian (Farsi)",
-            label: "FA - Persian (Farsi) - سلام (Salaam)",
-        },
-        { value: "HE - Hebrew", label: "HE - Hebrew - שלום (Shalom)" },
-        { value: "MS - Malay", label: "MS - Malay - Halo" },
-        { value: "TH - Thai", label: "TH - Thai - สวัสดี (Sawasdee)" },
-        { value: "SW - Swahili", label: "SW - Swahili - Hujambo" },
-        { value: "TA - Tamil", label: "TA - Tamil - வணக்கம் (Vanakkam)" },
-        { value: "TE - Telugu", label: "TE - Telugu - హలో (Halo)" },
-        { value: "EL - Greek", label: "EL - Greek - Γειά σας (Yia sas)" },
-        { value: "ML - Malayalam", label: "ML - Malayalam - ഹലോ (Halo)" },
-        { value: "CS - Czech", label: "CS - Czech - Ahoj" },
-        { value: "SK - Slovak", label: "SK - Slovak - Ahoj" },
-        { value: "HU - Hungarian", label: "HU - Hungarian - Helló" },
-        { value: "SR - Serbian", label: "SR - Serbian - Zdravo" },
-        { value: "RO - Romanian", label: "RO - Romanian - Bună ziua" },
-        { value: "DA - Danish", label: "DA - Danish - Hej" },
-    ];
+  const languageOptions = [
+    { value: "EN - English", label: "EN - English - Hello" },
+    { value: "ES - Spanish", label: "ES - Spanish - Hola" },
+    {
+      value: "ZH - Chinese (Mandarin)",
+      label: "ZH - Chinese (Mandarin) - 你好 (Nǐ hǎo)",
+    },
+    { value: "HI - Hindi", label: "HI - Hindi - नमस्ते (Namaste)" },
+    { value: "AR - Arabic", label: "AR - Arabic - مرحبا (Marhaban)" },
+    { value: "BN - Bengali", label: "BN - Bengali - হ্যালো (Hyālō)" },
+    { value: "PT - Portuguese", label: "PT - Portuguese - Olá" },
+    { value: "RU - Russian", label: "RU - Russian - Привет (Privet)" },
+    {
+      value: "JA - Japanese",
+      label: "JA - Japanese - こんにちは (Konnichiwa)",
+    },
+    { value: "DE - German", label: "DE - German - Hallo" },
+    {
+      value: "KO - Korean",
+      label: "KO - Korean - 안녕하세요 (Annyeonghaseyo)",
+    },
+    { value: "FR - French", label: "FR - French - Bonjour" },
+    { value: "IT - Italian", label: "IT - Italian - Ciao" },
+    { value: "TR - Turkish", label: "TR - Turkish - Merhaba" },
+    { value: "VI - Vietnamese", label: "VI - Vietnamese - Xin chào" },
+    { value: "PL - Polish", label: "PL - Polish - Witaj" },
+    {
+      value: "PA - Punjabi",
+      label: "PA - Punjabi - ਸਤ ਸ੍ਰੀ ਅਕਾਲ (Sat Sri Akal)",
+    },
+    { value: "UR - Urdu", label: "UR - Urdu - سلام (Salaam)" },
+    {
+      value: "FA - Persian (Farsi)",
+      label: "FA - Persian (Farsi) - سلام (Salaam)",
+    },
+    { value: "HE - Hebrew", label: "HE - Hebrew - שלום (Shalom)" },
+    { value: "MS - Malay", label: "MS - Malay - Halo" },
+    { value: "TH - Thai", label: "TH - Thai - สวัสดี (Sawasdee)" },
+    { value: "SW - Swahili", label: "SW - Swahili - Hujambo" },
+    { value: "TA - Tamil", label: "TA - Tamil - வணக்கம் (Vanakkam)" },
+    { value: "TE - Telugu", label: "TE - Telugu - హలో (Halo)" },
+    { value: "EL - Greek", label: "EL - Greek - Γειά σας (Yia sas)" },
+    { value: "ML - Malayalam", label: "ML - Malayalam - ഹലോ (Halo)" },
+    { value: "CS - Czech", label: "CS - Czech - Ahoj" },
+    { value: "SK - Slovak", label: "SK - Slovak - Ahoj" },
+    { value: "HU - Hungarian", label: "HU - Hungarian - Helló" },
+    { value: "SR - Serbian", label: "SR - Serbian - Zdravo" },
+    { value: "RO - Romanian", label: "RO - Romanian - Bună ziua" },
+    { value: "DA - Danish", label: "DA - Danish - Hej" },
+  ];
 
-    const countryOptions = [
-        { value: "US - United States", label: "US - United States" },
-        { value: "CA - Canada", label: "CA - Canada" },
-        { value: "GB - United Kingdom", label: "GB - United Kingdom" },
-        { value: "AU - Australia", label: "AU - Australia" },
-        { value: "IN - India", label: "IN - India" },
-        { value: "CN - China", label: "CN - China" },
-        { value: "JP - Japan", label: "JP - Japan" },
-        { value: "DE - Germany", label: "DE - Germany" },
-        { value: "FR - France", label: "FR - France" },
-        { value: "IT - Italy", label: "IT - Italy" },
-        { value: "ES - Spain", label: "ES - Spain" },
-        { value: "BR - Brazil", label: "BR - Brazil" },
-        { value: "MX - Mexico", label: "MX - Mexico" },
-        { value: "ZA - South Africa", label: "ZA - South Africa" },
-        { value: "RU - Russia", label: "RU - Russia" },
-        { value: "KR - South Korea", label: "KR - South Korea" },
-        { value: "AR - Argentina", label: "AR - Argentina" },
-        { value: "NG - Nigeria", label: "NG - Nigeria" },
-        { value: "EG - Egypt", label: "EG - Egypt" },
-        { value: "SE - Sweden", label: "SE - Sweden" },
-        { value: "NO - Norway", label: "NO - Norway" },
-        { value: "FI - Finland", label: "FI - Finland" },
-        { value: "PL - Poland", label: "PL - Poland" },
-        { value: "GR - Greece", label: "GR - Greece" },
-        { value: "TR - Turkey", label: "TR - Turkey" },
-        { value: "PH - Philippines", label: "PH - Philippines" },
-        { value: "TH - Thailand", label: "TH - Thailand" },
-        { value: "SG - Singapore", label: "SG - Singapore" },
-        { value: "HK - Hong Kong", label: "HK - Hong Kong" },
-        { value: "MY - Malaysia", label: "MY - Malaysia" },
-        { value: "KR - South Korea", label: "KR - South Korea" },
-        { value: "CH - Switzerland", label: "CH - Switzerland" },
-        { value: "BE - Belgium", label: "BE - Belgium" },
-        { value: "NL - Netherlands", label: "NL - Netherlands" },
-        { value: "PL - Poland", label: "PL - Poland" },
-        { value: "UA - Ukraine", label: "UA - Ukraine" },
-        { value: "CZ - Czech Republic", label: "CZ - Czech Republic" },
-        { value: "SK - Slovakia", label: "SK - Slovakia" },
-        { value: "RO - Romania", label: "RO - Romania" },
-        { value: "BG - Bulgaria", label: "BG - Bulgaria" },
-        { value: "PT - Portugal", label: "PT - Portugal" },
-        { value: "AT - Austria", label: "AT - Austria" },
-        { value: "KE - Kenya", label: "KE - Kenya" },
-        { value: "AE - United Arab Emirates", label: "AE - United Arab Emirates" },
-        { value: "SA - Saudi Arabia", label: "SA - Saudi Arabia" },
-        { value: "KW - Kuwait", label: "KW - Kuwait" },
-        { value: "IQ - Iraq", label: "IQ - Iraq" },
-        { value: "ID - Indonesia", label: "ID - Indonesia" },
-        { value: "VN - Vietnam", label: "VN - Vietnam" },
-        { value: "PE - Peru", label: "PE - Peru" },
-        { value: "CO - Colombia", label: "CO - Colombia" },
-        { value: "CL - Chile", label: "CL - Chile" },
-    ];
+  const countryOptions = [
+    { value: "US - United States", label: "US - United States" },
+    { value: "CA - Canada", label: "CA - Canada" },
+    { value: "GB - United Kingdom", label: "GB - United Kingdom" },
+    { value: "AU - Australia", label: "AU - Australia" },
+    { value: "IN - India", label: "IN - India" },
+    { value: "CN - China", label: "CN - China" },
+    { value: "JP - Japan", label: "JP - Japan" },
+    { value: "DE - Germany", label: "DE - Germany" },
+    { value: "FR - France", label: "FR - France" },
+    { value: "IT - Italy", label: "IT - Italy" },
+    { value: "ES - Spain", label: "ES - Spain" },
+    { value: "BR - Brazil", label: "BR - Brazil" },
+    { value: "MX - Mexico", label: "MX - Mexico" },
+    { value: "ZA - South Africa", label: "ZA - South Africa" },
+    { value: "RU - Russia", label: "RU - Russia" },
+    { value: "KR - South Korea", label: "KR - South Korea" },
+    { value: "AR - Argentina", label: "AR - Argentina" },
+    { value: "NG - Nigeria", label: "NG - Nigeria" },
+    { value: "EG - Egypt", label: "EG - Egypt" },
+    { value: "SE - Sweden", label: "SE - Sweden" },
+    { value: "NO - Norway", label: "NO - Norway" },
+    { value: "FI - Finland", label: "FI - Finland" },
+    { value: "PL - Poland", label: "PL - Poland" },
+    { value: "GR - Greece", label: "GR - Greece" },
+    { value: "TR - Turkey", label: "TR - Turkey" },
+    { value: "PH - Philippines", label: "PH - Philippines" },
+    { value: "TH - Thailand", label: "TH - Thailand" },
+    { value: "SG - Singapore", label: "SG - Singapore" },
+    { value: "HK - Hong Kong", label: "HK - Hong Kong" },
+    { value: "MY - Malaysia", label: "MY - Malaysia" },
+    { value: "KR - South Korea", label: "KR - South Korea" },
+    { value: "CH - Switzerland", label: "CH - Switzerland" },
+    { value: "BE - Belgium", label: "BE - Belgium" },
+    { value: "NL - Netherlands", label: "NL - Netherlands" },
+    { value: "PL - Poland", label: "PL - Poland" },
+    { value: "UA - Ukraine", label: "UA - Ukraine" },
+    { value: "CZ - Czech Republic", label: "CZ - Czech Republic" },
+    { value: "SK - Slovakia", label: "SK - Slovakia" },
+    { value: "RO - Romania", label: "RO - Romania" },
+    { value: "BG - Bulgaria", label: "BG - Bulgaria" },
+    { value: "PT - Portugal", label: "PT - Portugal" },
+    { value: "AT - Austria", label: "AT - Austria" },
+    { value: "KE - Kenya", label: "KE - Kenya" },
+    { value: "AE - United Arab Emirates", label: "AE - United Arab Emirates" },
+    { value: "SA - Saudi Arabia", label: "SA - Saudi Arabia" },
+    { value: "KW - Kuwait", label: "KW - Kuwait" },
+    { value: "IQ - Iraq", label: "IQ - Iraq" },
+    { value: "ID - Indonesia", label: "ID - Indonesia" },
+    { value: "VN - Vietnam", label: "VN - Vietnam" },
+    { value: "PE - Peru", label: "PE - Peru" },
+    { value: "CO - Colombia", label: "CO - Colombia" },
+    { value: "CL - Chile", label: "CL - Chile" },
+  ];
 
-    return (
-        <div className="min-h-screen bg-gray-100 p-8">
-            <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
-                <h1 className="text-2xl font-bold mb-6">Add Customer</h1>
-                <form onSubmit={handleSubmit}>
-                    {/* Customer Type Section */}
-                    <div className="mb-8">
-                        <div className="flex items-center gap-4 mb-4">
-                            <span className="w-32 text-base font-medium text-gray-700">
-                                Customer Type:
-                            </span>
-                            <div className="flex gap-6">
-                                <label className="flex items-center space-x-2">
-                                    <input
-                                        type="radio"
-                                        name="customerType"
-                                        value="Business"
-                                        checked={formData.customerType === "Business"}
-                                        onChange={(e) =>
-                                            setFormData({ ...formData, customerType: e.target.value })
-                                        }
-                                        className="ml-2 form-radio h-4 w-4 text-blue-600"
-                                    />
-                                    <span className="text-gray-700">Business</span>
-                                </label>
-                                <label className="flex items-center space-x-2">
-                                    <input
-                                        type="radio"
-                                        name="customerType"
-                                        value="Individual"
-                                        checked={formData.customerType === "Individual"}
-                                        onChange={(e) =>
-                                            setFormData({ ...formData, customerType: e.target.value })
-                                        }
-                                        className="form-radio h-4 w-4 text-blue-600"
-                                    />
-                                    <span className="text-gray-700">Individual</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+  return (
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
+        <h1 className="text-2xl font-bold mb-6">Add Customer</h1>
+        <form onSubmit={handleSubmit}>
+          {/* Customer Type Section */}
+          <div className="mb-8">
+            <div className="flex items-center gap-4 mb-4">
+              <span className="w-32 text-base font-medium text-gray-700">
+                Customer Type:
+              </span>
+              <div className="flex gap-6">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="customerType"
+                    value="Business"
+                    checked={formData.customerType === "Business"}
+                    onChange={(e) =>
+                      setFormData({ ...formData, customerType: e.target.value })
+                    }
+                    className="ml-2 form-radio h-4 w-4 text-blue-600"
+                  />
+                  <span className="text-gray-700">Business</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="customerType"
+                    value="Individual"
+                    checked={formData.customerType === "Individual"}
+                    onChange={(e) =>
+                      setFormData({ ...formData, customerType: e.target.value })
+                    }
+                    className="form-radio h-4 w-4 text-blue-600"
+                  />
+                  <span className="text-gray-700">Individual</span>
+                </label>
+              </div>
+            </div>
+          </div>
 
           {/* Primary Contact Section */}
           <div className="mb-8">
@@ -860,7 +884,7 @@ const AddCustomer = () => {
                       <option value="">Salutation</option>
                       <option value="Mr.">Mr.</option>
                       <option value="Mrs.">Mrs.</option>
-                      <option value="Ms.">Ms.</option>
+                      <option value="Ms">Ms.</option>
                       <option value="Miss.">Miss.</option>
                       <option value="Dr.">Dr.</option>
                     </select>
@@ -921,16 +945,16 @@ const AddCustomer = () => {
 
                 {/* Display Name */}
                 <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
-                <input
-                  type="text"
-                  name="displayName"
-                  value={formData.displayName}
-                  onChange={(e) => setFormData({...formData, displayName: e.target.value})}
-                  placeholder="Display Name"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
+                  <input
+                    type="text"
+                    name="displayName"
+                    value={formData.displayName}
+                    onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+                    placeholder="Display Name"
+                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
 
                 {/* Email Address */}
                 <div className="flex items-center gap-6">
@@ -973,72 +997,72 @@ const AddCustomer = () => {
                   </div>
                 </div>
 
-                                {/* Phone Numbers */}
-                                <div className="flex items-center gap-6">
-                                    <span className="w-32 text-base font-medium text-gray-700 mt-2">
-                                        Phone:
-                                    </span>
-                                    <div className="flex-1 flex gap-4">
-                                        {/* Work Phone Input */}
-                                        <div className="relative ">
-                                            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                                                <svg
-                                                    className="h-5 w-5 text-gray-400"
-                                                    fill="none"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                >
-                                                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                                </svg>
-                                            </div>
-                                            <div className="w-44">
-                                                <input
-                                                    type="tel"
-                                                    value={formData.workPhone}
-                                                    onChange={(e) =>
-                                                        setFormData({
-                                                            ...formData,
-                                                            workPhone: e.target.value,
-                                                        })
-                                                    }
-                                                    placeholder="Work Phone"
-                                                    className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
-                                                />
-                                            </div>
-                                        </div>
+                {/* Phone Numbers */}
+                <div className="flex items-center gap-6">
+                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
+                    Phone:
+                  </span>
+                  <div className="flex-1 flex gap-4">
+                    {/* Work Phone Input */}
+                    <div className="relative ">
+                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                        <svg
+                          className="h-5 w-5 text-gray-400"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                      </div>
+                      <div className="w-44">
+                        <input
+                          type="tel"
+                          value={formData?.phone}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              phone: e.target.value,
+                            })
+                          }
+                          placeholder="Work Phone"
+                          className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
+                        />
+                      </div>
+                    </div>
 
-                                        {/* Mobile Phone Input */}
-                                        <div className="relative flex-1">
-                                            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                                                <svg
-                                                    className="h-5 w-5 text-gray-400"
-                                                    fill="none"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                >
-                                                    <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                                                </svg>
-                                            </div>
-                                            <div className="w-48">
-                                                <input
-                                                    type="tel"
-                                                    value={formData.mobile}
-                                                    onChange={(e) =>
-                                                        setFormData({ ...formData, mobile: e.target.value })
-                                                    }
-                                                    placeholder="Mobile"
-                                                    className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    {/* Mobile Phone Input */}
+                    <div className="relative flex-1">
+                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                        <svg
+                          className="h-5 w-5 text-gray-400"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <div className="w-48">
+                        <input
+                          type="tel"
+                          value={formData.mobile}
+                          onChange={(e) =>
+                            setFormData({ ...formData, mobile: e.target.value })
+                          }
+                          placeholder="Mobile"
+                          className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Communication Channels */}
                 <div className="flex items-center gap-6 mt-4">
@@ -1077,8 +1101,8 @@ const AddCustomer = () => {
                   </div>
                 </div>
 
-                                {/* Separation Line */}
-                                <hr className="my-6 border-gray-300 mt-4" />
+                {/* Separation Line */}
+                <hr className="my-6 border-gray-300 mt-4" />
 
                 {/* Tab Menu */}
                 <div className="mt-8">
@@ -1091,8 +1115,8 @@ const AddCustomer = () => {
                             key={tab}
                             onClick={() => setActiveTab(tab as any)}
                             className={`pb-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab
-                                ? "border-orange-500 text-orange-600"
-                                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                              ? "border-orange-500 text-orange-600"
+                              : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                               }`}
                           >
                             {tab}
@@ -1135,12 +1159,12 @@ const AddCustomer = () => {
                                     label="Select GST Treatment"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "36px" ,},
+                                      style: { height: "36px", },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
                                         height: "40px",
-                                        
+
                                       },
                                       "& .MuiInputLabel-root": {
                                         fontSize: "14px",
@@ -1156,8 +1180,8 @@ const AddCustomer = () => {
                                         transform:
                                           "translate(14px, -9px) scale(0.75)",
                                       },
-                                     
-                                      
+
+
                                     }}
                                   />
                                 )}
@@ -1166,7 +1190,7 @@ const AddCustomer = () => {
                             {/* <div className="w-96 mt-1">
                               {" "}
                               {/* Reduced margin-top here */}
-                                                        {/* <Autocomplete
+                            {/* <Autocomplete
                                 disablePortal
                                 options={gstOptions}
                                 sx={{ width: "100%" }}
@@ -1205,9 +1229,9 @@ const AddCustomer = () => {
                                 )}
                                 className="flex-1 rounded-md p-2 text-sm"
                               /> */}
-                                                        {/* </div> */}
-                                                    </div>
-                                                </div>
+                            {/* </div> */}
+                          </div>
+                        </div>
 
                         {/* Place of Supply */}
                         <div className="col-span-2 mt-1">
@@ -1240,14 +1264,14 @@ const AddCustomer = () => {
                                     InputProps={{
                                       ...params.InputProps,
                                       style: { height: "36px" },
-                                      
+
                                     }}
                                     sx={{
-                                 
+
                                       "& .MuiInputLabel-root": {
                                         fontSize: "14px",
                                         marginTop: "-2px",
-                                    
+
                                         transform:
                                           "translate(14px, 10px) scale(1)",
                                         "&.MuiInputLabel-shrink": {
@@ -1296,8 +1320,8 @@ const AddCustomer = () => {
                           </div>
                         </div>
 
-                                                {/*Tax Preference*/}
-                                                {/* <div className="mt-4">
+                        {/*Tax Preference*/}
+                        {/* <div className="mt-4">
                           <div className="flex items-center gap-4 mb-4">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Tax Prefernce:
@@ -1342,8 +1366,8 @@ const AddCustomer = () => {
                             </div>
                           </div>
                         </div> */}
-                                                {/* Currency */}
-                                                {/* <div className="col-span-2">
+                        {/* Currency */}
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Currency:
@@ -1397,11 +1421,11 @@ const AddCustomer = () => {
                         </div> */}
 
                         {/* Opening Balance */}
-                        
-                                                    
 
-                                                {/* Credit Limit */}
-                                                {/* <div className="col-span-2">
+
+
+                        {/* Credit Limit */}
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Credit Limit:
@@ -1461,8 +1485,8 @@ const AddCustomer = () => {
                           </div>
                         </div> */}
 
-                                                {/* Payment Terms */}
-                                                {/* <div className="col-span-2">
+                        {/* Payment Terms */}
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Payment Terms:
@@ -1515,8 +1539,8 @@ const AddCustomer = () => {
                           </div>
                         </div> */}
 
-                                                {/* Price List */}
-                                                {/* <div className="col-span-2">
+                        {/* Price List */}
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Price List:
@@ -1569,32 +1593,32 @@ const AddCustomer = () => {
                           </div>
                         </div> */}
 
-                                                {/* Enable Portal */}
-                                                <div className="flex items-center gap-6 mt-2 mb-4">
-                                                    <span className="w-32 text-base font-medium text-gray-700 mt-2">
-                                                        Enable Portal:
-                                                    </span>
-                                                    <div className="flex gap-6">
-                                                        <label className="flex items-center space-x-2">
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={formData.enablePortal}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        enablePortal: e.target.checked,
-                                                                    })
-                                                                }
-                                                                className="ml-1 form-checkbox h-4 w-4 text-blue-600"
-                                                            />
-                                                            <span className="text-gray-700">
-                                                                Allow portal access for this Customer
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                {/* Portal Language */}
-                                                {/* <div className="col-span-2">
+                        {/* Enable Portal */}
+                        <div className="flex items-center gap-6 mt-2 mb-4">
+                          <span className="w-32 text-base font-medium text-gray-700 mt-2">
+                            Enable Portal:
+                          </span>
+                          <div className="flex gap-6">
+                            <label className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                checked={formData.enablePortal}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    enablePortal: e.target.checked,
+                                  })
+                                }
+                                className="ml-1 form-checkbox h-4 w-4 text-blue-600"
+                              />
+                              <span className="text-gray-700">
+                                Allow portal access for this Customer
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                        {/* Portal Language */}
+                        {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <span className="w-32 text-base font-medium text-gray-700">
                               Portal Language:
@@ -1647,337 +1671,337 @@ const AddCustomer = () => {
                           </div>
                         </div> */}
 
-                                                {/* Documents Upload */}
-                                                <div className="col-span-2 mt-4">
-                                                    <div className="flex items-center gap-6">
-                                                        <span className="w-32 text-base font-medium text-gray-700">
-                                                            Documents:
-                                                        </span>
-                                                        <div className="flex-1">
-                                                            <input
-                                                                type="file"
-                                                                accept=".pdf,.jpg,.jpeg"
-                                                                multiple
-                                                                onChange={(e) => {
-                                                                    const files = e.target.files;
-                                                                    if (files) {
-                                                                        // Filter for only PDF and JPEG files
-                                                                        const validFiles = Array.from(files).filter(
-                                                                            (file) =>
-                                                                                file.type === "application/pdf" ||
-                                                                                file.type === "image/jpeg"
-                                                                        );
+                        {/* Documents Upload */}
+                        <div className="col-span-2 mt-4">
+                          <div className="flex items-center gap-6">
+                            <span className="w-32 text-base font-medium text-gray-700">
+                              Documents:
+                            </span>
+                            <div className="flex-1">
+                              <input
+                                type="file"
+                                accept=".pdf,.jpg,.jpeg"
+                                multiple
+                                onChange={(e) => {
+                                  const files = e.target.files;
+                                  if (files) {
+                                    // Filter for only PDF and JPEG files
+                                    const validFiles = Array.from(files).filter(
+                                      (file) =>
+                                        file.type === "application/pdf" ||
+                                        file.type === "image/jpeg"
+                                    );
 
-                                                                        if (validFiles.length !== files.length) {
-                                                                            alert(
-                                                                                "Only PDF and JPEG files are allowed"
-                                                                            );
-                                                                        }
+                                    if (validFiles.length !== files.length) {
+                                      alert(
+                                        "Only PDF and JPEG files are allowed"
+                                      );
+                                    }
 
-                                                                        // Update selectedFiles with only valid files
-                                                                        setSelectedFiles((prev) => [
-                                                                            ...prev,
-                                                                            ...validFiles,
-                                                                        ]);
-                                                                        handleImageUpload(e, setUploadFiles); // Your existing upload logic
-                                                                    }
-                                                                }}
-                                                                className="hidden"
-                                                                ref={fileInputRef}
-                                                            />
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => fileInputRef.current?.click()}
-                                                                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
-                                                            >
-                                                                <svg
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    className="h-5 w-5 text-gray-400"
-                                                                    viewBox="0 0 20 20"
-                                                                    fill="currentColor"
-                                                                >
-                                                                    <path
-                                                                        fillRule="evenodd"
-                                                                        d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
-                                                                        clipRule="evenodd"
-                                                                    />
-                                                                </svg>
-                                                                <span>Upload Document</span>
-                                                            </button>
-                                                            <p className="text-sm text-gray-500 mt-1">
-                                                                You can upload multiple PDF and JPEG files
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    {selectedFiles.length > 0 && (
-                                                        <div className="mt-4">
-                                                            <h4 className="text-sm font-medium text-gray-700 mb-2">
-                                                                Selected Files:
-                                                            </h4>
-                                                            <div className="space-y-2">
-                                                                {selectedFiles.map((file, index) => (
-                                                                    <div
-                                                                        key={index}
-                                                                        className="flex items-center justify-between bg-gray-50 p-2 rounded"
-                                                                    >
-                                                                        <span className="text-sm text-gray-600">
-                                                                            {file.name}
-                                                                        </span>
-                                                                        <button
-                                                                            type="button"
-                                                                            onClick={() => handleRemoveFile(index)}
-                                                                            className="text-red-500 hover:text-red-700"
-                                                                        >
-                                                                            <svg
-                                                                                className="w-4 h-4"
-                                                                                fill="currentColor"
-                                                                                viewBox="0 0 20 20"
-                                                                            >
-                                                                                <path
-                                                                                    fillRule="evenodd"
-                                                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                                                    clipRule="evenodd"
-                                                                                />
-                                                                            </svg>
-                                                                        </button>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                    <div
-                                                        style={{ display: "flex", flexWrap: "wrap" }}
-                                                        className="gap-4 mt-4"
-                                                    >
-                                                        {formData &&
-                                                            formData.documentArray.length > 0 &&
-                                                            formData.documentArray.map((image, index) => (
-                                                                <img
-                                                                    key={index}
-                                                                    style={{
-                                                                        height: 100,
-                                                                        width: 100,
-                                                                        objectFit: "cover",
-                                                                        border: "1px solid #ddd",
-                                                                        borderRadius: "5px",
-                                                                        marginTop: "10px",
-                                                                    }}
-                                                                    src={
-                                                                        image?.includes("base64")
-                                                                            ? image
-                                                                            : generateFilePath(image)
-                                                                    }
-                                                                    alt={`Image Preview ${index + 1}`}
-                                                                />
-                                                            ))}
-                                                    </div>
-                                                </div>
-                                                {/* Add More Details Section */}
-                                                <div className="mt-6">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setIsExpanded(!isExpanded)}
-                                                        className="flex items-center gap-2 text-base font-medium text-blue-600 hover:text-blue-700"
-                                                    >
-                                                        {isExpanded ? (
-                                                            <>
-                                                                <ChevronUp className="w-5 h-5" />
-                                                                Hide More Details
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                <ChevronDown className="w-5 h-5" />
-                                                                Add More Details
-                                                            </>
-                                                        )}
-                                                    </button>
+                                    // Update selectedFiles with only valid files
+                                    setSelectedFiles((prev) => [
+                                      ...prev,
+                                      ...validFiles,
+                                    ]);
+                                    handleImageUpload(e, setUploadFiles); // Your existing upload logic
+                                  }
+                                }}
+                                className="hidden"
+                                ref={fileInputRef}
+                              />
+                              <button
+                                type="button"
+                                onClick={() => fileInputRef.current?.click()}
+                                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-5 w-5 text-gray-400"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                <span>Upload Document</span>
+                              </button>
+                              <p className="text-sm text-gray-500 mt-1">
+                                You can upload multiple PDF and JPEG files
+                              </p>
+                            </div>
+                          </div>
+                          {selectedFiles.length > 0 && (
+                            <div className="mt-4">
+                              <h4 className="text-sm font-medium text-gray-700 mb-2">
+                                Selected Files:
+                              </h4>
+                              <div className="space-y-2">
+                                {selectedFiles.map((file, index) => (
+                                  <div
+                                    key={index}
+                                    className="flex items-center justify-between bg-gray-50 p-2 rounded"
+                                  >
+                                    <span className="text-sm text-gray-600">
+                                      {file.name}
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleRemoveFile(index)}
+                                      className="text-red-500 hover:text-red-700"
+                                    >
+                                      <svg
+                                        className="w-4 h-4"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                      >
+                                        <path
+                                          fillRule="evenodd"
+                                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                          clipRule="evenodd"
+                                        />
+                                      </svg>
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          <div
+                            style={{ display: "flex", flexWrap: "wrap" }}
+                            className="gap-4 mt-4"
+                          >
+                            {formData &&
+                              formData.documentArray.length > 0 &&
+                              formData.documentArray.map((image, index) => (
+                                <img
+                                  key={index}
+                                  style={{
+                                    height: 100,
+                                    width: 100,
+                                    objectFit: "cover",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "5px",
+                                    marginTop: "10px",
+                                  }}
+                                  src={
+                                    image?.includes("base64")
+                                      ? image
+                                      : generateFilePath(image)
+                                  }
+                                  alt={`Image Preview ${index + 1}`}
+                                />
+                              ))}
+                          </div>
+                        </div>
+                        {/* Add More Details Section */}
+                        <div className="mt-6">
+                          <button
+                            type="button"
+                            onClick={() => setIsExpanded(!isExpanded)}
+                            className="flex items-center gap-2 text-base font-medium text-blue-600 hover:text-blue-700"
+                          >
+                            {isExpanded ? (
+                              <>
+                                <ChevronUp className="w-5 h-5" />
+                                Hide More Details
+                              </>
+                            ) : (
+                              <>
+                                <ChevronDown className="w-5 h-5" />
+                                Add More Details
+                              </>
+                            )}
+                          </button>
 
-                                                    {isExpanded && (
-                                                        <div className="col-span-2 mt-8">
-                                                            <div className="space-y-8">
-                                                                {/* Website URL */}
-                                                                <div className="flex items-center gap-6">
-                                                                    <label
-                                                                        className="w-32 text-base font-medium text-gray-700"
-                                                                        htmlFor="websiteUrl"
-                                                                    >
-                                                                        Website URL:
-                                                                    </label>
-                                                                    <div className="w-96 flex">
-                                                                        <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                                                            <Globe className="w-4 h-4 text-gray-400" />
-                                                                        </div>
-                                                                        <input
-                                                                            id="websiteUrl"
-                                                                            type="text"
-                                                                            value={formData.websiteUrl}
-                                                                            onChange={(e) =>
-                                                                                setFormData({
-                                                                                    ...formData,
-                                                                                    websiteUrl: e.target.value,
-                                                                                })
-                                                                            }
-                                                                            placeholder="Enter Website URL"
-                                                                            className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                                                        />
-                                                                    </div>
-                                                                </div>
+                          {isExpanded && (
+                            <div className="col-span-2 mt-8">
+                              <div className="space-y-8">
+                                {/* Website URL */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="websiteUrl"
+                                  >
+                                    Website URL:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Globe className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="websiteUrl"
+                                      type="text"
+                                      value={formData.websiteUrl}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          websiteUrl: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Website URL"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
 
-                                                                {/* Department */}
-                                                                <div className="flex items-center gap-6">
-                                                                    <label
-                                                                        className="w-32 text-base font-medium text-gray-700"
-                                                                        htmlFor="department"
-                                                                    >
-                                                                        Department:
-                                                                    </label>
-                                                                    <div className="w-96 flex">
-                                                                        <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                                                            <Building2 className="w-4 h-4 text-gray-400" />
-                                                                        </div>
-                                                                        <input
-                                                                            id="department"
-                                                                            type="text"
-                                                                            value={formData.department}
-                                                                            onChange={(e) =>
-                                                                                setFormData({
-                                                                                    ...formData,
-                                                                                    department: e.target.value,
-                                                                                })
-                                                                            }
-                                                                            placeholder="Enter Department"
-                                                                            className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                                                        />
-                                                                    </div>
-                                                                </div>
+                                {/* Department */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="department"
+                                  >
+                                    Department:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Building2 className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="department"
+                                      type="text"
+                                      value={formData.department}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          department: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Department"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
 
-                                                                {/* Designation */}
-                                                                <div className="flex items-center gap-6">
-                                                                    <label
-                                                                        className="w-32 text-base font-medium text-gray-700"
-                                                                        htmlFor="designation"
-                                                                    >
-                                                                        Designation:
-                                                                    </label>
-                                                                    <div className="w-96 flex">
-                                                                        <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                                                            <UserRound className="w-4 h-4 text-gray-400" />
-                                                                        </div>
-                                                                        <input
-                                                                            id="designation"
-                                                                            type="text"
-                                                                            value={formData.designation}
-                                                                            onChange={(e) =>
-                                                                                setFormData({
-                                                                                    ...formData,
-                                                                                    designation: e.target.value,
-                                                                                })
-                                                                            }
-                                                                            placeholder="Enter Designation"
-                                                                            className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                                                        />
-                                                                    </div>
-                                                                </div>
+                                {/* Designation */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="designation"
+                                  >
+                                    Designation:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <UserRound className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="designation"
+                                      type="text"
+                                      value={formData.designation}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          designation: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Designation"
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
 
-                                                                {/* Twitter */}
-                                                                <div className="flex items-center gap-6">
-                                                                    <label
-                                                                        className="w-32 text-base font-medium text-gray-700"
-                                                                        htmlFor="twitter"
-                                                                    >
-                                                                        Twitter:
-                                                                    </label>
-                                                                    <div className="w-96 flex">
-                                                                        <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                                                            <Twitter className="w-4 h-4 text-gray-400" />
-                                                                        </div>
-                                                                        <input
-                                                                            id="twitter"
-                                                                            type="text"
-                                                                            value={formData.twitter}
-                                                                            onChange={(e) =>
-                                                                                setFormData({
-                                                                                    ...formData,
-                                                                                    twitter: e.target.value,
-                                                                                })
-                                                                            }
-                                                                            placeholder="Enter Twitter id..."
-                                                                            className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                                                        />
-                                                                    </div>
-                                                                </div>
+                                {/* Twitter */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="twitter"
+                                  >
+                                    Twitter:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Twitter className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="twitter"
+                                      type="text"
+                                      value={formData.twitter}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          twitter: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter Twitter id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
 
-                                                                {/* Skype */}
-                                                                <div className="flex items-center gap-6">
-                                                                    <label
-                                                                        className="w-32 text-base font-medium text-gray-700"
-                                                                        htmlFor="skype"
-                                                                    >
-                                                                        Skype:
-                                                                    </label>
-                                                                    <div className="w-96 flex">
-                                                                        <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                                                            <MessageCircle className="w-4 h-4 text-gray-400" />
-                                                                        </div>
-                                                                        <input
-                                                                            id="skype"
-                                                                            type="text"
-                                                                            value={formData.skype}
-                                                                            onChange={(e) =>
-                                                                                setFormData({
-                                                                                    ...formData,
-                                                                                    skype: e.target.value,
-                                                                                })
-                                                                            }
-                                                                            placeholder="Enter skype id..."
-                                                                            className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                                                        />
-                                                                    </div>
-                                                                </div>
+                                {/* Skype */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="skype"
+                                  >
+                                    Skype:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <MessageCircle className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="skype"
+                                      type="text"
+                                      value={formData.skype}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          skype: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter skype id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
 
-                                                                {/* Facebook */}
-                                                                <div className="flex items-center gap-6">
-                                                                    <label
-                                                                        className="w-32 text-base font-medium text-gray-700"
-                                                                        htmlFor="facebook"
-                                                                    >
-                                                                        Facebook:
-                                                                    </label>
-                                                                    <div className="w-96 flex">
-                                                                        <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                                                            <Facebook className="w-4 h-4 text-gray-400" />
-                                                                        </div>
-                                                                        <input
-                                                                            id="facebook"
-                                                                            type="text"
-                                                                            value={formData.facebook}
-                                                                            onChange={(e) =>
-                                                                                setFormData({
-                                                                                    ...formData,
-                                                                                    facebook: e.target.value,
-                                                                                })
-                                                                            }
-                                                                            placeholder="Enter facebook id..."
-                                                                            className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        )}
+                                {/* Facebook */}
+                                <div className="flex items-center gap-6">
+                                  <label
+                                    className="w-32 text-base font-medium text-gray-700"
+                                    htmlFor="facebook"
+                                  >
+                                    Facebook:
+                                  </label>
+                                  <div className="w-96 flex">
+                                    <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                                      <Facebook className="w-4 h-4 text-gray-400" />
+                                    </div>
+                                    <input
+                                      id="facebook"
+                                      type="text"
+                                      value={formData.facebook}
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          facebook: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter facebook id..."
+                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
 
-                                        {activeTab === "Address" && (
-                                            <div className="grid grid-cols-2 gap-8">
-                                                {/* Billing Address */}
-                                                <div className="col-span-1">
-                                                    <h2 className="text-2xl font-bold mb-6">
-                                                        Billing Address
-                                                    </h2>
-                                                    {/* Attention */}
-                                                    {/* <div className="flex items-center gap-6">
+                    {activeTab === "Address" && (
+                      <div className="grid grid-cols-2 gap-8">
+                        {/* Billing Address */}
+                        <div className="col-span-1">
+                          <h2 className="text-2xl font-bold mb-6">
+                            Billing Address
+                          </h2>
+                          {/* Attention */}
+                          {/* <div className="flex items-center gap-6">
                             <span className=" min-w-32 text-base font-medium text-gray-700">
                               Attention:
                             </span>
@@ -1993,13 +2017,13 @@ const AddCustomer = () => {
                               className="w-full border border-gray-300 rounded-md p-2 text-sm"
                             />
                           </div> */}
-                                                    {/* Country / Region */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                Country / Region:
-                                                            </span>
-                                                            {/* <select
+                          {/* Country / Region */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                Country / Region:
+                              </span>
+                              {/* <select
                                 value={formData.countryRegion}
                                 onChange={(e) =>
                                   setFormData({
@@ -2123,114 +2147,114 @@ const AddCustomer = () => {
                                 </option>
                                 <option value="CL - Chile">CL - Chile</option>
                               </select> */}
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                options={countryOptions}
-                                                                sx={{ width: 600 }}
-                                                                value={
-                                                                    countryOptions.find(
-                                                                        (option) =>
-                                                                            option.value === formData.countryRegion
-                                                                    ) || null
-                                                                }
-                                                                onChange={(event, newValue) => {
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        countryRegion: newValue?.value || "",
-                                                                    });
-                                                                }}
-                                                                renderInput={(params) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                        label="Select Payment Terms"
-                                                                        InputProps={{
-                                                                            ...params.InputProps,
-                                                                            style: { height: "40px" },
-                                                                        }}
-                                                                        sx={{
-                                                                            "& .MuiInputBase-root": {
-                                                                                height: "40px",
-                                                                            },
-                                                                            "& .MuiInputLabel-root": {
-                                                                                transform:
-                                                                                    "translate(14px, 10px) scale(1)",
-                                                                                "&.MuiInputLabel-shrink": {
-                                                                                    transform:
-                                                                                        "translate(14px, -9px) scale(0.75)",
-                                                                                },
-                                                                            },
-                                                                            "& .MuiInputLabel-root.Mui-focused": {
-                                                                                transform:
-                                                                                    "translate(14px, -9px) scale(0.75)",
-                                                                            },
-                                                                        }}
-                                                                    />
-                                                                )}
-                                                                className="flex-1 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* Address */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="text-base font-medium text-gray-700">
-                                                                Address:
-                                                            </span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.addressStreet1}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        addressStreet1: e.target.value,
-                                                                    })
-                                                                }
-                                                                placeholder="Street 1"
-                                                                className="w-full ml-16 border border-gray-300 rounded-md p-8 text-sm"
-                                                            />
-                                                        </div>
-                                                        <div className="flex items-center gap-6 mt-4">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700"></span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.addressStreet2}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        addressStreet2: e.target.value,
-                                                                    })
-                                                                }
-                                                                placeholder="Street 2"
-                                                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* City */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                City:
-                                                            </span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.city}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        city: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* State */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                State:
-                                                            </span>
-                                                            {/* <select
+                              <Autocomplete
+                                disablePortal
+                                options={countryOptions}
+                                sx={{ width: 600 }}
+                                value={
+                                  countryOptions.find(
+                                    (option) =>
+                                      option.value === formData.countryRegion
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    countryRegion: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                                className="flex-1 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* Address */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="text-base font-medium text-gray-700">
+                                Address:
+                              </span>
+                              <input
+                                type="text"
+                                value={formData.addressStreet1}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    addressStreet1: e.target.value,
+                                  })
+                                }
+                                placeholder="Street 1"
+                                className="w-full ml-16 border border-gray-300 rounded-md p-8 text-sm"
+                              />
+                            </div>
+                            <div className="flex items-center gap-6 mt-4">
+                              <span className="min-w-32 text-base font-medium text-gray-700"></span>
+                              <input
+                                type="text"
+                                value={formData.addressStreet2}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    addressStreet2: e.target.value,
+                                  })
+                                }
+                                placeholder="Street 2"
+                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* City */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                City:
+                              </span>
+                              <input
+                                type="text"
+                                value={formData.city}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    city: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* State */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                State:
+                              </span>
+                              {/* <select
                                 value={formData.state}
                                 onChange={(e) =>
                                   setFormData({
@@ -2335,129 +2359,129 @@ const AddCustomer = () => {
                                   TN - Tamil Nadu
                                 </option>
                               </select> */}
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                options={stateOptions}
-                                                                sx={{ width: 600 }}
-                                                                value={
-                                                                    stateOptions.find(
-                                                                        (option) => option.value === formData.state
-                                                                    ) || null
-                                                                }
-                                                                onChange={(event, newValue) => {
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        state: newValue?.value || "",
-                                                                    });
-                                                                }}
-                                                                renderInput={(params) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                        label="Select Payment Terms"
-                                                                        InputProps={{
-                                                                            ...params.InputProps,
-                                                                            style: { height: "40px" },
-                                                                        }}
-                                                                        sx={{
-                                                                            "& .MuiInputBase-root": {
-                                                                                height: "40px",
-                                                                            },
-                                                                            "& .MuiInputLabel-root": {
-                                                                                transform:
-                                                                                    "translate(14px, 10px) scale(1)",
-                                                                                "&.MuiInputLabel-shrink": {
-                                                                                    transform:
-                                                                                        "translate(14px, -9px) scale(0.75)",
-                                                                                },
-                                                                            },
-                                                                            "& .MuiInputLabel-root.Mui-focused": {
-                                                                                transform:
-                                                                                    "translate(14px, -9px) scale(0.75)",
-                                                                            },
-                                                                        }}
-                                                                    />
-                                                                )}
-                                                                className="flex-1 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* Pin Code */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700 w-20">
-                                                                Pin Code:
-                                                            </span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.pinCode}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        pinCode: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* Phone */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                Phone:
-                                                            </span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.phoneNumber}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        phoneNumber: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* Fax Number */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                Fax Number:
-                                                            </span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.faxNumber}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        faxNumber: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
+                              <Autocomplete
+                                disablePortal
+                                options={stateOptions}
+                                sx={{ width: 600 }}
+                                value={
+                                  stateOptions.find(
+                                    (option) => option.value === formData.state
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    state: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                                className="flex-1 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* Pin Code */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700 w-20">
+                                Pin Code:
+                              </span>
+                              <input
+                                type="text"
+                                value={formData.pinCode}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    pinCode: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* Phone */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                Phone:
+                              </span>
+                              <input
+                                type="text"
+                                value={formData.phoneNumber}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    phoneNumber: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* Fax Number */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                Fax Number:
+                              </span>
+                              <input
+                                type="text"
+                                value={formData.faxNumber}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    faxNumber: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
+                        </div>
 
-                                                {/* Shipping Address */}
-                                                <div className="col-span-1">
-                                                    <div className="flex items-center gap-4 mb-6">
-                                                        <h2 className="text-2xl font-bold">
-                                                            Shipping Address
-                                                        </h2>
-                                                        <div
-                                                            onClick={copyBillingAddress}
-                                                            className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md"
-                                                        >
-                                                            <span className="text-blue-600">
-                                                                Same as Billing Address
-                                                            </span>
-                                                            <ChevronDown className="h-4 w-4 text-blue-600" />
-                                                        </div>
-                                                    </div>
-                                                    {/* Shipping Attention */}
-                                                    {/* <div className="flex items-center gap-6">
+                        {/* Shipping Address */}
+                        <div className="col-span-1">
+                          <div className="flex items-center gap-4 mb-6">
+                            <h2 className="text-2xl font-bold">
+                              Shipping Address
+                            </h2>
+                            <div
+                              onClick={copyBillingAddress}
+                              className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md"
+                            >
+                              <span className="text-blue-600">
+                                Same as Billing Address
+                              </span>
+                              <ChevronDown className="h-4 w-4 text-blue-600" />
+                            </div>
+                          </div>
+                          {/* Shipping Attention */}
+                          {/* <div className="flex items-center gap-6">
                             <span className="min-w-32 text-base font-medium text-gray-700">
                               Attention:
                             </span>
@@ -2473,13 +2497,13 @@ const AddCustomer = () => {
                               className="w-full border border-gray-300 rounded-md p-2 text-sm"
                             />
                           </div> */}
-                                                    {/* Shipping Country / Region */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                Country / Region:
-                                                            </span>
-                                                            {/* <select
+                          {/* Shipping Country / Region */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                Country / Region:
+                              </span>
+                              {/* <select
                                 value={formData.shippingCountryRegion}
                                 onChange={(e) =>
                                   setFormData({
@@ -2603,115 +2627,115 @@ const AddCustomer = () => {
                                 </option>
                                 <option value="CL - Chile">CL - Chile</option>
                               </select> */}
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                options={countryOptions}
-                                                                sx={{ width: 600 }}
-                                                                value={
-                                                                    countryOptions.find(
-                                                                        (option) =>
-                                                                            option.value ===
-                                                                            formData.shippingCountryRegion
-                                                                    ) || null
-                                                                }
-                                                                onChange={(event, newValue) => {
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        countryRegion: newValue?.value || "",
-                                                                    });
-                                                                }}
-                                                                renderInput={(params) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                        label="Select Payment Terms"
-                                                                        InputProps={{
-                                                                            ...params.InputProps,
-                                                                            style: { height: "40px" },
-                                                                        }}
-                                                                        sx={{
-                                                                            "& .MuiInputBase-root": {
-                                                                                height: "40px",
-                                                                            },
-                                                                            "& .MuiInputLabel-root": {
-                                                                                transform:
-                                                                                    "translate(14px, 10px) scale(1)",
-                                                                                "&.MuiInputLabel-shrink": {
-                                                                                    transform:
-                                                                                        "translate(14px, -9px) scale(0.75)",
-                                                                                },
-                                                                            },
-                                                                            "& .MuiInputLabel-root.Mui-focused": {
-                                                                                transform:
-                                                                                    "translate(14px, -9px) scale(0.75)",
-                                                                            },
-                                                                        }}
-                                                                    />
-                                                                )}
-                                                                className="flex-1 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* Shipping Address */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                Address:
-                                                            </span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.shippingAddressStreet1}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        shippingAddressStreet1: e.target.value,
-                                                                    })
-                                                                }
-                                                                placeholder="Street 1"
-                                                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
-                                                            />
-                                                        </div>
-                                                        <div className="flex items-center gap-6 mt-4">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700"></span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.shippingAddressStreet2}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        shippingAddressStreet2: e.target.value,
-                                                                    })
-                                                                }
-                                                                placeholder="Street 2"
-                                                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* Shippping City */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                City:
-                                                            </span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.shippingCity}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        shippingCity: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* Shipping State */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                State:
-                                                            </span>
-                                                            {/* <select
+                              <Autocomplete
+                                disablePortal
+                                options={countryOptions}
+                                sx={{ width: 600 }}
+                                value={
+                                  countryOptions.find(
+                                    (option) =>
+                                      option.value ===
+                                      formData.shippingCountryRegion
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    countryRegion: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                                className="flex-1 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* Shipping Address */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                Address:
+                              </span>
+                              <input
+                                type="text"
+                                value={formData.shippingAddressStreet1}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    shippingAddressStreet1: e.target.value,
+                                  })
+                                }
+                                placeholder="Street 1"
+                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
+                              />
+                            </div>
+                            <div className="flex items-center gap-6 mt-4">
+                              <span className="min-w-32 text-base font-medium text-gray-700"></span>
+                              <input
+                                type="text"
+                                value={formData.shippingAddressStreet2}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    shippingAddressStreet2: e.target.value,
+                                  })
+                                }
+                                placeholder="Street 2"
+                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* Shippping City */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                City:
+                              </span>
+                              <input
+                                type="text"
+                                value={formData.shippingCity}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    shippingCity: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* Shipping State */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                State:
+                              </span>
+                              {/* <select
                                 value={formData.shippingState}
                                 onChange={(e) =>
                                   setFormData({
@@ -2816,370 +2840,370 @@ const AddCustomer = () => {
                                   TN - Tamil Nadu
                                 </option>
                               </select> */}
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                options={stateOptions}
-                                                                sx={{ width: 600 }}
-                                                                value={
-                                                                    stateOptions.find(
-                                                                        (option) =>
-                                                                            option.value === formData.shippingState
-                                                                    ) || null
-                                                                }
-                                                                onChange={(event, newValue) => {
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        state: newValue?.value || "",
-                                                                    });
-                                                                }}
-                                                                renderInput={(params) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                        label="Select Payment Terms"
-                                                                        InputProps={{
-                                                                            ...params.InputProps,
-                                                                            style: { height: "40px" },
-                                                                        }}
-                                                                        sx={{
-                                                                            "& .MuiInputBase-root": {
-                                                                                height: "40px",
-                                                                            },
-                                                                            "& .MuiInputLabel-root": {
-                                                                                transform:
-                                                                                    "translate(14px, 10px) scale(1)",
-                                                                                "&.MuiInputLabel-shrink": {
-                                                                                    transform:
-                                                                                        "translate(14px, -9px) scale(0.75)",
-                                                                                },
-                                                                            },
-                                                                            "& .MuiInputLabel-root.Mui-focused": {
-                                                                                transform:
-                                                                                    "translate(14px, -9px) scale(0.75)",
-                                                                            },
-                                                                        }}
-                                                                    />
-                                                                )}
-                                                                className="flex-1 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* Shipping Pin Code */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                Pin Code:
-                                                            </span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.shippingPinCode}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        shippingPinCode: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* Shipping Phone */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                Phone:
-                                                            </span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.shippingPhoneNumber}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        shippingPhoneNumber: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {/* Shipping Fax Number */}
-                                                    <div className="col-span-2">
-                                                        <div className="flex items-center gap-6 mt-6">
-                                                            <span className="min-w-32 text-base font-medium text-gray-700">
-                                                                Fax Number:
-                                                            </span>
-                                                            <input
-                                                                type="text"
-                                                                value={formData.shippingFaxNumber}
-                                                                onChange={(e) =>
-                                                                    setFormData({
-                                                                        ...formData,
-                                                                        shippingFaxNumber: e.target.value,
-                                                                    })
-                                                                }
-                                                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {activeTab === "Contact Persons" && (
-                                            <div className="grid grid-cols-2 gap-6">
-                                                <div className="col-span-2">
-                                                    <table className="min-w-full border border-gray-200">
-                                                        <thead className="bg-gray-50">
-                                                            <tr>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                                                    Salutation
-                                                                </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                                                    First Name
-                                                                </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                                                    Last Name
-                                                                </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                                                    Email Address
-                                                                </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                                                    Work Phone
-                                                                </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                                                    Mobile
-                                                                </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                                                    Communication Channels
-                                                                </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                                                    Actions
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {contactPersons.map((person, index) => (
-                                                                <tr key={index} className="hover:bg-gray-50">
-                                                                    {/* Salutation Dropdown */}
-                                                                    <td className="px-4 py-2 border-b">
-                                                                        <select
-                                                                            value={person.salutation}
-                                                                            onChange={(e) =>
-                                                                                handleContactPersonChange(
-                                                                                    index,
-                                                                                    "salutation",
-                                                                                    e.target.value
-                                                                                )
-                                                                            }
-                                                                            className="w-full border rounded p-1 text-sm"
-                                                                        >
-                                                                            <option value="">Select</option>
-                                                                            <option value="Mr.">Mr.</option>
-                                                                            <option value="Mrs.">Mrs.</option>
-                                                                            <option value="Ms.">Ms.</option>
-                                                                            <option value="Dr.">Dr.</option>
-                                                                        </select>
-                                                                    </td>
-
-                                                                    {/* First Name */}
-                                                                    <td className="px-4 py-2 border-b">
-                                                                        <input
-                                                                            type="text"
-                                                                            value={person.firstName}
-                                                                            onChange={(e) =>
-                                                                                handleContactPersonChange(
-                                                                                    index,
-                                                                                    "firstName",
-                                                                                    e.target.value
-                                                                                )
-                                                                            }
-                                                                            className="w-full border rounded p-1 text-sm"
-                                                                        />
-                                                                    </td>
-
-                                                                    {/* Last Name */}
-                                                                    <td className="px-4 py-2 border-b">
-                                                                        <input
-                                                                            type="text"
-                                                                            value={person.lastName}
-                                                                            onChange={(e) =>
-                                                                                handleContactPersonChange(
-                                                                                    index,
-                                                                                    "lastName",
-                                                                                    e.target.value
-                                                                                )
-                                                                            }
-                                                                            className="w-full border rounded p-1 text-sm"
-                                                                        />
-                                                                    </td>
-
-                                                                    {/* Email Address */}
-                                                                    <td className="px-4 py-2 border-b">
-                                                                        <input
-                                                                            type="email"
-                                                                            value={person.email}
-                                                                            onChange={(e) =>
-                                                                                handleContactPersonChange(
-                                                                                    index,
-                                                                                    "email",
-                                                                                    e.target.value
-                                                                                )
-                                                                            }
-                                                                            className="w-full border rounded p-1 text-sm"
-                                                                        />
-                                                                    </td>
-
-                                                                    {/* Work Phone */}
-                                                                    <td className="px-4 py-2 border-b">
-                                                                        <input
-                                                                            type="tel"
-                                                                            value={person.workPhone}
-                                                                            onChange={(e) =>
-                                                                                handleContactPersonChange(
-                                                                                    index,
-                                                                                    "workPhone",
-                                                                                    e.target.value
-                                                                                )
-                                                                            }
-                                                                            className="w-full border rounded p-1 text-sm"
-                                                                        />
-                                                                    </td>
-
-                                                                    {/* Mobile Phone */}
-                                                                    <td className="px-4 py-2 border-b">
-                                                                        <input
-                                                                            type="tel"
-                                                                            value={person.mobilePhone}
-                                                                            onChange={(e) =>
-                                                                                handleContactPersonChange(
-                                                                                    index,
-                                                                                    "workPhone",
-                                                                                    e.target.value
-                                                                                )
-                                                                            }
-                                                                            className="w-full border rounded p-1 text-sm"
-                                                                        />
-                                                                    </td>
-
-                                                                    {/* Communication Channels */}
-                                                                    <td className="px-4 py-2 border-b">
-                                                                        <div className="flex gap-4">
-                                                                            <label className="flex items-center space-x-1">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    checked={
-                                                                                        person.communicationChannels
-                                                                                            .prefersEmail
-                                                                                    }
-                                                                                    onChange={(e) =>
-                                                                                        handleChannelChange(
-                                                                                            index,
-                                                                                            "prefersEmail",
-                                                                                            e.target.checked
-                                                                                        )
-                                                                                    }
-                                                                                    // checked={person.communicationChannels.includes(
-                                                                                    //   "Email"
-                                                                                    // )}
-                                                                                    // onChange={(e) =>
-                                                                                    //   handleChannelChange(
-                                                                                    //     index,
-                                                                                    //     "Email",
-                                                                                    //     e.target.checked
-                                                                                    //   )
-                                                                                    // }
-                                                                                    className="form-checkbox h-4 w-4"
-                                                                                />
-                                                                                <span className="text-sm">Email</span>
-                                                                            </label>
-                                                                            <label className="flex items-center space-x-1">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    checked={
-                                                                                        person.communicationChannels
-                                                                                            .prefersSms
-                                                                                    }
-                                                                                    onChange={(e) =>
-                                                                                        handleChannelChange(
-                                                                                            index,
-                                                                                            "prefersSms",
-                                                                                            e.target.checked
-                                                                                        )
-                                                                                    }
-                                                                                    // checked={person.communicationChannels.includes(
-                                                                                    //   "SMS"
-                                                                                    // )}
-                                                                                    // onChange={(e) =>
-                                                                                    //   handleChannelChange(
-                                                                                    //     index,
-                                                                                    //     "SMS",
-                                                                                    //     e.target.checked
-                                                                                    //   )
-                                                                                    // }
-                                                                                    className="form-checkbox h-4 w-4"
-                                                                                />
-                                                                                <span className="text-sm">SMS</span>
-                                                                            </label>
-                                                                        </div>
-                                                                    </td>
-
-                                                                    {/* Delete Button */}
-                                                                    <td className="px-4 py-2 border-b">
-                                                                        <button
-                                                                            type="button"
-                                                                            onClick={() =>
-                                                                                handleDeleteContactPerson(index)
-                                                                            }
-                                                                            className="text-red-600 hover:text-red-800 text-sm"
-                                                                        >
-                                                                            Delete
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
-
-                                                    {/* Add Row Button */}
-                                                    <div className="mt-4">
-                                                        <button
-                                                            type="button"
-                                                            onClick={handleAddContactPerson}
-                                                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
-                                                        >
-                                                            Add Row
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
+                              <Autocomplete
+                                disablePortal
+                                options={stateOptions}
+                                sx={{ width: 600 }}
+                                value={
+                                  stateOptions.find(
+                                    (option) =>
+                                      option.value === formData.shippingState
+                                  ) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    state: newValue?.value || "",
+                                  });
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select Payment Terms"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "40px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        transform:
+                                          "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform:
+                                            "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform:
+                                          "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                                className="flex-1 rounded-md p-2 text-sm"
+                              />
                             </div>
+                          </div>
+                          {/* Shipping Pin Code */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                Pin Code:
+                              </span>
+                              <input
+                                type="text"
+                                value={formData.shippingPinCode}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    shippingPinCode: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* Shipping Phone */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                Phone:
+                              </span>
+                              <input
+                                type="text"
+                                value={formData.shippingPhoneNumber}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    shippingPhoneNumber: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
+                          {/* Shipping Fax Number */}
+                          <div className="col-span-2">
+                            <div className="flex items-center gap-6 mt-6">
+                              <span className="min-w-32 text-base font-medium text-gray-700">
+                                Fax Number:
+                              </span>
+                              <input
+                                type="text"
+                                value={formData.shippingFaxNumber}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    shippingFaxNumber: e.target.value,
+                                  })
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              />
+                            </div>
+                          </div>
                         </div>
-                    </div>
+                      </div>
+                    )}
 
-                    {/* Buttons */}
-                    <div className="flex justify-end gap-4 mt-8">
-                        <button
-                            type="button"
-                            onClick={() => navigate(-1)}
-                            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
-                        >
-                            Cancel
-                        </button>
-                        {((!id && canCreate) || (id && canUpdate)) && (
+                    {activeTab === "Contact Persons" && (
+                      <div className="grid grid-cols-2 gap-6">
+                        <div className="col-span-2">
+                          <table className="min-w-full border border-gray-200">
+                            <thead className="bg-gray-50">
+                              <tr>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  Salutation
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  First Name
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  Last Name
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  Email Address
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  Work Phone
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  Mobile
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  Communication Channels
+                                </th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  Actions
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {contactPersons.map((person, index) => (
+                                <tr key={index} className="hover:bg-gray-50">
+                                  {/* Salutation Dropdown */}
+                                  <td className="px-4 py-2 border-b">
+                                    <select
+                                      value={person.salutation}
+                                      onChange={(e) =>
+                                        handleContactPersonChange(
+                                          index,
+                                          "salutation",
+                                          e.target.value
+                                        )
+                                      }
+                                      className="w-full border rounded p-1 text-sm"
+                                    >
+                                      <option value="">Select</option>
+                                      <option value="Mr.">Mr.</option>
+                                      <option value="Mrs.">Mrs.</option>
+                                      <option value="Ms.">Ms.</option>
+                                      <option value="Dr.">Dr.</option>
+                                    </select>
+                                  </td>
+
+                                  {/* First Name */}
+                                  <td className="px-4 py-2 border-b">
+                                    <input
+                                      type="text"
+                                      value={person.firstName}
+                                      onChange={(e) =>
+                                        handleContactPersonChange(
+                                          index,
+                                          "firstName",
+                                          e.target.value
+                                        )
+                                      }
+                                      className="w-full border rounded p-1 text-sm"
+                                    />
+                                  </td>
+
+                                  {/* Last Name */}
+                                  <td className="px-4 py-2 border-b">
+                                    <input
+                                      type="text"
+                                      value={person.lastName}
+                                      onChange={(e) =>
+                                        handleContactPersonChange(
+                                          index,
+                                          "lastName",
+                                          e.target.value
+                                        )
+                                      }
+                                      className="w-full border rounded p-1 text-sm"
+                                    />
+                                  </td>
+
+                                  {/* Email Address */}
+                                  <td className="px-4 py-2 border-b">
+                                    <input
+                                      type="email"
+                                      value={person.email}
+                                      onChange={(e) =>
+                                        handleContactPersonChange(
+                                          index,
+                                          "email",
+                                          e.target.value
+                                        )
+                                      }
+                                      className="w-full border rounded p-1 text-sm"
+                                    />
+                                  </td>
+
+                                  {/* Work Phone */}
+                                  <td className="px-4 py-2 border-b">
+                                    <input
+                                      type="tel"
+                                      value={person.workPhone}
+                                      onChange={(e) =>
+                                        handleContactPersonChange(
+                                          index,
+                                          "workPhone",
+                                          e.target.value
+                                        )
+                                      }
+                                      className="w-full border rounded p-1 text-sm"
+                                    />
+                                  </td>
+
+                                  {/* Mobile Phone */}
+                                  <td className="px-4 py-2 border-b">
+                                    <input
+                                      type="tel"
+                                      value={person.mobilePhone}
+                                      onChange={(e) =>
+                                        handleContactPersonChange(
+                                          index,
+                                          "workPhone",
+                                          e.target.value
+                                        )
+                                      }
+                                      className="w-full border rounded p-1 text-sm"
+                                    />
+                                  </td>
+
+                                  {/* Communication Channels */}
+                                  <td className="px-4 py-2 border-b">
+                                    <div className="flex gap-4">
+                                      <label className="flex items-center space-x-1">
+                                        <input
+                                          type="checkbox"
+                                          checked={
+                                            person.communicationChannels
+                                              .prefersEmail
+                                          }
+                                          onChange={(e) =>
+                                            handleChannelChange(
+                                              index,
+                                              "prefersEmail",
+                                              e.target.checked
+                                            )
+                                          }
+                                          // checked={person.communicationChannels.includes(
+                                          //   "Email"
+                                          // )}
+                                          // onChange={(e) =>
+                                          //   handleChannelChange(
+                                          //     index,
+                                          //     "Email",
+                                          //     e.target.checked
+                                          //   )
+                                          // }
+                                          className="form-checkbox h-4 w-4"
+                                        />
+                                        <span className="text-sm">Email</span>
+                                      </label>
+                                      <label className="flex items-center space-x-1">
+                                        <input
+                                          type="checkbox"
+                                          checked={
+                                            person.communicationChannels
+                                              .prefersSms
+                                          }
+                                          onChange={(e) =>
+                                            handleChannelChange(
+                                              index,
+                                              "prefersSms",
+                                              e.target.checked
+                                            )
+                                          }
+                                          // checked={person.communicationChannels.includes(
+                                          //   "SMS"
+                                          // )}
+                                          // onChange={(e) =>
+                                          //   handleChannelChange(
+                                          //     index,
+                                          //     "SMS",
+                                          //     e.target.checked
+                                          //   )
+                                          // }
+                                          className="form-checkbox h-4 w-4"
+                                        />
+                                        <span className="text-sm">SMS</span>
+                                      </label>
+                                    </div>
+                                  </td>
+
+                                  {/* Delete Button */}
+                                  <td className="px-4 py-2 border-b">
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleDeleteContactPerson(index)
+                                      }
+                                      className="text-red-600 hover:text-red-800 text-sm"
+                                    >
+                                      Delete
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+
+                          {/* Add Row Button */}
+                          <div className="mt-4">
                             <button
-                                type="submit"
-                                className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+                              type="button"
+                              onClick={handleAddContactPerson}
+                              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
                             >
-                                Save
+                              Add Row
                             </button>
-                        )}
-                    </div>
-                </form>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
-    );
+          </div>
+
+          {/* Buttons */}
+          <div className="flex justify-end gap-4 mt-8">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+            >
+              Cancel
+            </button>
+            {((!id && canCreate) || (id && canUpdate)) && (
+              <button
+                type="submit"
+                className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+              >
+                Save
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default AddCustomer;

@@ -15,6 +15,7 @@ export interface IBillModel {
     vendor_name: string;
     status: string;
     color_code?: string;
+    leadId?: string;
     current_sub_status_id?: string;
     current_sub_status?: string;
     bill_number: string;

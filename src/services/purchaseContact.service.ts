@@ -12,6 +12,7 @@ export interface IpurchaseContact {
     // Basic Details
         firstName: '',
         lastName:'',
+        leadId:"",
         phone: '',
         email: '',
         salutation:"",

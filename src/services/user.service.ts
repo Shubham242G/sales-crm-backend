@@ -19,6 +19,7 @@ export interface IUser {
     phone?: string;
     stateId?: string;
     cityId?: string;
+    leadId?: string;
     status?: STATUS_TYPE;
     countryId?: string;
     regionId?: string;

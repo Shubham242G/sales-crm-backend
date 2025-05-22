@@ -16,6 +16,7 @@ const AddPurchaseContact = () => {
     lastName: "",
     phone: "",
     email: "",
+    leadId: "",
     salutation: "",
   });
   const { id } = useParams();
@@ -37,6 +38,7 @@ const AddPurchaseContact = () => {
     // Prefill form when editing
     if (purchaseContactDataById) {
       setFormData(purchaseContactDataById?.data || "");
+      
     }
   }, [purchaseContactDataById]);
   const handleSubmit = async (e: React.FormEvent) => {

@@ -49,7 +49,7 @@ export default function AddLedger() {
   const [ifsccode, setIFSCCode] = useState("");
   const [gstinno, setGSTINNo] = useState("");
   const [remark, setRemark] = useState("");
-
+  const [leadId, setLeadId] = useState("");
   const [status, setStatus] = useState("");
 
   // selected tab

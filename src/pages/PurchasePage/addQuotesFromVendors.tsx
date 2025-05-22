@@ -29,6 +29,7 @@ interface IShipppingAddress {
   serviceType: string[];
   rfpId: string;
   amount: string;
+  leadId: string;
   displayName: string;
   receivedDate: string;
   attachment: string[];
@@ -49,6 +50,7 @@ const AddQuotesFromVendors = () => {
     serviceType: [] as string[],
     rfpId: "",
     amount: "",
+    leadId: "",
     receivedDate: "",
     displayName:"",
     attachment: [] as string[],
@@ -147,6 +149,7 @@ const AddQuotesFromVendors = () => {
         eventDates: quotesFromVendorsDataById?.data?.eventDates || [],
         rfpId: quotesFromVendorsDataById?.data?.rfpId || "",
         amount: quotesFromVendorsDataById?.data?.amount || "",
+        leadId: quotesFromVendorsDataById?.data?.leadId || "",
         receivedDate: quotesFromVendorsDataById?.data?.receivedDate || "",
         attachment: quotesFromVendorsDataById?.data?.attachment || [],
         serviceType: quotesFromVendorsDataById?.data?.serviceType || [],
@@ -177,16 +180,23 @@ const AddQuotesFromVendors = () => {
 
       if (id) {
         const { data: res } = await updateQuotesFromVendors({ id, obj });
+        console.log("leadID===>", formData.leadId)
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/quotesFromVendors");
+          console.log("leadID===>", formData.leadId)
+          console.log("rfpID===>", formData.rfpId)
 
         }
       } else {
         const { data: res } = await addQuotesFromVendors(obj);
         if (res?.message) {
+          console.log("leadID===>", formData.leadId)
           toastSuccess(res.message);
           navigate("/quotesFromVendors");
+          console.log("leadID===>", formData.leadId)
+          console.log("rfpID===>", formData.rfpId)
+
         }
       }
     } catch (error) {

@@ -12,15 +12,17 @@ import { ICustomer } from "./customer.service";
 const prefix = "/lead";
 export interface ILead {
     // Basic Details
+
     _id: string,
     salutation: string,
     firstName: string,
     lastName: string,
     email: string,
+    leadOwner: string,
     phone: string,
     company: string,
-    leadOwner: string,
     displayName: string,
+    leadId: string,
 }
 
 
@@ -65,7 +67,7 @@ export const useleadApiHook = () => {
 
 
     const convertToContact = async (id: any) => {
-        return axios.get<GeneralApiResponse<ILead>>(`${BASE_URL}${prefix}/convertToContact/${id}`);
+        return axios.get<GeneralApiResponse<Inew>>(`${BASE_URL}${prefix}/convertToContact/${id}`);
     }
 
     const getAllLeadName = async (searchObj: any) => {

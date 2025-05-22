@@ -19,6 +19,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
     taskType: "",
     taskTitle: "",
     description: "",
+    leadId: "",
     startDate: "",
     startTime: "",
     timeType: "",

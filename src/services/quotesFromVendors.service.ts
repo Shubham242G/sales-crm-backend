@@ -20,6 +20,7 @@ export interface IQuotesFromVendors {
   serviceType: [];
   rfpId: string;
   amount: string;
+  leadId: string;
   receivedDate: string;
   status: string;
   attachment: string[];

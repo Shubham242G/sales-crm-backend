@@ -27,6 +27,7 @@ function SalesContactView() {
 
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [leadId, setLeadId] = useState("");
   const [query, setQuery] = useState("");
 
   const searchObj = useMemo(

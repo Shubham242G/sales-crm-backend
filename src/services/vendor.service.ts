@@ -16,6 +16,7 @@ export interface IVendor {
     salutation: string;
     firstName: string;
     lastName: string;
+    leadId: string;
     email: string;
     companyName: string;
     contactName: string;

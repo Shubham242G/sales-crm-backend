@@ -42,6 +42,7 @@ function TaskManagement() {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
+  const [leadId, setLeadId] = useState("");
   const [filteredData, setFilteredData] = useState("");
   const searchObj = useMemo(
     () => ({

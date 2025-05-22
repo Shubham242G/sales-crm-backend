@@ -19,6 +19,7 @@ interface IQuotesToCustomer {
   serviceType: string[];
   amount: number;
   totalAmount: number;
+  leadId: string;
   markupDetails: IMarkupItem[];
 }
 
@@ -26,6 +27,7 @@ const AddQuotesToCustomerForm = () => {
   const [formData, setFormData] = useState<IQuotesToCustomer>({
     quotesId: "",
     customerName: "",
+    leadId: "",
     serviceType: [],
     amount: 0,
     totalAmount: 0,
@@ -60,6 +62,7 @@ const AddQuotesToCustomerForm = () => {
       setFormData({
         quotesId: data.quotesId || "",
         customerName: data.customerName || "",
+        leadId: data.leadId || "",
         serviceType: Array.isArray(data.serviceType) ? data.serviceType : [],
         amount: data.amount || 0,
         totalAmount: data.totalAmount || 0,
@@ -93,12 +96,14 @@ const AddQuotesToCustomerForm = () => {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/quotesToCustomer");
+          console.log("leadId",formData.leadId);
         }
       } else {
         const { data: res } = await addQuotesToCustomer(obj);
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/quotesToCustomer");
+          console.log("leadId",formData.leadId);
         }
       }
     } catch (error) {

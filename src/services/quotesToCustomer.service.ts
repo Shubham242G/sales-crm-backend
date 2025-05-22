@@ -12,10 +12,12 @@ const prefix = "/QuotesToCustomer";
 
 export interface IQuotesToCustomer {
     quotesId: string;
+    enquiryId: string;
     customerName: string;
     serviceType: [];
     amount: number;
     displayName:string;
+    leadId: string;
     status: string;
     markupDetails: {
       label: string;

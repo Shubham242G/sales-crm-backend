@@ -24,6 +24,7 @@ export default function SalesLedger() {
   const [startdate,setStartDate] = useState(new Date())
   const [enddate,setEndDate] = useState(new Date())
   const [overduedays,setOverdueDays] = useState("")
+  const [leadId, setLeadId] = useState("")
   const [paymentstatus,setPaymentStatus] = useState("")
   const [billtype,setBillType] = useState("")
   const [openingdate,setOpeningDate] = useState(new Date())

@@ -25,6 +25,7 @@ interface IQuotesToCustomer {
   quotesId: string;
   customerName: string;
   displayName: string;
+  leadId: string;
   serviceType: string[];
   amount: number;
   status: string;
@@ -36,6 +37,7 @@ function QuotesForCustomer() {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [query, setQuery] = useState("");
+  const [leadId, setLeadId] = useState("");
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Quotes for Customer");
