@@ -670,7 +670,7 @@ function Leads() {
   return (
     <>
      
-      <div className="container ">
+      <div className="container top-0 bg-white sticky ">
         <div className=" table_container rounded-xl px-4    ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm -ml-4 -mt-5 mb-4">
             {/* Heading on the Left */}
