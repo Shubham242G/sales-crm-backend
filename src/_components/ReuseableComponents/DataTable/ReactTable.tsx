@@ -161,13 +161,13 @@ const customStyles: any = {
     style: {
       fontSize: "13px",
       color: "#000000",
-      
       padding: "2px",
       textAlign: 'center',
-        h6: {
-          whiteSpace: "normal",       
+    
+      h6: {
+        whiteSpace: "normal",
       },
-      
+
     },
   },
 

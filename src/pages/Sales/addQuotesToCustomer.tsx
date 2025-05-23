@@ -282,7 +282,7 @@ const AddQuotesToCustomerForm = () => {
                 <button
                   type="button"
                   onClick={handleAddMarkupRow}
-                  className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                  className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
                 >
                   <svg
                     className="w-5 h-5"
@@ -388,14 +388,14 @@ const AddQuotesToCustomerForm = () => {
           <div className="flex justify-end gap-4">
             <button
               type="button"
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+              className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
               onClick={() => navigate("/quotesToCustomer")}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-md"
+              className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
             >
               Submit
             </button>

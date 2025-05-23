@@ -287,7 +287,7 @@ const AddNewLead = () => {
     //         {((!id && canCreate) || (id && canUpdate)) && (
     //           <button
     //             type="submit"
-    //             className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+    //             className=" px-3 py-1.5 bg-orange-500 text-white rounded-md hover:bg-orange-600"
     //           >
     //             Save
     //           </button>
@@ -314,15 +314,16 @@ const AddNewLead = () => {
         <select
           onChange={(val) => handleSelectChange("salutation", val.target.value)}
           value={formData.salutation}
-          className={`w-32 border border-[#D0D5DD] bg-white rounded-md px-2 text-sm text-black placeholder:text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 h-[30px]`}
+          className={`w-32 border border-[#D0D5DD] bg-white rounded-md px-2 text-sm placeholder:text-sm focus:outline-none text-[#344054] focus:ring-2 focus:ring-blue-400 h-[30px]`}
         >
           <option value="" disabled hidden className="text-sm text-gray-400">Salutation</option>
-          <option value="Mr." className="text-xs text-black">Mr.</option>
-          <option value="Ms." className="text-xs text-black">Ms.</option>
-          <option value="Mrs." className="text-xs text-black">Mrs.</option>
-            <option value="Dr." className="text-xs text-black">Dr.</option>
+          <option value="Mr." className="text-xs text-[#344054]">Mr.</option>
+          <option value="Ms." className="text-xs text-[#344054]">Ms.</option>
+          <option value="Mrs." className="text-xs text-[#344054]">Mrs.</option>
+            <option value="Dr." className="text-xs text-[#344054]">Dr.</option>
          
         </select>
+        
 
         {/* First Name */}
         <input
@@ -373,13 +374,13 @@ const AddNewLead = () => {
 
             {/* Lead Owner */}
             <div className="flex mb-4">
-              <label className="block text-sm font-medium text-[#344054] mb-1">Lead Owner</label>
+              <label className="block text-sm font-medium text-[#344054] mb-1">Assign To</label>
               <select
                 onChange={(val) => handleSelectChange("leadOwner", val.target.value)}
                 value={formData.leadOwner}
-                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-sm text-[#30353f] focus:outline-none focus:ring-2 focus:ring-blue-500 h-[30px] ml-16"
+                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-sm text-[#30353f] focus:outline-none focus:ring-2 focus:ring-blue-500 h-[30px] ml-20"
               >
-                <option value="" disabled hidden>Lead Owner</option>
+                <option value="" disabled hidden>Select</option>
                 {userNames.data.map((option: any) => (
                   <option key={option.value} value={option.label}>{option.label}</option>
                 ))}

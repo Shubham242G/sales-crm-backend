@@ -226,8 +226,24 @@ z-index: 100 !important;
     margin-left: 1px;
     z-index: 1;
 }
+.leadtable .rdt_TableCol:last-child{
+    position: sticky;
+    right: 0;
+     background: #F2F4F7;
+    width: 90px !important;
+     margin-left: 1px;
+   
+    z-index: 9999 !important;
 
+}
 
+.leadtable .rdt_TableCell:last-child {
+    position: sticky;
+    right: 0;
+
+    margin-left: 1px;
+    z-index: 1;
+}
 .rdt_TableHead{
   border: 1px solid #EAECF0 !important;
 

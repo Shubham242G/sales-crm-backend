@@ -291,10 +291,10 @@ function VendorPurchaseBillView() {
                             type="search"
                             placeholder="Search vendor..."
                             onChange={(e) => setQuery(e.target.value)}
-                            className="border border-gray-300 px-4 py-2 rounded-md placeholder-gray-500"
+                            className="border border-gray-300  px-3 py-1.5 rounded-md placeholder-gray-500"
                         />
                         <select
-                            className="border border-gray-300 px-4 py-2 rounded-md"
+                            className="border border-gray-300  px-3 py-1.5 rounded-md"
                             value={selectedStatus}
                             onChange={(e) => setSelectedStatus(e.target.value)}
                         >
@@ -316,7 +316,7 @@ function VendorPurchaseBillView() {
                             <FaSync /> {syncBillsMutation.isPending ? "Syncing..." : "Sync Bills"}
                         </button>
                         <button
-                            className={`flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
+                            className={`flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
                             onClick={() => !isExporting && setShowExportOptions(!showExportOptions)}
                             disabled={isExporting}
                         >
@@ -329,7 +329,7 @@ function VendorPurchaseBillView() {
                             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
                                 <ul className="py-1">
                                     <li
-                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                        className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                                         onClick={() => {
                                             setShowExportOptions(false);
                                             handleExportEnquiries('xlsx');
@@ -343,7 +343,7 @@ function VendorPurchaseBillView() {
                                         Export as Excel
                                     </li>
                                     <li
-                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                        className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                                         onClick={() => {
                                             setShowExportOptions(false);
                                             handleExportEnquiries('csv');
@@ -357,7 +357,7 @@ function VendorPurchaseBillView() {
                                         Export as CSV
                                     </li>
                                     <li
-                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                        className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                                         onClick={() => {
                                             setShowExportOptions(false);
                                             handleExportEnquiries('pdf');
@@ -372,7 +372,7 @@ function VendorPurchaseBillView() {
                                         Export as PDF
                                     </li>
                                     <li
-                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                        className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                                         onClick={() => {
                                             setShowExportOptions(false);
                                             setShowExportCustomize(true);

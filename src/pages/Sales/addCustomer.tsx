@@ -1688,7 +1688,7 @@ const AddCustomer = () => {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => fileInputRef.current?.click()}
-                                                                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
+                                                                className="flex items-center gap-2  px-3 py-1.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
                                                             >
                                                                 <svg
                                                                     xmlns="http://www.w3.org/2000/svg"
@@ -2930,28 +2930,28 @@ const AddCustomer = () => {
                                                     <table className="min-w-full border border-gray-200">
                                                         <thead className="bg-gray-50">
                                                             <tr>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                                                <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                                                     Salutation
                                                                 </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                                                <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                                                     First Name
                                                                 </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                                                <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                                                     Last Name
                                                                 </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                                                <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                                                     Email Address
                                                                 </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                                                <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                                                     Work Phone
                                                                 </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                                                <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                                                     Mobile
                                                                 </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                                                <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                                                     Communication Channels
                                                                 </th>
-                                                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                                                <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                                                     Actions
                                                                 </th>
                                                             </tr>
@@ -2960,7 +2960,7 @@ const AddCustomer = () => {
                                                             {contactPersons.map((person, index) => (
                                                                 <tr key={index} className="hover:bg-gray-50">
                                                                     {/* Salutation Dropdown */}
-                                                                    <td className="px-4 py-2 border-b">
+                                                                    <td className=" px-3 py-1.5 border-b">
                                                                         <select
                                                                             value={person.salutation}
                                                                             onChange={(e) =>
@@ -2981,7 +2981,7 @@ const AddCustomer = () => {
                                                                     </td>
 
                                                                     {/* First Name */}
-                                                                    <td className="px-4 py-2 border-b">
+                                                                    <td className=" px-3 py-1.5 border-b">
                                                                         <input
                                                                             type="text"
                                                                             value={person.firstName}
@@ -2997,7 +2997,7 @@ const AddCustomer = () => {
                                                                     </td>
 
                                                                     {/* Last Name */}
-                                                                    <td className="px-4 py-2 border-b">
+                                                                    <td className=" px-3 py-1.5 border-b">
                                                                         <input
                                                                             type="text"
                                                                             value={person.lastName}
@@ -3013,7 +3013,7 @@ const AddCustomer = () => {
                                                                     </td>
 
                                                                     {/* Email Address */}
-                                                                    <td className="px-4 py-2 border-b">
+                                                                    <td className=" px-3 py-1.5 border-b">
                                                                         <input
                                                                             type="email"
                                                                             value={person.email}
@@ -3029,7 +3029,7 @@ const AddCustomer = () => {
                                                                     </td>
 
                                                                     {/* Work Phone */}
-                                                                    <td className="px-4 py-2 border-b">
+                                                                    <td className=" px-3 py-1.5 border-b">
                                                                         <input
                                                                             type="tel"
                                                                             value={person.workPhone}
@@ -3045,7 +3045,7 @@ const AddCustomer = () => {
                                                                     </td>
 
                                                                     {/* Mobile Phone */}
-                                                                    <td className="px-4 py-2 border-b">
+                                                                    <td className=" px-3 py-1.5 border-b">
                                                                         <input
                                                                             type="tel"
                                                                             value={person.mobilePhone}
@@ -3061,7 +3061,7 @@ const AddCustomer = () => {
                                                                     </td>
 
                                                                     {/* Communication Channels */}
-                                                                    <td className="px-4 py-2 border-b">
+                                                                    <td className=" px-3 py-1.5 border-b">
                                                                         <div className="flex gap-4">
                                                                             <label className="flex items-center space-x-1">
                                                                                 <input
@@ -3123,7 +3123,7 @@ const AddCustomer = () => {
                                                                     </td>
 
                                                                     {/* Delete Button */}
-                                                                    <td className="px-4 py-2 border-b">
+                                                                    <td className=" px-3 py-1.5 border-b">
                                                                         <button
                                                                             type="button"
                                                                             onClick={() =>
@@ -3144,7 +3144,7 @@ const AddCustomer = () => {
                                                         <button
                                                             type="button"
                                                             onClick={handleAddContactPerson}
-                                                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
+                                                            className=" px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
                                                         >
                                                             Add Row
                                                         </button>
@@ -3163,14 +3163,14 @@ const AddCustomer = () => {
                         <button
                             type="button"
                             onClick={() => navigate(-1)}
-                            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+                            className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
                         >
                             Cancel
                         </button>
                         {((!id && canCreate) || (id && canUpdate)) && (
                             <button
                                 type="submit"
-                                className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+                                className=" px-3 py-1.5 bg-orange-500 text-white rounded-md hover:bg-orange-600"
                             >
                                 Save
                             </button>
@@ -3585,13 +3585,13 @@ export default AddCustomer;
 //           <div className="flex justify-end gap-4">
 //             <button
 //               type="button"
-//               className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+//               className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
 //             >
 //               Cancel
 //             </button>
 //             <button
 //               type="submit"
-//               className="px-4 py-2 bg-orange-500 text-white rounded-md"
+//               className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
 //             >
 //               Save
 //             </button>

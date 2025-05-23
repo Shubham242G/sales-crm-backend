@@ -681,7 +681,7 @@ function AddRoles() {
             <div className="button flex justify-between mt-5 mb-5 ">
               <button
                 type="button"
-                className=" flex items-center px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                className=" flex items-center  px-3 py-1.5 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
                 onClick={handleAddNewRoute}
               >
                 <FaPlus className="mr-2" /> Add New Route
@@ -691,7 +691,7 @@ function AddRoles() {
 
               <button
                 type="submit"
-                className="flex items-center px-4 py-2   bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="flex items-center  px-3 py-1.5   bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
               >
                 <FaSave className="mr-2" /> Save Role
               </button>

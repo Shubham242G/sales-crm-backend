@@ -117,14 +117,14 @@ const AddHotel = () => {
               <button
                 type="button"
                 onClick={() => navigate("/hotelList")}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+                className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
               >
                 Cancel
               </button>
               {((!id && canCreate) || (id && canUpdate)) && (
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-orange-500 text-white rounded-md"
+                  className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
                 >
                   {id ? "Update" : "Save"}
                 </button>

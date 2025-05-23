@@ -483,19 +483,19 @@ const Dashboard: React.FC = () => {
         <div className="flex justify-center gap-4 mb-5">
           <button
             onClick={() => setUserRole('sales')}
-            className={`px-4 py-2 rounded-lg ${userRole === 'sales' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={` px-3 py-1.5 rounded-lg ${userRole === 'sales' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
           >
             Sales
           </button>
           <button
             onClick={() => setUserRole('operations')}
-            className={`px-4 py-2 rounded-lg ${userRole === 'operations' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={` px-3 py-1.5 rounded-lg ${userRole === 'operations' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
           >
             Operations
           </button>
           <button
             onClick={() => setUserRole('admin')}
-            className={`px-4 py-2 rounded-lg ${userRole === 'admin' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={` px-3 py-1.5 rounded-lg ${userRole === 'admin' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
           >
             Admin
           </button>

@@ -17,6 +17,7 @@ import { S } from "vite/dist/node/types.d-aGj9QkWt";
 interface IMarkupItem {
   label: string;
   markupAmount: string;
+  orignalAmount: string;
 }
 
 interface IShipppingAddress {
@@ -61,6 +62,7 @@ const AddQuotesFromVendors = () => {
       {
         label: "",
         markupAmount: "",
+        orignalAmount: "",
       },
     ],
   });
@@ -276,10 +278,14 @@ const AddQuotesFromVendors = () => {
     toastSuccess("File removed successfully!");
   };
 
+  
   const handleAddMarkupRow = () => {
     setFormData((prev) => ({
       ...prev,
-      markupDetails: [...prev.markupDetails, { label: "", markupAmount: "" }],
+      markupDetails: [
+        ...prev.markupDetails,
+        { label: "", markupAmount: "0", orignalAmount: "" },
+      ],
     }));
   };
 
@@ -303,6 +309,23 @@ const AddQuotesFromVendors = () => {
       }
     }
 
+    setFormData((prev) => {
+      const updatedMarkupDetails = [...prev.markupDetails];
+      updatedMarkupDetails[index] = {
+        ...updatedMarkupDetails[index],
+        [field]: value,
+      };
+      return {
+        ...prev,
+        markupDetails: updatedMarkupDetails,
+      };
+    });
+  };
+  const handleOriginalChange = (
+    index: number,
+    field: keyof IMarkupItem,
+    value: string
+  ) => {
     setFormData((prev) => {
       const updatedMarkupDetails = [...prev.markupDetails];
       updatedMarkupDetails[index] = {
@@ -455,7 +478,7 @@ const AddQuotesFromVendors = () => {
                 type="number"
                 min={0}
                 className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 "
-                placeholder="Enter event details"
+                placeholder="Enter Amount"
               />
             </div>
             <div>
@@ -514,7 +537,7 @@ const AddQuotesFromVendors = () => {
               <button
                 type="button"
                 onClick={handleAddMarkupRow}
-                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
               >
                 <svg
                   className="w-5 h-5"
@@ -539,6 +562,9 @@ const AddQuotesFromVendors = () => {
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
                       Label
+                    </th>
+                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
+                      Original Amount
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
                       Markup Amount
@@ -568,6 +594,22 @@ const AddQuotesFromVendors = () => {
                           }
                           className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 transition duration-200"
                           placeholder="Enter label"
+                        />
+                      </td>
+                      <td className="px-6 py-4 border-b">
+                        <input
+                          type="number"
+                          min={0}
+                          value={item.orignalAmount}
+                          // onChange={(e) =>
+                          //   // handleOriginalChange(
+                          //   //   // index,
+                          //   //   // "originalAmount",
+                          //   //   e.target.value
+                          //   // )
+                          //}
+                          className="w-full border border-gray-300 bg-gray-50 rounded-md p-3 text-gray-600  transition duration-200"
+                          placeholder="Enter original amount"
                         />
                       </td>
                       <td className="px-6 py-4 border-b">
@@ -620,7 +662,7 @@ const AddQuotesFromVendors = () => {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+              className=" px-3 py-1.5 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
             >
               Upload Files
             </button>
@@ -677,14 +719,14 @@ const AddQuotesFromVendors = () => {
           <div className="flex justify-end gap-4">
             <button
               type="button"
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+              className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
               onClick={() => navigate(-1)}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-md"
+              className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
             >
               Submit
             </button>
