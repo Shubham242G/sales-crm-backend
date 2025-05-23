@@ -9,11 +9,10 @@ import { IoSearchOutline } from "react-icons/io5";
 import { useUser, useDeleteUser, useUpdateUser } from "@/services/user.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
-import { ClassNames } from "@emotion/react";
-import { filter } from "lodash";
 import { Switch } from "@mui/material";
+import { useLeadManagement, useUpdateLeadManagementById } from "@/services/leadManagement.service";
 
-function Users() {
+function LeadManagement() {
   const navigate = useNavigate();
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -22,7 +21,7 @@ function Users() {
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("User");
 
-  const { mutateAsync: updateUser } = useUpdateUser();
+  const { mutateAsync: updateLeadManagement } = useUpdateLeadManagementById();
 
   const searchObj = useMemo(
     () => ({
@@ -35,7 +34,7 @@ function Users() {
 
   console.log(pageIndex, pageSize, query, "check pageIndex, pageSize , query");
 
-  const { data: UserData } = useUser(searchObj);
+  const { data: LeadManagementData } = useLeadManagement(searchObj);
   const { mutateAsync: deleteUser } = useDeleteUser();
 
   const handleDelete = async (id: string) => {
@@ -53,7 +52,7 @@ function Users() {
 
   const handleUpdate = async (id: string, data: any) => {
     try {
-      const { data: res } = await updateUser({ id, ...data });
+      const { data: res } = await updateLeadManagement({ id, ...data });
       if (res) {
         toastSuccess(res.message);
       }
@@ -62,30 +61,28 @@ function Users() {
     }
   };
 
+  
+
   const columns = [
     {
-      name: "Name",
-      selector: (row: any) => (<h6>{row?.name || "N/A"}</h6>),
+      name: "User Id",
+      selector: (row: any) => (<h6>{row?.userId || "N/A"}</h6>),
       width: "239px",
     },
     {
-      name: "Email",
-      selector: (row: any) => (<h6>{row?.email || "N/A"}</h6>),
+      name: "lead Assigned",
+      selector: (row: any) => (<h6>{row?.leadIds?.length || "N/A"}</h6>),
       width: "320px",
     },
-    {
-      name: "Role",
-      selector: (row: any) => (<h6>{row?.role || "N/A"}</h6>),
-      width: "210px",
-
-    },
+   
     {
       name: "Edit",
       width: "200px",
       selector: (row: any) =>
         (canView || canUpdate) && (
           <div className=""><Link
-            to={`/add-users/${row._id}`}
+            to={`/add-leadManagement/${row._id}`}
+     
             onClick={() => handleUpdate(row._id, row.data)}
             className="  text-black-500 text-lg  hover:text-orange-500"
           >
@@ -115,23 +112,19 @@ function Users() {
     "Name": true,
     "Email": true,
     "Role": true,
-    "Edit": canView || canUpdate ,
-    "Delete": canDelete ,
+    "Edit": canView || canUpdate || true,
+    "Delete": canDelete || true,
   });
   useEffect(() => {
-    const savedColumns = localStorage.getItem('enquiryTableColumnsUser');
+    const savedColumns = localStorage.getItem('enquiryTableColumnsLeadManagement');
     if (savedColumns) {
       setVisibleColumns(JSON.parse(savedColumns));
     }
   }, []);
 
   useEffect(() => {
-    if(canView !== undefined){
-         localStorage.setItem('enquiryTableColumnsUser', JSON.stringify(visibleColumns));
-      
-    }
- 
-  }, [visibleColumns, canView]);
+    localStorage.setItem('enquiryTableColumnsLeadManagement', JSON.stringify(visibleColumns));
+  }, [visibleColumns]);
   const toggleColumnVisibility = (columnName: string) => {
     setVisibleColumns(prev => ({
       ...prev,
@@ -222,8 +215,8 @@ function Users() {
     "Name": true,
     "Email": true,
     "Role": true,
-    "Edit": canView || canUpdate ,
-    "Delete": canDelete ,
+    "Edit": canView || canUpdate || true,
+    "Delete": canDelete || true,
     });
   };
 
@@ -232,17 +225,17 @@ function Users() {
 
   return (
     <>
-     <div className="container -mt-6 ">
-        <div className=" table_container rounded-xl px-4 pt-1.5  ">
-          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm -ml-5 mb-4 ">
-            <h2 className="text-lg ml-1 font-semibold text-[#2a2929]">Users List</h2>
+      <div className=" w-full mx-auto container px-6">
+        <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
+          <div className="search_boxes flex justify-between items-center">
+            <h2 className="text-xl ml-1 font-semibold text-[#2a2929]">Lead Management List</h2>
 
             <div className="flex items-center justify-start gap-2">
-              <div className="w-full flex items-center">
+              <div className="w-full flex items-center ">
                 <input
                   type="search"
-                  className="rounded-md border px-3 py-1.5 w-[200px] border-gray-300 placeholder-gray-500 text-sm focus:outline-none focus:border-orange-500"
-                  placeholder="Search by Username"
+                  className="rounded-md w-[250px] border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  placeholder="Search by User Name"
                   onChange={(e) => setQuery(e.target.value)}
                 />
                 {/* <div className="relative right-8">
@@ -253,7 +246,7 @@ function Users() {
 
               <div className="relative">
                 <button
-                  className="flex items-center gap-1 px-4 py-1.5 text-sm rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                  className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                   onClick={() => setShowColumnSelector(!showColumnSelector)}
                 >
                   <FaColumns /> Columns
@@ -262,22 +255,20 @@ function Users() {
               </div>
 
               <button
-                onClick={() => navigate("/add-users")}
-                className="flex w-full items-center py-1.5 justify-center gap-1 px-3  text-white rounded-md bg-orange-500 border border-gray-300"
+                onClick={() => navigate(`/add-leadManagement`)}
+                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
               >
                 <FaPlus />
-                <span>New User</span>
+                <span>New Lead Management</span>
               </button>
             </div>
           </div>
 
-
-         <div className="  shadow-lg   -ml-9     -mr-4 overflow-y-auto ">
           <ReactTable
-            data={UserData?.data}
-            columns={filteredColumns}
+            data={LeadManagementData?.data}          
+ columns={filteredColumns}
             loading={false}
-            totalRows={UserData?.total}
+            totalRows={LeadManagementData?.total}
             onChangeRowsPerPage={setPageSize}
             onChangePage={setPageIndex}
             page={pageIndex}
@@ -285,13 +276,12 @@ function Users() {
             isServerPropsDisabled={false}
           />
         </div>
-        </div>
       </div>
     </>
   );
 }
 
-export default Users;
+export default LeadManagement;
 
 
 

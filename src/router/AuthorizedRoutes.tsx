@@ -88,6 +88,8 @@ import InvoiceView from "@/pages/Sales/invoiceView";
 import AddCustomer from "@/pages/Sales/addCustomer";
 import VendorPurchaseBillView from "@/pages/Sales/vendorPurchaseBillView";
 import VendorPurchaseBillSingle from "@/pages/Sales/vendorPurchaseBillSingle";
+import LeadManagement from "@/pages/Admin/leadManagement";
+import LeadManagementEdit from "@/pages/Admin/leadManagementEdit";
 // import CalendarView from "@/pages/Calendar/CalendarView";
 
 export default function AuthorizedRoutes() {
@@ -135,6 +137,9 @@ export default function AuthorizedRoutes() {
             element={< Combiner />}
           ></Route>
 
+          <Route path="/leadManagement" element={<LeadManagement />}></Route>
+          <Route path="/add-leadManagement/:id" element={<LeadManagementEdit />}></Route>
+<Route path="/add-leadManagement" element={<LeadManagementEdit />}></Route>
           <Route
             path="/monthlyPlanner/:date"
             element={< Combiner />}

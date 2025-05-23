@@ -199,19 +199,23 @@ function QuotesForCustomer() {
       "Display Name": true,
       "Status": true,
       "Total Amount": true,
-      "Edit": canView || canUpdate || true,
-      "Delete": canDelete || true,
+      "Edit": canView || canUpdate ,
+      "Delete": canDelete 
   });
   useEffect(() => {
-    const savedColumns = localStorage.getItem('enquiryTableColumns');
+    const savedColumns = localStorage.getItem('enquiryTableColumnsQuotesToCustomer');
     if (savedColumns) {
       setVisibleColumns(JSON.parse(savedColumns));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
-  }, [visibleColumns]);
+    if(canView !== undefined){
+       localStorage.setItem('enquiryTableColumnsQuotesToCustomer', JSON.stringify(visibleColumns));
+      
+    }
+   
+  }, [visibleColumns, canView]);
   const toggleColumnVisibility = (columnName: string) => {
     setVisibleColumns(prev => ({
       ...prev,
@@ -306,8 +310,8 @@ function QuotesForCustomer() {
       "Display Name": true,
       "Status": true,
       "Total Amount": true,
-      "Edit": canView || canUpdate || true,
-      "Delete": canDelete || true,
+      "Edit": canView || canUpdate,
+      "Delete": canDelete 
     });
   };
 

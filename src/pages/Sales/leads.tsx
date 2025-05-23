@@ -60,6 +60,8 @@ function Leads() {
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Leads");
 
+    console.log(canCreate, canDelete, canUpdate, canView , "canCreate, canDelete, canUpdate, canView");
+
   const [searchQuery, setSearchQuery] = useState("");
   const [advancedSearchParams, setAdvancedSearchParams] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -498,7 +500,7 @@ function Leads() {
 
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
-  const [visibleColumns, setVisibleColumns] = useState({
+  const [visibleColumns, setVisibleColumns] = useState< Record<string, boolean>>({
 
     "Contact Name": true,
     "Mobile Number": true,
@@ -506,22 +508,25 @@ function Leads() {
     "Display Name": true,
     "Email": true,
     "Actions": canView || canUpdate || true,
-    // "Edit": canView || canUpdate || true,
-    // "Delete": canDelete || true,
+    "Edit": canView || canUpdate, 
+    "Delete": canDelete ,
     "Convert to Contact": true,
     "Generate Enquiry": true,
   });
 
   useEffect(() => {
-    const savedColumns = localStorage.getItem('enquiryTableColumns');
+    const savedColumns = localStorage.getItem('enquiryTableColumnsLead');
     if (savedColumns) {
       setVisibleColumns(JSON.parse(savedColumns));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
-  }, [visibleColumns]);
+    if (canView  !== undefined) {
+      console.log(visibleColumns, "visibleColumns");
+      localStorage.setItem('enquiryTableColumnsLead', JSON.stringify(visibleColumns));
+    }
+  }, [visibleColumns, canView, canUpdate, canDelete]);
 
   const toggleColumnVisibility = (columnName: string) => {
     setVisibleColumns(prev => ({
@@ -603,10 +608,10 @@ function Leads() {
       "Company Name": true,
       "Display Name": true,
       "Email": true,
-      "Actions": canView || canUpdate || true,
-      // "Delete": canDelete || true,
-      "Convert to Contact": true,
-      "Generate Enquiry": true,
+      "Edit": canView || canUpdate,
+      "Delete": canDelete,
+      "Convert to contact": true,
+      "Convert to Enquiry": true,
     });
   };
    

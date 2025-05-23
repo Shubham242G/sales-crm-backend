@@ -290,7 +290,7 @@ function RfpList() {
   // Column selector
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
-  const [visibleColumns, setVisibleColumns] = useState({
+  const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>({
     "RFPID": true,
     "Event Date": true,
     "Deadline for proposal": true,
@@ -515,8 +515,8 @@ function RfpList() {
       "Services": true,
       "Display Name": true,
       "Status": true,
-      "Edit": canView || canUpdate || true,
-      "Delete": canDelete || true,
+      "Edit": canView || canUpdate ,
+      "Delete": canDelete ,
       "Convert to Quotes from Vendor": true
     });
   };

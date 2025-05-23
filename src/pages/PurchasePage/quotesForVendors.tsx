@@ -14,6 +14,7 @@ import {
 } from "@/services/quotesFromVendors.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { Switch } from "@mui/material";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 function CustomerLedger() {
   const [loading, setLoading] = useState(false);
@@ -176,6 +177,9 @@ function CustomerLedger() {
     },
   ];
 
+
+  const {canView, canUpdate, canDelete} = checkPermissionsForButtons('Quotes from Vendors');
+
   // Column selector
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
@@ -188,19 +192,20 @@ function CustomerLedger() {
     "Service": true,
     "Amount": true,
     "Date Received": true,
-    "Action": true,
+    "Action": canView || canUpdate || canDelete,
     "Convert to Customer Quote": true
   });
   useEffect(() => {
-    const savedColumns = localStorage.getItem('enquiryTableColumns');
+    const savedColumns = localStorage.getItem('enquiryTableColumnsQuotesFromVendors');
     if (savedColumns) {
       setVisibleColumns(JSON.parse(savedColumns));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
-  }, [visibleColumns]);
+    if(canView !== undefined) {
+    localStorage.setItem('enquiryTableColumnsQuotesFromVendors', JSON.stringify(visibleColumns));}
+  }, [visibleColumns, canView]);
   const toggleColumnVisibility = (columnName: string) => {
     setVisibleColumns(prev => ({
       ...prev,

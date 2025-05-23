@@ -13,7 +13,8 @@ import axiosAuth from "./axios.service";
 const prefix = "/users";
 
 export interface IUser {
-    id?: string;
+  
+    _id?: string;
     name?: string;
     email?: string;
     phone?: string;
@@ -37,6 +38,8 @@ export interface IUser {
     isFirstLogin?: boolean;
 }
 
+
+
 export const changePasswordApi = async (obj: { oldPassword: string; newPassword: string; confirmPassword: string; id: string }) => {
     return axiosAuth.patch<GeneralApiResponse>(`${BASE_URL}${prefix}/changePassword`, obj);
 };
@@ -57,7 +60,7 @@ export const useUserApiHook = () => {
         );
     };
 
-    const updateUser = async (obj: IUser) => {
+    const updateUser = async (obj: any) => {
         return axiosAuth.patch<GeneralApiResponse>(
             `${BASE_URL}${prefix}/updateById/${obj.id}`,
             obj

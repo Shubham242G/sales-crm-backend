@@ -10,6 +10,7 @@ import { usedeleteRolesById, useRoles } from "@/services/roles.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import RoleHierarchy from "@/pages/Hierarchy/roleHierarchy";
 import { Switch } from "@mui/material";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 
 
@@ -30,6 +31,8 @@ function Roles() {
 
   const { data: roleData } = useRoles(searchObj);
   const { mutateAsync: deleteRoles } = usedeleteRolesById();
+   const { canCreate, canDelete, canUpdate, canView } =
+      checkPermissionsForButtons("Roles");
 
   const handleDelete = async (id: string) => {
     try {
@@ -98,19 +101,22 @@ function Roles() {
     "Name": true,
     "Role": true,
     "Hierarchy": true,
-    "Edit": true,
-    "Delete": true,
+    "Edit": canView || canUpdate,
+    "Delete": canDelete,
   });
   useEffect(() => {
-    const savedColumns = localStorage.getItem('enquiryTableColumns');
+    const savedColumns = localStorage.getItem('enquiryTableColumnsRoles');
     if (savedColumns) {
       setVisibleColumns(JSON.parse(savedColumns));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
-  }, [visibleColumns]);
+    if(canView !== undefined){
+ localStorage.setItem('enquiryTableColumnsRoles', JSON.stringify(visibleColumns));
+      }
+     
+  }, [visibleColumns, canView]);
   const toggleColumnVisibility = (columnName: string) => {
     setVisibleColumns(prev => ({
       ...prev,
