@@ -277,27 +277,30 @@ function VendorList() {
 // Column selector
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
-  const [visibleColumns, setVisibleColumns] = useState({
+  const [visibleColumns, setVisibleColumns] = useState< Record<string, boolean>>({
     "Vendor Name": true,
     "Display Name": true,
     "Company": true,
     "Location": true,
     "Phone": true,
     "Email": true,
-    // "Update": canView || canUpdate || true,
-    // "Delete": canDelete || true,
+    // "Update": canView || canUpdate ,
+    // "Delete": canDelete ,
     "Actions": true,
   }); 
   useEffect(() => {
-    const savedColumns = localStorage.getItem('enquiryTableColumns');
+    const savedColumns = localStorage.getItem('enquiryTableColumnsVendor');
     if (savedColumns) {
       setVisibleColumns(JSON.parse(savedColumns));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
-  }, [visibleColumns]);
+    if(canView !==undefined){
+ localStorage.setItem('enquiryTableColumnsVendor', JSON.stringify(visibleColumns));
+    }
+   
+  }, [visibleColumns, canView]);
   const toggleColumnVisibility = (columnName: string) => {
     setVisibleColumns(prev => ({
       ...prev,
@@ -392,8 +395,8 @@ function VendorList() {
     "Phone": true,
     "Email": true,
     "Actions": true,
-    // "Update": canView || canUpdate || true,
-    // "Delete": canDelete || true ,
+    // "Update": canView || canUpdate,
+    // "Delete": canDelete 
     });
   };
 

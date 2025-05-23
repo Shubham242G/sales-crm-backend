@@ -19,6 +19,7 @@ import {
 import { toastError, toastSuccess } from "@/utils/toast";
 import moment from "moment";
 import { Switch } from "@mui/material";
+import { checkPermissionsForButtons } from "@/utils/permission";
 
 function ConfirmedQuotesFromVendor() {
   const navigate = useNavigate();
@@ -243,6 +244,8 @@ function ConfirmedQuotesFromVendor() {
       ],
     },
   ];
+
+   const {canCreate, canView, canUpdate, canDelete} = checkPermissionsForButtons("Confirmed Quotes From Vendors");
  // Column selector
     const [showColumnSelector, setShowColumnSelector] = useState(false);
     // Toggle column visibility
@@ -253,19 +256,22 @@ function ConfirmedQuotesFromVendor() {
       "Amount": true,
       "Date Received": true,
       "Status": true,
-      "Edit": true, 
-      "Delete": true, 
+      "Edit": canView || canUpdate ,
+      "Delete": canDelete , 
     }); 
     useEffect(() => {
-      const savedColumns = localStorage.getItem('enquiryTableColumns');
+      const savedColumns = localStorage.getItem('enquiryTableColumnsConfirmQuotesFromVendor');
       if (savedColumns) {
         setVisibleColumns(JSON.parse(savedColumns));
       }
     }, []);
   
     useEffect(() => {
-      localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
-    }, [visibleColumns]);
+      if(canView !==undefined){
+      localStorage.setItem('enquiryTableColumnsConfirmQuotesFromVendor', JSON.stringify(visibleColumns));
+      }
+
+    }, [visibleColumns, canView]);
     const toggleColumnVisibility = (columnName: string) => {
       setVisibleColumns(prev => ({
         ...prev,
@@ -359,8 +365,8 @@ function ConfirmedQuotesFromVendor() {
       "Amount": true,
       "Date Received": true,
       "Status": true,
-      "Edit": true, 
-      "Delete": true, 
+      "Edit": canView || canUpdate ,
+      "Delete": canDelete , 
      
       });
     };

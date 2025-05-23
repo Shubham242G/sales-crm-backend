@@ -290,20 +290,21 @@ function RfpList() {
       "Services": true,
       "Display Name": true,
       "Status": true,
-      "Edit": canView || canUpdate || true,
-      "Delete": canDelete || true,
+      "Edit": canView || canUpdate ,
+      "Delete": canDelete ,
       "Convert to Quotes from Vendor": true
     }); 
     useEffect(() => {
-      const savedColumns = localStorage.getItem('enquiryTableColumns');
+      const savedColumns = localStorage.getItem('enquiryTableColumnsRfp');
       if (savedColumns) {
         setVisibleColumns(JSON.parse(savedColumns));
       }
     }, []);
   
     useEffect(() => {
-      localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
-    }, [visibleColumns]);
+      if(canView !==undefined){
+      localStorage.setItem('enquiryTableColumnsRfp', JSON.stringify(visibleColumns));}
+    }, [visibleColumns, canView]);
     const toggleColumnVisibility = (columnName: string) => {
       setVisibleColumns(prev => ({
         ...prev,
@@ -397,8 +398,8 @@ function RfpList() {
       "Services": true,
       "Display Name": true,
       "Status": true,
-      "Edit": canView || canUpdate || true,
-      "Delete": canDelete || true,
+      "Edit": canView || canUpdate ,
+      "Delete": canDelete ,
       "Convert to Quotes from Vendor": true
       });
     };

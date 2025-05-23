@@ -16,6 +16,7 @@ interface Permissions {
   view: boolean;
   update: boolean;
   delete: boolean;
+  isRouteShow: boolean;
 }
 
 // Role model

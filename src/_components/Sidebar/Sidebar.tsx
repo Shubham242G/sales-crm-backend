@@ -12,6 +12,7 @@ import task from "../../assets/slidericon/task.png";
 import transport from "../../assets/sidebar/transport.png";
 import transportw from "../../assets/sidebar/transportw.png";
 import ledgerw from "@/assets/sidebar/ledgerw.png";
+import leadership from "../../assets/sidebar/leadership.png";
 import { useSidebar } from "../../provider/SidebarContext";
 import { Link } from "react-router-dom";
 import mainlogo from "../../assets/mainlogo/favicon-9.png";
@@ -26,6 +27,9 @@ import {
 } from "@/utils/permission";
 
 function Sidebar() {
+
+
+ 
   const [sidebarArr] = useState([
     {
       mainlink: "/",
@@ -79,7 +83,7 @@ function Sidebar() {
           plusLink: "/addQuotesFromVendors",
         },
         {
-          dropHead: "Confirmed Quotes",
+          dropHead: "Confirmed Quotes From Vendors",
           link: "confirmedQuotes",
           plusLink: "/add-ConfirmedQuotesFromVendor",
         },
@@ -134,7 +138,7 @@ function Sidebar() {
           plusLink: "/addEnquiry",
         },
         {
-          dropHead: "Confirmed Quotes",
+          dropHead: "Confirmed Quotes Customer",
           link: "/confirmedQuotesToCustomer",
           
         },
@@ -184,6 +188,22 @@ function Sidebar() {
           dropHead: "Venue Search",
           link: "venueSearch",
           plusLink: "/venueSearch",
+        },
+      ],
+    },
+
+    {
+      mainlink: "/LeadManagement",
+      heading: "Lead Management",
+      icon: leadership,
+      activeIcon: leadership,
+      isActive: false,
+      isArrow: true,
+      dropArr: [
+        {
+          dropHead: "Lead Management",
+          link: "leadManagement",
+          plusLink: "/leadManagement",
         },
       ],
     },
@@ -265,32 +285,22 @@ function Sidebar() {
   const handleDropShow = (index: any) => {
     setShowDrop(showdrop === index ? null : index);
   };
-
   const filteredSidebarArr = sidebarArr
-    .map((item) => {
-      let filteredDropArr = item.dropArr
-        ? item.dropArr
-          .map((dropItem) => {
-            let response = CreateRoutePermission(dropItem.dropHead, dropItem);
-            if (response.view) {
-              dropItem.plusLink = response.create ? dropItem.plusLink : "";
-              return dropItem;
-            }
-            return null;
-          })
-          .filter(Boolean)
-        : null;
+  .map((item) => {
+    if(item.heading === "Dashboard") return item;
 
+    let filteredDropArr = item.dropArr
+      ? item.dropArr.filter((dropItem) => RoutePermission(dropItem.dropHead))
+      : null;
 
-      const hasMainPermission =
-        item.heading === "Dashboard" ? true : RoutePermission(item.heading);
-      const hasValidDropItems = filteredDropArr && filteredDropArr.length > 0;
+    const hasMainPermission = RoutePermission(item.heading);
+    const hasValidDropItems = filteredDropArr && filteredDropArr.length > 0;
 
-      return hasMainPermission || hasValidDropItems
-        ? { ...item, dropArr: filteredDropArr }
-        : null;
-    })
-    .filter(Boolean);
+    return hasMainPermission || hasValidDropItems
+      ? { ...item, dropArr: filteredDropArr }
+      : null;
+  })
+  .filter(Boolean);
 
 
 

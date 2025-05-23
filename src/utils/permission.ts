@@ -8,6 +8,7 @@ interface Permissions {
   view: boolean;
   update: boolean;
   delete: boolean;
+  isRouteShow: boolean;
 }
 interface RoutePermission {
   routeName: string;
@@ -52,10 +53,12 @@ export const RoutePermission = (route: string) => {
   const permissionsData = getPermissions();
 
  
-
+//  console.log(permissionsData, "permissionsData");
  
-  const result = permissionsData?.some((item) => item.routeName === route);
+  const result = permissionsData?.find((item) => item.routeName === route)?.permissions?.isRouteShow
 
+
+  console.log(result, "check for route");
   if (result) {
     return route;
   }
@@ -63,24 +66,36 @@ export const RoutePermission = (route: string) => {
 
 export const checkPermissionsForButtons = (routeName: string) => {
   const permissions = getPermissions();
-  const routePermissions = useMemo(() => {
-    const permissionsFound = permissions.find(
-      (Permission) => Permission.routeName === routeName
-    );
-    return permissionsFound?.permissions || {
-      create: false, 
-      view: false,
-      update: false,
-      delete: false,
-    }
-  }, [permissions,  routeName]);
+  // console.log(permissions, "permissions");
+
+  const filterData = permissions.filter(
+    (item) => item.routeName === routeName
+  )
+  // const routePermissions = useMemo(() => {
+  //   const permissionsFound = permissions.find(
+  //     (Permission) => Permission.routeName === routeName
+  //   );
+  //   return permissionsFound?.permissions || {
+  //     create: false, 
+  //     view: false,
+  //     update: false,
+  //     delete: false,
+  //   }
+  // }, [permissions,  routeName]);
+
+  // return {
+  //   canCreate: routePermissions?.create,
+  //   canView: routePermissions?.view,
+  //   canUpdate: routePermissions?.update,
+  //   canDelete: routePermissions?.delete,
+  //   hasAnyPermission: Object.values(routePermissions).some(Boolean)
+  // }
 
   return {
-    canCreate: routePermissions?.create,
-    canView: routePermissions?.view,
-    canUpdate: routePermissions?.update,
-    canDelete: routePermissions?.delete,
-    hasAnyPermission: Object.values(routePermissions).some(Boolean)
+    canCreate: filterData[0]?.permissions?.create,
+    canView: filterData[0]?.permissions?.view,
+    canUpdate: filterData[0]?.permissions?.update,
+    canDelete: filterData[0]?.permissions?.delete,
   }
 }
 

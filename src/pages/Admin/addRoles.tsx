@@ -16,6 +16,7 @@ interface Permissions {
   view: boolean;
   update: boolean;
   delete: boolean;
+  isRouteShow: boolean
 }
 
 // Role model
@@ -38,6 +39,10 @@ interface RoutePermission {
   isEditing?: boolean;
 }
 
+
+
+   
+
 function AddRoles() {
   const [roleName, setRoleName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -46,28 +51,293 @@ function AddRoles() {
   const [phoneNo, setPhoneNo] = useState<string>("");
   const [designation, setDesignation] = useState<string>("");
   const [department, setDepartment] = useState<string>("");
+
+  const permissionRoute = [
+    "User",
+    "Roles",
+    "Vendors",
+    "RFPS",
+    "Quotes from Vendors",
+    "Confirmed Quotes From Vendors", 
+    "Purchase Contacts",
+    "Leads",
+    "Customers",
+ "Invoices",
+    "Quotes for Customer",
+   "Enquiry",
+    "Invoice View",
+     "Invoice Pdf View",
+     "Confirmed Quotes Customer",
+     "Customer Outstanding",
+     "Sales Contacts",
+     "Task Management",
+"My Tasks",
+"Add Department",
+"Add Category",
+ "Add Hotel",
+ "Add Banquet",
+ "Add Resturant",
+ "Venue Search",
+
+ 
+    
+  ];
+
+
   const [permissions, setPermissions] = useState<RoutePermission[]>([
-    {
-      routeName: "Customers",
-      permissions: { create: false, view: false, update: false, delete: false },
-    },
-    {
-      routeName: "Vendors",
-      permissions: { create: false, view: false, update: false, delete: false },
-    },
-    {
-      routeName: "RFPS",
-      permissions: { create: false, view: false, update: false, delete: false },
-    },
-    {
-      routeName: "Add Department",
-      permissions: { create: false, view: false, update: false, delete: false },
-    },
-    {
-      routeName: "Add Category",
-      permissions: { create: false, view: false, update: false, delete: false },
-    },
-  ]);
+        {
+          routeName: "User",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Roles",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Vendors",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "RFPS",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Quotes from Vendors",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Confirmed Quotes From Vendors",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Purchase Contacts",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Leads",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Customers",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Quotes for Customer",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Enquiry",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Invoice View",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Invoice Pdf View",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Confirmed Quotes from Customer",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Invoices",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Customer Outstanding",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Sales Contacts",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Task Management",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "My Tasks",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Add Department",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Add Category",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Add Hotel",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Add Banquet",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Add Resturant",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        },
+        {
+          routeName: "Venue Search",
+          permissions: {
+            create: true,
+            update: true,
+            delete: true,
+            view: true,
+            isRouteShow: true,
+          },
+        }]);
+
+
+          const filterRoutes = permissionRoute.filter((route) => !permissions.some((p) => p.routeName === route));
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [query, setQuery] = useState("");
@@ -156,6 +426,7 @@ function AddRoles() {
           view: false,
           update: false,
           delete: false,
+          isRouteShow: false
         },
         isEditing: true,
       },
@@ -324,22 +595,38 @@ function AddRoles() {
                   <tr key={index} className="border border-gray-300">
                     <td className="border border-gray-300 p-2 font-medium">
                       {rp.isEditing ? (
-                        <input
-                          type="text"
-                          value={rp.routeName}
-                          onChange={(e) =>
-                            handleRouteNameChange(index, e.target.value)
-                          }
-                          onBlur={() => handleRouteBlur(index)}
-                          className="w-full p-1 border rounded"
-                          placeholder="Enter route name"
-                          autoFocus
-                        />
+                        <>
+                          <input
+                            type="text"
+                            list="routeNameList"
+                            value={rp.routeName}
+                            onChange={(e) =>
+                              handleRouteNameChange(index, e.target.value)
+                            }
+                            onBlur={() => handleRouteBlur(index)}
+                            className="w-full p-1 border rounded"
+                            placeholder="Enter route name"
+                            autoFocus
+                          />
+                          <datalist id="routeNameList">
+                            {filterRoutes.map((rp, index) => (
+                              <option key={index} value={rp} />
+                            ))}
+                          </datalist>
+                        </>
                       ) : (
                         <div className="flex items-center justify-between">
                           <span>{rp.routeName}</span>
+                          <input
+                            type="checkbox"
+                            checked={rp.permissions.isRouteShow}
+                            onChange={() =>
+                              handlePermissionChange(index, "isRouteShow")
+                            }
+                          />
                         </div>
                       )}
+                      
                     </td>
                     <td className="border border-gray-300 p-2 text-center">
                       <input
