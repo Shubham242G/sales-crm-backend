@@ -21,7 +21,45 @@ function ConfirmedQuotestoCustomer() {
     setShowLedgerDetailsModal(true);
   };
 
+   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+
   const columns = [
+     {
+      name: '',
+
+      //   <input
+      //     type="checkbox"
+      //     onChange={(e) => {
+      //       const isChecked = e.target.checked;
+      //       if (isChecked) {
+      //         setSelectedRows(leadData.data.map((row:any) => row._id));
+      //       } else {
+      //         setSelectedRows([]);
+      //       }
+      //     }}
+      //   />
+
+
+      cell: (row: any) => (
+        <div className="ml-10 scale-75"><input
+          type="checkbox"
+          checked={selectedRows.includes(row._id)}
+
+          onChange={() => {
+            if (selectedRows.includes(row._id)) {
+              setSelectedRows(selectedRows.filter((id) => id !== row._id));
+            } else {
+              setSelectedRows([...selectedRows, row._id]);
+            }
+          }}
+        />
+        
+        </div>
+
+      ),
+      width: "60px",
+      fixed: true
+    },
     {
       name: "Quotes Id",
       selector: (row: any) => (
@@ -29,7 +67,7 @@ function ConfirmedQuotestoCustomer() {
           <h6>{row.quotesId}</h6>
         </div>
       ),
-      width: "12%",
+      width: "200px",
     },
     {
       name: "Vendor Name",
@@ -38,7 +76,7 @@ function ConfirmedQuotestoCustomer() {
           <h6>{row.name}</h6>
         </div>
       ),
-      width: "13%",
+     width: "200px",
     },
     {
       name: "RPFs Id",
@@ -47,7 +85,7 @@ function ConfirmedQuotestoCustomer() {
           <h6>{row.rpfId}</h6>
         </div>
       ),
-      width: "10%",
+         width: "200px",
     },
     {
       name: "Service",
@@ -65,7 +103,7 @@ function ConfirmedQuotestoCustomer() {
           </div>
         </>
       ),
-      width: "16%",
+        width: "200px",
     },
     {
       name: "Amount",
@@ -74,7 +112,7 @@ function ConfirmedQuotestoCustomer() {
           <h6>{row.amount}</h6>
         </div>
       ),
-      width: "10%",
+         width: "200px",
     },
     {
       name: "Date Received",
@@ -83,7 +121,7 @@ function ConfirmedQuotestoCustomer() {
           <h6>{row.submissionDate}</h6>
         </div>
       ),
-      width: "14%",
+        width: "200px",
     },
     {
       name: "Status",
@@ -99,12 +137,12 @@ function ConfirmedQuotestoCustomer() {
           <h6>{row.status}</h6>
         </div>
       ),
-      width: "15%",
+        width: "200px",
     },
 
     {
       name: "Action",
-      width: "10%",
+         width: "200px",
       selector: () => (
         <div className="flex items-center gap-3">
           <button
@@ -299,20 +337,18 @@ function ConfirmedQuotestoCustomer() {
     const MIN_WIDTH = 8;
     const MAX_WIDTH = 20;
 
-    columnsWithDynamicWidth.forEach(column => {
-      let allocatedWidth = baseWidth;
+   const calculateFixedWidths = (columnsArray: any[]) => {
+    const totalWidth = columnsArray.length > 0 ? columnsArray.length * 180 : 1;
+    const containerWidth = window.innerWidth - 100; // Adjust for padding/margins
+    const columnsWithFixedWidth = columnsArray.map(column => ({
+      ...column,
+      width: totalWidth > containerWidth ? "180px" : `${100 / columnsArray.length}%`
+    }));
 
-      // Columns that typically need less space
-      if (column.name === "Delete" || column.name === "Edit") {
-        allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
-      }
-      // Columns that might need more space
-      else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-        allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
-      }
+    console.log(columnsWithFixedWidth, "check the column width");
 
-      column.width = `${allocatedWidth}%`;
-    });
+    return columnsWithFixedWidth;
+  };
 
     console.log(columnsWithDynamicWidth, "check the column width")
 

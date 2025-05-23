@@ -290,8 +290,10 @@ export interface ContactPerson {
   email: string;
   phone?: string;
   mobile?: string;
-  designation?: string;
-  department?: string;
+  contactPersonDateOfBirth: String,
+  contactPersonAnniversary: String,
+  contactPersonDesignation: String,
+  contactPersonDepartment: String,
 }
 
 export interface ICustomer {

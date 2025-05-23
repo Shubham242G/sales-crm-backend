@@ -324,7 +324,9 @@ const AddNewLead = () => {
                 type="text"
                 name="firstName"
                 value={formData.firstName}
-                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value.toUpperCase() })
+                }
                 placeholder="First Name"
                 className="w-full border border-[#D0D5DD] bg-white rounded-md px-3 py-2.5 text-sm text-[#344054] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[38px]"
               />
@@ -336,7 +338,7 @@ const AddNewLead = () => {
               <input
                 name="lastName"
                 value={formData.lastName}
-                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value.toUpperCase() })}
                 placeholder="Last Name"
                 className="w-full border border-[#D0D5DD] bg-white rounded-md px-3 py-2.5 text-sm text-[#344054] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[38px]"
               />
@@ -348,7 +350,7 @@ const AddNewLead = () => {
               <input
                 name="company"
                 value={formData.company}
-                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, company:  e.target.value.toUpperCase() })}
                 placeholder="Company Name"
                 className="w-full border border-[#D0D5DD] bg-white rounded-md px-3 py-2.5 text-sm text-[#344054] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[38px]"
               />
@@ -362,7 +364,7 @@ const AddNewLead = () => {
               <input
                 name="displayName"
                 value={formData.displayName}
-                onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, displayName:  e.target.value.toUpperCase() })}
                 placeholder="Select or type to add"
                 className="w-full border border-[#D0D5DD] bg-white rounded-md px-3 py-2.5 text-sm text-[#344054] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[38px]"
               />
@@ -390,7 +392,7 @@ const AddNewLead = () => {
                 type="email"
                 name="email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, email:  e.target.value.toLowerCase() })}
                 placeholder="Email Address"
                 className="w-full border border-[#D0D5DD] bg-white rounded-md px-3 py-2.5 text-sm text-[#344054] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[38px]"
               />

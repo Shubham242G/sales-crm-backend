@@ -296,96 +296,96 @@ function Sidebar() {
 
   return (
     <>
-      <div className=" flex justify-center  fixed z-10 h-[48px] bg-[#21263C] w-[260px]">
+    <div className=" flex justify-center  fixed z-10 h-[48px] bg-[#21263C] w-[260px] ">
+      <img
+        src={logosm}
+        alt="logosm"
+        className=" w-12 h-7 -ml-14 mt-3"
+      />
+      <h1 className="mt-4 text-sm text-white">A MICE COMPANY</h1>
+      </div>
+    <div className=" text-gray-850 bg-[#f7f8ff] h-full lg:h-[100vh]  w-[210px] fixed border-r-2">
+      
+      <div className="  mt-14 p-2 ml-9  w-[130px] h-[120px]    ">
         <img
-          src={logosm}
-          alt="logosm"
-          className=" w-12 h-7 -ml-14 mt-3"
+          src={mainlogo}
+          alt="mainlogo"
+          className=" mx-auto"
         />
-        <h1 className="mt-4 text-sm text-white">A MICE COMPANY</h1>
       </div>
-      <div className=" text-gray-850 bg-[#f7f8ff] h-full lg:h-[100vh]  w-[210px] fixed border-r-2">
-
-        <div className="  mt-14 p-2 ml-9  w-[130px] h-[120px]    ">
-          <img
-            src={mainlogo}
-            alt="mainlogo"
-            className=" mx-auto"
-          />
-        </div>
-
-        <ul className="main-list w-full overflow-auto h-[100vh] mt-2">
-          {filteredSidebarArr.map((el, index) => (
-            <li className="relative mt-4 -mb-2 ml-2 text-sm " key={index}>
-              {el?.dropArr ? (
-                <button
-                  type="button"
-                  className="flex text-gray-850 items-center p-3 w-full bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors justify-between"
-                  onClick={() => handleDropShow(index)}
-                >
-                  <div className="icon w-5 h-3 mr-4   flex flex-row items-center gap-2">
-                    <img
-                      src={showdrop === index ? el.activeIcon : el.icon}
-                      alt={el.heading}
-                    />
-                    <h6 className=" flex-1 group-hover:text-white ml-1 whitespace-nowrap">
-                      {el.heading}
-                    </h6>
-                  </div>
-                  <MdChevronRight
-                    className={`transition-transform ${showdrop === index ? "rotate-90" : ""}`}
+     
+      <ul className="main-list w-full overflow-auto h-[100vh] mt-2 ">
+        {filteredSidebarArr.map((el, index) => (
+          <li className="relative mt-4 -mb-2 ml-1 text-[14px] " key={index}>
+            {el?.dropArr ? (
+              <button
+                type="button"
+                className="flex text-gray-850 items-center p-3 w-full bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors justify-between"
+                onClick={() => handleDropShow(index)}
+              >
+                <div className="icon w-4 h-3 mr-4   flex flex-row items-center gap-2">
+                  <img
+                    src={showdrop === index ? el.activeIcon : el.icon}
+                    alt={el.heading}
                   />
-                </button>
-              ) : (
-                <Link
-                  to={el?.mainlink ? el.mainlink : ""}
-                  className="flex items-center p-3 w-full  bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors"
-                >
-                  <div className="icon w-5 h-3 mr-2">
-                    <img src={el?.icon} alt={el?.heading} />
-                  </div>
-                  <h6 className=" flex-1 whitespace-nowrap ml-1 -mb-2">
-                    {el?.heading}
+                  <h6 className=" flex-1 group-hover:text-white ml-1 whitespace-nowrap">
+                    {el.heading}
                   </h6>
-                </Link>
-              )}
-
-              {el?.dropArr && showdrop === index && (
-                <div className="dropdown_list max-h-40 ml-6 overflow-y-auto">
-                  <ul className="pl-6">
-                    {el.dropArr.map((ele, idx) => (
-                      <li key={idx} className="py-1">
-                        <div className="flex justify-between items-center group">
-                          {ele && (
-                            <>
-                              <Link
-                                to={ele.link}
-                                className=" text-sm text-grey-850 hover:text-orange-500 hover:rounded-lg "
-                              >
-                                {ele.dropHead}
-                              </Link>
-                              {ele.plusLink && (
-                                <Link
-                                  to={ele.plusLink}
-                                  className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
-                                >
-                                  <span className="bg-white rounded-full w-5 h-5 -ml-5 flex items-center justify-center text-xs font-medium leading-none">
-                                    +
-                                  </span>
-                                </Link>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+                <MdChevronRight
+                  className={`transition-transform ${showdrop === index ? "rotate-90" : ""}`}
+                />
+              </button>
+            ) : (
+              <Link
+                to={el?.mainlink ? el.mainlink : ""}
+                className="flex items-center p-3 w-full  bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors"
+              >
+                <div className="icon w-4 h-3 mr-2">
+                  <img src={el?.icon} alt={el?.heading} />
+                </div>
+                <h6 className=" flex-1 whitespace-nowrap ml-1 -mb-2">
+                  {el?.heading}
+                </h6>
+              </Link>
+            )}
+
+            {el?.dropArr && showdrop === index && (
+              <div className="dropdown_list max-h-40 ml-6 overflow-y-auto    ">
+                <ul className="pl-6">
+                  {el.dropArr.map((ele, idx) => (
+                    <li key={idx} className="py-1">
+                      <div className="flex justify-between items-center group">
+                        {ele && (
+                          <>
+                            <Link
+                              to={ele.link}
+                              className=" text-[13px] text-grey-850 hover:text-orange-500 hover:rounded-lg "
+                            >
+                              {ele.dropHead}
+                            </Link>
+                            {ele.plusLink && (
+                              <Link
+                                to={ele.plusLink}
+                                className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
+                              >
+                                <span className="bg-white rounded-full w-5 h-5 -ml-5 flex items-center justify-center text-xs font-medium leading-none">
+                                  +
+                                </span>
+                              </Link>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
     </>
   );
 }

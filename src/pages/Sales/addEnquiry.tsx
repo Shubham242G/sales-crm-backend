@@ -73,6 +73,367 @@ interface EventSetup {
   eventDates: { startDate: string; endDate: string }[]
   eventStartDate: string
   eventEndDate: string
+  // FabricationItem: FabricationItem[]
+  //ExhibitionItem: ExhibitionItem[]
+
+
+}
+
+interface FabricationItem {
+  particular: string;
+  size?: string;
+  area?: number;
+  quantity?: number;
+  days?: number | string;
+  rate?: string;
+  amount: string;
+}
+
+const fabricationData: FabricationItem[] = [
+  {
+    particular: "Welcome Banner on Road",
+    size: "20ft (Width) x 10ft (Height)",
+    area: 200,
+    quantity: 4,
+    days: "-",
+    rate: "₹70.00",
+    amount: "₹56,000.00"
+  },
+  {
+    particular: "Signages on Road Side",
+    size: "4ft (Width) x 6ft (Height)",
+    area: 24,
+    quantity: 10,
+    days: "-",
+    rate: "₹100.00",
+    amount: "₹24,000.00"
+  },
+  {
+    particular: "Welcome Banner at Entry",
+    size: "20ft (Width) x 10ft (Height)",
+    area: 200,
+    quantity: 2,
+    days: "-",
+    rate: "₹100.00",
+    amount: "₹40,000.00"
+  },
+  {
+    particular: "Entry Gate",
+    area: 1,
+    quantity: 1,
+    days: "-",
+    rate: "₹25,000.00",
+    amount: "₹25,000.00"
+  },
+  {
+    particular: "Cubical for Welcome Branding",
+    quantity: 20,
+    rate: "₹1,000.00",
+    amount: "₹20,000.00"
+  },
+  {
+    particular: "Creative Standees for Signages & Branding",
+    size: "3ft (Width) x 6ft (Height)",
+    area: 18,
+    quantity: 40,
+    rate: "₹100.00",
+    amount: "₹72,000.00"
+  },
+  {
+    particular: "Registration Area Truss Structure",
+    size: "200ft (Width) x 30ft (Depth)",
+    area: 6000,
+    rate: "₹90.00",
+    amount: "₹540,000.00"
+  },
+  {
+    particular: "Registration Area Wall Masking",
+    size: "200ft (Width) x 10ft (Depth)",
+    area: 2000,
+    rate: "₹40.00",
+    amount: "₹80,000.00"
+  },
+  {
+    particular: "Platform with Printed Carpet",
+    size: "200ft (Width) x 40ft (Depth)",
+    area: 8000,
+    rate: "₹40.00",
+    amount: "₹320,000.00"
+  },
+  {
+    particular: "Registration Backdrop",
+    size: "30ft (Width) x 10ft (Height)",
+    area: 300,
+    rate: "₹70.00",
+    amount: "₹21,000.00"
+  },
+  {
+    particular: "Registration Window with Vinyl Printing",
+    quantity: 12,
+    rate: "₹4,000.00",
+    amount: "₹48,000.00"
+  },
+  {
+    particular: "Selfie Booth with Letter Cutout",
+    quantity: 3,
+    rate: "₹30,000.00",
+    amount: "₹90,000.00"
+  }
+];
+
+const exhibitionData: ExhibitionItem[] = [
+  {
+    particular:
+      "Octonurm Stalls with General Carpet, 1 Table, 2 Chairs, 3 Spotlight, 1 Dustbin, 1 Plug Point (One Time Cost Only; Days are mentioned just for reference)",
+    size: "3mtr x 3 mtrs",
+    area: 1,
+    quantity: 150,
+    days: 2,
+    rate: "₹5,500.00",
+    amount: "₹8,25,000.00"
+  },
+  {
+    particular: "Entry Gate",
+    quantity: 2,
+    days: 1,
+    rate: "₹15,000.00",
+    amount: "₹30,000.00"
+  },
+  {
+    particular: "Signages & Exhibition Map",
+    size: "20ft (Width) x 10ft (Height)",
+    area: 200,
+    quantity: 1,
+    days: 1,
+    rate: "₹70.00",
+    amount: "₹14,000.00"
+  },
+  {
+    particular: "General Carpet (Printed)",
+    area: 2000,
+    rate: "₹15.00",
+    amount: "₹30,000.00"
+  },
+  {
+    particular: "Cocktail Tables",
+    quantity: 20,
+    rate: "₹1,000.00",
+    amount: "₹20,000.00"
+  },
+  {
+    particular: "Genset 125 KVA",
+    quantity: 2,
+    days: 4,
+    rate: "₹15,000.00",
+    amount: "₹1,20,000.00"
+  },
+  {
+    particular: "Diesel for Genset (12 Hours x 6 Days x 2)",
+    quantity: 24,
+    days: 4,
+    rate: "₹1,800.00",
+    amount: "₹1,72,800.00"
+  },
+  {
+    particular: "Electrication & Cabling",
+    quantity: 1,
+    days: 1,
+    rate: "₹50,000.00",
+    amount: "₹50,000.00"
+  }
+];
+
+interface Item {
+  particular: string;
+  size: string;
+  area: number;
+  quantity: number;
+  days: number;
+  rate: number;
+  amount: number;
+}
+
+interface Section {
+  items: Item[];
+  total: number;
+}
+
+interface EventData {
+  fabrication: Section;
+  exhibition: Section;
+  conferenceAV: Section;
+}
+
+const eventData: EventData = {
+  fabrication: {
+    items: [
+      {
+        particular: "LED P3",
+        size: "14ft (Width) x 7ft (Height)",
+        area: 98,
+        quantity: 1,
+        days: 2,
+        rate: 150.00,
+        amount: 29400.00
+      },
+      {
+        particular: "PA System JBL VRX 1 Pair",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 2,
+        rate: 15000.00,
+        amount: 30000.00
+      },
+      {
+        particular: "Podium Mic",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 2,
+        rate: 650.00,
+        amount: 1300.00
+      },
+      {
+        particular: "Collar Mic",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 2,
+        rate: 650.00,
+        amount: 1300.00
+      },
+      {
+        particular: "Cordless MIC",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 2,
+        rate: 650.00,
+        amount: 1300.00
+      },
+      {
+        particular: "HD Camera with Cameraman",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 2,
+        rate: 12000.00,
+        amount: 24000.00
+      },
+      {
+        particular: "Photographer",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 2,
+        rate: 7000.00,
+        amount: 14000.00
+      },
+      {
+        particular: "Live Switcher",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 2,
+        rate: 3000.00,
+        amount: 6000.00
+      },
+      {
+        particular: "HDMI Splitter",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 2,
+        rate: 3000.00,
+        amount: 6000.00
+      },
+      {
+        particular: "Laptops",
+        size: "",
+        area: 0,
+        quantity: 3,
+        days: 2,
+        rate: 1200.00,
+        amount: 7200.00
+      }
+    ],
+    total: 123100.00
+  },
+  exhibition: {
+    items: [
+      {
+        particular: "Touch Screen Plasma TV 65 inch",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 2,
+        rate: 8000.00,
+        amount: 16000.00
+      },
+      {
+        particular: "Server & Networking for Central Loading",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 2,
+        rate: 15000.00,
+        amount: 30000.00
+      }
+    ],
+    total: 190000.00
+  },
+  conferenceAV: {
+    items: [
+      {
+        particular: "Preview Room Setup & LAN Connection",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 3,
+        rate: 30000.00,
+        amount: 90000.00
+      },
+      {
+        particular: "Laptops & Manpower for Preview Room",
+        size: "",
+        area: 0,
+        quantity: 5,
+        days: 3,
+        rate: 5000.00,
+        amount: 75000.00
+      },
+      {
+        particular: "Genset 125KVA",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 3,
+        rate: 15000.00,
+        amount: 45000.00
+      },
+      {
+        particular: "Diesel for Genset (Approx.)",
+        size: "",
+        area: 0,
+        quantity: 1,
+        days: 3,
+        rate: 5000.00,
+        amount: 15000.00
+      }
+    ],
+    total: 225000.00
+  }
+};
+
+interface ExhibitionItem {
+  particular: string;
+  size?: string;
+  area?: number;
+  quantity?: number;
+  days?: number | string;
+  rate: string;
+  amount: string;
 }
 
 interface AirTickets {
@@ -446,20 +807,22 @@ const AddEnquiryForm = () => {
   }
 
   const addBanquetRow = () => {
-    const nextDate = new Date(banquet[banquet.length - 1]?.date || new Date())
-    nextDate.setDate(nextDate.getDate() + 1)
-    setBanquet((prev) => [
-      ...prev,
-      {
-        date: nextDate.toISOString().split("T")[0], // nextDate ,
-        session: [],
-        seatingStyle: "",
-        avSetup: "",
-        menuType: "",
-        minPax: "",
-        seatingRequired: "",
-      },
-    ])
+    if (banquet.length === 0 || moment(banquet[banquet.length - 1].date).isBefore(moment(checkOut))) {
+      const nextDate = new Date(banquet[banquet.length - 1]?.date || new Date())
+      nextDate.setDate(nextDate.getDate() + 1)
+      setBanquet((prev) => [
+        ...prev,
+        {
+          date: nextDate.toISOString().split("T")[0], // nextDate ,
+          session: [],
+          seatingStyle: "",
+          avSetup: "",
+          menuType: "",
+          minPax: "",
+          seatingRequired: "",
+        },
+      ])
+    }
   }
 
   const handleCabTypeChange = () => {
@@ -1016,16 +1379,17 @@ const AddEnquiryForm = () => {
               {/* Show Check In only after Enquiry Type is selected */}
               {(enquiryType === 'room' || enquiryType === 'both') && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Check In</label>
-                  <input
-                    type="date"
-                    name="checkIn"
-                    value={moment(checkIn).format("YYYY-MM-DD")}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Check In</label>
+                <input
+                  type="date"
+                  name="checkIn"
+                  value={moment(checkIn).format("YYYY-MM-DD")}
+                  onChange={(e) => setCheckIn(e.target.value)}
+                  onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                  min={moment().format("YYYY-MM-DD")}
+                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
               )}
 
               {/* Check Out */}
@@ -1051,7 +1415,8 @@ const AddEnquiryForm = () => {
                     name="banquetDate"
                     value={banquetDate}
                     onChange={(e) => setBanquetDate(e.target.value)}
-                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                    min={checkIn}
+                    max={checkOut}
                     className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
@@ -1184,6 +1549,7 @@ const AddEnquiryForm = () => {
                             <td className="px-4 py-2 text-sm border-b border-gray-200">
                               <input
                                 type="number"
+                                min="0"
                                 value={row?.noOfRooms}
                                 onChange={(e) => handleTableChange(room, setRoom, index, "noOfRooms", e.target.value)}
                                 className="border border-gray-300 p-1 rounded w-full text-sm"
@@ -1412,7 +1778,7 @@ const AddEnquiryForm = () => {
                   onClick={addBanquetRow}
                   className="bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 mt-3 rounded"
                 >
-                  Same for All Days
+                  Add Date
                 </button>
               </div>
             </div>

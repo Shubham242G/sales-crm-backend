@@ -27,9 +27,15 @@ import { Modal, Switch } from "@mui/material";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { useMutation } from "@tanstack/react-query";
 import { SiConvertio } from "react-icons/si";
+import { ClassNames } from "@emotion/react";
+import { divide } from "lodash";
 
-
-
+import { title } from "process";
+import { Column } from "@tanstack/react-table";
+import { Search } from "lucide-react";
+import { Input } from "postcss";
+import { FiEdit } from "react-icons/fi";
+;
 
 function Leads() {
   const navigate = useNavigate();
@@ -282,48 +288,17 @@ function Leads() {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
   console.log(selectedRows, "selectedRows", leadData, "check lead data");
+    const [isOpenAction, setIsOpenAction] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
+
+  
 
   const columns = [
-    {
-      name: '',
 
-      //   <input
-      //     type="checkbox"
-      //     onChange={(e) => {
-      //       const isChecked = e.target.checked;
-      //       if (isChecked) {
-      //         setSelectedRows(leadData.data.map((row:any) => row._id));
-      //       } else {
-      //         setSelectedRows([]);
-      //       }
-      //     }}
-      //   />
-
-
-      cell: (row: any) => (
-        <div className="ml-10"><input
-          type="checkbox"
-          checked={selectedRows.includes(row._id)}
-
-          onChange={() => {
-            if (selectedRows.includes(row._id)) {
-              setSelectedRows(selectedRows.filter((id) => id !== row._id));
-            } else {
-              setSelectedRows([...selectedRows, row._id]);
-            }
-          }}
-        />
-        </div>
-
-      ),
-      width: "60px",
-    },
     {
       name: "Contact Name",
-      selector: (row: any) => (
-        <div className="flex gap-1 flex-col ">
-          <h6 className="text-blue-600">{row.firstName + " " + row.lastName}</h6>
-        </div>
+    selector: (row: any) => (
+          <h6 className=" text-[#1B6DE0] font-semibold  ">{row.firstName + " " + row.lastName}</h6>
       ),
       width: "180px",
     },
@@ -341,10 +316,11 @@ function Leads() {
         </h6>
       ),
       width: "190px",
+
     },
     {
       name: "Company Name",
-      selector: (row: any) => <h6 className="flex gap-1">{row.company}</h6>,
+      selector: (row: any) => <h6 className="flex gap-1 ">{row.company}</h6>,
       width: "200px",
     },
     {
@@ -357,32 +333,30 @@ function Leads() {
       selector: (row: any) => <h6>{row.email}</h6>,
       width: "230px",
     },
-    {
-      name: "Edit",
-      width: " 140px",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => navigate(`/add-leads/${row._id}`)}
-          className="text-black-500 text-lg "
-        >
-          <FaEye className="ml-1" />
-        </button>
-      ),
-    },
-    {
-      name: "Delete",
-      width: "140px",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => handleDelete(row._id)}
-          className=" text-black-400 text-lg"
-        >
-          <RiDeleteBin6Line />
-        </button>
-      ),
-    },
+   
+        
+    // {
+    //   name: "Action",
+    //   width: "140px",
+    //   selector: (row: any) => (
+    //     <div className="flex gap-2">
+    //       <button
+    //         type="button"
+    //         onClick={() => navigate(`/add-leads/${row._id}`)}
+    //         className="text-black-500 text-lg "
+    //       >
+    //         <FaEye className="ml-1" />
+    //       </button>
+    //       <button
+    //         type="button"
+    //         onClick={() => handleDelete(row._id)}
+    //         className=" text-black-400 text-lg"
+    //       >
+    //         <RiDeleteBin6Line />
+    //       </button>
+    //     </div>
+    //   ),
+    // },
     {
       name: "Convert to Contact",
       width: "140px",
@@ -390,34 +364,75 @@ function Leads() {
         <button
           type="button"
           onClick={() => handleConvert(row._id)}
-          className=" text-black-400 text-lg"
+          className=" text-black-400 "
         >
           <SiConvertio />
         </button>
       ),
     },
     {
-      name: "Generete Enquiry",
+      name: "Generate Enquiry",
       width: "140px",
       selector: (row: any) => (
         <button
           type="button"
           onClick={() => handleConvertToEnquiry(row._id)}
-          className=" text-black-400 text-lg"
+          className=" text-black-400 "
         >
           <SiConvertio />
         </button>
       ),
     },
+      {
+          name: "Actions",
+          width: "50px",
+          selector: (row: any) => (
+            <div className="">
+              <button
+                type="button"
+                title="More Actions"
+                onClick={(e) =>{ setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),setSelectedRowId(row._id )}}
+              >
+                <span className="flex items-center justify-center w-4 h-4 rounded-full hover:bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
+              </button>
+              { selectedRowId === row._id   &&  (isOpenAction) && (
+                <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden border">
+    
+                  <Link
+                    to={`/add-leads/${row._id}`}
+                    className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                    title="View Vendor"
+                  >
+                    <FiEdit className="text-xs" />
+                    Edit
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(row._id)}
+                    className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                    title="Delete Vendor"
+                  >
+                    <RiDeleteBin6Line className="text-xs" />
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
+          ),
+        },
   ];
 
+  // const handleChange = (state: any) => {
+  //   setSelectedRows(state.selectedRows);
+  //   console.log('Selected Rows: ', selectedRows);
+  // };
   const [isOpenAssign, setIsOpenAssign] = useState(false);
   const [assignTaskName, setAssignTaskName] = useState("");
   const [assignTaskUsers, setAssignTaskUsers] = useState<string[]>([]);
 
   const handleAssignTask = async () => {
     try {
-      if (selectedRows.length === 0) {
+      if (tickRows.length === 0) {
         toastError("Please select at least one lead to assign.");
         return;
       }
@@ -479,16 +494,17 @@ function Leads() {
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
   const [visibleColumns, setVisibleColumns] = useState({
-    "": true,
+
     "Contact Name": true,
     "Mobile Number": true,
     "Company Name": true,
     "Display Name": true,
     "Email": true,
-    "Edit": canView || canUpdate || true,
-    "Delete": canDelete || true,
-    "Convert to contact": true,
-    "Convert to Enquiry": true,
+    "Actions": canView || canUpdate || true,
+    // "Edit": canView || canUpdate || true,
+    // "Delete": canDelete || true,
+    "Convert to Contact": true,
+    "Generate Enquiry": true,
   });
 
   useEffect(() => {
@@ -510,7 +526,7 @@ function Leads() {
   };
 
   const ColumnSelector = () => (
-    <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-10 border border-gray-200 right-0 w-72">
+    <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-[9999] border border-gray-200 right-0 w-72">
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center border-b pb-2 mb-2">
           <h3 className="font-medium">Customize Columns</h3>
@@ -547,12 +563,16 @@ function Leads() {
       </div>
     </div>
   );
+
   const calculateFixedWidths = (columnsArray: any[]) => {
-    const columnsWithFixedWidth = columnsArray.map(column => ({ ...column }));
+    const totalWidth = columnsArray.length > 0 ? columnsArray.length * 180 : 1;
+    const containerWidth = window.innerWidth - 100; // Adjust for padding/margins
+    const columnsWithFixedWidth = columnsArray.map(column => ({
+      ...column,
+      width: totalWidth > containerWidth ? "200px" : `${95 / columnsArray.length}%`
+    }));
 
-
-
-    console.log(columnsWithFixedWidth, "check the column width")
+    console.log(columnsWithFixedWidth, "check the column width");
 
     return columnsWithFixedWidth;
   };
@@ -567,29 +587,96 @@ function Leads() {
 
   const resetColumnVisibility = () => {
     setVisibleColumns({
-      "": true,
+
       "Contact Name": true,
       "Mobile Number": true,
       "Company Name": true,
       "Display Name": true,
       "Email": true,
-      "Edit": canView || canUpdate || true,
-      "Delete": canDelete || true,
-      "Convert to contact": true,
-      "Convert to Enquiry": true,
+      "Actions": canView || canUpdate || true,
+      // "Delete": canDelete || true,
+      "Convert to Contact": true,
+      "Generate Enquiry": true,
     });
   };
+   
+ 
 
+   
+  // const columnsNew = [
+  //   {
+  //     title: "checkbox",
+  //     width: 100,
+  //     dataIndex: "checkbox",
+  //     key: "checkbox",
+  //     fixed: "left",
+  //   },
+  //   {
+  //     title: "name",
+  //     width: 150,
+  //     dataIndex: "name",
+  //     key: "1",
+  //   },
+  //   {
+  //     title: "email",
+  //     width: 200,
+  //     dataIndex: "email",
+  //     key: "2",
+  //   },
+  //   {
+  //     title: "phone",
+  //     width: 120,
+  //     dataIndex: "phone",
+  //     key: "3",
+  //   },
+  //   {
+  //     title: "status",
+  //     width: 120,
+  //     dataIndex: "status",
+  //     key: "4",
 
-  const [tripleDots, setTripleDots] = useState(true)
+  //   }, 
+
+  //   {
+  //     title: "action",
+  //     width: 120,
+  //     dataIndex: "action",
+  //     key: "action",
+  //     fixed: "right",
+  //   },
+  //   {
+  //     title: "new",
+  //     width: 120,
+  //     dataIndex: "action",
+  //     key: "action",
+
+  //   }, {
+  //     title: "new",
+  //     width: 120,
+  //     dataIndex: "action",
+  //     key: "action",
+  //   }
+
+  // ];
+   const [tickRows, setTickRows] = useState<string[]>([]);
+
+ const handleChange = ({ selectedRows }:any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log('Selected Rows: ', selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
+
+  console.log(tickRows, "tick rows");
+
 
 
 
   return (
     <>
+     
       <div className="container ">
-        <div className=" table_container rounded-xl px-4 py-2   ">
-          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm -ml-4 -mt-5">
+        <div className=" table_container rounded-xl px-4    ">
+          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm -ml-4 -mt-5 mb-4">
             {/* Heading on the Left */}
             <h2 className="text-lg font-semibold text-gray-800 ">Leads List</h2>
             {/* Search Input */}
@@ -633,8 +720,9 @@ function Leads() {
 
             {/* Assign Lead */}
             <button
+            onClick={handleAssignTask}
               className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
-              onClick={handleAssignTask}
+              
             >
               <FaTasks className="text-xs" /> Assign Lead
             </button>
@@ -745,10 +833,10 @@ function Leads() {
       </div >
 
 
-      <div className=" table_container  shadow-xl -ml-5  text-sm   ">
-
-        {/* React Table */}px
-        {/* <ReactTable
+      
+        {/* React Table */}
+        <div className="overflow-x-auto -ml-5">
+          <ReactTable
           data={leadData?.data}
           columns={filteredColumns}
           loading={false}
@@ -758,21 +846,17 @@ function Leads() {
           page={pageIndex}
           rowsPerPageText={pageSize}
           isServerPropsDisabled={false}
+          selectableRows={true}
+          onSelectedRowsChange={handleChange}
+          className="leadtable"
 
-        /> */}
-
-        <ReactTable
-          data={leadData?.data}
-          columns={filteredColumns}
-          loading={false}
-          totalRows={leadData?.total}
-          onChangeRowsPerPage={setPageSize}
-          onChangePage={setPageIndex}
-          page={pageIndex}
-          rowsPerPageText={pageSize}
-          isServerPropsDisabled={false}
         />
-      </div>
+        </div>
+        
+        
+
+
+    
 
 
 
@@ -781,11 +865,11 @@ function Leads() {
       {
         isOpen && (
           <>
-            <div className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
+            <div className="fixed inset-0 z-[9999] bg-[rgba(0,0,0,0.5)]"
               onClick={handleModalClose}>
             </div>
 
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[99999]">
               <AdvancedSearch
                 fields={searchFields}
                 onSearch={(values) => {
@@ -936,8 +1020,8 @@ function Leads() {
 
       {
         isOpenAssign && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex z-[100] justify-center items-center ">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[500px] h-[400px] ]">
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Assign Task to Multiple Users</h2>
                 <button
@@ -1001,6 +1085,7 @@ function Leads() {
           </div>
         )
       }
+
 
 
 

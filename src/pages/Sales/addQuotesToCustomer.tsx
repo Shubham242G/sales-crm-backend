@@ -282,7 +282,7 @@ const AddQuotesToCustomerForm = () => {
             <div className="col-span-2">
               <div className="flex justify-between items-center mb-4">
                 <label className="block text-sm font-medium text-gray-700">
-                  Markup Details
+                 Amount
                 </label>
                 <button
                   type="button"

@@ -117,29 +117,43 @@ const AddNewUser = () => {
         <h1 className="text-2xl font-bold mb-10">Add New User</h1>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Name
-              </label>
-              <input
-                type="text"
-                value={formData.name}
-                name="name"
-                onChange={handleInputChange}
-                placeholder="Enter full name"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
-              />
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Name*
+            </label>
+            <input
+              type="text"
+              value={formData.name}
+              required
+              name="name"
+              onChange={(e) => {
+                const upperCaseValue = e.target.value.toUpperCase();
+                setFormData(prev => ({
+                  ...prev,
+                  name: upperCaseValue
+                }));
+              }}
+              placeholder="Enter full name"
+              className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
+            />
+          </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+                Email Address*
               </label>
               <input
                 type="email"
                 value={formData.email}
+                required
                 name="email"
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  const lowerCaseValue = e.target.value.toLowerCase();
+                  setFormData(prev => ({
+                    ...prev,
+                    email: lowerCaseValue
+                  }));
+                }}
                 placeholder="Enter email address"
                 className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
               />

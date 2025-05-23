@@ -82,6 +82,7 @@ interface IBanquet {
   banquetVegPrice: string;
   banquetNonVegPrice: string;
   banquetFloor: string;
+  banquetLocation:string;
   prefuntionAreaSize: string;
 }
 
@@ -273,6 +274,7 @@ const AddVendorForm = () => {
       banquetVegPrice: "",
       banquetNonVegPrice: "",
       banquetFloor: "",
+      banquetLocation: "",
       prefuntionAreaSize: "",
     },
   ]);
@@ -395,145 +397,145 @@ const AddVendorForm = () => {
 
   const [isRoomDetailsVisible, setIsRoomDetailsVisible] = useState(false);
 
-  const populateDemoData = () => {
-    setVendor({
-      salutation: "Mr.",
-      firstName: "John",
-      lastName: "Doe",
-      contactName: "John Doe",
-      contactOwner: "Jane Smith",
-      panNumber: "ABCDE1234F",
-      leadId: "12345",
-      gst: "27ABCDE1234F1Z5",
-      vendorType: ["Hotel"],
-      landLine: "022-12345678",
-      email: "john.doe@example.com",
-      companyName: "Luxury Hotels Ltd.",
-      phoneNumber: "+919876543210",
-      displayName: "company",
-    });
+  // const populateDemoData = () => {
+  //   setVendor({
+  //     salutation: "Mr.",
+  //     firstName: "John",
+  //     lastName: "Doe",
+  //     contactName: "John Doe",
+  //     contactOwner: "Jane Smith",
+  //     panNumber: "ABCDE1234F",
+  //     leadId: "12345",
+  //     gst: "27ABCDE1234F1Z5",
+  //     vendorType: ["Hotel"],
+  //     landLine: "022-12345678",
+  //     email: "john.doe@example.com",
+  //     companyName: "Luxury Hotels Ltd.",
+  //     phoneNumber: "+919876543210",
+  //     displayName: "company",
+  //   });
 
-    setLocation({
-      state: "Maharashtra",
-      city: "Mumbai",
-      area: "Bandra",
-      address: "123 Luxury Lane, Bandra West",
-    });
+  //   setLocation({
+  //     state: "Maharashtra",
+  //     city: "Mumbai",
+  //     area: "Bandra",
+  //     address: "123 Luxury Lane, Bandra West",
+  //   });
 
-    setCategory({
-      categoryType: "4 star",
-    });
+  //   setCategory({
+  //     categoryType: "4 star",
+  //   });
 
-    setRooms([
-      {
-        roomCategory: "deluxe room (head)",
-        numberOfRooms: 10,
-        roomSize: "300 sq ft",
-        roomImageUpload: [],
-        prices: [{ roomType: "deluxe", roomPrice: "5000" }],
-      },
-    ]);
+  //   setRooms([
+  //     {
+  //       roomCategory: "deluxe room (head)",
+  //       numberOfRooms: 10,
+  //       roomSize: "300 sq ft",
+  //       roomImageUpload: [],
+  //       prices: [{ roomType: "deluxe", roomPrice: "5000" }],
+  //     },
+  //   ]);
 
-    setBanquets([
-      {
-        numberOfBanquests: "2",
-        banquetCategory: "banquet",
-        banquetSize: "500 sq ft",
-        banquetImageUpload: [],
-        banquetName: "Grand Hall",
-        banquetSetup: "theater",
-        banquetVegPrice: "1500",
-        banquetNonVegPrice: "2000",
-        banquetFloor: "1st",
-        prefuntionAreaSize: "medium (200 sq ft)",
-      },
-    ]);
+  //   setBanquets([
+  //     {
+  //       numberOfBanquests: "2",
+  //       banquetCategory: "banquet",
+  //       banquetSize: "500 sq ft",
+  //       banquetImageUpload: [],
+  //       banquetName: "Grand Hall",
+  //       banquetSetup: "theater",
+  //       banquetVegPrice: "1500",
+  //       banquetNonVegPrice: "2000",
+  //       banquetFloor: "1st",
+  //       prefuntionAreaSize: "medium (200 sq ft)",
+  //     },
+  //   ]);
 
-    setRestaurant({
-      restaurantMenuType: ["indian", "continental"],
-      restaurantImageUpload: [],
-      restaurantCovers: "50",
-      restaurantFloor: "2nd",
-      restaurantSwimmingPool: "Yes",
-    });
+  //   setRestaurant({
+  //     restaurantMenuType: ["indian", "continental"],
+  //     restaurantImageUpload: [],
+  //     restaurantCovers: "50",
+  //     restaurantFloor: "2nd",
+  //     restaurantSwimmingPool: "Yes",
+  //   });
 
-    setBankDetails({
-      bankName: "HDFC Bank",
-      bankAccountNumber: "123456789012",
-      ifsc: "HDFC0001234",
-      pointOfContact: "Rahul Sharma",
-      email: "rahul.sharma@hdfc.com",
-      phoneNumber: "+919876543211",
-      billingAddress: "456 Bank Street, Mumbai",
-    });
+  //   setBankDetails({
+  //     bankName: "HDFC Bank",
+  //     bankAccountNumber: "123456789012",
+  //     ifsc: "HDFC0001234",
+  //     pointOfContact: "Rahul Sharma",
+  //     email: "rahul.sharma@hdfc.com",
+  //     phoneNumber: "+919876543211",
+  //     billingAddress: "456 Bank Street, Mumbai",
+  //   });
 
-    setOtherDetails({
-      sourceOfSupply: "Local",
-      gstTreatment: "Registered",
-      gstin: "27ABCDE1234F1Z5",
-      pan: "ABCDE1234F",
-      msmeRegistered: true,
-      currency: "INR - Indian Rupee",
-      openingBalanceState: "Credit",
-      openingBalance: "10000",
-      creditLimit: "50000",
-      paymentTerms: "Due on Receipt",
-      tds: "TDS1",
-      priceList: "PL1",
-      enablePortal: true,
-      portalLanguage: "English",
-      documents: [],
-      websiteUrl: "www.luxuryhotels.com",
-      department: "Sales",
-      designation: "Manager",
-      skype: "john.doe.skype",
-      facebook: "john.doe.fb",
-      twitter: "john_doe",
-    });
+  //   setOtherDetails({
+  //     sourceOfSupply: "Local",
+  //     gstTreatment: "Registered",
+  //     gstin: "27ABCDE1234F1Z5",
+  //     pan: "ABCDE1234F",
+  //     msmeRegistered: true,
+  //     currency: "INR - Indian Rupee",
+  //     openingBalanceState: "Credit",
+  //     openingBalance: "10000",
+  //     creditLimit: "50000",
+  //     paymentTerms: "Due on Receipt",
+  //     tds: "TDS1",
+  //     priceList: "PL1",
+  //     enablePortal: true,
+  //     portalLanguage: "English",
+  //     documents: [],
+  //     websiteUrl: "www.luxuryhotels.com",
+  //     department: "Sales",
+  //     designation: "Manager",
+  //     skype: "john.doe.skype",
+  //     facebook: "john.doe.fb",
+  //     twitter: "john_doe",
+  //   });
 
-    setBillingAddress({
-      addressId: "1",
-      billingCountry: "IN - India",
-      billingAddressStreet1: "123 Luxury Lane",
-      billingAddressStreet2: "Bandra West",
-      billingCity: "Mumbai",
-      billingState: "[MH] - Maharashtra",
-      billingPincode: "400050",
-      billingPhone: "+919876543210",
-      billingFaxNumber: "022-98765432",
-    });
+  //   setBillingAddress({
+  //     addressId: "1",
+  //     billingCountry: "IN - India",
+  //     billingAddressStreet1: "123 Luxury Lane",
+  //     billingAddressStreet2: "Bandra West",
+  //     billingCity: "Mumbai",
+  //     billingState: "[MH] - Maharashtra",
+  //     billingPincode: "400050",
+  //     billingPhone: "+919876543210",
+  //     billingFaxNumber: "022-98765432",
+  //   });
 
-    setShippingAddress({
-      shippingCountry: "IN - India",
-      shippingAddressStreet1: "123 Luxury Lane",
-      shippingAddressStreet2: "Bandra West",
-      shippingCity: "Mumbai",
-      shippingState: "[MH] - Maharashtra",
-      shippingPincode: "400050",
-      shippingPhone: "+919876543210",
-      shippingFaxNumber: "022-98765432",
-    });
+  //   setShippingAddress({
+  //     shippingCountry: "IN - India",
+  //     shippingAddressStreet1: "123 Luxury Lane",
+  //     shippingAddressStreet2: "Bandra West",
+  //     shippingCity: "Mumbai",
+  //     shippingState: "[MH] - Maharashtra",
+  //     shippingPincode: "400050",
+  //     shippingPhone: "+919876543210",
+  //     shippingFaxNumber: "022-98765432",
+  //   });
 
-    setContactPersons([
-      {
-        salutation: "Mr.",
-        contactPersonFirstName: "Rahul",
-        contactPersonLastName: "Sharma",
-        contactPersonEmail: "rahul.sharma@example.com",
-        contactPersonWorkPhone: "022-12345678",
-        contactPersonMobilePhone: "+919876543211",
-        contactPersonMobile: "+919876543211",
-        contactPersonDesignation: "Sales Manager",
-        contactPersonDepartment: "Sales",
-        contactPersonDateOfBirth: "1990-01-01",
-        contactPersonAnniversary: "2015-06-15",
-      },
-    ]);
+  //   setContactPersons([
+  //     {
+  //       salutation: "Mr.",
+  //       contactPersonFirstName: "Rahul",
+  //       contactPersonLastName: "Sharma",
+  //       contactPersonEmail: "rahul.sharma@example.com",
+  //       contactPersonWorkPhone: "022-12345678",
+  //       contactPersonMobilePhone: "+919876543211",
+  //       contactPersonMobile: "+919876543211",
+  //       contactPersonDesignation: "Sales Manager",
+  //       contactPersonDepartment: "Sales",
+  //       contactPersonDateOfBirth: "1990-01-01",
+  //       contactPersonAnniversary: "2015-06-15",
+  //     },
+  //   ]);
 
-    setIsBanquetDetailsVisible(true);
-    setIsRestaurantDetailsVisible(true);
-    toastSuccess("Demo data has been populated!");
-  };
+  //   setIsBanquetDetailsVisible(true);
+  //   setIsRestaurantDetailsVisible(true);
+  //   toastSuccess("Demo data has been populated!");
+  // };
 
   useEffect(() => {
     if (vendor.vendorType.includes("Banquet")) {
@@ -687,6 +689,7 @@ const AddVendorForm = () => {
           banquetVegPrice: banquet.banquetVegPrice || "",
           banquetNonVegPrice: banquet.banquetNonVegPrice || "",
           banquetFloor: banquet.banquetFloor || "",
+          banquetLocation: banquet.banquetLocation || "",
           prefuntionAreaSize: banquet.prefuntionAreaSize || "",
         })) || [
           {
@@ -699,6 +702,7 @@ const AddVendorForm = () => {
             banquetVegPrice: "",
             banquetNonVegPrice: "",
             banquetFloor: "",
+            banquetLocation: "",
             prefuntionAreaSize: "",
           },
         ]
@@ -895,6 +899,7 @@ const AddVendorForm = () => {
         banquetVegPrice: "",
         banquetNonVegPrice: "",
         banquetFloor: "",
+        banquetLocation: "",
         prefuntionAreaSize: "",
       },
     ]);
@@ -2379,6 +2384,7 @@ const AddVendorForm = () => {
                                     banquetName: "",
                                     banquetSetup: "",
                                     banquetVegPrice: "",
+                                    banquetLocation: "",
                                     banquetNonVegPrice: "",
                                     banquetFloor: "",
                                     prefuntionAreaSize: ""
@@ -2417,7 +2423,7 @@ const AddVendorForm = () => {
                               {/* Left column - Banquet details */}
                               <div>
                                 <div className="grid grid-cols-2 gap-4 mb-4">
-                                  <div>
+                                  {/* <div>
                                     <label className="block text-sm font-medium text-black mb-2">
                                       Category
                                     </label>
@@ -2437,9 +2443,11 @@ const AddVendorForm = () => {
                                         </option>
                                       ))}
                                     </select>
-                                  </div>
+                                  </div> */}
 
-                                  <div>
+                                  
+                                </div>
+                                <div className="mb-4">
                                     <label className="block text-sm font-medium text-black mb-2">
                                       Name
                                     </label>
@@ -2455,7 +2463,6 @@ const AddVendorForm = () => {
                                       className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
                                     />
                                   </div>
-                                </div>
 
                                 <div className="grid grid-cols-2 gap-4 mb-4">
                                   <div>
@@ -2541,6 +2548,22 @@ const AddVendorForm = () => {
                                     </div>
                                   </div>
                                 </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-black mb-4">
+                                      Location
+                                    </label>
+                                    <textarea
+                                      placeholder="Enter banquet location"
+                                      value={banquet.banquetLocation}
+                                      onChange={(e) => {
+                                        const newBanquet = [...banquets];
+                                        newBanquet[index].banquetLocation = e.target.value;
+                                        setBanquets(newBanquet);
+                                      }}
+                                      className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                    />
+                                  </div>
 
                                 <div className="mb-4">
                                   <label className="block text-sm font-medium text-black mb-2">
@@ -5018,231 +5041,233 @@ const AddVendorForm = () => {
                       {activeTab === "Contact Persons" && (
                         <div className="grid grid-cols-2 gap-6">
                           <div className="col-span-2">
-                            <table className="min-w-full border border-gray-200">
-                              <thead className="bg-gray-50">
-                                <tr>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    Salutation
-                                  </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    First Name
-                                  </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    Last Name
-                                  </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    Email Address
-                                  </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    Work Phone
-                                  </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    Mobile
-                                  </th>
+                            <div className="overflow-x-auto">
+                              <table className="min-w-full border border-gray-200">
+                                <thead className="bg-gray-50">
+                                  <tr>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Salutation
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      First Name
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Last Name
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Email Address
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Work Phone
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Mobile
+                                    </th>
 
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    Department
-                                  </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    Designation
-                                  </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    Date of Birth
-                                  </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    Anniversary Date
-                                  </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                    Actions
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {contactPersons.map((person, index) => (
-                                  <tr key={index} className="hover:bg-gray-50">
-                                    {/* Salutation Dropdown */}
-                                    <td className="px-4 py-2 border-b">
-                                      <select
-                                        value={person.salutation}
-                                        onChange={(e) =>
-                                          handleContactPersonChange(
-                                            index,
-                                            "salutation",
-                                            e.target.value
-                                          )
-                                        }
-                                        className="w-full border rounded p-1 text-sm"
-                                      >
-                                        <option value="">Select</option>
-                                        <option value="Mr.">Mr.</option>
-                                        <option value="Mrs.">Mrs.</option>
-                                        <option value="Ms.">Ms.</option>
-                                        <option value="Dr.">Dr.</option>
-                                      </select>
-                                    </td>
-
-                                    {/* First Name */}
-                                    <td className="px-4 py-2 border-b">
-                                      <input
-                                        type="text"
-                                        value={person.contactPersonFirstName}
-                                        onChange={(e) =>
-                                          handleContactPersonChange(
-                                            index,
-                                            "contactPersonFirstName",
-                                            e.target.value
-                                          )
-                                        }
-                                        className="w-full border rounded p-1 text-sm"
-                                      />
-                                    </td>
-
-                                    {/* Last Name */}
-                                    <td className="px-4 py-2 border-b">
-                                      <input
-                                        type="text"
-                                        value={person.contactPersonLastName}
-                                        onChange={(e) =>
-                                          handleContactPersonChange(
-                                            index,
-                                            "contactPersonLastName",
-                                            e.target.value
-                                          )
-                                        }
-                                        className="w-full border rounded p-1 text-sm"
-                                      />
-                                    </td>
-
-                                    {/* Email Address */}
-                                    <td className="px-4 py-2 border-b">
-                                      <input
-                                        type="email"
-                                        value={person.contactPersonEmail}
-                                        onChange={(e) =>
-                                          handleContactPersonChange(
-                                            index,
-                                            "contactPersonEmail",
-                                            e.target.value
-                                          )
-                                        }
-                                        className="w-full border rounded p-1 text-sm"
-                                      />
-                                    </td>
-
-                                    {/* Work Phone */}
-                                    <td className="px-4 py-2 border-b">
-                                      <input
-                                        type="tel"
-                                        value={person.contactPersonWorkPhone}
-                                        onChange={(e) =>
-                                          handleContactPersonChange(
-                                            index,
-                                            "contactPersonWorkPhone",
-                                            e.target.value
-                                          )
-                                        }
-                                        className="w-full border rounded p-1 text-sm"
-                                      />
-                                    </td>
-
-                                    {/* Mobile Phone */}
-                                    <td className="px-4 py-2 border-b">
-                                      <input
-                                        type="tel"
-                                        value={person.contactPersonMobilePhone}
-                                        onChange={(e) =>
-                                          handleContactPersonChange(
-                                            index,
-                                            "contactPersonMobilePhone",
-                                            e.target.value
-                                          )
-                                        }
-                                        className="w-full border rounded p-1 text-sm"
-                                      />
-                                    </td>
-
-                                    {/* Department */}
-                                    <td className="px-4 py-2 border-b">
-                                      <input
-                                        type="text"
-                                        value={person.contactPersonDepartment}
-                                        onChange={(e) =>
-                                          handleContactPersonChange(
-                                            index,
-                                            "contactPersonDepartment",
-                                            e.target.value
-                                          )
-                                        }
-                                        className="w-full border rounded p-1 text-sm"
-                                      />
-                                    </td>
-
-                                    {/* Designation */}
-                                    <td className="px-4 py-2 border-b">
-                                      <input
-                                        type="text"
-                                        value={person.contactPersonDesignation}
-                                        onChange={(e) =>
-                                          handleContactPersonChange(
-                                            index,
-                                            "contactPersonDesignation",
-                                            e.target.value
-                                          )
-                                        }
-                                        className="w-full border rounded p-1 text-sm"
-                                      />
-                                    </td>
-
-                                    {/* Date of Birth */}
-                                    <td className="px-4 py-2 border-b">
-                                      <input
-                                        type="date"
-                                        value={person.contactPersonDateOfBirth}
-                                        onChange={(e) =>
-                                          handleContactPersonChange(
-                                            index,
-                                            "contactPersonDateOfBirth",
-                                            e.target.value
-                                          )
-                                        }
-                                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                                        className="w-full border rounded p-1 text-sm"
-                                      />
-                                    </td>
-
-                                    {/* Anniversary Date */}
-                                    <td className="px-4 py-2 border-b">
-                                      <input
-                                        type="date"
-                                        value={person.contactPersonAnniversary}
-                                        onChange={(e) =>
-                                          handleContactPersonChange(
-                                            index,
-                                            "contactPersonAnniversary",
-                                            e.target.value
-                                          )
-                                        }
-                                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                                        className="w-full border rounded p-1 text-sm"
-                                      />
-                                    </td>
-
-                                    {/* Delete Button */}
-                                    <td className="px-4 py-2 border-b">
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          handleDeleteContactPerson(index)
-                                        }
-                                        className="text-red-600 hover:text-red-800 text-sm"
-                                      >
-                                        Delete
-                                      </button>
-                                    </td>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Department
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Designation
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Date of Birth
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Anniversary Date
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Actions
+                                    </th>
                                   </tr>
-                                ))}
-                              </tbody>
-                            </table>
+                                </thead>
+                                <tbody>
+                                  {contactPersons.map((person, index) => (
+                                    <tr key={index} className="hover:bg-gray-50">
+                                      {/* Salutation Dropdown */}
+                                      <td className="px-4 py-2 border-b">
+                                        <select
+                                          value={person.salutation}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "salutation",
+                                              e.target.value
+                                            )
+                                          }
+                                          className="w-full border rounded p-1 text-sm"
+                                        >
+                                          <option value="">Select</option>
+                                          <option value="Mr.">Mr.</option>
+                                          <option value="Mrs.">Mrs.</option>
+                                          <option value="Ms.">Ms.</option>
+                                          <option value="Dr.">Dr.</option>
+                                        </select>
+                                      </td>
+
+                                      {/* First Name */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="text"
+                                          value={person.contactPersonFirstName}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonFirstName",
+                                              e.target.value
+                                            )
+                                          }
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Last Name */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="text"
+                                          value={person.contactPersonLastName}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonLastName",
+                                              e.target.value
+                                            )
+                                          }
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Email Address */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="email"
+                                          value={person.contactPersonEmail}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonEmail",
+                                              e.target.value
+                                            )
+                                          }
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Work Phone */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="tel"
+                                          value={person.contactPersonWorkPhone}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonWorkPhone",
+                                              e.target.value
+                                            )
+                                          }
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Mobile Phone */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="tel"
+                                          value={person.contactPersonMobilePhone}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonMobilePhone",
+                                              e.target.value
+                                            )
+                                          }
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Department */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="text"
+                                          value={person.contactPersonDepartment}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonDepartment",
+                                              e.target.value
+                                            )
+                                          }
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Designation */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="text"
+                                          value={person.contactPersonDesignation}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonDesignation",
+                                              e.target.value
+                                            )
+                                          }
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Date of Birth */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="date"
+                                          value={person.contactPersonDateOfBirth}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonDateOfBirth",
+                                              e.target.value
+                                            )
+                                          }
+                                          onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Anniversary Date */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="date"
+                                          value={person.contactPersonAnniversary}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonAnniversary",
+                                              e.target.value
+                                            )
+                                          }
+                                          onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Delete Button */}
+                                      <td className="px-4 py-2 border-b">
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            handleDeleteContactPerson(index)
+                                          }
+                                          className="text-red-600 hover:text-red-800 text-sm"
+                                        >
+                                          Delete
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
 
                             {/* Add Row Button */}
                             <div className="mt-4">
@@ -5265,13 +5290,13 @@ const AddVendorForm = () => {
 
             {/* Buttons */}
             <div className="flex justify-end gap-4 mt-8">
-              <button
+              {/* <button
                 type="button"
                 onClick={populateDemoData}
                 className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
                 Populate Demo Data
-              </button>
+              </button> */}
               <button
                 type="button"
                 onClick={() => navigate(-1)}

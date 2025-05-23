@@ -65,6 +65,7 @@ export interface IVendor {
     banquetSetup: string;
     banquetVegPrice: string;
     banquetNonVegPrice: string;
+    banquetLocation: string;
     banquetFloor: string;
     prefuntionAreaSize: string;
   }[];

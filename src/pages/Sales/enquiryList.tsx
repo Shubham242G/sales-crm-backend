@@ -331,7 +331,7 @@ export default function EnquiryLIst() {
         ),
     },
     {
-      name: "Generate RFP",
+      name: "Create an RFP",
       width: "150px",
       selector: (row: any) => (
         <div className="flex items-center">

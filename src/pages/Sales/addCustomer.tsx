@@ -8,7 +8,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import { generateFilePath } from "@/services/urls.service";
-import { Autocomplete, TextField } from "@mui/material";
+import { styled } from "@mui/system";
+import { Autocomplete, TextField, Popper } from "@mui/material";
 import {
   ChevronUp,
   ChevronDown,
@@ -99,6 +100,10 @@ interface IContactPerson {
   email: string;
   workPhone: string;
   mobilePhone: string;
+  contactPersonDateOfBirth: string;
+  contactPersonAnniversary: string;
+  contactPersonDesignation: string;
+  contactPersonDepartment: string;
   communicationChannels: communicationChannelsProps;
 }
 
@@ -175,7 +180,12 @@ const AddCustomer = () => {
       email: "",
       workPhone: "",
       mobilePhone: "",
+      contactPersonDesignation: "",
+      contactPersonDepartment: "",
       communicationChannels: { prefersEmail: true, prefersSms: false },
+      contactPersonDateOfBirth: "",
+      contactPersonAnniversary: "",
+
     },
   ]);
 
@@ -188,6 +198,10 @@ const AddCustomer = () => {
         lastName: "",
         email: "",
         leadId: "",
+        contactPersonDateOfBirth: "",
+        contactPersonAnniversary: "",
+        contactPersonDesignation: "",
+        contactPersonDepartment: "",
         workPhone: "",
         mobilePhone: "",
         communicationChannels: { prefersEmail: true, prefersSms: false },
@@ -258,6 +272,10 @@ const AddCustomer = () => {
             leadId: person.leadId || "",
             workPhone: person.workPhone || "",
             mobilePhone: person.mobilePhone || "",
+            contactPersonDateOfBirth: person.contactPersonDateOfBirth || "",
+            contactPersonAnniversary: person.contactPersonAnniversary || "",
+            contactPersonDesignation: person.contactPersonDesignation || "",
+            contactPersonDepartment: person.contactPersonDepartment || "",
             communicationChannels: person.communicationChannels || [],
           }))
         );
@@ -551,6 +569,11 @@ const AddCustomer = () => {
       )
     );
   };
+
+  const StyledPopper = styled(Popper)({
+    zIndex: 1300, // Ensure it's above other elements
+    marginTop: "4px", // Add slight spacing to not overlap
+  });
 
   const copyBillingAddress = () => {
     setFormData({
@@ -1137,55 +1160,46 @@ const AddCustomer = () => {
                               GST Treatment:
                             </span>
                             <div className="w-96">
-                              <Autocomplete
-                                disablePortal
-                                options={gstOptions}
-                                value={
-                                  gstOptions.find(
-                                    (option) =>
-                                      option.value === formData.gstTreatment
-                                  ) || null
-                                }
-                                onChange={(event, newValue) => {
-                                  setFormData({
-                                    ...formData,
-                                    gstTreatment: newValue?.value || "",
-                                  });
-                                }}
-                                renderInput={(params) => (
-                                  <TextField
-
-                                    {...params}
-                                    label="Select GST Treatment"
-                                    InputProps={{
-                                      ...params.InputProps,
-                                      style: { height: "36px", },
-                                    }}
-                                    sx={{
-                                      "& .MuiInputBase-root": {
-                                        height: "40px",
-
-                                      },
-                                      "& .MuiInputLabel-root": {
-                                        fontSize: "14px",
-                                        marginTop: "-2px",
-                                        transform:
-                                          "translate(14px, 10px) scale(1)",
-                                        "&.MuiInputLabel-shrink": {
-                                          transform:
-                                            "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      },
-                                      "& .MuiInputLabel-root.Mui-focused": {
-                                        transform:
-                                          "translate(14px, -9px) scale(0.75)",
-                                      },
-
-
-                                    }}
-                                  />
-                                )}
-                              />
+                            <Autocomplete
+  disablePortal
+  options={gstOptions}
+  value={
+    gstOptions.find((option) => option.value === formData.gstTreatment) || null
+  }
+  onChange={(event, newValue) => {
+    setFormData({
+      ...formData,
+      gstTreatment: newValue?.value || "",
+    });
+  }}
+  PopperComponent={StyledPopper}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Select GST Treatment"
+      InputProps={{
+        ...params.InputProps,
+        style: { height: "36px" },
+      }}
+      sx={{
+        "& .MuiInputBase-root": {
+          height: "40px",
+        },
+        "& .MuiInputLabel-root": {
+          fontSize: "14px",
+          marginTop: "-2px",
+          transform: "translate(14px, 10px) scale(1)",
+          "&.MuiInputLabel-shrink": {
+            transform: "translate(14px, -9px) scale(0.75)",
+          },
+        },
+        "& .MuiInputLabel-root.Mui-focused": {
+          transform: "translate(14px, -9px) scale(0.75)",
+        },
+      }}
+    />
+  )}
+/>
                             </div>
                             {/* <div className="w-96 mt-1">
                               {" "}
@@ -2150,12 +2164,13 @@ const AddCustomer = () => {
                               <Autocomplete
                                 disablePortal
                                 options={countryOptions}
+                                defaultValue={{ value: "IN - India", label: "IN - India" }}
                                 sx={{ width: 600 }}
                                 value={
                                   countryOptions.find(
                                     (option) =>
                                       option.value === formData.countryRegion
-                                  ) || null
+                                  ) || { value: "IN - India", label: "IN - India" }
                                 }
                                 onChange={(event, newValue) => {
                                   setFormData({
@@ -2377,7 +2392,7 @@ const AddCustomer = () => {
                                 renderInput={(params) => (
                                   <TextField
                                     {...params}
-                                    label="Select Payment Terms"
+                                    label="State"
                                     InputProps={{
                                       ...params.InputProps,
                                       style: { height: "40px" },
@@ -2631,12 +2646,13 @@ const AddCustomer = () => {
                                 disablePortal
                                 options={countryOptions}
                                 sx={{ width: 600 }}
+                                defaultValue={{ value: "IN - India", label: "IN - India" }}
                                 value={
                                   countryOptions.find(
                                     (option) =>
                                       option.value ===
-                                      formData.shippingCountryRegion
-                                  ) || null
+                                      formData.shippingCountryRegion 
+                                  ) || { value: "IN - India", label: "IN - India" }
                                 }
                                 onChange={(event, newValue) => {
                                   setFormData({
@@ -2647,7 +2663,7 @@ const AddCustomer = () => {
                                 renderInput={(params) => (
                                   <TextField
                                     {...params}
-                                    label="Select Payment Terms"
+                                    label="State"
                                     InputProps={{
                                       ...params.InputProps,
                                       style: { height: "40px" },
@@ -2859,7 +2875,7 @@ const AddCustomer = () => {
                                 renderInput={(params) => (
                                   <TextField
                                     {...params}
-                                    label="Select Payment Terms"
+                                    label="State"
                                     InputProps={{
                                       ...params.InputProps,
                                       style: { height: "40px" },
@@ -2951,217 +2967,299 @@ const AddCustomer = () => {
                     {activeTab === "Contact Persons" && (
                       <div className="grid grid-cols-2 gap-6">
                         <div className="col-span-2">
-                          <table className="min-w-full border border-gray-200">
-                            <thead className="bg-gray-50">
-                              <tr>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                  Salutation
-                                </th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                  First Name
-                                </th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                  Last Name
-                                </th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                  Email Address
-                                </th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                  Work Phone
-                                </th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                  Mobile
-                                </th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                  Communication Channels
-                                </th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                  Actions
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {contactPersons.map((person, index) => (
-                                <tr key={index} className="hover:bg-gray-50">
-                                  {/* Salutation Dropdown */}
-                                  <td className="px-4 py-2 border-b">
-                                    <select
-                                      value={person.salutation}
-                                      onChange={(e) =>
-                                        handleContactPersonChange(
-                                          index,
-                                          "salutation",
-                                          e.target.value
-                                        )
-                                      }
-                                      className="w-full border rounded p-1 text-sm"
-                                    >
-                                      <option value="">Select</option>
-                                      <option value="Mr.">Mr.</option>
-                                      <option value="Mrs.">Mrs.</option>
-                                      <option value="Ms.">Ms.</option>
-                                      <option value="Dr.">Dr.</option>
-                                    </select>
-                                  </td>
-
-                                  {/* First Name */}
-                                  <td className="px-4 py-2 border-b">
-                                    <input
-                                      type="text"
-                                      value={person.firstName}
-                                      onChange={(e) =>
-                                        handleContactPersonChange(
-                                          index,
-                                          "firstName",
-                                          e.target.value
-                                        )
-                                      }
-                                      className="w-full border rounded p-1 text-sm"
-                                    />
-                                  </td>
-
-                                  {/* Last Name */}
-                                  <td className="px-4 py-2 border-b">
-                                    <input
-                                      type="text"
-                                      value={person.lastName}
-                                      onChange={(e) =>
-                                        handleContactPersonChange(
-                                          index,
-                                          "lastName",
-                                          e.target.value
-                                        )
-                                      }
-                                      className="w-full border rounded p-1 text-sm"
-                                    />
-                                  </td>
-
-                                  {/* Email Address */}
-                                  <td className="px-4 py-2 border-b">
-                                    <input
-                                      type="email"
-                                      value={person.email}
-                                      onChange={(e) =>
-                                        handleContactPersonChange(
-                                          index,
-                                          "email",
-                                          e.target.value
-                                        )
-                                      }
-                                      className="w-full border rounded p-1 text-sm"
-                                    />
-                                  </td>
-
-                                  {/* Work Phone */}
-                                  <td className="px-4 py-2 border-b">
-                                    <input
-                                      type="tel"
-                                      value={person.workPhone}
-                                      onChange={(e) =>
-                                        handleContactPersonChange(
-                                          index,
-                                          "workPhone",
-                                          e.target.value
-                                        )
-                                      }
-                                      className="w-full border rounded p-1 text-sm"
-                                    />
-                                  </td>
-
-                                  {/* Mobile Phone */}
-                                  <td className="px-4 py-2 border-b">
-                                    <input
-                                      type="tel"
-                                      value={person.mobilePhone}
-                                      onChange={(e) =>
-                                        handleContactPersonChange(
-                                          index,
-                                          "workPhone",
-                                          e.target.value
-                                        )
-                                      }
-                                      className="w-full border rounded p-1 text-sm"
-                                    />
-                                  </td>
-
-                                  {/* Communication Channels */}
-                                  <td className="px-4 py-2 border-b">
-                                    <div className="flex gap-4">
-                                      <label className="flex items-center space-x-1">
-                                        <input
-                                          type="checkbox"
-                                          checked={
-                                            person.communicationChannels
-                                              .prefersEmail
-                                          }
-                                          onChange={(e) =>
-                                            handleChannelChange(
-                                              index,
-                                              "prefersEmail",
-                                              e.target.checked
-                                            )
-                                          }
-                                          // checked={person.communicationChannels.includes(
-                                          //   "Email"
-                                          // )}
-                                          // onChange={(e) =>
-                                          //   handleChannelChange(
-                                          //     index,
-                                          //     "Email",
-                                          //     e.target.checked
-                                          //   )
-                                          // }
-                                          className="form-checkbox h-4 w-4"
-                                        />
-                                        <span className="text-sm">Email</span>
-                                      </label>
-                                      <label className="flex items-center space-x-1">
-                                        <input
-                                          type="checkbox"
-                                          checked={
-                                            person.communicationChannels
-                                              .prefersSms
-                                          }
-                                          onChange={(e) =>
-                                            handleChannelChange(
-                                              index,
-                                              "prefersSms",
-                                              e.target.checked
-                                            )
-                                          }
-                                          // checked={person.communicationChannels.includes(
-                                          //   "SMS"
-                                          // )}
-                                          // onChange={(e) =>
-                                          //   handleChannelChange(
-                                          //     index,
-                                          //     "SMS",
-                                          //     e.target.checked
-                                          //   )
-                                          // }
-                                          className="form-checkbox h-4 w-4"
-                                        />
-                                        <span className="text-sm">SMS</span>
-                                      </label>
-                                    </div>
-                                  </td>
-
-                                  {/* Delete Button */}
-                                  <td className="px-4 py-2 border-b">
-                                    <button
-                                      type="button"
-                                      onClick={() =>
-                                        handleDeleteContactPerson(index)
-                                      }
-                                      className="text-red-600 hover:text-red-800 text-sm"
-                                    >
-                                      Delete
-                                    </button>
-                                  </td>
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full border border-gray-200">
+                              <thead className="bg-gray-50 sticky top-0">
+                                <tr>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Salutation
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    First Name
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Last Name
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Email Address
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Work Phone
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Mobile
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  Anniversary Date
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Department
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Designation
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Date of Birth
+                                  </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Communication Channels
+                                    </th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                      Actions
+                                    </th>
                                 </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                              </thead>
+                              <tbody>
+                                {contactPersons.map((person, index) => (
+                                  <tr key={index} className="hover:bg-gray-50">
+                                    {/* Salutation Dropdown */}
+                                    <td className="px-4 py-2 border-b">
+                                      <select
+                                        value={person.salutation}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "salutation",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Mr.">Mr.</option>
+                                        <option value="Mrs.">Mrs.</option>
+                                        <option value="Ms.">Ms.</option>
+                                        <option value="Dr.">Dr.</option>
+                                      </select>
+                                    </td>
+
+                                    {/* First Name */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="text"
+                                        value={person.firstName}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "firstName",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Last Name */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="text"
+                                        value={person.lastName}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "lastName",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Email Address */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="email"
+                                        value={person.email}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "email",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Work Phone */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="tel"
+                                        value={person.workPhone}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "workPhone",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Mobile Phone */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="tel"
+                                        value={person.mobilePhone}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "mobilePhone",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Anniversary Date */}
+                                    <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="date"
+                                          value={person.contactPersonAnniversary}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonAnniversary",
+                                              e.target.value
+                                            )
+                                          }
+                                          onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                    {/* Department */}
+                                    <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="text"
+                                          value={person.contactPersonDepartment}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonDepartment",
+                                              e.target.value
+                                            )
+                                          }
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Designation */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="text"
+                                          value={person.contactPersonDesignation}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonDesignation",
+                                              e.target.value
+                                            )
+                                          }
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      {/* Date of Birth */}
+                                      <td className="px-4 py-2 border-b">
+                                        <input
+                                          type="date"
+                                          value={person.contactPersonDateOfBirth}
+                                          onChange={(e) =>
+                                            handleContactPersonChange(
+                                              index,
+                                              "contactPersonDateOfBirth",
+                                              e.target.value
+                                            )
+                                          }
+                                          onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                                          className="w-full border rounded p-1 text-sm"
+                                        />
+                                      </td>
+
+                                      
+
+                                      {/* Communication Channels */}
+                                    <td className="px-4 py-2 border-b">
+                                      <div className="flex gap-4">
+                                        <label className="flex items-center space-x-1">
+                                          <input
+                                            type="checkbox"
+                                            checked={
+                                              person.communicationChannels
+                                                .prefersEmail
+                                            }
+                                            onChange={(e) =>
+                                              handleChannelChange(
+                                                index,
+                                                "prefersEmail",
+                                                e.target.checked
+                                              )
+                                            }
+                                            // checked={person.communicationChannels.includes(
+                                            //   "Email"
+                                            // )}
+                                            // onChange={(e) =>
+                                            //   handleChannelChange(
+                                            //     index,
+                                            //     "Email",
+                                            //     e.target.checked
+                                            //   )
+                                            // }
+                                            className="form-checkbox h-4 w-4"
+                                          />
+                                          <span className="text-sm">Email</span>
+                                        </label>
+                                        <label className="flex items-center space-x-1">
+                                          <input
+                                            type="checkbox"
+                                            checked={
+                                              person.communicationChannels
+                                                .prefersSms
+                                            }
+                                            onChange={(e) =>
+                                              handleChannelChange(
+                                                index,
+                                                "prefersSms",
+                                                e.target.checked
+                                              )
+                                            }
+                                            // checked={person.communicationChannels.includes(
+                                            //   "SMS"
+                                            // )}
+                                            // onChange={(e) =>
+                                            //   handleChannelChange(
+                                            //     index,
+                                            //     "SMS",
+                                            //     e.target.checked
+                                            //   )
+                                            // }
+                                            className="form-checkbox h-4 w-4"
+                                          />
+                                          <span className="text-sm">SMS</span>
+                                        </label>
+                                      </div>
+                                    </td>
+
+                                    {/* Delete Button */}
+                                    <td className="px-4 py-2 border-b">
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          handleDeleteContactPerson(index)
+                                        }
+                                        className="text-red-600 hover:text-red-800 text-sm"
+                                      >
+                                        Delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
 
                           {/* Add Row Button */}
                           <div className="mt-4">

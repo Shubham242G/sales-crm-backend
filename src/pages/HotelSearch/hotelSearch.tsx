@@ -6,6 +6,8 @@ function SearchBar() {
     startDate: "",
     endDate: "",
     eventSize: "",
+    guests: "",
+    budget: "",
   });
   const [filters, setFilters] = useState({
     regions: "",
@@ -70,6 +72,9 @@ function SearchBar() {
             />
           </div>
           <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Start Date
+            </label>
             <input
               type="date"
               name="startDate"
@@ -80,6 +85,9 @@ function SearchBar() {
             />
           </div>
           <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+              End Date
+            </label>
             <input
               type="date"
               name="endDate"
@@ -96,6 +104,18 @@ function SearchBar() {
               placeholder="Event size"
               min={0}
               value={searchData.eventSize}
+              onChange={handleSearchChange}
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="flex-1">
+            <input
+              type="number"
+              name="guests"
+              placeholder="Guests"
+              min={0}
+              value={searchData.guests}
               onChange={handleSearchChange}
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

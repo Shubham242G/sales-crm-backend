@@ -78,8 +78,10 @@
 }
 
 body{
-    font-family: 'Satoshi';
-    @apply  font-zoho;
+    /* font-family: 'Satoshi';
+    @apply  font-zoho; */
+    color: var(--blacktext);
+    font-family: 'Satoshi_Regular', 'Zoho_Puvi_SemiBold', Arial, sans-serif;
 }
 
 
@@ -185,12 +187,16 @@ body{
 .rdt_TableHeadRow{
 
 justify-content: start !important;
+min-height: 38px !important;
+
 }
 
 
 .rdt_TableCol{
  
 justify-content: center !important;
+z-index: 100 !important;  
+
   
 }
 
@@ -200,10 +206,49 @@ justify-content: center !important;
  
 }
 
-.rdt_TableRow{
-  padding: 20px 0 !important;
+.leadtable .rdt_TableCol:first-child{
+    position: sticky;
+    left: 0;
+     margin-left: 1px;
+    background: #F2F4F7;
+    z-index: 9999 !important;
+
+}
+.leadtable .rdt_TableHead{
+  z-index: 9 !important;
 }
 
+
+.leadtable .rdt_TableCell:first-child {
+    position: sticky;
+    left: 0;
+    background: white;
+    margin-left: 1px;
+    z-index: 1;
+}
+
+
+.rdt_TableHead{
+  border: 1px solid #EAECF0 !important;
+
+
+}
+ 
+
+.rdt_TableRow{
+  padding: 13px 0 !important;
+  
+}
+/* .rdt_TableRow:hover{
+  background: #F9FAFB !important;
+} */
+
+input[type="checkbox"] {
+  color: #3b82f6;
+  border-color: #d1d5db;
+  height: 10px;
+ 
+}
 
 .input {
   @apply border border-gray-300 rounded-lg p-2 w-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500;
@@ -214,3 +259,6 @@ input::placeholder, select::placeholder,select, textarea::placeholder {
 }
 
 
+.rdt_Pagination{
+  min-height: 50px !important;
+}

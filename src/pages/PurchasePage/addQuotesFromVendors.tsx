@@ -432,7 +432,7 @@ const AddQuotesFromVendors = () => {
           </div>
 
 
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="block text-sm font-medium text-black mb-2">
               RFP ID
             </label>
@@ -450,7 +450,7 @@ const AddQuotesFromVendors = () => {
               isClearable
               styles={customStyles}
             />
-          </div>
+          </div> */}
 
           {/* Event Details and Deadline */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
