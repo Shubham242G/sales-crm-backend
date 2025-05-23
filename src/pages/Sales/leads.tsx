@@ -491,7 +491,7 @@ function Leads() {
 
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
-  const [visibleColumns, setVisibleColumns] = useState({
+  const [visibleColumns, setVisibleColumns] = useState< Record<string, boolean>>({
 
     "Contact Name": true,
     "Mobile Number": true,
@@ -499,8 +499,8 @@ function Leads() {
     "Display Name": true,
     "Email": true,
     "Actions": canView || canUpdate || true,
-    // "Edit": canView || canUpdate, 
-    // "Delete": canDelete ,
+    "Edit": canView || canUpdate, 
+    "Delete": canDelete ,
     "Convert to Contact": true,
     "Generate Enquiry": true,
   });
