@@ -666,16 +666,16 @@ export default function DebitCreditNote() {
                   <div className="form">
                     <table className="border p-2 border-[#e5e5e5] w-full">
                       <tr>
-                        <th className="text-[0.85rem] border-r border-b border-[#e5e5e5] px-4 py-2 w-[35%] ">
+                        <th className="text-[0.85rem] border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[35%] ">
                           Item
                         </th>
-                        <th className="text-[0.85rem] border-r border-b border-[#e5e5e5] px-4 py-2 w-[15%] ">
+                        <th className="text-[0.85rem] border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[15%] ">
                           HSN Code
                         </th>
-                        <th className="text-[0.85rem] border-r border-b border-[#e5e5e5] px-4 py-2 w-[15%] ">
+                        <th className="text-[0.85rem] border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[15%] ">
                           Rate
                         </th>
-                        <th className="text-[0.85rem] border-r border-b border-[#e5e5e5] px-4 py-2 w-[20%]">
+                        <th className="text-[0.85rem] border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[20%]">
                           Tax
                         </th>
                         <th className="text-[0.85rem] border-r border-b border-[#e5e5e5] px-3 py-2 w-[15%] ">
@@ -783,16 +783,16 @@ export default function DebitCreditNote() {
               <div className="modal_body  p-4">
               <table className="border p-2 border-[#e5e5e5] w-full">
                       <tr>
-                        <th className="text-text15 border-r border-b border-[#e5e5e5] px-4 py-2 w-[35%] text-left ">
+                        <th className="text-text15 border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[35%] text-left ">
                           Type
                         </th>
-                        <th className="text-text15 border-r border-b border-[#e5e5e5] px-4 py-2 w-[15%] text-left ">
+                        <th className="text-text15 border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[15%] text-left ">
                           Action
                         </th>
-                        <th className="text-text15 border-r border-b border-[#e5e5e5] px-4 py-2 w-[15%] text-left ">
+                        <th className="text-text15 border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[15%] text-left ">
                           Action By
                         </th>
-                        <th className="text-text15 border-r border-b border-[#e5e5e5] px-4 py-2 w-[35%] text-left">
+                        <th className="text-text15 border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[35%] text-left">
                           Time
                         </th>
                        

@@ -122,13 +122,13 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
   <div className="flex justify-end mt-6 space-x-3">
     <button
       onClick={handleClear}
-      className="px-4 py-2 h-[38px] border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 text-[14px]"
+      className=" px-3 py-1.5 h-[38px] border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 text-[14px]"
     >
       Clear
     </button>
     <button
       onClick={handleSearch}
-      className="px-4 py-2 h-[38px] bg-orange-500 text-white rounded-md hover:bg-orange-600 text-[14px]"
+      className=" px-3 py-1.5 h-[38px] bg-orange-500 text-white rounded-md hover:bg-orange-600 text-[14px]"
     >
       Search
     </button>

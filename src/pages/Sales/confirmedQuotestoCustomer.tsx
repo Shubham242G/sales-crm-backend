@@ -391,11 +391,11 @@ function ConfirmedQuotestoCustomer() {
         filterbuttn={false}
       /> */}
 
-      <div className="container px-6">
-        <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
+      <div className="container  -ml-5 -mt-6">
+        <div className=" table_container rounded-xl shadow-xl    -mt-5">
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
-            <h2 className="text-xl font-semibold text-gray-800">
+            <h2 className="text-xl font-semibold text-gray-800 ml-3">
               All Quotes for Vendor List
             </h2>
 
@@ -405,13 +405,13 @@ function ConfirmedQuotestoCustomer() {
               <div className="w-full">
                 <input
                   type="search"
-                  className="rounded-md w-full border px-4 border-gray-300 py-2   text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  className="rounded-md w-full border px-3 text-sm border-gray-300 py-1.5   text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                   placeholder="Search..."
                 />
               </div>
               <div className="relative">
                 <button
-                  className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                  className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                   onClick={() => setShowColumnSelector(!showColumnSelector)}
                 >
                   <FaColumns /> Columns
@@ -420,15 +420,15 @@ function ConfirmedQuotestoCustomer() {
               </div>
 
               {/* Buttons */}
-              {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */}
-              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
               <button
                 onClick={() => navigate("/add-ConfirmedQuotesFromVendor")}
-                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                className="flex w-full items-center justify-center gap-1 px-3 text-sm py-1.5 text-white rounded-md bg-orange-500 border border-gray-300"
               >
                 <FaPlus />
                 <span>New Confirmed Quotes</span>
@@ -440,7 +440,8 @@ function ConfirmedQuotestoCustomer() {
             </div>
           </div>
           {/* React Table */}
-          <ReactTable
+          <div className="mt-3 -mr-4">
+  <ReactTable
             data={data}
             columns={filteredColumns}
             loading={false}
@@ -451,6 +452,8 @@ function ConfirmedQuotestoCustomer() {
           // paginationPerPage={rowsPerPage}
           // paginationRowsPerPageOptions={[5, 10, 20]}
           />
+          </div>
+        
         </div>
       </div>
     </>

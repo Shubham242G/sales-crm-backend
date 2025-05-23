@@ -333,14 +333,14 @@ function CustomerSales() {
 
 
   return (
-    <div className="container px-6">
-      <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
-        <div className="search_boxes flex justify-between items-center ">
+    <div className="container top-0 b sticky -mt-5 ">
+      <div className="bg-white table_container rounded-xl shadow-xl -ml-5 -mt-5">
+        <div className="search_boxes flex justify-between items-center ml-4 mr-5 ">
           <h2 className="text-xl font-semibold text-gray-800">Customer List</h2>
           <div className="flex items-center gap-2">
             <input
               type="search"
-              className="rounded-md border px-4 py-2 placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+              className="rounded-md border text-sm px-3 py-1.5 placeholder-txtcolor focus:outline-none focus:border-buttnhover"
               placeholder="Search..."
               value={query}
               onChange={handleSearchInputChange}
@@ -349,7 +349,7 @@ function CustomerSales() {
 
             <div className="relative">
               <button
-                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowColumnSelector(!showColumnSelector)}
               >
                 <FaColumns /> Columns
@@ -358,14 +358,14 @@ function CustomerSales() {
             </div>
 
 
-              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
               <FaFileExport /> Export
             </button>
-            <button onClick={handleSyncCustomer} className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+            <button onClick={handleSyncCustomer} className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
               <FaFileExport /> Sync
             </button>
             <button
-              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300"
+              className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
               onClick={handleImportClick}
             >
               <FaFileImport /> Import
@@ -373,13 +373,14 @@ function CustomerSales() {
             {canCreate && (
               <button
                 onClick={() => navigate("/add-customer")}
-                className="flex items-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500"
+                className="flex items-center gap-1 px-3 py-1.5 text-sm text-white rounded-md bg-orange-500"
               >
                 <FaPlus /> <span>New Customer</span>
               </button>
             )}
           </div>
         </div>
+        <div className="mt-4">
         <ReactTable
           data={CustomerData?.data}
           columns={filteredColumns}
@@ -392,7 +393,7 @@ function CustomerSales() {
           isServerPropsDisabled={false}
 
         />
-
+</div>
 
       </div>
     </div>

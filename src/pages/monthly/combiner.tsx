@@ -176,7 +176,7 @@ const TaskManager: React.FC = () => {
                 <div className="flex justify-between mb-4">
                     <button
                         onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))}
-                        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                        className=" px-3 py-1.5 bg-gray-200 rounded hover:bg-gray-300"
                     >
                         Previous
                     </button>
@@ -185,7 +185,7 @@ const TaskManager: React.FC = () => {
                     </h2>
                     <button
                         onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))}
-                        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                        className=" px-3 py-1.5 bg-gray-200 rounded hover:bg-gray-300"
                     >
                         Next
                     </button>
@@ -267,11 +267,11 @@ const TaskManager: React.FC = () => {
                                             <option value="Cancelled">Cancelled</option>
                                         </select>
                                         <div className="flex gap-2">
-                                            <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">Save</button>
+                                            <button type="submit" className="bg-green-500 text-white  px-3 py-1.5 rounded">Save</button>
                                             <button
                                                 type="button"
                                                 onClick={() => setEditId(null)}
-                                                className="bg-gray-500 text-white px-4 py-2 rounded"
+                                                className="bg-gray-500 text-white  px-3 py-1.5 rounded"
                                             >
                                                 Cancel
                                             </button>
@@ -287,13 +287,13 @@ const TaskManager: React.FC = () => {
                                         <p>Date: {new Date(monthlyPlanner.date).toLocaleDateString()}</p>
                                         <div className="mt-2 flex gap-2">
                                             <button
-                                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                                className="bg-blue-500 text-white  px-3 py-1.5 rounded"
                                                 onClick={() => handleEdit(monthlyPlanner._id, monthlyPlanner)}
                                             >
                                                 Edit
                                             </button>
                                             <button
-                                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                                className="bg-red-500 text-white  px-3 py-1.5 rounded"
                                                 onClick={() => handleDelete(monthlyPlanner._id)}
                                             >
                                                 Delete
@@ -308,7 +308,7 @@ const TaskManager: React.FC = () => {
                     )}
                     <button
                         onClick={handleOpenAdd}
-                        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        className="mt-4 bg-blue-500 text-white  px-3 py-1.5 rounded hover:bg-blue-600"
                     >
                         Add Task
                     </button>
@@ -369,10 +369,10 @@ const TaskManager: React.FC = () => {
                             </select>
                         </div>
                         <div className="mt-4 flex gap-2">
-                            <button onClick={() => setOpen(false)} className="bg-gray-500 text-white px-4 py-2 rounded">
+                            <button onClick={() => setOpen(false)} className="bg-gray-500 text-white  px-3 py-1.5 rounded">
                                 Cancel
                             </button>
-                            <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded">
+                            <button onClick={handleSubmit} className="bg-blue-500 text-white  px-3 py-1.5 rounded">
                                 {editId ? 'Update' : 'Add'}
                             </button>
                         </div>

@@ -319,17 +319,17 @@ export default function EditPaymentCollection() {
               <th className="bg-[#efebeb]  border-r border-b border-[#e5e5e5] w-[5%]">
                
               </th>
-              <th className="bg-[#efebeb]  border-r border-b border-[#e5e5e5] text-[0.75rem]  font-semibold text-secondarycolor  px-4 py-2 w-[25%]  ">
+              <th className="bg-[#efebeb]  border-r border-b border-[#e5e5e5] text-[0.75rem]  font-semibold text-secondarycolor   px-3 py-1.5 w-[25%]  ">
                 Date
               </th>
 
-              <th className="text-[0.75rem]  bg-[#efebeb] border-r border-b border-[#e5e5e5] px-4 py-2 w-[15%] text-secondarycolor font-semibold  ">
+              <th className="text-[0.75rem]  bg-[#efebeb] border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[15%] text-secondarycolor font-semibold  ">
                 Invoice No
               </th>
-              <th className="text-[0.75rem]  bg-[#efebeb] border-r border-b border-[#e5e5e5] px-4 py-2 w-[15%] text-secondarycolor font-semibold  ">
+              <th className="text-[0.75rem]  bg-[#efebeb] border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[15%] text-secondarycolor font-semibold  ">
                 Invoice Amount
               </th>
-              <th className="text-[0.75rem]  bg-[#efebeb] border-r border-b border-[#e5e5e5] px-4 py-2 w-[15%] text-secondarycolor font-semibold  ">
+              <th className="text-[0.75rem]  bg-[#efebeb] border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[15%] text-secondarycolor font-semibold  ">
                 Paid Amount
               </th>
               <th className="text-[0.75rem]  bg-[#efebeb] border-r border-b border-[#e5e5e5] px-3 py-2 w-[15%] text-secondarycolor font-semibold  ">

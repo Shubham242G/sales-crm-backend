@@ -2017,7 +2017,7 @@ const AddVendorForm = () => {
                                               />
                                               <label
                                                 htmlFor={`room-image-upload-${index}`}
-                                                className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
+                                                className="bg-white border border-gray-300 text-gray-700  px-3 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
                                               >
                                                 Upload Images
                                               </label>
@@ -2070,7 +2070,7 @@ const AddVendorForm = () => {
                                     <button
                                       type="button"
                                       onClick={handleAddRoom}
-                                      className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                                      className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
                                     >
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -2267,7 +2267,7 @@ const AddVendorForm = () => {
                                   />
                                   <label
                                     htmlFor="restaurant-image-upload"
-                                    className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
+                                    className="bg-gray-200 text-gray-700  px-3 py-1.5 rounded-md cursor-pointer hover:bg-gray-300"
                                   >
                                     Upload Images
                                   </label>
@@ -2620,7 +2620,7 @@ const AddVendorForm = () => {
                                     />
                                     <label
                                       htmlFor={`banquet-image-upload-${index}`}
-                                      className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
+                                      className="bg-white border border-gray-300 text-gray-700  px-3 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
                                     >
                                       Upload Images
                                     </label>
@@ -2657,7 +2657,7 @@ const AddVendorForm = () => {
                           <button
                             type="button"
                             onClick={handleAddBanquet}
-                            className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                            className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -2683,7 +2683,7 @@ const AddVendorForm = () => {
                                     { services: "", rate: "" },
                                   ])
                                 }
-                                className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
+                                className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F]  px-3 py-1.5 rounded-md"
                               >
                                 Add Services
                               </button>
@@ -3003,7 +3003,7 @@ const AddVendorForm = () => {
                                   ],
                                 })
                               }
-                              className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
+                              className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F]  px-3 py-1.5 rounded-md"
                             >
                               Add Car
                             </button>
@@ -3902,7 +3902,7 @@ const AddVendorForm = () => {
                                 <button
                                   type="button"
                                   onClick={() => fileInputRef.current?.click()}
-                                  className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
+                                  className="flex items-center gap-2  px-3 py-1.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
                                 >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -5021,38 +5021,38 @@ const AddVendorForm = () => {
                             <table className="min-w-full border border-gray-200">
                               <thead className="bg-gray-50">
                                 <tr>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     Salutation
                                   </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     First Name
                                   </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     Last Name
                                   </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     Email Address
                                   </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     Work Phone
                                   </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     Mobile
                                   </th>
 
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     Department
                                   </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     Designation
                                   </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     Date of Birth
                                   </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     Anniversary Date
                                   </th>
-                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
                                     Actions
                                   </th>
                                 </tr>
@@ -5061,7 +5061,7 @@ const AddVendorForm = () => {
                                 {contactPersons.map((person, index) => (
                                   <tr key={index} className="hover:bg-gray-50">
                                     {/* Salutation Dropdown */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <select
                                         value={person.salutation}
                                         onChange={(e) =>
@@ -5082,7 +5082,7 @@ const AddVendorForm = () => {
                                     </td>
 
                                     {/* First Name */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <input
                                         type="text"
                                         value={person.contactPersonFirstName}
@@ -5098,7 +5098,7 @@ const AddVendorForm = () => {
                                     </td>
 
                                     {/* Last Name */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <input
                                         type="text"
                                         value={person.contactPersonLastName}
@@ -5114,7 +5114,7 @@ const AddVendorForm = () => {
                                     </td>
 
                                     {/* Email Address */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <input
                                         type="email"
                                         value={person.contactPersonEmail}
@@ -5130,7 +5130,7 @@ const AddVendorForm = () => {
                                     </td>
 
                                     {/* Work Phone */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <input
                                         type="tel"
                                         value={person.contactPersonWorkPhone}
@@ -5146,7 +5146,7 @@ const AddVendorForm = () => {
                                     </td>
 
                                     {/* Mobile Phone */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <input
                                         type="tel"
                                         value={person.contactPersonMobilePhone}
@@ -5162,7 +5162,7 @@ const AddVendorForm = () => {
                                     </td>
 
                                     {/* Department */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <input
                                         type="text"
                                         value={person.contactPersonDepartment}
@@ -5178,7 +5178,7 @@ const AddVendorForm = () => {
                                     </td>
 
                                     {/* Designation */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <input
                                         type="text"
                                         value={person.contactPersonDesignation}
@@ -5194,7 +5194,7 @@ const AddVendorForm = () => {
                                     </td>
 
                                     {/* Date of Birth */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <input
                                         type="date"
                                         value={person.contactPersonDateOfBirth}
@@ -5211,7 +5211,7 @@ const AddVendorForm = () => {
                                     </td>
 
                                     {/* Anniversary Date */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <input
                                         type="date"
                                         value={person.contactPersonAnniversary}
@@ -5228,7 +5228,7 @@ const AddVendorForm = () => {
                                     </td>
 
                                     {/* Delete Button */}
-                                    <td className="px-4 py-2 border-b">
+                                    <td className=" px-3 py-1.5 border-b">
                                       <button
                                         type="button"
                                         onClick={() =>
@@ -5249,7 +5249,7 @@ const AddVendorForm = () => {
                               <button
                                 type="button"
                                 onClick={handleAddContactPerson}
-                                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
                               >
                                 Add Row
                               </button>
@@ -5268,21 +5268,21 @@ const AddVendorForm = () => {
               <button
                 type="button"
                 onClick={populateDemoData}
-                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className=" px-3 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
                 Populate Demo Data
               </button>
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+                className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
               >
                 Cancel
               </button>
               {((!id && canCreate) || (id && canUpdate)) && (
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+                  className=" px-3 py-1.5 bg-orange-500 text-white rounded-md hover:bg-orange-600"
                 >
                   Save
                 </button>

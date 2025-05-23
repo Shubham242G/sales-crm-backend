@@ -37,7 +37,7 @@ export default function EnquiryLIst() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
- 
+
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Enquiry");
@@ -65,16 +65,16 @@ export default function EnquiryLIst() {
     "Delete": canDelete || true,
     "Convert to Enquiry": true
   });
- const [isOpen, setIsOpen] = useState(false);
-    const [advancedSearchParams, setAdvancedSearchParams] = useState("");
-      const [searchQuery, setSearchQuery] = useState("");
-   
+  const [isOpen, setIsOpen] = useState(false);
+  const [advancedSearchParams, setAdvancedSearchParams] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
   const searchObj = useMemo(
     () => ({
       ...(query && { query }),
       ...(selectedEnquiryType && { enquiryType: selectedEnquiryType }),
-       ...(searchQuery && { query: searchQuery }),
-       ...(advancedSearchParams && { advancedSearch: advancedSearchParams }),
+      ...(searchQuery && { query: searchQuery }),
+      ...(advancedSearchParams && { advancedSearch: advancedSearchParams }),
       ...(selectedLevel && { levelOfEnquiry: selectedLevel }),
       ...(selectedStatus && { status: selectedStatus }),
       pageIndex: pageIndex - 1,
@@ -96,7 +96,7 @@ export default function EnquiryLIst() {
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
 
   // Save column preferences to localStorage
- 
+
 
   const handleImportClick = () => {
     fileInputRef.current?.click();
@@ -140,7 +140,7 @@ export default function EnquiryLIst() {
       }
     }
   };
- 
+
 
   const handleExportEnquiries = async () => {
     try {
@@ -153,7 +153,7 @@ export default function EnquiryLIst() {
       link.click();
       link.remove();
       toastSuccess("Enquries exported successfully!");
-      
+
     } catch (error) {
       toastError("Failed to export enquiries. Please try again.");
     }
@@ -198,7 +198,7 @@ export default function EnquiryLIst() {
     }
   };
 
-  
+
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -214,7 +214,7 @@ export default function EnquiryLIst() {
           <h6>{row.firstName + " " + row.lastName}</h6>
         </div>
       ),
-       width: "150px",
+      width: "150px",
     },
     {
       name: "Assigned To",
@@ -410,15 +410,15 @@ export default function EnquiryLIst() {
 
   const calculateDynamicWidths = (columnsArray: any[]) => {
     const visibleColumnsCount = columnsArray.length;
-    
-    if (visibleColumnsCount === 0) return columnsArray;
-    
-    const columnsWithDynamicWidth = columnsArray.map(column => ({...column}));
-    
-    const baseWidth = 100 / visibleColumnsCount; 
 
-    const MIN_WIDTH = 8; 
-    const MAX_WIDTH = 20; 
+    if (visibleColumnsCount === 0) return columnsArray;
+
+    const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
+
+    const baseWidth = 100 / visibleColumnsCount;
+
+    const MIN_WIDTH = 8;
+    const MAX_WIDTH = 20;
     columnsWithDynamicWidth.forEach(column => {
       let allocatedWidth = baseWidth;
 
@@ -435,15 +435,15 @@ export default function EnquiryLIst() {
     });
 
     console.log(columnsWithDynamicWidth, "check the column width")
-    
+
     return columnsWithDynamicWidth;
   };
 
   // Filter columns based on visibility
-  const visibleColumnsArray = columns.filter(column => 
+  const visibleColumnsArray = columns.filter(column =>
     visibleColumns[column.name as keyof typeof visibleColumns]
   );
-  
+
   // Apply dynamic widths to visible columns
   const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
 
@@ -495,7 +495,7 @@ export default function EnquiryLIst() {
         </div>
 
         <button
-          className="mt-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md"
+          className="mt-2  px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-md"
           onClick={() => {
             setSelectedEnquiryType("");
             setSelectedLevel("");
@@ -508,66 +508,66 @@ export default function EnquiryLIst() {
     </div>
   );
   const searchFields: SearchField[] = [
-  { key: "firstName", label: "First Name", type: "text" },
+    { key: "firstName", label: "First Name", type: "text" },
     { key: "lastName", label: "Last Name", type: "text" },
     { key: "email", label: "Email", type: "text" },
     { key: "company", label: "Company Name", type: "text" },
     { key: "phone", label: "Phone", type: "text" },
-  {
-    key: 'enquiryType',
-    label: 'Enquiry Type',
-    type: 'select',
-    options: [
-      { value: 'Corporate', label: 'Corporate' },
-      { value: 'Individual', label: 'Individual' },
-      { value: 'Group', label: 'Group' },
-      { value: 'Room', label: 'Room' },
-      { value: 'Banquet', label: 'Banquet' },
-      { value: 'Both', label: 'Both' },
-    ],
-  },
-  {
-    key: 'city',
-    label: 'Location',
-    type: 'text',
-  },
-  {
-    key: 'levelOfEnquiry',
-    label: 'Level of Enquiry',
-    type: 'select',
-    options: [
-      { value: 'urgent', label: 'Urgent' },
-      { value: 'moderate', label: 'Moderate' },
-      { value: 'Not Urgent', label: 'Not Urgent' },
-    ],
-  },
-  
-  {
-    key: 'checkIn',
-    label: 'Check-In',
-    type:'date',
-  },
-  {
-    key: 'checkOut',
-    label: 'Check-Out',
-    type: 'date',
-  },
-  {
-    key: 'noOfRooms',
-    label: 'Number of Rooms',
-    type: 'number',
-  },
-  {
-    key: 'status',
-    label: 'Status',
-    type: 'select',
-    options: [
-      // Add status options as needed
-    ],
-  },
-];
-  
- const handleModalOpen = () => {
+    {
+      key: 'enquiryType',
+      label: 'Enquiry Type',
+      type: 'select',
+      options: [
+        { value: 'Corporate', label: 'Corporate' },
+        { value: 'Individual', label: 'Individual' },
+        { value: 'Group', label: 'Group' },
+        { value: 'Room', label: 'Room' },
+        { value: 'Banquet', label: 'Banquet' },
+        { value: 'Both', label: 'Both' },
+      ],
+    },
+    {
+      key: 'city',
+      label: 'Location',
+      type: 'text',
+    },
+    {
+      key: 'levelOfEnquiry',
+      label: 'Level of Enquiry',
+      type: 'select',
+      options: [
+        { value: 'urgent', label: 'Urgent' },
+        { value: 'moderate', label: 'Moderate' },
+        { value: 'Not Urgent', label: 'Not Urgent' },
+      ],
+    },
+
+    {
+      key: 'checkIn',
+      label: 'Check-In',
+      type: 'date',
+    },
+    {
+      key: 'checkOut',
+      label: 'Check-Out',
+      type: 'date',
+    },
+    {
+      key: 'noOfRooms',
+      label: 'Number of Rooms',
+      type: 'number',
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      type: 'select',
+      options: [
+        // Add status options as needed
+      ],
+    },
+  ];
+
+  const handleModalOpen = () => {
     setIsOpen(true);
   };
 
@@ -575,51 +575,53 @@ export default function EnquiryLIst() {
 
 
   const handleAssignTask = () => {
-    setIsOpenAssign(true); 
+    setIsOpenAssign(true);
   };
 
-  
- 
-  return (
-    <div className="container mx-auto w-full">
-      <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5 w-full">
-        <div className="search_boxes flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-3">
-          <h2 className="text-xl font-semibold text-gray-800">Enquiry List</h2>
 
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
-            <div className="min-w-[200px] flex-grow sm:flex-grow-0 sm:w-64">
+
+  return (
+    <div className="container top-0 b sticky -mt-5">
+      <div className=" table_container rounded-xl  -mt-5 -ml-3 ">
+        <div className="search_boxes flex justify-between items-center ml-2 ">
+          <h2 className="text-xl font-semibold text-gray-800">
+            Enquiry List
+            </h2>
+
+          <div className="flex items-center justify-start gap-2 ">
+            <div className="">
               <input
                 type="search"
-                className="rounded-md w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border px-3 text-sm border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search by customer name"
                 onChange={(e) => setQuery(e.target.value)}
-                
+
               />
             </div>
-           
+
 
             {/* <div className="relative">
               {/* <button
-                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <FaFilter /> Filter
               </button> 
               {showFilters && <FilterDropdown />}
             </div> */}
-             <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
-                Advance Search
-              </button>
+            <button onClick={handleModalOpen} className="flex items-center  text-sm adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+              Advance Search
+            </button>
 
-                      <button
-                              className="w-48 flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
-                              onClick={handleAssignTask}
-                            >
-                            <span className="whitespace-nowrap"> Assign To Ops Team </span>
-                            </button>
+            <button
+              className=" flex items-center gap-1  px-3 py-1.5  text-sm rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+              onClick={handleAssignTask}
+            >
+              <span className="whitespace-nowrap text-sm"> Assign To Ops Team </span>
+            </button>
             <div className="relative">
               <button
-                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                className="flex items-center gap-1  px-3 py-1.5 rounded-md text-sm text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowColumnSelector(!showColumnSelector)}
               >
                 <FaColumns /> Columns
@@ -628,7 +630,7 @@ export default function EnquiryLIst() {
             </div>
 
             <button
-              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+              className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
               onClick={handleExportEnquiries}
             >
               <FaFileExport /> Export
@@ -637,13 +639,13 @@ export default function EnquiryLIst() {
             <input
               type="file"
               ref={fileInputRef}
-              className="hidden"
+              className="hidden text-sm"
               accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
               onChange={handleFileChange}
             />
 
             <button
-              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+              className="flex items-center gap-1  text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
               onClick={handleImportClick}
               disabled={isUploading}
             >
@@ -654,7 +656,7 @@ export default function EnquiryLIst() {
             {canCreate && (
               <button
                 onClick={() => navigate("/addEnquiry")}
-                className="flex items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300 whitespace-nowrap"
+                className="flex items-center justify-center text-sm gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 border border-gray-300 whitespace-nowrap"
               >
                 <FaPlus />
                 <span>New Enquiry</span>
@@ -663,7 +665,7 @@ export default function EnquiryLIst() {
           </div>
         </div>
 
-        <div className="w-full overflow-x-auto">
+        <div className="-ml-2 mt-4 ">
           <ReactTable
             data={EnquiryData?.data}
             columns={filteredColumns}
@@ -676,31 +678,31 @@ export default function EnquiryLIst() {
             isServerPropsDisabled={false}
           />
         </div>
-         {/* Advanced Search Modal */}
+        {/* Advanced Search Modal */}
         {isOpen && (
-        <>
-          <div className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
-            onClick={handleModalOpen}>
-          </div>
+          <>
+            <div className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
+              onClick={handleModalOpen}>
+            </div>
 
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-            <AdvancedSearch
-              fields={searchFields}
-              onSearch={(values) => {
-                setAdvancedSearchParams(values);
-                setIsOpen(false);
-                refetch();
-              }}
-              onClear={() => {
-                setIsOpen(false);
-                setAdvancedSearchParams("");
-                refetch();
-              }}
-          
-            />
-          </div>
-        </>
-      )}
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+              <AdvancedSearch
+                fields={searchFields}
+                onSearch={(values) => {
+                  setAdvancedSearchParams(values);
+                  setIsOpen(false);
+                  refetch();
+                }}
+                onClear={() => {
+                  setIsOpen(false);
+                  setAdvancedSearchParams("");
+                  refetch();
+                }}
+
+              />
+            </div>
+          </>
+        )}
 
       </div>
     </div>

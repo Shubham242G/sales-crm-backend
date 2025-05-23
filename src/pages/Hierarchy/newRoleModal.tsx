@@ -107,13 +107,13 @@ const NewRoleModal: React.FC<NewRoleModalProps> = ({
         <div className="flex justify-end space-x-2">
           <button
             onClick={onClose}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+            className="bg-gray-300 text-gray-700  px-3 py-1.5 rounded-md hover:bg-gray-400"
           >
             CANCEL
           </button>
           <button
             onClick={handleSave}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            className="bg-blue-500 text-white  px-3 py-1.5 rounded-md hover:bg-blue-600"
           >
             SAVE
           </button>

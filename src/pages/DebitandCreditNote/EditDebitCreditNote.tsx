@@ -234,14 +234,14 @@ export default function EditDebitCreditNote() {
 
           <table className="border p-2 border-[#e5e5e5] w-full">
             <tr>
-              <th className="bg-[#fafbfb] text-[0.85rem] border-r border-b font-semibold text-secondarycolor border-[#e5e5e5] px-4 py-2 w-[35%]  ">
+              <th className="bg-[#fafbfb] text-[0.85rem] border-r border-b font-semibold text-secondarycolor border-[#e5e5e5]  px-3 py-1.5 w-[35%]  ">
                 Design
               </th>
 
-              <th className="text-[0.85rem] border-r border-b border-[#e5e5e5] px-4 py-2 w-[15%]  ">
+              <th className="text-[0.85rem] border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[15%]  ">
                 Rate
               </th>
-              <th className="text-[0.85rem] border-r border-b border-[#e5e5e5] px-4 py-2 w-[35%] ">
+              <th className="text-[0.85rem] border-r border-b border-[#e5e5e5]  px-3 py-1.5 w-[35%] ">
                 Tax
               </th>
               <th className="text-[0.85rem] border-r border-b border-[#e5e5e5] px-3 py-2 w-[15%]  ">
