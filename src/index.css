@@ -226,8 +226,24 @@ z-index: 100 !important;
     margin-left: 1px;
     z-index: 1;
 }
+.leadtable .rdt_TableCol:last-child{
+    position: sticky;
+    right: 0;
+     background: #F2F4F7;
+    width: 90px !important;
+     margin-left: 1px;
+   
+    z-index: 9999 !important;
 
+}
 
+.leadtable .rdt_TableCell:last-child {
+    position: sticky;
+    right: 0;
+
+    margin-left: 1px;
+    z-index: 1;
+}
 .rdt_TableHead{
   border: 1px solid #EAECF0 !important;
 
@@ -250,15 +266,23 @@ input[type="checkbox"] {
  
 }
 
+
 .input {
   @apply border border-gray-300 rounded-lg p-2 w-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
 
 input::placeholder, select::placeholder,select, textarea::placeholder {
-  color: #666 !important;
+  color: #A1A1AA;
+  font-size: 12px !important;
 }
 
 
 .rdt_Pagination{
   min-height: 50px !important;
+}
+
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: #000 !important;
 }

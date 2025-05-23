@@ -66,7 +66,7 @@ function Header() {
 
   return (
     <>
-      <header className="w-full h-full ">  
+      <header className="w-full mb-9 z-50  ">  
         <div className="flex flex-row">
           <div className="w-[100vw]  h-[48px] ">
             <div className="right_header flex justify-end bg-[#21263C] px-5 py-4 h-full ">

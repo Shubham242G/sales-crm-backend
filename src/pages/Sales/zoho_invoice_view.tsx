@@ -456,11 +456,11 @@ function ZohoInvoiceView() {
                             type="search"
                             placeholder="Search customer..."
                             onChange={(e) => setQuery(e.target.value)}
-                            className="px-4 py-2 rounded-md text-gray-700 border w[200px] border-gray-300"
+                            className=" px-3 py-1.5 rounded-md text-gray-700 border w[200px] border-gray-300"
                         />
                          <div className="relative">
                             <button
-                              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                              className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                               onClick={() => setShowColumnSelector(!showColumnSelector)}
                             >
                               <FaColumns/> Columns
@@ -482,19 +482,19 @@ function ZohoInvoiceView() {
                             <option value="draft">Draft</option>
                             <option value="partially_paid">Partially Paid</option>
                         </select>
-                        {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+                        {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                             <FaFilter /> Filter
                         </button> */}
                         <button
                             onClick={handleSyncInvoices}
-                            className="flex items-center w-[140px] text-sm gap-1 px-4 py-2.5 rounded-md text-gray-700 border border-gray-300"
+                            className="flex items-center w-[140px] text-sm gap-1  px-3 py-1.5.5 rounded-md text-gray-700 border border-gray-300"
                             disabled={syncInvoicesMutation.isPending}
                         >
                             <FaSync className="pl-1" /> {syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}
                         </button>
                         <div className="relative flex items-center " id="exportDropdown">
                             <button
-                                className={`flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
+                                className={`flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
                                 onClick={() => !isExporting && setShowExportOptions(!showExportOptions)}
                                 disabled={isExporting}
                             >
@@ -507,7 +507,7 @@ function ZohoInvoiceView() {
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
                                     <ul className="py-1">
                                         <li
-                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                            className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                                             onClick={() => {
                                                 setShowExportOptions(false);
                                                 handleExportEnquiries('xlsx');
@@ -521,7 +521,7 @@ function ZohoInvoiceView() {
                                             Export as Excel
                                         </li>
                                         <li
-                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                            className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                                             onClick={() => {
                                                 setShowExportOptions(false);
                                                 handleExportEnquiries('csv');
@@ -535,7 +535,7 @@ function ZohoInvoiceView() {
                                             Export as CSV
                                         </li>
                                         <li
-                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                            className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                                             onClick={() => {
                                                 setShowExportOptions(false);
                                                 handleExportEnquiries('pdf');
@@ -550,7 +550,7 @@ function ZohoInvoiceView() {
                                             Export as PDF
                                         </li>
                                         <li
-                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                            className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                                             onClick={() => {
                                                 setShowExportOptions(false);
                                                 setShowExportCustomize(true);
@@ -567,7 +567,7 @@ function ZohoInvoiceView() {
                                 </div>
                             )} */}
                         </div>
-                        <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+                        <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                             Advance Search
                         </button>
 

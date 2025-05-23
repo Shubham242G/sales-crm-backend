@@ -1533,11 +1533,11 @@ const AddEnquiryForm = () => {
                   <table className="min-w-full border-collapse">
                     <thead className="bg-[#0B2F46] text-white">
                       <tr>
-                        <th className="px-4 py-2 text-left text-xs font-medium">Date</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium">No. of Rooms</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium">Room Category</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium">Occupancy</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium">Meal Plan</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Date</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">No. of Rooms</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Room Category</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Occupancy</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Meal Plan</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1545,8 +1545,8 @@ const AddEnquiryForm = () => {
                         room?.length > 0 &&
                         room.map((row, index) => (
                           <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                            <td className="px-4 py-2 text-sm border-b border-gray-200">{row?.date}</td>
-                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">{row?.date}</td>
+                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <input
                                 type="number"
                                 min="0"
@@ -1555,7 +1555,7 @@ const AddEnquiryForm = () => {
                                 className="border border-gray-300 p-1 rounded w-full text-sm"
                               />
                             </td>
-                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <select
                                 value={row?.roomCategory}
                                 onChange={(e) =>
@@ -1569,7 +1569,7 @@ const AddEnquiryForm = () => {
                                 <option value="Suite">Suite</option>
                               </select>
                             </td>
-                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <select
                                 value={row?.occupancy}
                                 onChange={(e) => handleTableChange(room, setRoom, index, "occupancy", e.target.value)}
@@ -1581,7 +1581,7 @@ const AddEnquiryForm = () => {
                                 <option value="Triple">Triple</option>
                               </select>
                             </td>
-                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <select
                                 onChange={(e) => handleMealPlanChange(room, setRoom, index, e.target.value)}
                                 value={row?.mealPlan}
@@ -1671,22 +1671,22 @@ const AddEnquiryForm = () => {
                   <table className="min-w-full border-collapse">
                     <thead className="bg-[#0B2F46] text-white">
                       <tr>
-                        <th className="px-4 py-2 text-left text-xs font-medium">Date</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium">Session</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium">Seating Style</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium">A/V Setup</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium">Menu Type</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium">Minimum No. of Pax</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium">Seating Required</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Date</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Session</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Seating Style</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">A/V Setup</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Menu Type</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Minimum No. of Pax</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Seating Required</th>
                       </tr>
                     </thead>
                     <tbody>
                       {banquet.map((row, index) => (
                         <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                          <td className="px-4 py-2 text-sm border-b border-gray-200">
+                          <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                             {moment(row.date).format("YYYY-MM-DD")}
                           </td>
-                          <td className="px-4 py-2 text-sm border-b border-gray-200 relative">
+                          <td className=" px-3 py-1.5 text-sm border-b border-gray-200 relative">
                             <Select
                               isMulti
                               options={sessionOptions}
@@ -1702,7 +1702,7 @@ const AddEnquiryForm = () => {
                               }}
                             />
                           </td>
-                          <td className="px-4 py-2 text-sm border-b border-gray-200">
+                          <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                             <select
                               value={row?.seatingStyle}
                               onChange={(e) =>
@@ -1717,7 +1717,7 @@ const AddEnquiryForm = () => {
                               <option value="Mix">Mix</option>
                             </select>
                           </td>
-                          <td className="px-4 py-2 text-sm border-b border-gray-200">
+                          <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                             <select
                               value={row?.avSetup}
                               onChange={(e) => handleTableChange(banquet, setBanquet, index, "avSetup", e.target.value)}
@@ -1728,7 +1728,7 @@ const AddEnquiryForm = () => {
                               <option value="No">No</option>
                             </select>
                           </td>
-                          <td className="px-4 py-2 text-sm border-b border-gray-200">
+                          <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                             <select
                               value={row?.menuType}
                               onChange={(e) =>
@@ -1742,7 +1742,7 @@ const AddEnquiryForm = () => {
                               <option value="Mix">Mix</option>
                             </select>
                           </td>
-                          <td className="px-4 py-2 text-sm border-b border-gray-200">
+                          <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                             <input
                               type="number"
                               value={row?.minPax}
@@ -1750,7 +1750,7 @@ const AddEnquiryForm = () => {
                               className="border border-gray-300 p-1 rounded w-full text-sm"
                             />
                           </td>
-                          <td className="px-4 py-2 text-sm border-b border-gray-200">
+                          <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                             <input
                               type="number"
                               value={row?.seatingRequired}
@@ -1931,6 +1931,7 @@ const AddEnquiryForm = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Number of passengers</label>
                     <input
                       type="number"
+                      min={0}
                       placeholder="Select passengers"
                       value={airTickets.numberOfPassengers}
                       onChange={(e) => handleAirTicketChange("numberOfPassengers", e.target.value)}
@@ -2091,6 +2092,7 @@ const AddEnquiryForm = () => {
                       <label className="text-sm font-medium text-gray-700">Approx Number of Passengers:</label>
                       <input
                         type="number"
+                        min={0}
                         value={approxPassengers}
                         onChange={(e) => setApproxPassengers(e.target.value)}
                         className="border border-gray-300 p-2 rounded w-full text-sm"
@@ -2102,18 +2104,18 @@ const AddEnquiryForm = () => {
                     <table className="min-w-full border-collapse">
                       <thead className="bg-stone-200 text-gray-800">
                         <tr>
-                          <th className="px-4 py-2 text-left text-xs font-bold">Date</th>
-                          {isOutOfStation && <th className="px-4 py-2 text-left text-xs font-medium">From City</th>}
-                          {isOutOfStation && <th className="px-4 py-2 text-left text-xs font-medium">To City</th>}
-                          <th className="px-4 py-2 text-left text-xs font-bold">No. of Vehicles</th>
-                          <th className="px-4 py-2 text-left text-xs font-bold">Type of Vehicle</th>
-                          <th className="px-4 py-2 text-left text-xs font-bold">Trip Type</th>
+                          <th className=" px-3 py-1.5 text-left text-xs font-bold">Date</th>
+                          {isOutOfStation && <th className=" px-3 py-1.5 text-left text-xs font-medium">From City</th>}
+                          {isOutOfStation && <th className=" px-3 py-1.5 text-left text-xs font-medium">To City</th>}
+                          <th className=" px-3 py-1.5 text-left text-xs font-bold">No. of Vehicles</th>
+                          <th className=" px-3 py-1.5 text-left text-xs font-bold">Type of Vehicle</th>
+                          <th className=" px-3 py-1.5 text-left text-xs font-bold">Trip Type</th>
                         </tr>
                       </thead>
                       <tbody>
                         {cab.map((row, index) => (
                           <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <input
                                 type="date"
                                 value={moment(row?.date).format("YYYY-MM-DD") || row?.date}
@@ -2123,7 +2125,7 @@ const AddEnquiryForm = () => {
                             </td>
 
                             {isOutOfStation && (
-                              <td className="px-4 py-2 text-sm border-b border-gray-200">
+                              <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                                 <Autocomplete
                                   options={cityOptions}
                                   getOptionLabel={(option) => option.label}
@@ -2151,7 +2153,7 @@ const AddEnquiryForm = () => {
                             )}
 
                             {isOutOfStation && (
-                              <td className="px-4 py-2 text-sm border-b border-gray-200">
+                              <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                                 <Autocomplete
                                   options={cityOptions}
                                   getOptionLabel={(option) => option.label}
@@ -2178,7 +2180,7 @@ const AddEnquiryForm = () => {
                               </td>
                             )}
 
-                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <input
                                 type="number"
                                 value={row?.noOfVehicles}
@@ -2187,7 +2189,7 @@ const AddEnquiryForm = () => {
                               />
                             </td>
 
-                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <Autocomplete
                                 options={vehicleTypeOptions}
                                 getOptionLabel={(option) => option.label}
@@ -2213,7 +2215,7 @@ const AddEnquiryForm = () => {
                               />
                             </td>
 
-                            <td className="px-4 py-2 text-sm border-b border-gray-200">
+                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <select
                                 value={row?.tripType}
                                 onChange={(e) => handleTableChange(cab, setCab, index, "tripType", e.target.value)}
@@ -2272,7 +2274,7 @@ const AddEnquiryForm = () => {
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="px-4 py-2 border border-gray-300 rounded text-gray-700 text-sm"
+              className=" px-3 py-1.5 border border-gray-300 rounded text-gray-700 text-sm"
             >
               Cancel
             </button>

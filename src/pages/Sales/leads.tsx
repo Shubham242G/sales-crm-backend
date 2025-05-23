@@ -386,21 +386,24 @@ function Leads() {
       {
           name: "Actions",
           width: "50px",
+         
           selector: (row: any) => (
-            <div className="">
+            <div >
+             
               <button
                 type="button"
                 title="More Actions"
                 onClick={(e) =>{ setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),setSelectedRowId(row._id )}}
               >
-                <span className="flex items-center justify-center w-4 h-4 rounded-full hover:bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
+                <span className="flex items-center justify-center w-4 h-4  rounded-full hover:bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1) "><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
               </button>
+             
               { selectedRowId === row._id   &&  (isOpenAction) && (
-                <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden border">
+                <div className="absolute bg-white z-[100] shadow-lg rounded-md -ml-20 overflow-hidden border">
     
                   <Link
                     to={`/add-leads/${row._id}`}
-                    className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                    className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-2 border-b py-1 gap-2"
                     title="View Vendor"
                   >
                     <FiEdit className="text-xs" />
@@ -409,17 +412,19 @@ function Leads() {
                   <button
                     type="button"
                     onClick={() => handleDelete(row._id)}
-                    className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                    className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-2 border-b py-1 gap-2"
                     title="Delete Vendor"
                   >
                     <RiDeleteBin6Line className="text-xs" />
                     Delete
                   </button>
+                  
                 </div>
               )}
             </div>
           ),
         },
+       
   ];
 
   // const handleChange = (state: any) => {
@@ -526,8 +531,8 @@ function Leads() {
   };
 
   const ColumnSelector = () => (
-    <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-[9999] border border-gray-200 right-0 w-72">
-      <div className="flex flex-col gap-2">
+    <div className="absolute z-50 bg-white shadow-lg p-4 rounded-md mt-2   border border-gray-200 right-0 w-72">
+      <div className="flex flex-col gap-2 ]">
         <div className="flex justify-between items-center border-b pb-2 mb-2">
           <h3 className="font-medium">Customize Columns</h3>
           <button
@@ -569,7 +574,12 @@ function Leads() {
     const containerWidth = window.innerWidth - 100; // Adjust for padding/margins
     const columnsWithFixedWidth = columnsArray.map(column => ({
       ...column,
-      width: totalWidth > containerWidth ? "200px" : `${95 / columnsArray.length}%`
+      width:
+        column.name === "Actions"
+          ? "80px"
+          : totalWidth > containerWidth
+          ? "200px"
+          : `${98 / columnsArray.length}%`
     }));
 
     console.log(columnsWithFixedWidth, "check the column width");
@@ -674,7 +684,7 @@ function Leads() {
   return (
     <>
      
-      <div className="container ">
+      <div className="container top-0 bg-white sticky ">
         <div className=" table_container rounded-xl px-4    ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm -ml-4 -mt-5 mb-4">
             {/* Heading on the Left */}
@@ -742,7 +752,7 @@ function Leads() {
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
                   <ul className="py-1">
                     <li
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                      className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                       onClick={() => {
                         setShowExportOptions(false);
                         handleExportEnquiries('xlsx');
@@ -756,7 +766,7 @@ function Leads() {
                       Export as Excel
                     </li>
                     <li
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                      className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                       onClick={() => {
                         setShowExportOptions(false);
                         handleExportEnquiries('csv');
@@ -770,7 +780,7 @@ function Leads() {
                       Export as CSV
                     </li>
                     <li
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                      className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                       onClick={() => {
                         setShowExportOptions(false);
                         handleExportEnquiries('pdf');
@@ -785,7 +795,7 @@ function Leads() {
                       Export as PDF
                     </li>
                     <li
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                      className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                       onClick={() => {
                         setShowExportOptions(false);
                         setShowExportCustomize(true);
@@ -829,13 +839,8 @@ function Leads() {
               </button>
             )}
           </div>
-        </div>
-      </div >
-
-
-      
         {/* React Table */}
-        <div className="overflow-x-auto -ml-5">
+        <div className="overflow-x-auto -ml-8 -mr-2">
           <ReactTable
           data={leadData?.data}
           columns={filteredColumns}
@@ -852,6 +857,11 @@ function Leads() {
 
         />
         </div>
+        </div>
+      </div >
+
+
+      
         
         
 
@@ -974,13 +984,13 @@ function Leads() {
               {/* Action buttons */}
               <div className="flex justify-end mt-4 gap-2">
                 <button
-                  className="px-4 py-2 bg-gray-200 rounded-md"
+                  className=" px-3 py-1.5 bg-gray-200 rounded-md"
                   onClick={() => setShowExportCustomize(false)}
                 >
                   Cancel
                 </button>
                 <button
-                  className="px-4 py-2 bg-orange-500 text-white rounded-md"
+                  className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
                   onClick={() => {
                     setShowExportCustomize(false);
                     // Get selected format
@@ -1057,7 +1067,7 @@ function Leads() {
                 <div className="mt-4">
                   <button
                     type="submit"
-                    className="bg-blue-500 px-4 py-2 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
+                    className="bg-blue-500  px-3 py-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
                     // disabled={isLoading}
                     onClick={(e) => {
                       e.preventDefault();
@@ -1074,7 +1084,7 @@ function Leads() {
               <div className="mt-4">
                 <button
                   type="button"
-                  className="bg-blue-500 px-4 py-2 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
+                  className="bg-blue-500  px-3 py-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
                   onClick={handleAssignTaskSubmit}
                 // disabled={isLoading}
                 >

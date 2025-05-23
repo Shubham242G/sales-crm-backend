@@ -412,9 +412,9 @@ function VendorList() {
         filterbuttn={false}
       /> */}
 
-      <div className="container px-6">
+      <div className="container px-6 -mt-7">
            <div className=" table_container rounded-xl px-3 py-1.5 ">
-          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm  mb-2  -mt-8 ">
+          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm  mb-4   ">
             {/* Heading on the Left */}
             <h2 className="text-lg font-semibold -ml-8 text-gray-800">
               All Vendor List
@@ -438,7 +438,7 @@ function VendorList() {
               </button> */} 
               {/* Import Button */}
               <button
-                className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
+                className="flex items-center gap-1 px-3 py-1.5  rounded-md text-gray-700 border border-gray-300"
                 onClick={handleImportClick}
               >
                 <FaFileImport />
@@ -482,7 +482,7 @@ function VendorList() {
             </div>
           </div>
           {/* React Table */}
-           <div className="   shadow-xl -ml-14 -mr-9  text-sm   h-[580px] overflow-y-auto ">
+           <div className="   -ml-14 -mr-9 shadow-md overflow-y-auto ">
           <ReactTable
             
             data={VendorData?.data}

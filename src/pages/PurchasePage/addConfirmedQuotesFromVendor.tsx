@@ -580,7 +580,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-blue-600 transition duration-200"
+                  className="flex items-center gap-2  px-3 py-1.5 bg-gray-400 text-white rounded-md hover:bg-blue-600 transition duration-200"
                 >
                   <FiUpload className="w-5 h-5" />
                   Upload Files
@@ -1406,7 +1406,7 @@ const AddConfirmedQuotesFromVendor = () => {
               <button
                 type="button"
                 onClick={handleAddChecklistItem}
-                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
               >
                 Add New Item
               </button>
@@ -1414,13 +1414,13 @@ const AddConfirmedQuotesFromVendor = () => {
             <table className="min-w-full ">
               <thead className="bg-stone-200  ">
                 <tr>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-stone-800 border-b">
+                  <th className=" px-3 py-1.5 text-left text-sm font-semibold text-stone-800 border-b">
                     Sr. No.
                   </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-stone-800 border-b">
+                  <th className=" px-3 py-1.5 text-left text-sm font-semibold text-stone-800 border-b">
                     Checks
                   </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-stone-800 border-b">
+                  <th className=" px-3 py-1.5 text-left text-sm font-semibold text-stone-800 border-b">
                     Checkbox
                   </th>
                   {formData.checklist.length > 1 && (
@@ -1433,8 +1433,8 @@ const AddConfirmedQuotesFromVendor = () => {
               <tbody>
                 {formData.checklist.map((item, index) => (
                   <tr key={index} className="hover:bg-gray-50">
-                    <td className="px-4 py-2 border-b">{item.srNo}</td>
-                    <td className="px-4 py-2 border-b">
+                    <td className=" px-3 py-1.5 border-b">{item.srNo}</td>
+                    <td className=" px-3 py-1.5 border-b">
                       <input
                         type="text"
                         value={item.checks}
@@ -1445,7 +1445,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         placeholder="Enter checklist description"
                       />
                     </td>
-                    <td className="px-4 py-2 border-b">
+                    <td className=" px-3 py-1.5 border-b">
                       <input
                         type="checkbox"
                         checked={item.actions === "true"}
@@ -1458,7 +1458,7 @@ const AddConfirmedQuotesFromVendor = () => {
                         }
                       />
                     </td>
-                    <td className="px-4 py-2 border-b">
+                    <td className=" px-3 py-1.5 border-b">
                       {formData.checklist.length > 1 && (
                         <button
                           type="button"
@@ -1480,14 +1480,14 @@ const AddConfirmedQuotesFromVendor = () => {
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="px-4 py-2 border border-gray-300 rounded-md text-black"
+              className=" px-3 py-1.5 border border-gray-300 rounded-md text-black"
             >
               Cancel
             </button>
             {
               <button
                 type="submit"
-                className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+                className=" px-3 py-1.5 bg-orange-500 text-white rounded-md hover:bg-orange-600"
               >
                 Save
               </button>

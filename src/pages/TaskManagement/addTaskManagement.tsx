@@ -386,7 +386,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
             <div className="flex justify-end gap-4">
               <button
                 type="button"
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+                className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
                 onClick={() => navigate(-1)}
               >
                 Cancel
@@ -394,7 +394,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
               {
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-orange-500 text-white rounded-md"
+                  className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
                 >
                   Submit
                 </button>
@@ -508,14 +508,14 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
             <div className="flex justify-end gap-4">
               <button
                 type="button"
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+                className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
               >
                 Cancel
               </button>
               {((!id && canCreate) || (id && canUpdateMyTask)) && (
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-orange-500 text-white rounded-md"
+                  className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
                 >
                   Submit
                 </button>

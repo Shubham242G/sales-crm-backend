@@ -282,7 +282,7 @@ function BanquetList() {
               
   <div className="relative">
                             <button
-                              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                              className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                               onClick={() => setShowColumnSelector(!showColumnSelector)}
                             >
                               <FaColumns /> Columns
@@ -291,10 +291,10 @@ function BanquetList() {
                           </div>
 
               {/* Buttons */}
-              {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */}
-              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
               {canCreate && (

@@ -465,7 +465,7 @@ function SearchBar() {
         <h3 className="text-2xl font-semibold text-gray-800">Sample Venue</h3>
         <p className="text-gray-600 text-sm">📍 New York, NY</p>
         <p className="text-gray-500 text-sm">🏨 Type: Hotel | 👥 Capacity: 100</p>
-        <button className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition">
+        <button className="mt-4 inline-block bg-blue-600 text-white  px-3 py-1.5 rounded-lg text-sm hover:bg-blue-700 transition">
           View Details
         </button>
       </div>

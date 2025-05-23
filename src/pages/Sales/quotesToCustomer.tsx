@@ -315,9 +315,9 @@ function QuotesForCustomer() {
 
 
   return (
-    <div className="container px-6">
-      <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
-        <div className="search_boxes flex justify-between items-center">
+    <div className="container top-0 b sticky -mt-5 ">
+      <div className="table_container rounded-xl shadow-xl  -mt-5 -ml-6">
+        <div className="search_boxes flex justify-between items-center mr-5 ml-4">
           <h2 className="text-xl font-semibold text-gray-800">
             All Quotes for Customer List
           </h2>
@@ -326,7 +326,7 @@ function QuotesForCustomer() {
             <div className="w-full">
               <input
                 type="search"
-                className="rounded-md w-full border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-full border px-3 text-sm border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search..."
                 value={query}
                 onChange={handleSearchChange}
@@ -335,24 +335,24 @@ function QuotesForCustomer() {
             </div>
             <div className="relative">
                 <button
-                  className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                  className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                   onClick={() => setShowColumnSelector(!showColumnSelector)}
                 >
                   <FaColumns /> Columns
                 </button>
                 {showColumnSelector && <ColumnSelector />}
               </div> 
-              {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
               <FaFilter /> Filter
             </button> */}
-            <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+            <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
               <FaFileExport /> Export
             </button>
 
             {canCreate && (
               <button
                 onClick={() => navigate("/addQuotesToCustomer")}
-                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                className="flex w-full items-center text-sm justify-center gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 border border-gray-300"
               >
                 <FaPlus />
                 <span>New Quotes</span>
@@ -360,7 +360,7 @@ function QuotesForCustomer() {
             )}
           </div>
         </div>
-
+      <div className="ml-1 mr-1 mt-4">
         <ReactTable
           data={quotesToCustomerData?.data || []}
           columns={filteredColumns}
@@ -373,6 +373,7 @@ function QuotesForCustomer() {
           isServerPropsDisabled={false}
         />
       </div>
+      </div>  
     </div>
   );
 }

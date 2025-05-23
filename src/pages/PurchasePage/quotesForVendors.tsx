@@ -303,8 +303,8 @@ function CustomerLedger() {
   };
 
   return (
-    <div className="container px-6">
-      <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
+    <div className="container  top-0  sticky -mt-9  ">
+      <div className="bg-white table_container rounded-xl  p-3 -ml-5 ">
         <div className="search_boxes flex justify-between items-center">
           <h2 className="text-xl font-semibold text-gray-800">
             Quotes from Vendor
@@ -313,7 +313,7 @@ function CustomerLedger() {
             <div className="w-full">
               <input
                 type="search"
-                className="rounded-md w-[250px] border px-4 border-gray-300 py-2 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                className="rounded-md w-[250px] text-sm border px-3 border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                 placeholder="Search by Vendor name"
                 value={query}
                   onChange={handleSearchInput}
@@ -326,29 +326,30 @@ function CustomerLedger() {
             </div>
             <div className="relative">
               <button
-                className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowColumnSelector(!showColumnSelector)}
               >
                 <FaColumns /> Columns
               </button>
               {showColumnSelector && <ColumnSelector />}
             </div>
-             {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+             {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
               <FaFilter /> Filter
             </button> */}
-            <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+            <button className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
               <FaFileExport /> Export
             </button>
             <button
               onClick={() => navigate("/addQuotesFromVendors")}
-              className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+              className="flex w-full items-center justify-center gap-1 px-3 py-1.5 text-sm text-white rounded-md bg-orange-500 border border-gray-300"
             >
               <FaPlus />
               <span>New quotes for vendors</span>
             </button>
           </div>
         </div>
-        <ReactTable
+        <div className="shadow-lg mt-3 -ml-3 -mr-1 overflow-y-auto">
+          <ReactTable
           data={quotesFromVendors.data}
           columns={filteredColumns}
           loading={false}
@@ -359,6 +360,8 @@ function CustomerLedger() {
           rowsPerPageText={pageSize}
           isServerPropsDisabled={false}
         />
+        </div>
+        
       </div>
     </div>
   );

@@ -113,7 +113,7 @@ function ConfirmedQuotesFromVendor() {
       name: "Status",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col p-2 rounded-md text-white ${
+          className={`flex gap-1 flex-col px-2 py-1 text-xs rounded-md text-white ${
             row.banquetEventOrders?.status === "Pending"
               ? "bg-yellow-200 text-yellow-500"
               : row.banquetEventOrders?.status === "Completed"
@@ -123,10 +123,10 @@ function ConfirmedQuotesFromVendor() {
               : "bg-gray-700 "
           }`}
         >
-          <h6>{row.banquetEventOrders?.status || "N/A"}</h6>
+          <h6 className="text-xs">{row.banquetEventOrders?.status || "N/A"}</h6>
         </div>
       ),
-      width: "130px",
+      width: "130px", 
     },
     {
       name: "Edit",
@@ -137,7 +137,7 @@ function ConfirmedQuotesFromVendor() {
           onClick={() => navigate(`/add-ConfirmedQuotesFromVendor/${row._id}`)}
           className="text-lg  hover:bg-blue-100 rounded-full transition duration-200 "
         >
-           <FaEye className=" hover:text-orange-500"/>
+           <FaEye className=" hover:text-orange-500 text-sm"/>
         </button>
       ),
     },
@@ -150,7 +150,7 @@ function ConfirmedQuotesFromVendor() {
           onClick={() => handleDelete(row._id)}
           className=" text-lg  hover:bg-red-100 rounded-full transition duration-200"
         >
-         <RiDeleteBin6Line className="hover:text-red-500" />
+         <RiDeleteBin6Line className="hover:text-red-500 text-sm" />
         </button>
       ),
     },
@@ -386,9 +386,9 @@ function ConfirmedQuotesFromVendor() {
         filterbuttn={false}
       /> */}
 
-      <div className="container px-6">
-        <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
-          <div className="search_boxes flex justify-between items-center">
+      <div className="container  top-0  sticky -mt-6 ">
+        <div className="bg-white table_container rounded-xl   -ml-5  ">
+          <div className="search_boxes flex justify-between items-center ml-4">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
               All Quotes for Vendor List
@@ -400,7 +400,7 @@ function ConfirmedQuotesFromVendor() {
               <div className="w-full">
                 <input
                   type="search"
-                  className="rounded-md w-full border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  className="rounded-md w-full border px-3 border-gray-300 py-1.5 text-sm  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                   placeholder="Search..."
                   // value={query}
                   // onChange={handleSearchChange}
@@ -408,7 +408,7 @@ function ConfirmedQuotesFromVendor() {
               </div>
               <div className="relative">
                             <button
-                              className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                              className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                               onClick={() => setShowColumnSelector(!showColumnSelector)}
                             >
                               <FaColumns /> Columns
@@ -418,18 +418,18 @@ function ConfirmedQuotesFromVendor() {
 
 
               {/* Buttons */}
-              {/* <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */}
-              <button className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300">
+              <button className="flex items-center gap-1  px-3 py-1.5 text-sm rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
               <button
                 onClick={() => navigate("/add-ConfirmedQuotesFromVendor")}
-                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                className="flex w-full items-center justify-center gap-1 px-3 text-sm py-1.5 text-white rounded-md bg-orange-500 border border-gray-300"
               >
                 <FaPlus />
-                <span>New Confirmed Quotes</span>
+                <span className="text-sm">New Confirmed Quotes</span>
               </button>
               {/* <button className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
                 <FaPlus />
@@ -439,7 +439,8 @@ function ConfirmedQuotesFromVendor() {
           </div>
 
           {/* React Table */}
-          <ReactTable
+          <div className=" shadow-lg    overflow-y-auto mt-4">
+            <ReactTable
             data={confirmedQuotesToVendorData.data}
              columns={filteredColumns}
             loading={false}
@@ -450,6 +451,8 @@ function ConfirmedQuotesFromVendor() {
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
           />
+          </div>
+          
         </div>
       </div>
     </>

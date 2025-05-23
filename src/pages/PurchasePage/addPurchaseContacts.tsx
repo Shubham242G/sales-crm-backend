@@ -121,7 +121,7 @@ const AddPurchaseContact = () => {
                     )
                   }
                   value={formData.salutation}
-                  className="border border-gray-300 rounded-md mt-6 px-4 py-2 w-20 mt-1"
+                  className="border border-gray-300 rounded-md mt-6  px-3 py-1.5 w-20 mt-1"
                 >
                   {salutationOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -136,7 +136,7 @@ const AddPurchaseContact = () => {
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
-                  className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                  className="border border-gray-300 rounded-md  px-3 py-1.5 w-full mt-1"
                   required
                   type="text"
                 />
@@ -147,7 +147,7 @@ const AddPurchaseContact = () => {
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                  className="border border-gray-300 rounded-md  px-3 py-1.5 w-full mt-1"
                   required
                   type="text"
                 />
@@ -158,7 +158,7 @@ const AddPurchaseContact = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                  className="border border-gray-300 rounded-md  px-3 py-1.5 w-full mt-1"
                 />
               </div>
               <div>
@@ -167,7 +167,7 @@ const AddPurchaseContact = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="border border-gray-300 rounded-md px-4 py-2 w-full mt-1"
+                  className="border border-gray-300 rounded-md  px-3 py-1.5 w-full mt-1"
                 />
               </div>
             </div>
@@ -177,14 +177,14 @@ const AddPurchaseContact = () => {
           <div className="flex justify-end gap-4">
             <button
               type="button"
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
               onClick={() => navigate(-1)}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+              className=" px-3 py-1.5 bg-orange-500 text-white rounded-md hover:bg-orange-600"
             >
               Save Contact
             </button>

@@ -12,10 +12,12 @@ function Layout() {
           <div className="col-span-2">
             <Sidebar />
           </div>
-          <div className="col-span-10 ">
-            <div className="mb-10 sticky top-0 z-10">
-              <Header    />
+          <div className="col-span-10  ">
+            <div
+              className=" shadow-md sticky top-0 z-10" >
+               <Header    />
             </div>
+             
             <div>
               <Outlet />
             </div>

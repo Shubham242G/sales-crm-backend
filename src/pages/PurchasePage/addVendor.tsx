@@ -2022,7 +2022,7 @@ const AddVendorForm = () => {
                                               />
                                               <label
                                                 htmlFor={`room-image-upload-${index}`}
-                                                className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
+                                                className="bg-white border border-gray-300 text-gray-700  px-3 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
                                               >
                                                 Upload Images
                                               </label>
@@ -2075,7 +2075,7 @@ const AddVendorForm = () => {
                                     <button
                                       type="button"
                                       onClick={handleAddRoom}
-                                      className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                                      className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
                                     >
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -2272,7 +2272,7 @@ const AddVendorForm = () => {
                                   />
                                   <label
                                     htmlFor="restaurant-image-upload"
-                                    className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-300"
+                                    className="bg-gray-200 text-gray-700  px-3 py-1.5 rounded-md cursor-pointer hover:bg-gray-300"
                                   >
                                     Upload Images
                                   </label>
@@ -2643,7 +2643,7 @@ const AddVendorForm = () => {
                                     />
                                     <label
                                       htmlFor={`banquet-image-upload-${index}`}
-                                      className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
+                                      className="bg-white border border-gray-300 text-gray-700  px-3 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
                                     >
                                       Upload Images
                                     </label>
@@ -2680,7 +2680,7 @@ const AddVendorForm = () => {
                           <button
                             type="button"
                             onClick={handleAddBanquet}
-                            className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                            className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -2706,7 +2706,7 @@ const AddVendorForm = () => {
                                     { services: "", rate: "" },
                                   ])
                                 }
-                                className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
+                                className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F]  px-3 py-1.5 rounded-md"
                               >
                                 Add Services
                               </button>
@@ -3026,7 +3026,7 @@ const AddVendorForm = () => {
                                   ],
                                 })
                               }
-                              className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F] px-4 py-2 rounded-md"
+                              className="bg-[#FAFAFA]  border hover:bg-[#EF611F] hover:text-white border-[#EF611F] text-[#EF611F]  px-3 py-1.5 rounded-md"
                             >
                               Add Car
                             </button>
@@ -3925,7 +3925,7 @@ const AddVendorForm = () => {
                                 <button
                                   type="button"
                                   onClick={() => fileInputRef.current?.click()}
-                                  className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
+                                  className="flex items-center gap-2  px-3 py-1.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
                                 >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -5041,240 +5041,238 @@ const AddVendorForm = () => {
                       {activeTab === "Contact Persons" && (
                         <div className="grid grid-cols-2 gap-6">
                           <div className="col-span-2">
-                            <div className="overflow-x-auto">
-                              <table className="min-w-full border border-gray-200">
-                                <thead className="bg-gray-50">
-                                  <tr>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Salutation
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      First Name
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Last Name
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Email Address
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Work Phone
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Mobile
-                                    </th>
+                            <table className="min-w-full border border-gray-200">
+                              <thead className="bg-gray-50">
+                                <tr>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    Salutation
+                                  </th>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    First Name
+                                  </th>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    Last Name
+                                  </th>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    Email Address
+                                  </th>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    Work Phone
+                                  </th>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    Mobile
+                                  </th>
 
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Department
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Designation
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Date of Birth
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Anniversary Date
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Actions
-                                    </th>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    Department
+                                  </th>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    Designation
+                                  </th>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    Date of Birth
+                                  </th>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    Anniversary Date
+                                  </th>
+                                  <th className=" px-3 py-1.5 text-left text-sm font-medium text-gray-700 border-b">
+                                    Actions
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {contactPersons.map((person, index) => (
+                                  <tr key={index} className="hover:bg-gray-50">
+                                    {/* Salutation Dropdown */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <select
+                                        value={person.salutation}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "salutation",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="Mr.">Mr.</option>
+                                        <option value="Mrs.">Mrs.</option>
+                                        <option value="Ms.">Ms.</option>
+                                        <option value="Dr.">Dr.</option>
+                                      </select>
+                                    </td>
+
+                                    {/* First Name */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <input
+                                        type="text"
+                                        value={person.contactPersonFirstName}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonFirstName",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Last Name */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <input
+                                        type="text"
+                                        value={person.contactPersonLastName}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonLastName",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Email Address */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <input
+                                        type="email"
+                                        value={person.contactPersonEmail}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonEmail",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Work Phone */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <input
+                                        type="tel"
+                                        value={person.contactPersonWorkPhone}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonWorkPhone",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Mobile Phone */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <input
+                                        type="tel"
+                                        value={person.contactPersonMobilePhone}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonMobilePhone",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Department */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <input
+                                        type="text"
+                                        value={person.contactPersonDepartment}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonDepartment",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Designation */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <input
+                                        type="text"
+                                        value={person.contactPersonDesignation}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonDesignation",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Date of Birth */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <input
+                                        type="date"
+                                        value={person.contactPersonDateOfBirth}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonDateOfBirth",
+                                            e.target.value
+                                          )
+                                        }
+                                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Anniversary Date */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <input
+                                        type="date"
+                                        value={person.contactPersonAnniversary}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonAnniversary",
+                                            e.target.value
+                                          )
+                                        }
+                                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
+
+                                    {/* Delete Button */}
+                                    <td className=" px-3 py-1.5 border-b">
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          handleDeleteContactPerson(index)
+                                        }
+                                        className="text-red-600 hover:text-red-800 text-sm"
+                                      >
+                                        Delete
+                                      </button>
+                                    </td>
                                   </tr>
-                                </thead>
-                                <tbody>
-                                  {contactPersons.map((person, index) => (
-                                    <tr key={index} className="hover:bg-gray-50">
-                                      {/* Salutation Dropdown */}
-                                      <td className="px-4 py-2 border-b">
-                                        <select
-                                          value={person.salutation}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "salutation",
-                                              e.target.value
-                                            )
-                                          }
-                                          className="w-full border rounded p-1 text-sm"
-                                        >
-                                          <option value="">Select</option>
-                                          <option value="Mr.">Mr.</option>
-                                          <option value="Mrs.">Mrs.</option>
-                                          <option value="Ms.">Ms.</option>
-                                          <option value="Dr.">Dr.</option>
-                                        </select>
-                                      </td>
-
-                                      {/* First Name */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="text"
-                                          value={person.contactPersonFirstName}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonFirstName",
-                                              e.target.value
-                                            )
-                                          }
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
-
-                                      {/* Last Name */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="text"
-                                          value={person.contactPersonLastName}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonLastName",
-                                              e.target.value
-                                            )
-                                          }
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
-
-                                      {/* Email Address */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="email"
-                                          value={person.contactPersonEmail}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonEmail",
-                                              e.target.value
-                                            )
-                                          }
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
-
-                                      {/* Work Phone */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="tel"
-                                          value={person.contactPersonWorkPhone}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonWorkPhone",
-                                              e.target.value
-                                            )
-                                          }
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
-
-                                      {/* Mobile Phone */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="tel"
-                                          value={person.contactPersonMobilePhone}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonMobilePhone",
-                                              e.target.value
-                                            )
-                                          }
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
-
-                                      {/* Department */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="text"
-                                          value={person.contactPersonDepartment}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonDepartment",
-                                              e.target.value
-                                            )
-                                          }
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
-
-                                      {/* Designation */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="text"
-                                          value={person.contactPersonDesignation}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonDesignation",
-                                              e.target.value
-                                            )
-                                          }
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
-
-                                      {/* Date of Birth */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="date"
-                                          value={person.contactPersonDateOfBirth}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonDateOfBirth",
-                                              e.target.value
-                                            )
-                                          }
-                                          onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
-
-                                      {/* Anniversary Date */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="date"
-                                          value={person.contactPersonAnniversary}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonAnniversary",
-                                              e.target.value
-                                            )
-                                          }
-                                          onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
-
-                                      {/* Delete Button */}
-                                      <td className="px-4 py-2 border-b">
-                                        <button
-                                          type="button"
-                                          onClick={() =>
-                                            handleDeleteContactPerson(index)
-                                          }
-                                          className="text-red-600 hover:text-red-800 text-sm"
-                                        >
-                                          Delete
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
+                                ))}
+                              </tbody>
+                            </table>
 
                             {/* Add Row Button */}
                             <div className="mt-4">
                               <button
                                 type="button"
                                 onClick={handleAddContactPerson}
-                                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md flex items-center"
+                                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
                               >
                                 Add Row
                               </button>
@@ -5293,21 +5291,21 @@ const AddVendorForm = () => {
               {/* <button
                 type="button"
                 onClick={populateDemoData}
-                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className=" px-3 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
                 Populate Demo Data
               </button> */}
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+                className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
               >
                 Cancel
               </button>
               {((!id && canCreate) || (id && canUpdate)) && (
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+                  className=" px-3 py-1.5 bg-orange-500 text-white rounded-md hover:bg-orange-600"
                 >
                   Save
                 </button>
