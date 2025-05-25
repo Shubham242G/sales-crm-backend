@@ -32,12 +32,12 @@ import { Switch } from "@mui/material";
 import { SiConvertio } from "react-icons/si";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { c } from "vite/dist/node/types.d-aGj9QkWt";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 export default function EnquiryLIst() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
-
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Enquiry");
@@ -56,15 +56,15 @@ export default function EnquiryLIst() {
   const [visibleColumns, setVisibleColumns] = useState({
     "Customer Name": true,
     "Enquiry Type": true,
-    "Loaction": true,
+    Loaction: true,
     "Level of Enquiry": true,
     "Check-In": true,
     "Check-Out": true,
     "Number of Rooms": true,
-    "Status": true,
-    "Edit": canView || canUpdate || true,
-    "Delete": canDelete || true,
-    "Convert to Enquiry": true
+    Status: true,
+    Edit: canView || canUpdate || true,
+    Delete: canDelete || true,
+    "Convert to Enquiry": true,
   });
   const [isOpen, setIsOpen] = useState(false);
   const [advancedSearchParams, setAdvancedSearchParams] = useState("");
@@ -97,7 +97,6 @@ export default function EnquiryLIst() {
   const { mutateAsync: updateEnquiry } = useUpdateEnquiryById();
 
   // Save column preferences to localStorage
-
 
   const handleImportClick = () => {
     fileInputRef.current?.click();
@@ -142,7 +141,6 @@ export default function EnquiryLIst() {
     }
   };
 
-
   const handleExportEnquiries = async () => {
     try {
       const { data: response } = await getExel();
@@ -154,7 +152,6 @@ export default function EnquiryLIst() {
       link.click();
       link.remove();
       toastSuccess("Enquries exported successfully!");
-
     } catch (error) {
       toastError("Failed to export enquiries. Please try again.");
     }
@@ -199,13 +196,11 @@ export default function EnquiryLIst() {
     }
   };
 
-
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
   // Reset column visibility to default
-
 
   const columns = [
     {
@@ -239,7 +234,7 @@ export default function EnquiryLIst() {
       name: "Enquiry Type",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6 className="capitalize" >{row.enquiryType}</h6>
+          <h6 className="capitalize">{row.enquiryType}</h6>
         </div>
       ),
       width: "150px",
@@ -257,12 +252,13 @@ export default function EnquiryLIst() {
       name: "Level of Enquiry",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col font-bold p-2 rounded-md  ${row.levelOfEnquiry === "moderate"
-            ? "bg-yellow-300 text-white-100"
-            : row.levelOfEnquiry === "Not Urgent"
+          className={`flex gap-1 flex-col font-bold p-2 rounded-md  ${
+            row.levelOfEnquiry === "moderate"
+              ? "bg-yellow-300 text-white-100"
+              : row.levelOfEnquiry === "Not Urgent"
               ? "bg-green-400 text-white-600"
               : row.levelOfEnquiry === "urgent" && "bg-red-300 text-red-600"
-            }`}
+          }`}
         >
           <h5 className="capitalize">{row.levelOfEnquiry}</h5>
         </div>
@@ -355,19 +351,19 @@ export default function EnquiryLIst() {
   // Toggle column visibility
   // Removed duplicate declaration of visibleColumns
   useEffect(() => {
-    const savedColumns = localStorage.getItem('enquiryTableColumns');
+    const savedColumns = localStorage.getItem("enquiryTableColumns");
     if (savedColumns) {
       setVisibleColumns(JSON.parse(savedColumns));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
+    localStorage.setItem("enquiryTableColumns", JSON.stringify(visibleColumns));
   }, [visibleColumns]);
   const toggleColumnVisibility = (columnName: string) => {
-    setVisibleColumns(prev => ({
+    setVisibleColumns((prev) => ({
       ...prev,
-      [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev]
+      [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev],
     }));
   };
   const ColumnSelector = () => (
@@ -385,10 +381,16 @@ export default function EnquiryLIst() {
 
         <div className="max-h-80 overflow-y-auto">
           {columns.map((column) => (
-            <div key={column.name} className="flex items-center justify-between py-2 border-b border-gray-100">
+            <div
+              key={column.name}
+              className="flex items-center justify-between py-2 border-b border-gray-100"
+            >
               <span className="text-sm">{column.name}</span>
               <Switch
-                checked={visibleColumns[column.name as keyof typeof visibleColumns] || false}
+                checked={
+                  visibleColumns[column.name as keyof typeof visibleColumns] ||
+                  false
+                }
                 onChange={() => toggleColumnVisibility(column.name)}
                 size="small"
                 color="primary"
@@ -414,13 +416,15 @@ export default function EnquiryLIst() {
 
     if (visibleColumnsCount === 0) return columnsArray;
 
-    const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
+    const columnsWithDynamicWidth = columnsArray.map((column) => ({
+      ...column,
+    }));
 
     const baseWidth = 100 / visibleColumnsCount;
 
     const MIN_WIDTH = 8;
     const MAX_WIDTH = 20;
-    columnsWithDynamicWidth.forEach(column => {
+    columnsWithDynamicWidth.forEach((column) => {
       let allocatedWidth = baseWidth;
 
       // Columns that typically need less space
@@ -428,21 +432,24 @@ export default function EnquiryLIst() {
         allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
       }
       // Columns that might need more space
-      else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
+      else if (
+        column.name === "Customer Name" ||
+        column.name === "Level of Enquiry"
+      ) {
         allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
       }
 
       column.width = `${allocatedWidth}%`;
     });
 
-    console.log(columnsWithDynamicWidth, "check the column width")
+    console.log(columnsWithDynamicWidth, "check the column width");
 
     return columnsWithDynamicWidth;
   };
 
   // Filter columns based on visibility
-  const visibleColumnsArray = columns.filter(column =>
-    visibleColumns[column.name as keyof typeof visibleColumns]
+  const visibleColumnsArray = columns.filter(
+    (column) => visibleColumns[column.name as keyof typeof visibleColumns]
   );
 
   // Apply dynamic widths to visible columns
@@ -452,15 +459,15 @@ export default function EnquiryLIst() {
     setVisibleColumns({
       "Customer Name": true,
       "Enquiry Type": true,
-      "Loaction": true,
+      Loaction: true,
       "Level of Enquiry": true,
       "Check-In": true,
       "Check-Out": true,
       "Number of Rooms": true,
-      "Status": true,
-      "Edit": canView || canUpdate || true,
-      "Delete": canDelete || true,
-      "Convert to Enquiry": true
+      Status: true,
+      Edit: canView || canUpdate || true,
+      Delete: canDelete || true,
+      "Convert to Enquiry": true,
     });
   };
 
@@ -515,53 +522,53 @@ export default function EnquiryLIst() {
     { key: "company", label: "Company Name", type: "text" },
     { key: "phone", label: "Phone", type: "text" },
     {
-      key: 'enquiryType',
-      label: 'Enquiry Type',
-      type: 'select',
+      key: "enquiryType",
+      label: "Enquiry Type",
+      type: "select",
       options: [
-        { value: 'Corporate', label: 'Corporate' },
-        { value: 'Individual', label: 'Individual' },
-        { value: 'Group', label: 'Group' },
-        { value: 'Room', label: 'Room' },
-        { value: 'Banquet', label: 'Banquet' },
-        { value: 'Both', label: 'Both' },
+        { value: "Corporate", label: "Corporate" },
+        { value: "Individual", label: "Individual" },
+        { value: "Group", label: "Group" },
+        { value: "Room", label: "Room" },
+        { value: "Banquet", label: "Banquet" },
+        { value: "Both", label: "Both" },
       ],
     },
     {
-      key: 'city',
-      label: 'Location',
-      type: 'text',
+      key: "city",
+      label: "Location",
+      type: "text",
     },
     {
-      key: 'levelOfEnquiry',
-      label: 'Level of Enquiry',
-      type: 'select',
+      key: "levelOfEnquiry",
+      label: "Level of Enquiry",
+      type: "select",
       options: [
-        { value: 'urgent', label: 'Urgent' },
-        { value: 'moderate', label: 'Moderate' },
-        { value: 'Not Urgent', label: 'Not Urgent' },
+        { value: "urgent", label: "Urgent" },
+        { value: "moderate", label: "Moderate" },
+        { value: "Not Urgent", label: "Not Urgent" },
       ],
     },
 
     {
-      key: 'checkIn',
-      label: 'Check-In',
-      type: 'date',
+      key: "checkIn",
+      label: "Check-In",
+      type: "date",
     },
     {
-      key: 'checkOut',
-      label: 'Check-Out',
-      type: 'date',
+      key: "checkOut",
+      label: "Check-Out",
+      type: "date",
     },
     {
-      key: 'noOfRooms',
-      label: 'Number of Rooms',
-      type: 'number',
+      key: "noOfRooms",
+      label: "Number of Rooms",
+      type: "number",
     },
     {
-      key: 'status',
-      label: 'Status',
-      type: 'select',
+      key: "status",
+      label: "Status",
+      type: "select",
       options: [
         // Add status options as needed
       ],
@@ -574,34 +581,30 @@ export default function EnquiryLIst() {
 
   const [isOpenAssign, setIsOpenAssign] = useState(false);
 
-
   const handleAssignTask = () => {
     setIsOpenAssign(true);
   };
 
-
-
   return (
-    <div className="container top-0 b sticky -mt-5">
-      <div className=" table_container rounded-xl  -mt-5 -ml-3 ">
-        <div className="search_boxes flex justify-between items-center ml-2 ">
-          <h2 className="text-xl font-semibold text-gray-800">
-            Enquiry List
+    <>
+      <div className="container top-0 b sticky -mt-5">
+        <div className=" table_container rounded-xl  -mt-5 -ml-3 ">
+          <div className="search_boxes flex justify-between items-center ml-2 ">
+            <h2 className="text-xl font-semibold text-gray-800">
+              Enquiry List
             </h2>
 
-          <div className="flex items-center justify-start gap-2 ">
-            <div className="">
-              <input
-                type="search"
-                className="rounded-md w-full border px-3 text-sm border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                placeholder="Search by customer name"
-                onChange={(e) => setQuery(e.target.value)}
+            <div className="flex items-center justify-start gap-2 ">
+              <div className="">
+                <input
+                  type="search"
+                  className="rounded-md w-full border px-3 text-sm border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  placeholder="Search by customer name"
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+              </div>
 
-              />
-            </div>
-
-
-            {/* <div className="relative">
+              {/* <div className="relative">
               {/* <button
                 className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowFilters(!showFilters)}
@@ -610,102 +613,130 @@ export default function EnquiryLIst() {
               </button> 
               {showFilters && <FilterDropdown />}
             </div> */}
-            <button onClick={handleModalOpen} className="flex items-center  text-sm adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
-              Advance Search
-            </button>
-
-            <button
-              className=" flex items-center gap-1  px-3 py-1.5  text-sm rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
-              onClick={handleAssignTask}
-            >
-              <span className="whitespace-nowrap text-sm"> Assign To Ops Team </span>
-            </button>
-            <div className="relative">
               <button
-                className="flex items-center gap-1  px-3 py-1.5 rounded-md text-sm text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-                onClick={() => setShowColumnSelector(!showColumnSelector)}
+                onClick={handleModalOpen}
+                className="flex items-center  text-sm adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
               >
-                <FaColumns /> Columns
+                Advance Search
               </button>
-              {showColumnSelector && <ColumnSelector />}
-            </div>
 
-            <button
-              className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
-              onClick={handleExportEnquiries}
-            >
-              <FaFileExport /> Export
-            </button>
-
-            <input
-              type="file"
-              ref={fileInputRef}
-              className="hidden text-sm"
-              accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              onChange={handleFileChange}
-            />
-
-            <button
-              className="flex items-center gap-1  text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
-              onClick={handleImportClick}
-              disabled={isUploading}
-            >
-              <FaFileImport />
-              {isUploading ? "Importing..." : "Import"}
-            </button>
-
-            {canCreate && (
               <button
-                onClick={() => navigate("/addEnquiry")}
-                className="flex items-center justify-center text-sm gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 border border-gray-300 whitespace-nowrap"
+                className=" flex items-center gap-1  px-3 py-1.5  text-sm rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+                onClick={handleAssignTask}
               >
-                <FaPlus />
-                <span>New Enquiry</span>
+                <span className="whitespace-nowrap text-sm">
+                  {" "}
+                  Assign To Ops Team{" "}
+                </span>
               </button>
-            )}
-          </div>
-        </div>
+              <div className="relative">
+                <button
+                  className="flex items-center gap-1  px-3 py-1.5 rounded-md text-sm text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                  onClick={() => setShowColumnSelector(!showColumnSelector)}
+                >
+                  <FaColumns /> Columns
+                </button>
+                {showColumnSelector && <ColumnSelector />}
+              </div>
 
-        <div className="-ml-2 mt-4 ">
-          <ReactTable
-            data={EnquiryData?.data}
-            columns={filteredColumns}
-            loading={false}
-            totalRows={EnquiryData?.total}
-            onChangeRowsPerPage={setPageSize}
-            onChangePage={setPageIndex}
-            page={pageIndex}
-            rowsPerPageText={pageSize}
-            isServerPropsDisabled={false}
-          />
-        </div>
-        {/* Advanced Search Modal */}
-        {isOpen && (
-          <>
-            <div className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
-              onClick={handleModalOpen}>
-            </div>
+              <button
+                className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+                onClick={handleExportEnquiries}
+              >
+                <FaFileExport /> Export
+              </button>
 
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-              <AdvancedSearch
-                fields={searchFields}
-                onSearch={(values) => {
-                  setAdvancedSearchParams(values);
-                  setIsOpen(false);
-                  refetch();
-                }}
-                onClear={() => {
-                  setIsOpen(false);
-                  setAdvancedSearchParams("");
-                  refetch();
-                }}
-
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden text-sm"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                onChange={handleFileChange}
               />
-            </div>
-          </>
-        )}
 
+              <button
+                className="flex items-center gap-1  text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+                onClick={handleImportClick}
+                disabled={isUploading}
+              >
+                <FaFileImport />
+                {isUploading ? "Importing..." : "Import"}
+              </button>
+
+              {canCreate && (
+                <button
+                  onClick={() => navigate("/addEnquiry")}
+                  className="flex items-center justify-center text-sm gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 border border-gray-300 whitespace-nowrap"
+                >
+                  <FaPlus />
+                  <span>New Enquiry</span>
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="-ml-2 mt-4 ">
+            <ReactTable
+              data={EnquiryData?.data}
+              columns={filteredColumns}
+              loading={false}
+              totalRows={EnquiryData?.total}
+              onChangeRowsPerPage={setPageSize}
+              onChangePage={setPageIndex}
+              page={pageIndex}
+              rowsPerPageText={pageSize}
+              isServerPropsDisabled={false}
+            />
+          </div>
+          {/* Advanced Search Modal */}
+          {isOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
+                onClick={handleModalOpen}
+              ></div>
+
+              <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                <AdvancedSearch
+                  fields={searchFields}
+                  onSearch={(values) => {
+                    setAdvancedSearchParams(values);
+                    setIsOpen(false);
+                    refetch();
+                  }}
+                  onClear={() => {
+                    setIsOpen(false);
+                    setAdvancedSearchParams("");
+                    refetch();
+                  }}
+                />
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+
+      {/* <NewTable
+        data={EnquiryData?.data}
+        columns={filteredColumns}
+        loading={false}
+        totalRows={EnquiryData?.total}
+        onChangeRowsPerPage={setPageSize}
+        onChangePage={setPageIndex}
+        page={pageIndex}
+        rowsPerPageText={pageSize}
+        isServerPropsDisabled={false}
+        selectableRows={true}
+        className="enquiry table"
+        //new fields
+        TableName={"Enquiry List"}
+        TableGetAllFunction={useEnquiry}
+        ExcelExportFunction={getExel}
+        TableAddExcelFunction={addEnquiryExel}
+        RouteName={"Enquiry"}
+        AddButtonRouteName={"/add-enquiry"}
+        AddButtonName={"New Enquiry"}
+      /> */}
+    </>
   );
 }
