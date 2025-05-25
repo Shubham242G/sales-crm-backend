@@ -1160,7 +1160,7 @@ function Leads() {
         </div>
       )}
 
-      {/* <NewTable
+      <NewTable
         data={leadData?.data}
         columns={filteredColumns}
         loading={false}
@@ -1182,7 +1182,7 @@ function Leads() {
         AddButtonRouteName={"/add-leads"}
         AddButtonName={"New Lead"}
         placeholderSearch={"Search in Lead"}
-      /> */}
+      />
     </>
   );
 }

@@ -14,6 +14,10 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { generateFilePath } from "@/services/urls.service";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { Navigate, useNavigate } from "react-router-dom";
+import AdvancedSearch from "@/utils/advancedSearch";
+import { l } from "vite/dist/node/types.d-aGj9QkWt";
+import { camelCase } from "lodash";
+import { AiFillCloseSquare } from "react-icons/ai";
 
 const NewTable = (props: any) => {
   const {
@@ -261,11 +265,76 @@ const NewTable = (props: any) => {
     fileInputRef.current?.click();
   };
 
+  const handleModalClose = () => {
+    setIsOpen(false);
+  };
+
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons(RouteName);
 
   const { data: TableData, refetch } = TableGetAllFunction(searchObj);
 
+  const searchFields = columns.map((field: any) => ({
+    key: camelCase(field.name),
+    label: field.name,
+    type: field.type,
+  }));
+
+  const exportFieldsValue = searchFields.map((field: any) => field.key);
+  const [exportFields, setExportFields] = useState<string[]>(exportFieldsValue);
+
+  const toggleAllExportFields = (checked: boolean) => {
+    if (checked) {
+      // Select all fields
+      setExportFields(searchFields.map((field: any) => field.key));
+    } else {
+      // Deselect all fields
+      setExportFields([]);
+    }
+  };
+
+  const [assignTaskName, setAssignTaskName] = useState<string>("");
+  const [assignTaskUsers, setAssignTaskUsers] = useState<string[]>([]);
+
+  const handleAssignTaskNameSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    if (assignTaskName) {
+      setAssignTaskUsers((prevUsers) => [...prevUsers, assignTaskName]);
+      setAssignTaskName("");
+    }
+  };
+
+  const handleAssignTaskNameChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setAssignTaskName(e.target.value);
+  };
+
+  const handleRemoveAssignTaskUser = (user: string) => {
+    setAssignTaskUsers((prevUsers) => prevUsers.filter((u) => u !== user));
+  };
+
+  const handleAssignTaskSubmit = async () => {
+    try {
+      if (tickRows.length === 0 || assignTaskUsers.length === 0) {
+        toastError("Please select at least one lead and one user to assign.");
+        return;
+      }
+
+      // const { data: res } = await assignTask(selectedRows, assignTaskUsers);
+
+      // if (res?.message) {
+      //   toastSuccess(res.message);
+      //   setIsOpen(false);
+      //   setSelectedRows([]);
+      //   setAssignTaskUsers([]);
+      // }
+    } catch (error) {
+      toastError("An error occurred while assigning task. Please try again.");
+    }
+  };
   return (
     <>
       <div className="container top-0 bg-white sticky ">
@@ -484,6 +553,237 @@ const NewTable = (props: any) => {
           </div>
         </div>
       </div>
+
+      {isOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-[9999] bg-[rgba(0,0,0,0.5)]"
+            onClick={handleModalClose}
+          ></div>
+
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[99999]">
+            <AdvancedSearch
+              fields={searchFields}
+              onSearch={(values) => {
+                setAdvancedSearchParams(values);
+                setIsOpen(false);
+                refetch();
+              }}
+              onClear={() => {
+                setIsOpen(false);
+                setAdvancedSearchParams("");
+                refetch();
+              }}
+            />
+          </div>
+        </>
+      )}
+      {/* Export Customize Modal */}
+      {showExportCustomize && (
+        <>
+          <div
+            className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
+            onClick={() => setShowExportCustomize(false)}
+          ></div>
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-white p-6 rounded-lg w-96 shadow-xl">
+            <h3 className="text-lg font-semibold mb-4">
+              Customize Export Fields
+            </h3>
+
+            {/* Select/Deselect All */}
+            <div className="mb-4 pb-2 border-b border-gray-200">
+              <div className="flex items-center mb-2">
+                <input
+                  type="checkbox"
+                  id="select-all-fields"
+                  checked={exportFields.length === searchFields.length}
+                  onChange={(e) => toggleAllExportFields(e.target.checked)}
+                  className="mr-2"
+                />
+                <label htmlFor="select-all-fields" className="font-medium">
+                  Select All Fields
+                </label>
+              </div>
+            </div>
+
+            {/* Field list */}
+            <div className="max-h-64 overflow-y-auto">
+              {searchFields.map((field: any) => (
+                <div key={field.key} className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    id={`export-${field.key}`}
+                    checked={exportFields.includes(field.key)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setExportFields([...exportFields, field.key]);
+                      } else {
+                        setExportFields(
+                          exportFields.filter((f) => f !== field.key)
+                        );
+                      }
+                    }}
+                    className="mr-2"
+                  />
+                  <label htmlFor={`export-${field.key}`}>{field.label}</label>
+                </div>
+              ))}
+            </div>
+
+            {/* Format selection */}
+            <div className="mt-4 mb-4 border-t border-gray-200 pt-4">
+              <h4 className="font-medium mb-2">Export Format</h4>
+              <div className="flex space-x-4">
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="format-xlsx"
+                    name="exportFormat"
+                    value="xlsx"
+                    defaultChecked
+                    className="mr-1"
+                  />
+                  <label htmlFor="format-xlsx">Excel</label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="format-csv"
+                    name="exportFormat"
+                    value="csv"
+                    className="mr-1"
+                  />
+                  <label htmlFor="format-csv">CSV</label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="format-pdf"
+                    name="exportFormat"
+                    value="pdf"
+                    className="mr-1"
+                  />
+                  <label htmlFor="format-pdf">PDF</label>
+                </div>
+              </div>
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex justify-end mt-4 gap-2">
+              <button
+                className=" px-3 py-1.5 bg-gray-200 rounded-md"
+                onClick={() => setShowExportCustomize(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
+                onClick={() => {
+                  setShowExportCustomize(false);
+                  // Get selected format
+                  const formatElement = document.querySelector(
+                    'input[name="exportFormat"]:checked'
+                  ) as HTMLInputElement;
+                  const selectedFormat = formatElement
+                    ? formatElement.value
+                    : "xlsx";
+
+                  // Only export if at least one field is selected
+                  if (exportFields.length > 0) {
+                    handleExportEnquiries(selectedFormat, exportFields);
+                  } else {
+                    toastError("Please select at least one field to export");
+                  }
+                }}
+                disabled={exportFields.length === 0}
+              >
+                Export
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+      {/* Loading Overlay for Export */}
+      {isExporting && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-md shadow-xl flex flex-col items-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mb-4"></div>
+            <p className="text-gray-700">Preparing your export...</p>
+          </div>
+        </div>
+      )}
+      {isOpenAssign && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex z-[100] justify-center items-center ">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[500px] h-[400px] ]">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">
+                Assign Task to Multiple Users
+              </h2>
+              <button
+                type="button"
+                className="text-black-500 text-lg"
+                onClick={() => setIsOpenAssign(false)}
+              >
+                <AiFillCloseSquare />
+              </button>
+            </div>
+            <form onSubmit={handleAssignTaskNameSubmit}>
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Enter User Name
+                </label>
+                <input
+                  type="text"
+                  value={assignTaskName}
+                  onChange={handleAssignTaskNameChange}
+                  placeholder="Enter User Name"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+              <div className="mt-4 flex gap-2">
+                {assignTaskUsers.map((user) => (
+                  <div
+                    key={user}
+                    className="bg-blue-100 px-2 py-1 rounded-full cursor-pointer"
+                    onClick={() => handleRemoveAssignTaskUser(user)}
+                  >
+                    {user}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4">
+                <button
+                  type="submit"
+                  className="bg-blue-500  px-3 py-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
+                  // disabled={isLoading}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (assignTaskName) {
+                      setAssignTaskUsers((prevUsers) => [
+                        ...prevUsers,
+                        assignTaskName,
+                      ]);
+                      setAssignTaskName("");
+                    }
+                  }}
+                >
+                  Add
+                </button>
+              </div>
+            </form>
+            <div className="mt-4">
+              <button
+                type="button"
+                className="bg-blue-500  px-3 py-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
+                onClick={handleAssignTaskSubmit}
+                // disabled={isLoading}
+              >
+                Assign Task
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* previous changes  */}
       {/* <h1> new Table </h1>
