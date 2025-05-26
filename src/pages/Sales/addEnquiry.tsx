@@ -663,6 +663,8 @@ const AddEnquiryForm = () => {
     setTable((prev: any) => prev.filter((_: any, i: number) => i !== idx));
   };
 
+
+
   const { data: enquiryDataById, isLoading } = useEnquiryById(id || "")
   useEffect(() => {
     if (checkIn && checkOut) {
@@ -1379,17 +1381,17 @@ const AddEnquiryForm = () => {
               {/* Show Check In only after Enquiry Type is selected */}
               {(enquiryType === 'room' || enquiryType === 'both') && (
                 <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Check In</label>
-                <input
-                  type="date"
-                  name="checkIn"
-                  value={moment(checkIn).format("YYYY-MM-DD")}
-                  onChange={(e) => setCheckIn(e.target.value)}
-                  onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                  min={moment().format("YYYY-MM-DD")}
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Check In</label>
+                  <input
+                    type="date"
+                    name="checkIn"
+                    value={moment(checkIn).format("YYYY-MM-DD")}
+                    onChange={(e) => setCheckIn(e.target.value)}
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                    min={moment().format("YYYY-MM-DD")}
+                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
               )}
 
               {/* Check Out */}

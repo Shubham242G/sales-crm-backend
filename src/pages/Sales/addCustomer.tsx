@@ -11,19 +11,16 @@ import { generateFilePath } from "@/services/urls.service";
 import { styled } from "@mui/system";
 import { Autocomplete, TextField, Popper } from "@mui/material";
 import {
-  ChevronUp,
-  ChevronDown,
-  Globe,
-  Building2,
-  UserRound,
-  Twitter,
-  MessageCircle,
-  Facebook,
-} from "lucide-react";
+
+} from "react-icons"
 import { checkPermissionsForButtons } from "@/utils/permission";
-import { TypeObject } from "@mui/material/styles/createPalette";
+
 import { Type } from "typescript";
 import { AirplanemodeActiveSharp } from "@mui/icons-material";
+import { FaBuilding, FaChevronDown, FaFacebook, FaGlobe, FaTwitter, FaUserCircle } from "react-icons/fa";
+import { UserRoundIcon } from "lucide-react";
+import { IoChevronDownSharp, IoChevronUpSharp } from "react-icons/io5";
+import { FiMessageCircle } from "react-icons/fi";
 
 //comment
 
@@ -100,6 +97,8 @@ interface IContactPerson {
   email: string;
   workPhone: string;
   mobilePhone: string;
+
+
   contactPersonDateOfBirth: string;
   contactPersonAnniversary: string;
   contactPersonDesignation: string;
@@ -108,6 +107,7 @@ interface IContactPerson {
 }
 
 const AddCustomer = () => {
+
   const [activeTab, setActiveTab] = useState<
     "Other Details" | "Address" | "Contact Persons"
   >("Other Details");
@@ -225,6 +225,7 @@ const AddCustomer = () => {
     setContactPersons(newContacts);
   };
 
+
   // const handleChannelChange = (
   //   index: number,
   //   channel: string,
@@ -261,26 +262,95 @@ const AddCustomer = () => {
       const apiData = customerDataById.data;
 
       console.log(apiData, "checking the api data");
+      // Update your useEffect to use optional chaining
+      useEffect(() => {
+        if (customerDataById) {
+          const apiData = customerDataById.data;
 
-      if (apiData?.contactPersons) {
-        setContactPersons(
-          apiData.contactPersons.map((person: any) => ({
-            salutation: person.salutation || "",
-            firstName: person.firstName || "",
-            lastName: person.lastName || "",
-            email: person.email || "",
-            leadId: person.leadId || "",
-            workPhone: person.workPhone || "",
-            mobilePhone: person.mobilePhone || "",
-            contactPersonDateOfBirth: person.contactPersonDateOfBirth || "",
-            contactPersonAnniversary: person.contactPersonAnniversary || "",
-            contactPersonDesignation: person.contactPersonDesignation || "",
-            contactPersonDepartment: person.contactPersonDepartment || "",
-            communicationChannels: person.communicationChannels || [],
-          }))
-        );
-      }
+          console.log(apiData, "checking the api data");
 
+          if (apiData?.contactPersons) {
+            setContactPersons(
+              apiData.contactPersons.map((person: any) => ({
+                salutation: person.salutation || "",
+                firstName: person.firstName || "",
+                lastName: person.lastName || "",
+                email: person.email || "",
+                leadId: person.leadId || "",
+                workPhone: person.workPhone || "",
+                mobilePhone: person.mobilePhone || "",
+                contactPersonDateOfBirth: person.contactPersonDateOfBirth || "",
+                contactPersonAnniversary: person.contactPersonAnniversary || "",
+                contactPersonDesignation: person.contactPersonDesignation || "",
+                contactPersonDepartment: person.contactPersonDepartment || "",
+                communicationChannels: person.communicationChannels || [],
+              }))
+            );
+          }
+
+          setFormData((prev) => ({
+            ...prev,
+
+            email: apiData?.email || "",
+            phone: apiData?.phone || "",
+            mobile: apiData?.mobile || "",
+            panNumber: apiData?.panNumber || "",
+            placeOfSupply: apiData?.placeOfSupply || "",
+            companyName: apiData?.companyName || "",
+            displayName: apiData?.displayName || "",
+            customerType: apiData?.customerType || "",
+            salutation: apiData?.salutation || "",
+            leadId: String(apiData?.leadId || ""),
+            firstName: apiData?.firstName || "",
+            lastName: apiData?.lastName || "",
+            taxPreference: apiData?.taxPreference || "",
+            gstTreatment: apiData?.gstTreatment || "",
+            openingBalanceState: apiData?.openingBalanceState || "",
+            openingBalance: apiData?.openingBalance || "",
+            creditLimit: apiData?.creditLimit || "",
+            enablePortal: apiData?.enablePortal || false,
+            currency: apiData?.currency || "",
+            paymentTerms: apiData?.paymentTerms || "",
+            priceList: apiData?.priceList || "",
+            portalLanguage: apiData?.portalLanguage || "",
+            // attention: apiData?.attention || "",
+            countryRegion: apiData?.countryRegion || "",
+            addressStreet1: apiData?.addressStreet1 || "",
+            addressStreet2: apiData?.addressStreet2 || "",
+            pinCode: apiData?.pinCode || "",
+            city: apiData?.city || "",
+            state: apiData?.state || "",
+            prefersEmail: apiData?.prefersEmail,
+            prefersSms: apiData?.prefersSms,
+            phoneNumber: apiData?.phoneNumber || "",
+            faxNumber: apiData?.faxNumber || "",
+            // shippingAttention: apiData?.shippingAttention || "",
+            shippingCountryRegion: apiData?.shippingCountryRegion || "",
+            shippingAddressStreet1: apiData?.shippingAddressStreet1 || "",
+            shippingAddressStreet2: apiData?.shippingAddressStreet2 || "",
+            shippingCity: apiData?.shippingCity || "",
+            shippingState: apiData?.shippingState || "",
+            shippingPinCode: apiData?.shippingPinCode || "",
+            shippingPhoneNumber: apiData?.shippingPhoneNumber || "",
+            shippingFaxNumber: apiData?.shippingFaxNumber || "",
+            documentArray: apiData?.documentArray || [],
+            websiteUrl: apiData?.websiteUrl || "",
+            department: apiData?.department || "",
+            designation: apiData?.designation || "",
+            twitter: apiData?.twitter || "",
+            skype: apiData?.skype || "",
+            facebook: apiData?.facebook || "",
+            // communicationChannels: apiData?.communicationChannels || [],
+            // contactPersonsSalutation: apiData?.contactPersonsSalutation || "",
+            // contactPersonsFirstName: apiData?.contactPersonsFirstName || "",
+            // contactPersonsLastName: apiData?.contactPersonsLastName || "",
+            // contactPersonsEmail: apiData?.contactPersonsEmail || "",
+            // contactPersonsWorkPhone: apiData?.contactPersonsWorkPhone || "",
+            // contactPersonsMobile: apiData?.contactPersonsMobile || "",
+            // contactPersonsCommunicationChannels: apiData?. contactPersonsCommunicationChannels || "",
+          }));
+        }
+      }, [customerDataById]);
       setFormData((prev) => ({
         ...prev,
 
@@ -1160,46 +1230,46 @@ const AddCustomer = () => {
                               GST Treatment:
                             </span>
                             <div className="w-96">
-                            <Autocomplete
-  disablePortal
-  options={gstOptions}
-  value={
-    gstOptions.find((option) => option.value === formData.gstTreatment) || null
-  }
-  onChange={(event, newValue) => {
-    setFormData({
-      ...formData,
-      gstTreatment: newValue?.value || "",
-    });
-  }}
-  PopperComponent={StyledPopper}
-  renderInput={(params) => (
-    <TextField
-      {...params}
-      label="Select GST Treatment"
-      InputProps={{
-        ...params.InputProps,
-        style: { height: "36px" },
-      }}
-      sx={{
-        "& .MuiInputBase-root": {
-          height: "40px",
-        },
-        "& .MuiInputLabel-root": {
-          fontSize: "14px",
-          marginTop: "-2px",
-          transform: "translate(14px, 10px) scale(1)",
-          "&.MuiInputLabel-shrink": {
-            transform: "translate(14px, -9px) scale(0.75)",
-          },
-        },
-        "& .MuiInputLabel-root.Mui-focused": {
-          transform: "translate(14px, -9px) scale(0.75)",
-        },
-      }}
-    />
-  )}
-/>
+                              <Autocomplete
+                                disablePortal
+                                options={gstOptions}
+                                value={
+                                  gstOptions.find((option) => option.value === formData.gstTreatment) || null
+                                }
+                                onChange={(event, newValue) => {
+                                  setFormData({
+                                    ...formData,
+                                    gstTreatment: newValue?.value || "",
+                                  });
+                                }}
+                                PopperComponent={StyledPopper}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Select GST Treatment"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                      style: { height: "36px" },
+                                    }}
+                                    sx={{
+                                      "& .MuiInputBase-root": {
+                                        height: "40px",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        fontSize: "14px",
+                                        marginTop: "-2px",
+                                        transform: "translate(14px, 10px) scale(1)",
+                                        "&.MuiInputLabel-shrink": {
+                                          transform: "translate(14px, -9px) scale(0.75)",
+                                        },
+                                      },
+                                      "& .MuiInputLabel-root.Mui-focused": {
+                                        transform: "translate(14px, -9px) scale(0.75)",
+                                      },
+                                    }}
+                                  />
+                                )}
+                              />
                             </div>
                             {/* <div className="w-96 mt-1">
                               {" "}
@@ -1819,12 +1889,12 @@ const AddCustomer = () => {
                           >
                             {isExpanded ? (
                               <>
-                                <ChevronUp className="w-5 h-5" />
+                                <IoChevronUpSharp className="w-5 h-5" />
                                 Hide More Details
                               </>
                             ) : (
                               <>
-                                <ChevronDown className="w-5 h-5" />
+                                <IoChevronDownSharp className="w-5 h-5" />
                                 Add More Details
                               </>
                             )}
@@ -1843,7 +1913,7 @@ const AddCustomer = () => {
                                   </label>
                                   <div className="w-96 flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <Globe className="w-4 h-4 text-gray-400" />
+                                      <FaGlobe className="w-4 h-4 text-gray-400" />
                                     </div>
                                     <input
                                       id="websiteUrl"
@@ -1871,7 +1941,7 @@ const AddCustomer = () => {
                                   </label>
                                   <div className="w-96 flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <Building2 className="w-4 h-4 text-gray-400" />
+                                      <FaBuilding className="w-4 h-4 text-gray-400" />
                                     </div>
                                     <input
                                       id="department"
@@ -1899,7 +1969,7 @@ const AddCustomer = () => {
                                   </label>
                                   <div className="w-96 flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <UserRound className="w-4 h-4 text-gray-400" />
+                                      <FaUserCircle className="w-4 h-4 text-gray-400" />
                                     </div>
                                     <input
                                       id="designation"
@@ -1927,7 +1997,7 @@ const AddCustomer = () => {
                                   </label>
                                   <div className="w-96 flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <Twitter className="w-4 h-4 text-gray-400" />
+                                      <FaTwitter className="w-4 h-4 text-gray-400" />
                                     </div>
                                     <input
                                       id="twitter"
@@ -1955,7 +2025,7 @@ const AddCustomer = () => {
                                   </label>
                                   <div className="w-96 flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <MessageCircle className="w-4 h-4 text-gray-400" />
+                                      <FiMessageCircle className="w-4 h-4 text-gray-400" />
                                     </div>
                                     <input
                                       id="skype"
@@ -1983,7 +2053,7 @@ const AddCustomer = () => {
                                   </label>
                                   <div className="w-96 flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                      <Facebook className="w-4 h-4 text-gray-400" />
+                                      <FaFacebook className="w-4 h-4 text-gray-400" />
                                     </div>
                                     <input
                                       id="facebook"
@@ -2492,7 +2562,7 @@ const AddCustomer = () => {
                               <span className="text-blue-600">
                                 Same as Billing Address
                               </span>
-                              <ChevronDown className="h-4 w-4 text-blue-600" />
+                              <FaChevronDown className="h-4 w-4 text-blue-600" />
                             </div>
                           </div>
                           {/* Shipping Attention */}
@@ -2651,7 +2721,7 @@ const AddCustomer = () => {
                                   countryOptions.find(
                                     (option) =>
                                       option.value ===
-                                      formData.shippingCountryRegion 
+                                      formData.shippingCountryRegion
                                   ) || { value: "IN - India", label: "IN - India" }
                                 }
                                 onChange={(event, newValue) => {
@@ -2990,23 +3060,23 @@ const AddCustomer = () => {
                                     Mobile
                                   </th>
                                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                  Anniversary Date
+                                    Anniversary Date
                                   </th>
                                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Department
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Designation
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Department
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Designation
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
                                     Date of Birth
                                   </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Communication Channels
-                                    </th>
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
-                                      Actions
-                                    </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Communication Channels
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                                    Actions
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -3115,73 +3185,73 @@ const AddCustomer = () => {
 
                                     {/* Anniversary Date */}
                                     <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="date"
-                                          value={person.contactPersonAnniversary}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonAnniversary",
-                                              e.target.value
-                                            )
-                                          }
-                                          onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
+                                      <input
+                                        type="date"
+                                        value={person.contactPersonAnniversary}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonAnniversary",
+                                            e.target.value
+                                          )
+                                        }
+                                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
 
                                     {/* Department */}
                                     <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="text"
-                                          value={person.contactPersonDepartment}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonDepartment",
-                                              e.target.value
-                                            )
-                                          }
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
+                                      <input
+                                        type="text"
+                                        value={person.contactPersonDepartment}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonDepartment",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
 
-                                      {/* Designation */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="text"
-                                          value={person.contactPersonDesignation}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonDesignation",
-                                              e.target.value
-                                            )
-                                          }
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
+                                    {/* Designation */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="text"
+                                        value={person.contactPersonDesignation}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonDesignation",
+                                            e.target.value
+                                          )
+                                        }
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
 
-                                      {/* Date of Birth */}
-                                      <td className="px-4 py-2 border-b">
-                                        <input
-                                          type="date"
-                                          value={person.contactPersonDateOfBirth}
-                                          onChange={(e) =>
-                                            handleContactPersonChange(
-                                              index,
-                                              "contactPersonDateOfBirth",
-                                              e.target.value
-                                            )
-                                          }
-                                          onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                                          className="w-full border rounded p-1 text-sm"
-                                        />
-                                      </td>
+                                    {/* Date of Birth */}
+                                    <td className="px-4 py-2 border-b">
+                                      <input
+                                        type="date"
+                                        value={person.contactPersonDateOfBirth}
+                                        onChange={(e) =>
+                                          handleContactPersonChange(
+                                            index,
+                                            "contactPersonDateOfBirth",
+                                            e.target.value
+                                          )
+                                        }
+                                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                                        className="w-full border rounded p-1 text-sm"
+                                      />
+                                    </td>
 
-                                      
 
-                                      {/* Communication Channels */}
+
+                                    {/* Communication Channels */}
                                     <td className="px-4 py-2 border-b">
                                       <div className="flex gap-4">
                                         <label className="flex items-center space-x-1">
