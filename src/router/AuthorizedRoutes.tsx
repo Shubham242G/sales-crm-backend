@@ -139,7 +139,7 @@ export default function AuthorizedRoutes() {
 
           <Route path="/leadManagement" element={<LeadManagement />}></Route>
           <Route path="/add-leadManagement/:id" element={<LeadManagementEdit />}></Route>
-<Route path="/add-leadManagement" element={<LeadManagementEdit />}></Route>
+          <Route path="/add-leadManagement" element={<LeadManagementEdit />}></Route>
           <Route
             path="/monthlyPlanner/:date"
             element={< Combiner />}
@@ -150,11 +150,11 @@ export default function AuthorizedRoutes() {
           ></Route>
           <Route
             path="/vendorPurchaseBill"
-            element={< VendorPurchaseBillView/>}
+            element={< VendorPurchaseBillView />}
           ></Route>
           <Route
             path="/vendorPurchaseBill/:id"
-            element={< VendorPurchaseBillSingle/>}
+            element={< VendorPurchaseBillSingle />}
           ></Route>
           <Route
             path="/addQuotesFromVendors/:id"
