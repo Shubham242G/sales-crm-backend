@@ -1,82 +1,69 @@
-// interface UserDetail {
-//     clientName: string;
-//     companyName: string;
-//     phoneNumber: string;
-//     email: string;
-//     enquiryType: string;
-//     levelOfEnquiry: string;
-//     hotelPreferences: string;
-//     city: string;
-//     area: string;
-//     numberOfRooms: string;
-//     checkIn: string;
-//     checkOut: string;
-//     categoryOfHotel: string[];
-//     rateRequiredForOccupancy: string[];
-//     billingAddress: string;
-// }
+"use client";
 
-"use client"
-
-import { toastError, toastSuccess } from "@/utils/toast"
-import type React from "react"
-import { useState, useEffect, useMemo } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import { useAddEnquiry, useEnquiryById, useUpdateEnquiryById } from "@/services/enquiry.service"
-import moment from "moment"
-import Select from "react-select"
-import type { ReactSelectFormat } from "@/services/urls.service"
-import { Autocomplete, TextField } from "@mui/material"
-import { checkPermissionsForButtons } from "@/utils/permission"
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"; // Default styling
+import { toastError, toastSuccess } from "@/utils/toast";
+import type React from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  useAddEnquiry,
+  useEnquiryById,
+  useUpdateEnquiryById,
+} from "@/services/enquiry.service";
+import moment from "moment";
+import Select from "react-select";
+import type { ReactSelectFormat } from "@/services/urls.service";
+import { Autocomplete, TextField } from "@mui/material";
+import { checkPermissionsForButtons } from "@/utils/permission";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css"; // Default styling
 import { format } from "date-fns";
-import { useUserName } from "@/services/user.service"
-import { useZohoCustomerById, useZohoCustomers } from "@/services/customer.service"
-import { SiReactquery } from "react-icons/si"
+import { useUserName } from "@/services/user.service";
+import {
+  useZohoCustomerById,
+  useZohoCustomers,
+} from "@/services/customer.service";
+import { SiReactquery } from "react-icons/si";
 
 interface Room {
-  date: string
-  roomCategory: string
-  occupancy: string
-  mealPlan: string[]
-  noOfRooms: string
+  date: string;
+  roomCategory: string;
+  occupancy: string;
+  mealPlan: string[];
+  noOfRooms: string;
 }
 
 interface Banquet {
-  date: string
-  session: string[]
-  seatingStyle: string
-  avSetup: string
-  menuType: string
-  minPax: string
-  seatingRequired: string
+  date: string;
+  session: string[];
+  seatingStyle: string;
+  avSetup: string;
+  menuType: string;
+  minPax: string;
+  seatingRequired: string;
 }
 
 interface Cab {
-  date: string
-  fromCity?: string
-  toCity?: string
-  noOfVehicles: string
-  vehicleType: string
-  tripType: string
+  date: string;
+  fromCity?: string;
+  toCity?: string;
+  noOfVehicles: string;
+  vehicleType: string;
+  tripType: string;
 }
 
 interface EventDates {
-  startDate: ""
-  endDate: ""
+  startDate: "";
+  endDate: "";
 }
 //eventStartdate to be removed
 interface EventSetup {
-  functionType: string
-  setupRequired: string
-  eventDates: { startDate: string; endDate: string }[]
-  eventStartDate: string
-  eventEndDate: string
+  functionType: string;
+  setupRequired: string;
+  eventDates: { startDate: string; endDate: string }[];
+  eventStartDate: string;
+  eventEndDate: string;
   // FabricationItem: FabricationItem[]
   //ExhibitionItem: ExhibitionItem[]
-
-
 }
 
 interface FabricationItem {
@@ -97,7 +84,7 @@ const fabricationData: FabricationItem[] = [
     quantity: 4,
     days: "-",
     rate: "₹70.00",
-    amount: "₹56,000.00"
+    amount: "₹56,000.00",
   },
   {
     particular: "Signages on Road Side",
@@ -106,7 +93,7 @@ const fabricationData: FabricationItem[] = [
     quantity: 10,
     days: "-",
     rate: "₹100.00",
-    amount: "₹24,000.00"
+    amount: "₹24,000.00",
   },
   {
     particular: "Welcome Banner at Entry",
@@ -115,7 +102,7 @@ const fabricationData: FabricationItem[] = [
     quantity: 2,
     days: "-",
     rate: "₹100.00",
-    amount: "₹40,000.00"
+    amount: "₹40,000.00",
   },
   {
     particular: "Entry Gate",
@@ -123,13 +110,13 @@ const fabricationData: FabricationItem[] = [
     quantity: 1,
     days: "-",
     rate: "₹25,000.00",
-    amount: "₹25,000.00"
+    amount: "₹25,000.00",
   },
   {
     particular: "Cubical for Welcome Branding",
     quantity: 20,
     rate: "₹1,000.00",
-    amount: "₹20,000.00"
+    amount: "₹20,000.00",
   },
   {
     particular: "Creative Standees for Signages & Branding",
@@ -137,48 +124,48 @@ const fabricationData: FabricationItem[] = [
     area: 18,
     quantity: 40,
     rate: "₹100.00",
-    amount: "₹72,000.00"
+    amount: "₹72,000.00",
   },
   {
     particular: "Registration Area Truss Structure",
     size: "200ft (Width) x 30ft (Depth)",
     area: 6000,
     rate: "₹90.00",
-    amount: "₹540,000.00"
+    amount: "₹540,000.00",
   },
   {
     particular: "Registration Area Wall Masking",
     size: "200ft (Width) x 10ft (Depth)",
     area: 2000,
     rate: "₹40.00",
-    amount: "₹80,000.00"
+    amount: "₹80,000.00",
   },
   {
     particular: "Platform with Printed Carpet",
     size: "200ft (Width) x 40ft (Depth)",
     area: 8000,
     rate: "₹40.00",
-    amount: "₹320,000.00"
+    amount: "₹320,000.00",
   },
   {
     particular: "Registration Backdrop",
     size: "30ft (Width) x 10ft (Height)",
     area: 300,
     rate: "₹70.00",
-    amount: "₹21,000.00"
+    amount: "₹21,000.00",
   },
   {
     particular: "Registration Window with Vinyl Printing",
     quantity: 12,
     rate: "₹4,000.00",
-    amount: "₹48,000.00"
+    amount: "₹48,000.00",
   },
   {
     particular: "Selfie Booth with Letter Cutout",
     quantity: 3,
     rate: "₹30,000.00",
-    amount: "₹90,000.00"
-  }
+    amount: "₹90,000.00",
+  },
 ];
 
 const exhibitionData: ExhibitionItem[] = [
@@ -190,14 +177,14 @@ const exhibitionData: ExhibitionItem[] = [
     quantity: 150,
     days: 2,
     rate: "₹5,500.00",
-    amount: "₹8,25,000.00"
+    amount: "₹8,25,000.00",
   },
   {
     particular: "Entry Gate",
     quantity: 2,
     days: 1,
     rate: "₹15,000.00",
-    amount: "₹30,000.00"
+    amount: "₹30,000.00",
   },
   {
     particular: "Signages & Exhibition Map",
@@ -206,41 +193,41 @@ const exhibitionData: ExhibitionItem[] = [
     quantity: 1,
     days: 1,
     rate: "₹70.00",
-    amount: "₹14,000.00"
+    amount: "₹14,000.00",
   },
   {
     particular: "General Carpet (Printed)",
     area: 2000,
     rate: "₹15.00",
-    amount: "₹30,000.00"
+    amount: "₹30,000.00",
   },
   {
     particular: "Cocktail Tables",
     quantity: 20,
     rate: "₹1,000.00",
-    amount: "₹20,000.00"
+    amount: "₹20,000.00",
   },
   {
     particular: "Genset 125 KVA",
     quantity: 2,
     days: 4,
     rate: "₹15,000.00",
-    amount: "₹1,20,000.00"
+    amount: "₹1,20,000.00",
   },
   {
     particular: "Diesel for Genset (12 Hours x 6 Days x 2)",
     quantity: 24,
     days: 4,
     rate: "₹1,800.00",
-    amount: "₹1,72,800.00"
+    amount: "₹1,72,800.00",
   },
   {
     particular: "Electrication & Cabling",
     quantity: 1,
     days: 1,
     rate: "₹50,000.00",
-    amount: "₹50,000.00"
-  }
+    amount: "₹50,000.00",
+  },
 ];
 
 interface Item {
@@ -273,8 +260,8 @@ const eventData: EventData = {
         area: 98,
         quantity: 1,
         days: 2,
-        rate: 150.00,
-        amount: 29400.00
+        rate: 150.0,
+        amount: 29400.0,
       },
       {
         particular: "PA System JBL VRX 1 Pair",
@@ -282,8 +269,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 2,
-        rate: 15000.00,
-        amount: 30000.00
+        rate: 15000.0,
+        amount: 30000.0,
       },
       {
         particular: "Podium Mic",
@@ -291,8 +278,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 2,
-        rate: 650.00,
-        amount: 1300.00
+        rate: 650.0,
+        amount: 1300.0,
       },
       {
         particular: "Collar Mic",
@@ -300,8 +287,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 2,
-        rate: 650.00,
-        amount: 1300.00
+        rate: 650.0,
+        amount: 1300.0,
       },
       {
         particular: "Cordless MIC",
@@ -309,8 +296,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 2,
-        rate: 650.00,
-        amount: 1300.00
+        rate: 650.0,
+        amount: 1300.0,
       },
       {
         particular: "HD Camera with Cameraman",
@@ -318,8 +305,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 2,
-        rate: 12000.00,
-        amount: 24000.00
+        rate: 12000.0,
+        amount: 24000.0,
       },
       {
         particular: "Photographer",
@@ -327,8 +314,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 2,
-        rate: 7000.00,
-        amount: 14000.00
+        rate: 7000.0,
+        amount: 14000.0,
       },
       {
         particular: "Live Switcher",
@@ -336,8 +323,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 2,
-        rate: 3000.00,
-        amount: 6000.00
+        rate: 3000.0,
+        amount: 6000.0,
       },
       {
         particular: "HDMI Splitter",
@@ -345,8 +332,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 2,
-        rate: 3000.00,
-        amount: 6000.00
+        rate: 3000.0,
+        amount: 6000.0,
       },
       {
         particular: "Laptops",
@@ -354,11 +341,11 @@ const eventData: EventData = {
         area: 0,
         quantity: 3,
         days: 2,
-        rate: 1200.00,
-        amount: 7200.00
-      }
+        rate: 1200.0,
+        amount: 7200.0,
+      },
     ],
-    total: 123100.00
+    total: 123100.0,
   },
   exhibition: {
     items: [
@@ -368,8 +355,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 2,
-        rate: 8000.00,
-        amount: 16000.00
+        rate: 8000.0,
+        amount: 16000.0,
       },
       {
         particular: "Server & Networking for Central Loading",
@@ -377,11 +364,11 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 2,
-        rate: 15000.00,
-        amount: 30000.00
-      }
+        rate: 15000.0,
+        amount: 30000.0,
+      },
     ],
-    total: 190000.00
+    total: 190000.0,
   },
   conferenceAV: {
     items: [
@@ -391,8 +378,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 3,
-        rate: 30000.00,
-        amount: 90000.00
+        rate: 30000.0,
+        amount: 90000.0,
       },
       {
         particular: "Laptops & Manpower for Preview Room",
@@ -400,8 +387,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 5,
         days: 3,
-        rate: 5000.00,
-        amount: 75000.00
+        rate: 5000.0,
+        amount: 75000.0,
       },
       {
         particular: "Genset 125KVA",
@@ -409,8 +396,8 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 3,
-        rate: 15000.00,
-        amount: 45000.00
+        rate: 15000.0,
+        amount: 45000.0,
       },
       {
         particular: "Diesel for Genset (Approx.)",
@@ -418,12 +405,12 @@ const eventData: EventData = {
         area: 0,
         quantity: 1,
         days: 3,
-        rate: 5000.00,
-        amount: 15000.00
-      }
+        rate: 5000.0,
+        amount: 15000.0,
+      },
     ],
-    total: 225000.00
-  }
+    total: 225000.0,
+  },
 };
 
 interface ExhibitionItem {
@@ -437,37 +424,38 @@ interface ExhibitionItem {
 }
 
 interface AirTickets {
-  tripType: string
-  numberOfPassengers: string
-  fromCity: string
-  toCity: string
-  departureDate: string
-  returnDate: string
-  multiFromCity: string
-  multiToCity: string
-  multiDepartureDate: string
+  tripType: string;
+  numberOfPassengers: string;
+  fromCity: string;
+  toCity: string;
+  departureDate: string;
+  returnDate: string;
+  multiFromCity: string;
+  multiToCity: string;
+  multiDepartureDate: string;
 }
 
 const AddEnquiryForm = () => {
-  const [nameObj, setNameObj] = useState<ReactSelectFormat | null>(null)
+  const [nameObj, setNameObj] = useState<ReactSelectFormat | null>(null);
 
-  const { canView, canUpdate, canCreate } = checkPermissionsForButtons("Enquiry")
+  const { canView, canUpdate, canCreate } =
+    checkPermissionsForButtons("Enquiry");
 
-  const { id } = useParams()
+  const { id } = useParams();
 
-  const [companyName, setCompanyName] = useState("")
-  const [firstName, setFirstName] = useState("")
-  const [assignTo, setAssignTo] = useState("")
-  const [displayName, setDisplayName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [salutation, setSalutation] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState("")
-  const [email, setEmail] = useState("")
-  const [enquiryType, setEnquiryType] = useState("")
-  const [levelOfEnquiry, setLevelOfEnquiry] = useState("")
-  const [othersPreference, setOthersPreference] = useState("")
-  const [hotelName, setHotelName] = useState("")
-  const [categoryOfHotel, setCategoryOfHotel] = useState<string[]>([])
+  const [companyName, setCompanyName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [assignTo, setAssignTo] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [salutation, setSalutation] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [enquiryType, setEnquiryType] = useState("");
+  const [levelOfEnquiry, setLevelOfEnquiry] = useState("");
+  const [othersPreference, setOthersPreference] = useState("");
+  const [hotelName, setHotelName] = useState("");
+  const [categoryOfHotel, setCategoryOfHotel] = useState<string[]>([]);
   const hotelCategoryOptions = [
     { value: "budget", label: "Budget" },
     { value: "midrange", label: "Mid-Range" },
@@ -475,43 +463,43 @@ const AddEnquiryForm = () => {
     { value: "boutique", label: "Boutique" },
     { value: "business", label: "Business" },
     { value: "resort", label: "Resort" },
-  ]
+  ];
 
   const salutationOptions = [
     { value: "Mr", label: "Mr" },
     { value: "Ms", label: "Ms" },
     { value: "Mrs", label: "Mrs" },
-  ]
+  ];
 
-  const [occupancy, setOccupancy] = useState<string[]>([])
+  const [occupancy, setOccupancy] = useState<string[]>([]);
   // const occupancyOptions = [
   //   { value: "single occupancy", label: "Single Occupancy" },
   //   { value: "double occupancy", label: "Double Occupancy" },
   //   { value: "extra bed", label: "Extra Bed" },
   // ]
-  const [approxPassengers, setApproxPassengers] = useState("")
+  const [approxPassengers, setApproxPassengers] = useState("");
   // const [hotelPreferences, setHotelPreferences] = useState("");
-  const [city, setCity] = useState("")
-  const [area, setArea] = useState("")
-  const [noOfRooms, setNoOfRooms] = useState("")
-  const [checkIn, setCheckIn] = useState("")
+  const [city, setCity] = useState("");
+  const [area, setArea] = useState("");
+  const [noOfRooms, setNoOfRooms] = useState("");
+  const [checkIn, setCheckIn] = useState("");
   const [banquetDate, setBanquetDate] = useState("");
   const [banquetTime, setBanquetTime] = useState("");
-  const [checkOut, setCheckOut] = useState("")
+  const [checkOut, setCheckOut] = useState("");
   const [needCab, setNeedCab] = useState(false);
   // const [categoryOfHotel, setCategoryOfHotel] = useState([]);
   // const [occupancy, setOccupancy] = useState([]);
-  const [billingInstructions, setBillingInstructions] = useState("")
+  const [billingInstructions, setBillingInstructions] = useState("");
 
-  const [room, setRoom] = useState<Room[]>([])
-  const [banquet, setBanquet] = useState<Banquet[]>([])
-  const [cab, setCab] = useState<Cab[]>([])
-  const [isOutOfStation, setIsOutOfStation] = useState(false)
+  const [room, setRoom] = useState<Room[]>([]);
+  const [banquet, setBanquet] = useState<Banquet[]>([]);
+  const [cab, setCab] = useState<Cab[]>([]);
+  const [isOutOfStation, setIsOutOfStation] = useState(false);
   // const [selectName, setSelectName] = useState('');
 
-  const { mutateAsync: addEnquiry } = useAddEnquiry()
-  const { mutateAsync: updateEnquiryById } = useUpdateEnquiryById()
-  const { data: userNames } = useUserName()
+  const { mutateAsync: addEnquiry } = useAddEnquiry();
+  const { mutateAsync: updateEnquiryById } = useUpdateEnquiryById();
+  const { data: userNames } = useUserName();
   const [query, setQuery] = useState("");
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(100);
@@ -525,8 +513,7 @@ const AddEnquiryForm = () => {
     [pageIndex, pageSize, query]
   );
 
-
-  const [customerId, setCustomerId] = useState("")
+  const [customerId, setCustomerId] = useState("");
   const { data: Customer } = useZohoCustomers(searchObj);
   const { data: CustomerById } = useZohoCustomerById(customerId || "");
 
@@ -548,14 +535,13 @@ const AddEnquiryForm = () => {
 
   banquet.forEach((item: any, index) => {
     if (typeof item.session === "string") {
-      banquet[index].session = item.session.split(",").map((s: any) => s.trim());
+      banquet[index].session = item.session
+        .split(",")
+        .map((s: any) => s.trim());
     }
   });
 
-
-
-
-  console.log(Customer, "check customer value in ENquiry Form ")
+  console.log(Customer, "check customer value in ENquiry Form ");
   // const { data: contact } = useContact({ pageIndex: 0 });
 
   // const { data: contactById } = useContactById(nameObj?.value || "");
@@ -567,7 +553,12 @@ const AddEnquiryForm = () => {
   //     console.log(nameObj, "<----nameObj");
   //   }
   // }, [contactById?.data]);
-  const mealPlanOptions = ["Breakfast Only", "Half Board", "Full Board", "All Inclusive"]
+  const mealPlanOptions = [
+    "Breakfast Only",
+    "Half Board",
+    "Full Board",
+    "All Inclusive",
+  ];
 
   const [eventSetup, setEventSetup] = useState<EventSetup>({
     functionType: "",
@@ -580,7 +571,7 @@ const AddEnquiryForm = () => {
     ],
     eventStartDate: "",
     eventEndDate: "",
-  })
+  });
 
   const [airTickets, setAirTickets] = useState<AirTickets>({
     tripType: "",
@@ -592,22 +583,21 @@ const AddEnquiryForm = () => {
     multiDepartureDate: "",
     multiFromCity: "",
     multiToCity: "",
-  })
+  });
 
   const customStyles = {
     control: (base: any) => ({
       ...base,
-      border: '2px solid #e5e7eb !important',
-      boxShadow: '0 !important',
+      border: "2px solid #e5e7eb !important",
+      boxShadow: "0 !important",
       color: "#000",
-      padding: '5px',
+      padding: "5px",
       fontFamily: "satoshi, sans-serif",
-      backgroundColor: '#fafafa',
-      zindex: '9',
-      minHeight: '30px',
-      '&:hover': {
-        border: '1px solid #e5e7eb !important',
-
+      backgroundColor: "#fafafa",
+      zindex: "9",
+      minHeight: "30px",
+      "&:hover": {
+        border: "1px solid #e5e7eb !important",
       },
 
       menu: (provided: any) => ({
@@ -616,8 +606,6 @@ const AddEnquiryForm = () => {
       }),
 
       menuPortal: (provided: any) => ({ ...provided, zIndex: 5 }),
-
-
     }),
     option: (base: any) => ({
       ...base,
@@ -625,54 +613,41 @@ const AddEnquiryForm = () => {
       background: "white",
       color: "#000",
       fontFamily: "'inter', sans-serif",
-      zindex: '9',   // this was the mistake (I needed to remove this)
+      zindex: "9", // this was the mistake (I needed to remove this)
       "&:hover": {
         backgroundColor: "#687256",
         color: "#fff",
         fontFamily: "'inter', sans-serif",
       },
-    })
-
-  }
-
-
-
-
+    }),
+  };
 
   useEffect(() => {
-
-
     let customer = Customer?.data?.filter(
       (item: any) => item.displayName === displayName
-    )
+    );
     // setCustomerId(customer?._id || "")
 
-    console.log(customer, "check customer value")
+    console.log(customer, "check customer value");
 
-    setCompanyName(customer[0]?.companyName)
+    setCompanyName(customer[0]?.companyName);
+  }, [displayName, Customer]);
 
-
-
-  }, [displayName, Customer])
-
-  const [isEventSetupVisible, setIsEventSetupVisible] = useState(false)
-  const [isAirTicketVisible, setIsAirTicketVisible] = useState(false)
-
+  const [isEventSetupVisible, setIsEventSetupVisible] = useState(false);
+  const [isAirTicketVisible, setIsAirTicketVisible] = useState(false);
 
   const handleDeleteRow = (idx: number, setTable: any) => {
     setTable((prev: any) => prev.filter((_: any, i: number) => i !== idx));
   };
 
-
-
   const { data: enquiryDataById, isLoading } = useEnquiryById(id || "")
   useEffect(() => {
     if (checkIn && checkOut) {
-      const start = new Date(checkIn)
-      const end = new Date(checkOut)
-      const dates = []
+      const start = new Date(checkIn);
+      const end = new Date(checkOut);
+      const dates = [];
 
-      let currentDate = start
+      let currentDate = start;
       for (
         let currentDate = new Date(start);
         currentDate < end;
@@ -681,8 +656,7 @@ const AddEnquiryForm = () => {
         dates.push({ date: currentDate.toISOString().split("T")[0] });
       }
 
-
-      console.log(dates.length, "check dates.length ")
+      console.log(dates.length, "check dates.length ");
 
       setRoom(
         dates.map((date) => ({
@@ -692,8 +666,8 @@ const AddEnquiryForm = () => {
           category: "",
           occupancy: "",
           mealPlan: [],
-        })),
-      )
+        }))
+      );
 
       setCab(
         dates.map((date) => ({
@@ -703,16 +677,17 @@ const AddEnquiryForm = () => {
           noOfVehicles: "",
           vehicleType: "",
           tripType: "",
-        })),
-      )
+        }))
+      );
     }
-  }, [checkIn, checkOut, noOfRooms])
+  }, [checkIn, checkOut, noOfRooms]);
 
   useEffect(() => {
     if (banquetDate) {
       setBanquet((prev: any) => {
-
-        const existingIndex = prev.findIndex((row: any) => moment(row.date).isSame(banquetDate, 'day'));
+        const existingIndex = prev.findIndex((row: any) =>
+          moment(row.date).isSame(banquetDate, "day")
+        );
         const newRow = {
           date: banquetDate,
           session: "",
@@ -724,9 +699,11 @@ const AddEnquiryForm = () => {
         };
 
         if (existingIndex !== -1) {
-
           const updated = [...prev];
-          updated[existingIndex] = { ...updated[existingIndex], date: banquetDate };
+          updated[existingIndex] = {
+            ...updated[existingIndex],
+            date: banquetDate,
+          };
           return updated;
         }
 
@@ -745,12 +722,9 @@ const AddEnquiryForm = () => {
         category: "",
         occupancy: row.occupancy,
         mealPlan: row.mealPlan,
-      })),
-    )
-  }, [enquiryDataById, noOfRooms])
-
-
-
+      }))
+    );
+  }, [enquiryDataById, noOfRooms]);
 
   useEffect(() => {
     setCab(
@@ -761,8 +735,8 @@ const AddEnquiryForm = () => {
         noOfVehicles: row.noOfVehicles,
         vehicleType: row.vehicleType,
         tripType: row.tripType,
-      })),
-    )
+      }))
+    );
     setBanquet(
       banquet.map((row) => ({
         date: row.date,
@@ -772,27 +746,43 @@ const AddEnquiryForm = () => {
         menuType: row.menuType,
         minPax: row.minPax,
         seatingRequired: row.seatingRequired,
-      })),
-    )
-  }, [enquiryDataById])
+      }))
+    );
+  }, [enquiryDataById]);
 
-  const handleMealPlanChange = (table: Room[], setTable: any, index: number, value: string): void => {
-    const updatedTable: any = [...table]
+  const handleMealPlanChange = (
+    table: Room[],
+    setTable: any,
+    index: number,
+    value: string
+  ): void => {
+    const updatedTable: any = [...table];
     if (!updatedTable[index].mealPlan.includes(value)) {
-      updatedTable[index].mealPlan.push(value)
+      updatedTable[index].mealPlan.push(value);
     }
-    setTable(updatedTable)
-  }
+    setTable(updatedTable);
+  };
 
   const handleCheckboxChange = (value: string) => {
-    setOccupancy((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]))
-  }
+    setOccupancy((prev) =>
+      prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
+    );
+  };
 
-  const removeMealPlan = (table: Room[], setTable: any, index: number, value: string): void => {
-    const updatedTable = [...table]
-    updatedTable[index].mealPlan = updatedTable[index].mealPlan.filter((plan) => plan !== value)
-    setTable(updatedTable)
-  }
+  const removeMealPlan = (
+    table: Room[],
+    setTable: any,
+    index: number,
+    value: string
+  ): void => {
+    const updatedTable = [...table];
+    updatedTable[index].mealPlan = updatedTable[index].mealPlan.filter(
+      (plan) => plan !== value
+    );
+    setTable(updatedTable);
+  };
 
   const addCabRow = () => {
     setCab((prev) => [
@@ -805,13 +795,18 @@ const AddEnquiryForm = () => {
         vehicleType: "",
         tripType: "",
       },
-    ])
-  }
+    ]);
+  };
 
   const addBanquetRow = () => {
-    if (banquet.length === 0 || moment(banquet[banquet.length - 1].date).isBefore(moment(checkOut))) {
-      const nextDate = new Date(banquet[banquet.length - 1]?.date || new Date())
-      nextDate.setDate(nextDate.getDate() + 1)
+    if (
+      banquet.length === 0 ||
+      moment(banquet[banquet.length - 1].date).isBefore(moment(checkOut))
+    ) {
+      const nextDate = new Date(
+        banquet[banquet.length - 1]?.date || new Date()
+      );
+      nextDate.setDate(nextDate.getDate() + 1);
       setBanquet((prev) => [
         ...prev,
         {
@@ -823,13 +818,13 @@ const AddEnquiryForm = () => {
           minPax: "",
           seatingRequired: "",
         },
-      ])
+      ]);
     }
-  }
+  };
 
   const handleCabTypeChange = () => {
-    setIsOutOfStation(!isOutOfStation)
-  }
+    setIsOutOfStation(!isOutOfStation);
+  };
 
   // Handle Table Input Changes
   const handleTableChange = <T,>(
@@ -837,44 +832,52 @@ const AddEnquiryForm = () => {
     setTable: React.Dispatch<React.SetStateAction<T[]>>,
     index: number,
     field: keyof T,
-    value: string,
+    value: string
   ): void => {
-    const updatedTable: any = [...table]
-    updatedTable[index][field] = value
-    setTable(updatedTable)
-  }
+    const updatedTable: any = [...table];
+    updatedTable[index][field] = value;
+    setTable(updatedTable);
+  };
 
   const handleEventDetailChange = (field: keyof EventSetup, value: string) => {
     setEventSetup((prevState) => ({
       ...prevState,
       [field]: value,
-    }))
-  }
+    }));
+  };
 
   const handleAirTicketChange = (field: keyof AirTickets, value: string) => {
-    setAirTickets((prev) => ({ ...prev, [field]: value }))
-  }
+    setAirTickets((prev) => ({ ...prev, [field]: value }));
+  };
 
   const addEventDate = () => {
-    const tempArray = [...eventSetup.eventDates]
-    tempArray.push({ startDate: "", endDate: "" })
-    setEventSetup({ ...eventSetup, eventDates: tempArray })
-  }
+    const tempArray = [...eventSetup.eventDates];
+    tempArray.push({ startDate: "", endDate: "" });
+    setEventSetup({ ...eventSetup, eventDates: tempArray });
+  };
 
-  const handleDateChange = (index: number, field: keyof EventSetup["eventDates"][0], value: string): void => {
-    const updatedDates = [...eventSetup.eventDates]
+  const handleDateChange = (
+    index: number,
+    field: keyof EventSetup["eventDates"][0],
+    value: string
+  ): void => {
+    const updatedDates = [...eventSetup.eventDates];
     updatedDates[index] = {
       ...updatedDates[index],
       [field]: value,
-    }
+    };
 
     setEventSetup((prevState) => ({
       ...prevState,
       eventDates: updatedDates,
-    }))
-  }
+    }));
+  };
 
-  const handleTimeChange = (index: number, field: keyof EventSetup["eventDates"][0], timeValue: string): void => {
+  const handleTimeChange = (
+    index: number,
+    field: keyof EventSetup["eventDates"][0],
+    timeValue: string
+  ): void => {
     if (!timeValue) return; // Skip if no time is provided
 
     const updatedDates = [...eventSetup.eventDates];
@@ -885,13 +888,18 @@ const AddEnquiryForm = () => {
 
     // Parse the existing date and update time
     const currentDate = moment(currentDateStr);
-    const [hours, minutes] = timeValue.split(':').map(Number);
-    currentDate.set({ hour: hours, minute: minutes, second: 0, millisecond: 0 });
+    const [hours, minutes] = timeValue.split(":").map(Number);
+    currentDate.set({
+      hour: hours,
+      minute: minutes,
+      second: 0,
+      millisecond: 0,
+    });
 
     // Update the state with the new date string (same format as handleDateChange)
     updatedDates[index] = {
       ...updatedDates[index],
-      [field]: currentDate.format('YYYY-MM-DDTHH:mm:ss.SSSZ'), // ISO format to match Date object
+      [field]: currentDate.format("YYYY-MM-DDTHH:mm:ss.SSSZ"), // ISO format to match Date object
     };
 
     setEventSetup((prevState) => ({
@@ -900,55 +908,56 @@ const AddEnquiryForm = () => {
     }));
   };
 
-  const navigate = useNavigate()
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
+  const navigate = useNavigate();
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
     switch (name) {
       case "companyName":
-        setCompanyName(value)
-        break
+        setCompanyName(value);
+        break;
       case "phoneNumber":
-        setPhoneNumber(value)
-        break
+        setPhoneNumber(value);
+        break;
       case "email":
-        setEmail(value)
-        break
+        setEmail(value);
+        break;
       case "city":
-        setCity(value)
-        break
+        setCity(value);
+        break;
       case "area":
-        setArea(value)
-        break
+        setArea(value);
+        break;
       case "noOfRooms":
-        setNoOfRooms(value)
-        break
+        setNoOfRooms(value);
+        break;
       case "enquiryType":
-        setEnquiryType(value)
-        break
+        setEnquiryType(value);
+        break;
       case "checkIn":
-        setCheckIn(value)
-        break
+        setCheckIn(value);
+        break;
       case "checkOut":
-        setCheckOut(value)
-        break
+        setCheckOut(value);
+        break;
       case "levelOfEnquiry":
-        setLevelOfEnquiry(value)
-        break
+        setLevelOfEnquiry(value);
+        break;
       case "billingAddress":
-        setBillingInstructions(value)
-        break
+        setBillingInstructions(value);
+        break;
       default:
-        break
+        break;
     }
-  }
+  };
 
   useEffect(() => {
     // Prefill form when editing
     if (enquiryDataById && enquiryDataById?.data) {
-      const { eventSetup } = enquiryDataById.data
+      const { eventSetup } = enquiryDataById.data;
 
-
-      setAirTickets(enquiryDataById?.data?.airTickets || airTickets)
+      setAirTickets(enquiryDataById?.data?.airTickets || airTickets);
       setEventSetup({
         functionType: eventSetup.functionType || "",
         setupRequired: eventSetup.setupRequired || "",
@@ -959,59 +968,62 @@ const AddEnquiryForm = () => {
 
         eventStartDate: eventSetup?.eventStartDate || "",
         eventEndDate: eventSetup?.eventEndDate || "",
-      })
-      setBanquet(enquiryDataById?.data?.banquet
-        ? enquiryDataById.data.banquet.map((item: any) => ({
-          ...item,
-          session: Array.isArray(item.session) ? item.session : [item.session].filter(Boolean)
-        }))
-        : []
-      )
-      setRoom([...enquiryDataById?.data?.room])
+      });
+      setBanquet(
+        enquiryDataById?.data?.banquet
+          ? enquiryDataById.data.banquet.map((item: any) => ({
+              ...item,
+              session: Array.isArray(item.session)
+                ? item.session
+                : [item.session].filter(Boolean),
+            }))
+          : []
+      );
+      setRoom([...enquiryDataById?.data?.room]);
       //   setCab(enquiryDataById?.data?.cab)
-      setBillingInstructions(enquiryDataById?.data?.billingInstructions || "")
-      setCompanyName(enquiryDataById?.data?.companyName)
+      setBillingInstructions(enquiryDataById?.data?.billingInstructions || "");
+      setCompanyName(enquiryDataById?.data?.companyName);
 
-      setPhoneNumber(enquiryDataById?.data?.phoneNumber)
-      setHotelName(enquiryDataById?.data?.hotelName)
-      setApproxPassengers(enquiryDataById?.data?.approxPassengers)
-      setOthersPreference(enquiryDataById?.data?.othersPreference)
-      setCategoryOfHotel(enquiryDataById?.data?.categoryOfHotel)
-      setOccupancy(enquiryDataById?.data?.occupancy)
-      setEmail(enquiryDataById?.data?.email)
-      setCity(enquiryDataById?.data?.city)
-      setArea(enquiryDataById?.data?.area)
-      setNoOfRooms(enquiryDataById?.data?.noOfRooms || "")
-      setEnquiryType(enquiryDataById?.data?.enquiryType)
-      setCheckIn(enquiryDataById?.data?.checkIn)
-      setCheckOut(enquiryDataById?.data?.checkOut)
-      setLevelOfEnquiry(enquiryDataById?.data?.levelOfEnquiry)
-      setEventSetup(enquiryDataById?.data?.eventSetup)
-      setFirstName(enquiryDataById?.data?.firstName)
-      setAssignTo(enquiryDataById?.data?.assignTo)
-      setDisplayName(enquiryDataById?.data?.displayName)
-      setLastName(enquiryDataById?.data?.lastName)
-      setSalutation(enquiryDataById?.data?.salutation)
-      setBanquetDate(enquiryDataById?.data?.banquetDate)
-      setBanquetTime(enquiryDataById?.data?.banquetTime)
+      setPhoneNumber(enquiryDataById?.data?.phoneNumber);
+      setHotelName(enquiryDataById?.data?.hotelName);
+      setApproxPassengers(enquiryDataById?.data?.approxPassengers);
+      setOthersPreference(enquiryDataById?.data?.othersPreference);
+      setCategoryOfHotel(enquiryDataById?.data?.categoryOfHotel);
+      setOccupancy(enquiryDataById?.data?.occupancy);
+      setEmail(enquiryDataById?.data?.email);
+      setCity(enquiryDataById?.data?.city);
+      setArea(enquiryDataById?.data?.area);
+      setNoOfRooms(enquiryDataById?.data?.noOfRooms || "");
+      setEnquiryType(enquiryDataById?.data?.enquiryType);
+      setCheckIn(enquiryDataById?.data?.checkIn);
+      setCheckOut(enquiryDataById?.data?.checkOut);
+      setLevelOfEnquiry(enquiryDataById?.data?.levelOfEnquiry);
+      setEventSetup(enquiryDataById?.data?.eventSetup);
+      setFirstName(enquiryDataById?.data?.firstName);
+      setAssignTo(enquiryDataById?.data?.assignTo);
+      setDisplayName(enquiryDataById?.data?.displayName);
+      setLastName(enquiryDataById?.data?.lastName);
+      setSalutation(enquiryDataById?.data?.salutation);
+      setBanquetDate(enquiryDataById?.data?.banquetDate);
+      setBanquetTime(enquiryDataById?.data?.banquetTime);
 
-      setIsOutOfStation(!!enquiryDataById?.data?.cab?.some((c: Cab) => c.fromCity && c.toCity))
+      setIsOutOfStation(
+        !!enquiryDataById?.data?.cab?.some((c: Cab) => c.fromCity && c.toCity)
+      );
 
-      setCab(enquiryDataById?.data?.cab)
+      setCab(enquiryDataById?.data?.cab);
       //  setUser(enquiryDataById?.data)
-      setIsEventSetupVisible(!!enquiryDataById.data.eventSetup?.functionType)
-      setIsAirTicketVisible(!!enquiryDataById.data.airTickets?.tripType)
+      setIsEventSetupVisible(!!enquiryDataById.data.eventSetup?.functionType);
+      setIsAirTicketVisible(!!enquiryDataById.data.airTickets?.tripType);
     }
-  }, [enquiryDataById])
-
+  }, [enquiryDataById]);
 
   // Submit Handler
   const handleSubmit = async (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-
-      const { eventStartDate, eventEndDate, ...restEventSetup } = eventSetup
+      const { eventStartDate, eventEndDate, ...restEventSetup } = eventSetup;
 
       const obj = {
         salutation: salutation,
@@ -1050,11 +1062,17 @@ const AddEnquiryForm = () => {
         cab: cab,
         billingInstructions: billingInstructions,
         area: area,
-      }
+      };
 
-      console.log("Room Details:", obj.checkIn, "checkout", obj.checkOut, "this one", obj, obj.eventSetup,)
-
-
+      console.log(
+        "Room Details:",
+        obj.checkIn,
+        "checkout",
+        obj.checkOut,
+        "this one",
+        obj,
+        obj.eventSetup
+      );
 
       // obj.room.forEach((room, index) => {
       //   console.log(`Room ${index + 1}:`, {
@@ -1103,27 +1121,24 @@ const AddEnquiryForm = () => {
       //   })
       // })
 
-
-
       if (id) {
-
-        const { data: res } = await updateEnquiryById({ id, obj })
+        const { data: res } = await updateEnquiryById({ id, obj });
 
         if (res?.message) {
-          toastSuccess(res.message)
-          navigate("/enquiryList")
+          toastSuccess(res.message);
+          navigate("/enquiryList");
         }
       } else {
-        const { data: res } = await addEnquiry(obj)
+        const { data: res } = await addEnquiry(obj);
         if (res?.message) {
-          toastSuccess(res.message)
-          navigate("/enquiryList")
+          toastSuccess(res.message);
+          navigate("/enquiryList");
         }
       }
     } catch (error) {
-      toastError(error)
+      toastError(error);
     }
-  }
+  };
 
   const cityOptions = [
     { value: "Mumbai", label: "Mumbai" },
@@ -1155,7 +1170,7 @@ const AddEnquiryForm = () => {
     { value: "Varanasi", label: "Varanasi" },
     { value: "Srinagar", label: "Srinagar" },
     { value: "Amritsar", label: "Amritsar" },
-  ]
+  ];
 
   const vehicleTypeOptions = [
     { label: "Sedan", value: "sedan" },
@@ -1163,21 +1178,19 @@ const AddEnquiryForm = () => {
     { label: "Minivan", value: "minivan" },
     { label: "Hatchback", value: "hatchback" },
     { label: "Luxury", value: "luxury" },
-  ]
+  ];
   const handleSelectChange = (name: string, value: string) => {
-    setSalutation(value)
-  }
+    setSalutation(value);
+  };
 
   // const nameOptions =
   //   contact?.data &&
   //   contact?.data.map((item: any) => ({ value: item._id, label: item.name }));
 
-
-
   //for resolving error for now
-  const nameOptions = [{ value: "", label: "" }]
+  const nameOptions = [{ value: "", label: "" }];
 
-  console.log(assignTo, "assignTo")
+  console.log(assignTo, "assignTo");
   return (
     <div className="bg-white min-h-screen">
       <div className="bg-white text-black py-4 px-6">
@@ -1190,9 +1203,13 @@ const AddEnquiryForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
               {/* Salutation */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Salutation</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Salutation
+                </label>
                 <select
-                  onChange={(val) => handleSelectChange("salutation", val.target.value)}
+                  onChange={(val) =>
+                    handleSelectChange("salutation", val.target.value)
+                  }
                   value={salutation}
                   className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                 >
@@ -1206,7 +1223,9 @@ const AddEnquiryForm = () => {
 
               {/* FirstName */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  First Name
+                </label>
                 <input
                   type="text"
                   name="firstName"
@@ -1219,7 +1238,9 @@ const AddEnquiryForm = () => {
 
               {/* LastName */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Last Name
+                </label>
                 <input
                   type="text"
                   name="lastName"
@@ -1241,7 +1262,6 @@ const AddEnquiryForm = () => {
                   name="assignTo"
                   className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                 >
-
                   {userNames.data.map((option: any) => (
                     <option key={option.value} value={option.label}>
                       {option.label}
@@ -1272,7 +1292,9 @@ const AddEnquiryForm = () => {
 
               {/* Company Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Company Name
+                </label>
                 <input
                   type="text"
                   name="companyName"
@@ -1285,7 +1307,9 @@ const AddEnquiryForm = () => {
 
               {/* Phone Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Phone Number
+                </label>
                 <input
                   type="text"
                   name="phoneNumber"
@@ -1298,7 +1322,9 @@ const AddEnquiryForm = () => {
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
                 <input
                   type="email"
                   name="email"
@@ -1352,7 +1378,9 @@ const AddEnquiryForm = () => {
 
               {/* Enquiry Type */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Enquiry Type</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Enquiry Type
+                </label>
                 <select
                   name="enquiryType"
                   value={enquiryType}
@@ -1379,9 +1407,11 @@ const AddEnquiryForm = () => {
               </div> */}
 
               {/* Show Check In only after Enquiry Type is selected */}
-              {(enquiryType === 'room' || enquiryType === 'both') && (
+              {(enquiryType === "room" || enquiryType === "both") && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Check In</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Check In
+                  </label>
                   <input
                     type="date"
                     name="checkIn"
@@ -1395,23 +1425,30 @@ const AddEnquiryForm = () => {
               )}
 
               {/* Check Out */}
-              {(enquiryType === 'room' || enquiryType === 'both') && checkIn && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Check Out</label>
-                  <input
-                    type="date"
-                    name="checkOut"
-                    value={moment(checkOut).format("YYYY-MM-DD")}
-                    onChange={(e) => setCheckOut(e.target.value)}
-                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-              )}
+              {(enquiryType === "room" || enquiryType === "both") &&
+                checkIn && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Check Out
+                    </label>
+                    <input
+                      type="date"
+                      name="checkOut"
+                      value={moment(checkOut).format("YYYY-MM-DD")}
+                      onChange={(e) => setCheckOut(e.target.value)}
+                      onClick={(e) =>
+                        (e.target as HTMLInputElement).showPicker()
+                      }
+                      className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                )}
 
-              {(enquiryType === 'banquet' || enquiryType === 'both') && (
+              {(enquiryType === "banquet" || enquiryType === "both") && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Banquet Date</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Banquet Date
+                  </label>
                   <input
                     type="date"
                     name="banquetDate"
@@ -1424,23 +1461,27 @@ const AddEnquiryForm = () => {
                 </div>
               )}
 
-              {(enquiryType === 'banquet' || enquiryType === 'both') && banquetDate && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Banquet Time</label>
-                  <input
-                    type="time"
-                    name="banquetTime"
-                    value={banquetTime}
-                    onChange={(e) => setBanquetTime(e.target.value)}
-                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-              )}
-
+              {(enquiryType === "banquet" || enquiryType === "both") &&
+                banquetDate && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Banquet Time
+                    </label>
+                    <input
+                      type="time"
+                      name="banquetTime"
+                      value={banquetTime}
+                      onChange={(e) => setBanquetTime(e.target.value)}
+                      className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                )}
 
               {/* Level of Enquiry */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Level of Enquiry</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Level of Enquiry
+                </label>
                 <select
                   name="levelOfEnquiry"
                   value={levelOfEnquiry}
@@ -1456,7 +1497,9 @@ const AddEnquiryForm = () => {
 
               {/* Hotel Preference */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Hotel Preference</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Hotel Preference
+                </label>
                 <input
                   type="text"
                   name="othersPreference"
@@ -1469,14 +1512,20 @@ const AddEnquiryForm = () => {
 
               {/* Hotel Category */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Hotel Category</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Hotel Category
+                </label>
                 <Select
                   isMulti
                   options={hotelCategoryOptions}
-                  value={hotelCategoryOptions.filter((option) => categoryOfHotel.includes(option.value))}
+                  value={hotelCategoryOptions.filter((option) =>
+                    categoryOfHotel.includes(option.value)
+                  )}
                   onChange={(selected) => {
-                    const values = selected ? selected.map((opt) => opt.value) : []
-                    setCategoryOfHotel(values)
+                    const values = selected
+                      ? selected.map((opt) => opt.value)
+                      : [];
+                    setCategoryOfHotel(values);
                   }}
                   className="basic-multi-select"
                   classNamePrefix="select"
@@ -1487,7 +1536,9 @@ const AddEnquiryForm = () => {
 
               {/* Rate Required for (Occupancy) */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mt-1 mb-1">Rate Required for (Occupancy)</label>
+                <label className="block text-sm font-medium text-gray-700 mt-1 mb-1">
+                  Rate Required for (Occupancy)
+                </label>
                 <div className="flex space-x-4 mt-5">
                   <label className="flex items-center space-x-2">
                     <input
@@ -1535,25 +1586,50 @@ const AddEnquiryForm = () => {
                   <table className="min-w-full border-collapse">
                     <thead className="bg-[#0B2F46] text-white">
                       <tr>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Date</th>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">No. of Rooms</th>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Room Category</th>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Occupancy</th>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Meal Plan</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          Date
+                        </th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          No. of Rooms
+                        </th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          Room Category
+                        </th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          Occupancy
+                        </th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          Meal Plan
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {room &&
                         room?.length > 0 &&
                         room.map((row, index) => (
-                          <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">{row?.date}</td>
+                          <tr
+                            key={index}
+                            className={
+                              index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                            }
+                          >
+                            <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
+                              {row?.date}
+                            </td>
                             <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <input
                                 type="number"
                                 min="0"
                                 value={row?.noOfRooms}
-                                onChange={(e) => handleTableChange(room, setRoom, index, "noOfRooms", e.target.value)}
+                                onChange={(e) =>
+                                  handleTableChange(
+                                    room,
+                                    setRoom,
+                                    index,
+                                    "noOfRooms",
+                                    e.target.value
+                                  )
+                                }
                                 className="border border-gray-300 p-1 rounded w-full text-sm"
                               />
                             </td>
@@ -1561,7 +1637,13 @@ const AddEnquiryForm = () => {
                               <select
                                 value={row?.roomCategory}
                                 onChange={(e) =>
-                                  handleTableChange(room, setRoom, index, "roomCategory", e.target.value)
+                                  handleTableChange(
+                                    room,
+                                    setRoom,
+                                    index,
+                                    "roomCategory",
+                                    e.target.value
+                                  )
                                 }
                                 className="border border-gray-300 p-1 rounded w-full text-sm"
                               >
@@ -1574,7 +1656,15 @@ const AddEnquiryForm = () => {
                             <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <select
                                 value={row?.occupancy}
-                                onChange={(e) => handleTableChange(room, setRoom, index, "occupancy", e.target.value)}
+                                onChange={(e) =>
+                                  handleTableChange(
+                                    room,
+                                    setRoom,
+                                    index,
+                                    "occupancy",
+                                    e.target.value
+                                  )
+                                }
                                 className="border border-gray-300 p-1 rounded w-full text-sm"
                               >
                                 <option value="">Select Occupancy</option>
@@ -1585,7 +1675,14 @@ const AddEnquiryForm = () => {
                             </td>
                             <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <select
-                                onChange={(e) => handleMealPlanChange(room, setRoom, index, e.target.value)}
+                                onChange={(e) =>
+                                  handleMealPlanChange(
+                                    room,
+                                    setRoom,
+                                    index,
+                                    e.target.value
+                                  )
+                                }
                                 value={row?.mealPlan}
                                 className="border border-gray-300 p-1 rounded w-full text-sm"
                               >
@@ -1596,17 +1693,27 @@ const AddEnquiryForm = () => {
                                       <option key={plan} value={plan}>
                                         {plan}
                                       </option>
-                                    ),
+                                    )
                                 )}
                               </select>
                               <div className="mt-2 flex flex-wrap gap-1">
                                 {row &&
                                   row?.mealPlan?.length > 0 &&
                                   row.mealPlan.map((plan) => (
-                                    <span key={plan} className="inline-block bg-gray-100 px-2 py-1 text-xs rounded">
+                                    <span
+                                      key={plan}
+                                      className="inline-block bg-gray-100 px-2 py-1 text-xs rounded"
+                                    >
                                       {plan}{" "}
                                       <button
-                                        onClick={() => removeMealPlan(room, setRoom, index, plan)}
+                                        onClick={() =>
+                                          removeMealPlan(
+                                            room,
+                                            setRoom,
+                                            index,
+                                            plan
+                                          )
+                                        }
                                         className="text-red-500 font-bold"
                                       >
                                         x
@@ -1635,23 +1742,26 @@ const AddEnquiryForm = () => {
                     if (room?.length > 0) {
                       const filledRow = room.find(
                         (row) =>
-                          (row.noOfRooms && Number.parseInt(row.noOfRooms) > 0) ||
+                          (row.noOfRooms &&
+                            Number.parseInt(row.noOfRooms) > 0) ||
                           row.roomCategory ||
                           row.occupancy ||
-                          (row.mealPlan && row.mealPlan.length > 0),
-                      )
+                          (row.mealPlan && row.mealPlan.length > 0)
+                      );
                       if (filledRow) {
                         setRoom(
                           room.map((originalRow) => ({
                             ...filledRow,
                             date: originalRow.date,
-                          })),
-                        )
+                          }))
+                        );
                       } else {
-                        alert("Please fill in at least one row before applying to all days.")
+                        alert(
+                          "Please fill in at least one row before applying to all days."
+                        );
                       }
                     } else {
-                      alert("No room data available.")
+                      alert("No room data available.");
                     }
                   }}
                   className="bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 mt-3 rounded"
@@ -1673,18 +1783,37 @@ const AddEnquiryForm = () => {
                   <table className="min-w-full border-collapse">
                     <thead className="bg-[#0B2F46] text-white">
                       <tr>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Date</th>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Session</th>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Seating Style</th>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">A/V Setup</th>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Menu Type</th>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Minimum No. of Pax</th>
-                        <th className=" px-3 py-1.5 text-left text-xs font-medium">Seating Required</th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          Date
+                        </th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          Session
+                        </th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          Seating Style
+                        </th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          A/V Setup
+                        </th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          Menu Type
+                        </th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          Minimum No. of Pax
+                        </th>
+                        <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                          Seating Required
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {banquet.map((row, index) => (
-                        <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                        <tr
+                          key={index}
+                          className={
+                            index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                          }
+                        >
                           <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                             {moment(row.date).format("YYYY-MM-DD")}
                           </td>
@@ -1692,14 +1821,20 @@ const AddEnquiryForm = () => {
                             <Select
                               isMulti
                               options={sessionOptions}
-                              value={sessionOptions.filter(option => row.session.includes(option.value))}
-                              onChange={(selected) => handleSessionChange(index, selected.map(opt => opt.value))}
+                              value={sessionOptions.filter((option) =>
+                                row.session.includes(option.value)
+                              )}
+                              onChange={(selected) =>
+                                handleSessionChange(
+                                  index,
+                                  selected.map((opt) => opt.value)
+                                )
+                              }
                               className="text-sm z-99"
                               classNamePrefix="react-select"
                               styles={{
                                 menu: (provided) => ({
                                   ...provided,
-
                                 }),
                               }}
                             />
@@ -1708,21 +1843,37 @@ const AddEnquiryForm = () => {
                             <select
                               value={row?.seatingStyle}
                               onChange={(e) =>
-                                handleTableChange(banquet, setBanquet, index, "seatingStyle", e.target.value)
+                                handleTableChange(
+                                  banquet,
+                                  setBanquet,
+                                  index,
+                                  "seatingStyle",
+                                  e.target.value
+                                )
                               }
                               className="border border-gray-300 p-1 rounded w-full text-sm"
                             >
                               <option value="">Select</option>
                               <option value="Theater">Theater</option>
                               <option value="Clusters">Clusters</option>
-                              <option value="Theaters and Clusters">Theaters and Clusters</option>
+                              <option value="Theaters and Clusters">
+                                Theaters and Clusters
+                              </option>
                               <option value="Mix">Mix</option>
                             </select>
                           </td>
                           <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                             <select
                               value={row?.avSetup}
-                              onChange={(e) => handleTableChange(banquet, setBanquet, index, "avSetup", e.target.value)}
+                              onChange={(e) =>
+                                handleTableChange(
+                                  banquet,
+                                  setBanquet,
+                                  index,
+                                  "avSetup",
+                                  e.target.value
+                                )
+                              }
                               className="border border-gray-300 p-1 rounded w-full text-sm"
                             >
                               <option value="">Select</option>
@@ -1734,7 +1885,13 @@ const AddEnquiryForm = () => {
                             <select
                               value={row?.menuType}
                               onChange={(e) =>
-                                handleTableChange(banquet, setBanquet, index, "menuType", e.target.value)
+                                handleTableChange(
+                                  banquet,
+                                  setBanquet,
+                                  index,
+                                  "menuType",
+                                  e.target.value
+                                )
                               }
                               className="border border-gray-300 p-1 rounded w-full text-sm"
                             >
@@ -1748,7 +1905,15 @@ const AddEnquiryForm = () => {
                             <input
                               type="number"
                               value={row?.minPax}
-                              onChange={(e) => handleTableChange(banquet, setBanquet, index, "minPax", e.target.value)}
+                              onChange={(e) =>
+                                handleTableChange(
+                                  banquet,
+                                  setBanquet,
+                                  index,
+                                  "minPax",
+                                  e.target.value
+                                )
+                              }
                               className="border border-gray-300 p-1 rounded w-full text-sm"
                             />
                           </td>
@@ -1757,7 +1922,13 @@ const AddEnquiryForm = () => {
                               type="number"
                               value={row?.seatingRequired}
                               onChange={(e) =>
-                                handleTableChange(banquet, setBanquet, index, "seatingRequired", e.target.value)
+                                handleTableChange(
+                                  banquet,
+                                  setBanquet,
+                                  index,
+                                  "seatingRequired",
+                                  e.target.value
+                                )
                               }
                               className="border border-gray-300 p-1 rounded w-full text-sm"
                             />
@@ -1817,11 +1988,15 @@ const AddEnquiryForm = () => {
               <div className="p-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Function Type</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Function Type
+                    </label>
                     <select
                       name="functionType"
                       value={eventSetup.functionType}
-                      onChange={(e) => handleEventDetailChange("functionType", e.target.value)}
+                      onChange={(e) =>
+                        handleEventDetailChange("functionType", e.target.value)
+                      }
                       className="border border-gray-300 p-2 rounded w-full text-sm"
                     >
                       <option value="">Select function type</option>
@@ -1832,10 +2007,14 @@ const AddEnquiryForm = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Setup Required</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Setup Required
+                    </label>
                     <select
                       value={eventSetup.setupRequired || ""}
-                      onChange={(e) => handleEventDetailChange("setupRequired", e.target.value)}
+                      onChange={(e) =>
+                        handleEventDetailChange("setupRequired", e.target.value)
+                      }
                       className="border border-gray-300 p-2 rounded w-full text-sm"
                     >
                       <option value="">Select required (yes / no)</option>
@@ -1848,51 +2027,85 @@ const AddEnquiryForm = () => {
                 {eventSetup.eventDates.map((date, index) => (
                   <div key={index} className="grid grid-cols-2 gap-4 mt-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Event Start Date</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Event Start Date
+                      </label>
                       <input
                         type="date"
-                        value={date && date?.startDate ? moment(date?.startDate).format("YYYY-MM-DD") : ""}
-                        onChange={(e) => handleDateChange(index, "startDate", e.target.value)}
-                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                        value={
+                          date && date?.startDate
+                            ? moment(date?.startDate).format("YYYY-MM-DD")
+                            : ""
+                        }
+                        onChange={(e) =>
+                          handleDateChange(index, "startDate", e.target.value)
+                        }
+                        onClick={(e) =>
+                          (e.target as HTMLInputElement).showPicker()
+                        }
                         className="border border-gray-300 p-2 rounded w-full text-sm"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Event Start Time</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Event Start Time
+                      </label>
                       <input
                         type="time"
-                        value={date && date?.startDate ? moment(date?.startDate).format("HH:mm") : ""}
-                        onChange={(e) => handleTimeChange(index, "startDate", e.target.value)}
-                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                        value={
+                          date && date?.startDate
+                            ? moment(date?.startDate).format("HH:mm")
+                            : ""
+                        }
+                        onChange={(e) =>
+                          handleTimeChange(index, "startDate", e.target.value)
+                        }
+                        onClick={(e) =>
+                          (e.target as HTMLInputElement).showPicker()
+                        }
                         className="border border-gray-300 p-2 rounded w-full text-sm"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Event End Date</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Event End Date
+                      </label>
                       <input
                         type="date"
                         value={moment(date.endDate).format("YYYY-MM-DD")}
-                        onChange={(e) => handleDateChange(index, "endDate", e.target.value)}
-                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                        onChange={(e) =>
+                          handleDateChange(index, "endDate", e.target.value)
+                        }
+                        onClick={(e) =>
+                          (e.target as HTMLInputElement).showPicker()
+                        }
                         className="border border-gray-300 p-2 rounded w-full text-sm"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Event End Time</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Event End Time
+                      </label>
                       <input
                         type="time"
-                        value={date && date?.endDate ? moment(date?.endDate).format("HH:mm") : ""}
-                        onChange={(e) => handleTimeChange(index, "endDate", e.target.value)}
-                        onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                        value={
+                          date && date?.endDate
+                            ? moment(date?.endDate).format("HH:mm")
+                            : ""
+                        }
+                        onChange={(e) =>
+                          handleTimeChange(index, "endDate", e.target.value)
+                        }
+                        onClick={(e) =>
+                          (e.target as HTMLInputElement).showPicker()
+                        }
                         className="border border-gray-300 p-2 rounded w-full text-sm"
                       />
                     </div>
                   </div>
-
-
                 ))}
 
                 <button
@@ -1916,10 +2129,14 @@ const AddEnquiryForm = () => {
                 <div className="grid grid-cols-2 gap-4">
                   {/* Common Fields */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Trip type</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Trip type
+                    </label>
                     <select
                       value={airTickets.tripType}
-                      onChange={(e) => handleAirTicketChange("tripType", e.target.value)}
+                      onChange={(e) =>
+                        handleAirTicketChange("tripType", e.target.value)
+                      }
                       className="border border-gray-300 p-2 rounded w-full text-sm"
                     >
                       <option value="">Select trip type</option>
@@ -1930,22 +2147,33 @@ const AddEnquiryForm = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Number of passengers</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Number of passengers
+                    </label>
                     <input
                       type="number"
                       min={0}
                       placeholder="Select passengers"
                       value={airTickets.numberOfPassengers}
-                      onChange={(e) => handleAirTicketChange("numberOfPassengers", e.target.value)}
+                      onChange={(e) =>
+                        handleAirTicketChange(
+                          "numberOfPassengers",
+                          e.target.value
+                        )
+                      }
                       className="border border-gray-300 p-2 rounded w-full text-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">From City</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      From City
+                    </label>
                     <select
                       value={airTickets.fromCity}
-                      onChange={(e) => handleAirTicketChange("fromCity", e.target.value)}
+                      onChange={(e) =>
+                        handleAirTicketChange("fromCity", e.target.value)
+                      }
                       className="border border-gray-300 p-2 rounded w-full text-sm"
                     >
                       <option value="">Select From City</option>
@@ -1958,10 +2186,14 @@ const AddEnquiryForm = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">To City</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      To City
+                    </label>
                     <select
                       value={airTickets.toCity}
-                      onChange={(e) => handleAirTicketChange("toCity", e.target.value)}
+                      onChange={(e) =>
+                        handleAirTicketChange("toCity", e.target.value)
+                      }
                       className="border border-gray-300 p-2 rounded w-full text-sm"
                     >
                       <option value="">Select To City</option>
@@ -1978,11 +2210,17 @@ const AddEnquiryForm = () => {
                   {/* Round Trip Fields */}
                   {airTickets.tripType === "Round Trip" && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Return date</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Return date
+                      </label>
                       <input
                         type="date"
-                        value={moment(airTickets.returnDate).format("YYYY-MM-DD")}
-                        onChange={(e) => handleAirTicketChange("returnDate", e.target.value)}
+                        value={moment(airTickets.returnDate).format(
+                          "YYYY-MM-DD"
+                        )}
+                        onChange={(e) =>
+                          handleAirTicketChange("returnDate", e.target.value)
+                        }
                         className="border border-gray-300 p-2 rounded w-full text-sm"
                       />
                     </div>
@@ -1992,10 +2230,17 @@ const AddEnquiryForm = () => {
                   {airTickets.tripType === "Multi City" && (
                     <>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">From City</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          From City
+                        </label>
                         <select
                           value={airTickets.multiFromCity}
-                          onChange={(e) => handleAirTicketChange("multiFromCity", e.target.value)}
+                          onChange={(e) =>
+                            handleAirTicketChange(
+                              "multiFromCity",
+                              e.target.value
+                            )
+                          }
                           className="border border-gray-300 p-2 rounded w-full text-sm"
                         >
                           <option value="">Select From City</option>
@@ -2008,15 +2253,21 @@ const AddEnquiryForm = () => {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">To City</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          To City
+                        </label>
                         <select
                           value={airTickets.multiToCity}
-                          onChange={(e) => handleAirTicketChange("multiToCity", e.target.value)}
+                          onChange={(e) =>
+                            handleAirTicketChange("multiToCity", e.target.value)
+                          }
                           className="border border-gray-300 p-2 rounded w-full text-sm"
                         >
                           <option value="">Select To City</option>
                           {cityOptions
-                            .filter((city) => city.value !== airTickets.multiFromCity)
+                            .filter(
+                              (city) => city.value !== airTickets.multiFromCity
+                            )
                             .map((city) => (
                               <option key={city.value} value={city.value}>
                                 {city.label}
@@ -2026,11 +2277,20 @@ const AddEnquiryForm = () => {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Departure date</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Departure date
+                        </label>
                         <input
                           type="date"
-                          value={moment(airTickets.multiDepartureDate).format("YYYY-MM-DD")}
-                          onChange={(e) => handleAirTicketChange("multiDepartureDate", e.target.value)}
+                          value={moment(airTickets.multiDepartureDate).format(
+                            "YYYY-MM-DD"
+                          )}
+                          onChange={(e) =>
+                            handleAirTicketChange(
+                              "multiDepartureDate",
+                              e.target.value
+                            )
+                          }
                           className="border border-gray-300 p-2 rounded w-full text-sm"
                         />
                       </div>
@@ -2040,8 +2300,6 @@ const AddEnquiryForm = () => {
               </div>
             </div>
           )}
-
-
 
           {/* Need Cab Checkbox */}
           <div className="mb-4">
@@ -2058,7 +2316,6 @@ const AddEnquiryForm = () => {
 
           {/* Cab Table */}
 
-
           {needCab && (
             <div className="bg-white rounded shadow-sm mb-6">
               <div className="bg-white rounded shadow-sm mb-6">
@@ -2068,7 +2325,9 @@ const AddEnquiryForm = () => {
                 <div className="p-4">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                     <div className="flex items-center gap-4">
-                      <label className="text-sm font-medium text-gray-700">Trip Type:</label>
+                      <label className="text-sm font-medium text-gray-700">
+                        Trip Type:
+                      </label>
                       <label className="flex items-center gap-2">
                         <input
                           type="checkbox"
@@ -2091,7 +2350,9 @@ const AddEnquiryForm = () => {
 
                     {/* Approx Passengers */}
                     <div className="flex flex-col gap-1">
-                      <label className="text-sm font-medium text-gray-700">Approx Number of Passengers:</label>
+                      <label className="text-sm font-medium text-gray-700">
+                        Approx Number of Passengers:
+                      </label>
                       <input
                         type="number"
                         min={0}
@@ -2106,22 +2367,54 @@ const AddEnquiryForm = () => {
                     <table className="min-w-full border-collapse">
                       <thead className="bg-stone-200 text-gray-800">
                         <tr>
-                          <th className=" px-3 py-1.5 text-left text-xs font-bold">Date</th>
-                          {isOutOfStation && <th className=" px-3 py-1.5 text-left text-xs font-medium">From City</th>}
-                          {isOutOfStation && <th className=" px-3 py-1.5 text-left text-xs font-medium">To City</th>}
-                          <th className=" px-3 py-1.5 text-left text-xs font-bold">No. of Vehicles</th>
-                          <th className=" px-3 py-1.5 text-left text-xs font-bold">Type of Vehicle</th>
-                          <th className=" px-3 py-1.5 text-left text-xs font-bold">Trip Type</th>
+                          <th className=" px-3 py-1.5 text-left text-xs font-bold">
+                            Date
+                          </th>
+                          {isOutOfStation && (
+                            <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                              From City
+                            </th>
+                          )}
+                          {isOutOfStation && (
+                            <th className=" px-3 py-1.5 text-left text-xs font-medium">
+                              To City
+                            </th>
+                          )}
+                          <th className=" px-3 py-1.5 text-left text-xs font-bold">
+                            No. of Vehicles
+                          </th>
+                          <th className=" px-3 py-1.5 text-left text-xs font-bold">
+                            Type of Vehicle
+                          </th>
+                          <th className=" px-3 py-1.5 text-left text-xs font-bold">
+                            Trip Type
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         {cab.map((row, index) => (
-                          <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                          <tr
+                            key={index}
+                            className={
+                              index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                            }
+                          >
                             <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <input
                                 type="date"
-                                value={moment(row?.date).format("YYYY-MM-DD") || row?.date}
-                                onChange={(e) => handleTableChange(cab, setCab, index, "date", e.target.value)}
+                                value={
+                                  moment(row?.date).format("YYYY-MM-DD") ||
+                                  row?.date
+                                }
+                                onChange={(e) =>
+                                  handleTableChange(
+                                    cab,
+                                    setCab,
+                                    index,
+                                    "date",
+                                    e.target.value
+                                  )
+                                }
                                 className="border border-gray-300 p-1 rounded w-full text-sm"
                               />
                             </td>
@@ -2131,11 +2424,23 @@ const AddEnquiryForm = () => {
                                 <Autocomplete
                                   options={cityOptions}
                                   getOptionLabel={(option) => option.label}
-                                  value={cityOptions.find((option) => option.value === row?.fromCity) || null}
-                                  onChange={(event, newValue) =>
-                                    handleTableChange(cab, setCab, index, "fromCity", newValue?.value || "")
+                                  value={
+                                    cityOptions.find(
+                                      (option) => option.value === row?.fromCity
+                                    ) || null
                                   }
-                                  isOptionEqualToValue={(option, value) => option.value === value.value}
+                                  onChange={(event, newValue) =>
+                                    handleTableChange(
+                                      cab,
+                                      setCab,
+                                      index,
+                                      "fromCity",
+                                      newValue?.value || ""
+                                    )
+                                  }
+                                  isOptionEqualToValue={(option, value) =>
+                                    option.value === value.value
+                                  }
                                   renderInput={(params) => (
                                     <TextField
                                       {...params}
@@ -2159,11 +2464,23 @@ const AddEnquiryForm = () => {
                                 <Autocomplete
                                   options={cityOptions}
                                   getOptionLabel={(option) => option.label}
-                                  value={cityOptions.find((option) => option.value === row?.toCity) || null}
-                                  onChange={(event, newValue) =>
-                                    handleTableChange(cab, setCab, index, "toCity", newValue?.value || "")
+                                  value={
+                                    cityOptions.find(
+                                      (option) => option.value === row?.toCity
+                                    ) || null
                                   }
-                                  isOptionEqualToValue={(option, value) => option.value === value.value}
+                                  onChange={(event, newValue) =>
+                                    handleTableChange(
+                                      cab,
+                                      setCab,
+                                      index,
+                                      "toCity",
+                                      newValue?.value || ""
+                                    )
+                                  }
+                                  isOptionEqualToValue={(option, value) =>
+                                    option.value === value.value
+                                  }
                                   renderInput={(params) => (
                                     <TextField
                                       {...params}
@@ -2186,7 +2503,15 @@ const AddEnquiryForm = () => {
                               <input
                                 type="number"
                                 value={row?.noOfVehicles}
-                                onChange={(e) => handleTableChange(cab, setCab, index, "noOfVehicles", e.target.value)}
+                                onChange={(e) =>
+                                  handleTableChange(
+                                    cab,
+                                    setCab,
+                                    index,
+                                    "noOfVehicles",
+                                    e.target.value
+                                  )
+                                }
                                 className="border border-gray-300 p-1 rounded w-full text-sm"
                               />
                             </td>
@@ -2195,11 +2520,24 @@ const AddEnquiryForm = () => {
                               <Autocomplete
                                 options={vehicleTypeOptions}
                                 getOptionLabel={(option) => option.label}
-                                value={vehicleTypeOptions.find((option) => option.value === row?.vehicleType) || null}
-                                onChange={(event, newValue) =>
-                                  handleTableChange(cab, setCab, index, "vehicleType", newValue?.value || "")
+                                value={
+                                  vehicleTypeOptions.find(
+                                    (option) =>
+                                      option.value === row?.vehicleType
+                                  ) || null
                                 }
-                                isOptionEqualToValue={(option, value) => option.value === value.value}
+                                onChange={(event, newValue) =>
+                                  handleTableChange(
+                                    cab,
+                                    setCab,
+                                    index,
+                                    "vehicleType",
+                                    newValue?.value || ""
+                                  )
+                                }
+                                isOptionEqualToValue={(option, value) =>
+                                  option.value === value.value
+                                }
                                 renderInput={(params) => (
                                   <TextField
                                     {...params}
@@ -2220,12 +2558,24 @@ const AddEnquiryForm = () => {
                             <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <select
                                 value={row?.tripType}
-                                onChange={(e) => handleTableChange(cab, setCab, index, "tripType", e.target.value)}
+                                onChange={(e) =>
+                                  handleTableChange(
+                                    cab,
+                                    setCab,
+                                    index,
+                                    "tripType",
+                                    e.target.value
+                                  )
+                                }
                                 className="border border-gray-300 p-1 rounded w-full text-sm"
                               >
                                 <option value="">Select Trip Type</option>
-                                <option value="Airport Transfer">Airport Transfer</option>
-                                <option value="Hourly Rental">Hourly Rental</option>
+                                <option value="Airport Transfer">
+                                  Airport Transfer
+                                </option>
+                                <option value="Hourly Rental">
+                                  Hourly Rental
+                                </option>
                                 <option value="Outstation">Outstation</option>
                               </select>
                             </td>
@@ -2282,7 +2632,10 @@ const AddEnquiryForm = () => {
             </button>
 
             {((!id && canCreate) || (id && canUpdate)) && (
-              <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded text-sm">
+              <button
+                type="submit"
+                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded text-sm"
+              >
                 Submit
               </button>
             )}
@@ -2290,7 +2643,7 @@ const AddEnquiryForm = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddEnquiryForm
+export default AddEnquiryForm;

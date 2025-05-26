@@ -1,4 +1,3 @@
-
 import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
@@ -49,11 +48,9 @@ function RfpList() {
     [pageIndex, pageSize, query]
   );
 
-
-
-
   // const {data: useEnquiryByIdData} = useEnquiryById(enquiryId);
 
+  const { data: RfpData, isLoading, refetch } = useRfp(searchObj);
   const { data: RfpData, isLoading, refetch } = useRfp(searchObj);
   const { mutateAsync: deleteRfp } = usedeleteRfpById();
   const { mutateAsync: updateRfp } = useUpdateRfpById();
@@ -75,8 +72,6 @@ function RfpList() {
       toastError(error);
     }
   };
-
-
 
   // Handle file selection and upload
   // const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +128,6 @@ function RfpList() {
     setQuery(e.target.value);
   };
 
-
   const handleConvertRfptoQuotesFromVendor = async (id: string) => {
     try {
       const { data: res } = await convertRfp(id);
@@ -180,7 +174,6 @@ function RfpList() {
       name: "Event Date",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-
           <h6>
             {row.eventDates?.length > 0
               ? new Date(row.eventDates[0].startDate).toDateString()
@@ -194,8 +187,7 @@ function RfpList() {
       name: "Deadline for proposal",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{new Date(row?.
-            deadlineOfProposal).toDateString()}</h6>
+          <h6>{new Date(row?.deadlineOfProposal).toDateString()}</h6>
           {/* {row.fullName} */}
         </div>
       ),
@@ -204,17 +196,27 @@ function RfpList() {
     {
       name: "Services",
       selector: (row: any) => (
-        <div className="flex flex-wrap justify-around " >{row.serviceType.length > 0 && row.serviceType.map((item: any, index: number) => <div key={index}
-          className="bg-purple-100 text-purple-800 text-sm px-3 py-1 mb-1 rounded-full border border-purple-300 shadow-sm"> {item} </div>)}</div>
+        <div className="flex flex-wrap justify-around ">
+          {row.serviceType.length > 0 &&
+            row.serviceType.map((item: any, index: number) => (
+              <div
+                key={index}
+                className="bg-purple-100 text-purple-800 text-sm px-3 py-1 mb-1 rounded-full border border-purple-300 shadow-sm"
+              >
+                {" "}
+                {item}{" "}
+              </div>
+            ))}
+        </div>
       ),
       width: "16%",
-
-
     },
     {
       name: "Display Name",
       selector: (row: any) => (
-        <div className="flex  justify-around  "><h6 className="whitespace-normal break-words">{row.displayName}</h6></div>
+        <div className="flex  justify-around  ">
+          <h6 className="whitespace-normal break-words">{row.displayName}</h6>
+        </div>
       ),
       width: "20%",
     },
@@ -222,7 +224,9 @@ function RfpList() {
     {
       name: "Status",
       selector: (row: any) => (
-        <div className="flex  justify-around  "><h6 className="whitespace-normal break-words">{row.status}</h6></div>
+        <div className="flex  justify-around  ">
+          <h6 className="whitespace-normal break-words">{row.status}</h6>
+        </div>
       ),
       width: "20%",
     },
@@ -285,31 +289,145 @@ function RfpList() {
   // Column selector
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
-  const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>({
-    "RFPID": true,
-    "Event Date": true,
-    "Deadline for proposal": true,
-    "Services": true,
-    "Display Name": true,
-    "Status": true,
-    "Edit": canView || canUpdate || true,
-    "Delete": canDelete || true,
-    "Convert to Quotes from Vendor": true
-  });
+  const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>(
+    {
+      RFPID: true,
+      "Event Date": true,
+      "Deadline for proposal": true,
+      Services: true,
+      "Display Name": true,
+      Status: true,
+      Edit: canView || canUpdate || true,
+      Delete: canDelete || true,
+      "Convert to Quotes from Vendor": true,
+    }
+  );
   useEffect(() => {
-    const savedColumns = localStorage.getItem('enquiryTableColumns');
+    const savedColumns = localStorage.getItem("enquiryTableColumns");
     if (savedColumns) {
       setVisibleColumns(JSON.parse(savedColumns));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
+    localStorage.setItem("enquiryTableColumns", JSON.stringify(visibleColumns));
+  }, [visibleColumns]);
+
+  // const toggleColumnVisibility = (columnName: string) => {
+  //   setVisibleColumns(prev => ({
+  //     ...prev,
+  //     [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev]
+  //   }));
+  // };
+  // const ColumnSelector = () => (
+  //   <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-10 border border-gray-200 right-0 w-72">
+  //     <div className="flex flex-col gap-2">
+  //       <div className="flex justify-between items-center border-b pb-2 mb-2">
+  //         <h3 className="font-medium">Customize Columns</h3>
+  //         <button
+  //           className="text-xs text-blue-600 hover:underline"
+  //           onClick={resetColumnVisibility}
+  //         >
+  //           Reset to Default
+  //         </button>
+  //       </div>
+
+  //       <div className="max-h-80 overflow-y-auto">
+  //         {columns.map((column) => (
+  //           <div key={column.name} className="flex items-center justify-between py-2 border-b border-gray-100">
+  //             <span className="text-sm">{column.name}</span>
+  //             <Switch
+  //               checked={visibleColumns[column.name as keyof typeof visibleColumns] || false}
+  //               onChange={() => toggleColumnVisibility(column.name)}
+  //               size="small"
+  //               color="primary"
+  //             />
+  //           </div>
+  //         ))}
+  //       </div>
+
+  //       <div className="mt-2 flex justify-end">
+  //         <button
+  //           className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+  //           onClick={() => setShowColumnSelector(false)}
+  //         >
+  //           Apply
+  //         </button>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
+
+  // const calculateDynamicWidths = (columnsArray: any[]) => {
+  //   const visibleColumnsCount = columnsArray.length;
+
+  //   if (visibleColumnsCount === 0) return columnsArray;
+
+  //   const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
+
+  //   const baseWidth = 100 / visibleColumnsCount;
+
+  //   const MIN_WIDTH = 8;
+  //   const MAX_WIDTH = 20;
+
+  //   columnsWithDynamicWidth.forEach(column => {
+  //     let allocatedWidth = baseWidth;
+
+  //     // Columns that typically need less space
+  //     if (column.name === "Delete" || column.name === "Edit") {
+  //       allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
+  //     }
+  //     // Columns that might need more space
+  //     else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
+  //       allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
+  //     }
+
+  //     column.width = `${allocatedWidth}%`;
+  //   });
+
+  //   console.log(columnsWithDynamicWidth, "check the column width")
+
+  //   return columnsWithDynamicWidth;
+  // };
+
+  // Filter columns based on visibility
+  // const visibleColumnsArray = columns.filter(column =>
+  //   visibleColumns[column.name as keyof typeof visibleColumns]
+  // );
+
+  // Apply dynamic widths to visible columns
+  // const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+
+  // const resetColumnVisibility = () => {
+  //   setVisibleColumns({
+  //     "RFPID": true,
+  // const [showColumnSelector, setShowColumnSelector] = useState(false);
+  // // Toggle column visibility
+  // const [visibleColumns, setVisibleColumns] = useState({
+  //   "RFPID": true,
+  //   "Event Date": true,
+  //   "Deadline for proposal": true,
+  //   "Services": true,
+  //   "Display Name": true,
+  //   "Status": true,
+  //   "Edit": canView || canUpdate || true,
+  //   "Delete": canDelete || true,
+  //   "Convert to Quotes from Vendor": true
+  // });
+  useEffect(() => {
+    const savedColumns = localStorage.getItem("enquiryTableColumns");
+    if (savedColumns) {
+      setVisibleColumns(JSON.parse(savedColumns));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("enquiryTableColumns", JSON.stringify(visibleColumns));
   }, [visibleColumns]);
   const toggleColumnVisibility = (columnName: string) => {
-    setVisibleColumns(prev => ({
+    setVisibleColumns((prev) => ({
       ...prev,
-      [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev]
+      [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev],
     }));
   };
   const ColumnSelector = () => (
@@ -327,10 +445,16 @@ function RfpList() {
 
         <div className="max-h-80 overflow-y-auto">
           {columns.map((column) => (
-            <div key={column.name} className="flex items-center justify-between py-2 border-b border-gray-100">
+            <div
+              key={column.name}
+              className="flex items-center justify-between py-2 border-b border-gray-100"
+            >
               <span className="text-sm">{column.name}</span>
               <Switch
-                checked={visibleColumns[column.name as keyof typeof visibleColumns] || false}
+                checked={
+                  visibleColumns[column.name as keyof typeof visibleColumns] ||
+                  false
+                }
                 onChange={() => toggleColumnVisibility(column.name)}
                 size="small"
                 color="primary"
@@ -356,14 +480,16 @@ function RfpList() {
 
     if (visibleColumnsCount === 0) return columnsArray;
 
-    const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
+    const columnsWithDynamicWidth = columnsArray.map((column) => ({
+      ...column,
+    }));
 
     const baseWidth = 100 / visibleColumnsCount;
 
     const MIN_WIDTH = 8;
     const MAX_WIDTH = 20;
 
-    columnsWithDynamicWidth.forEach(column => {
+    columnsWithDynamicWidth.forEach((column) => {
       let allocatedWidth = baseWidth;
 
       // Columns that typically need less space
@@ -371,21 +497,24 @@ function RfpList() {
         allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
       }
       // Columns that might need more space
-      else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
+      else if (
+        column.name === "Customer Name" ||
+        column.name === "Level of Enquiry"
+      ) {
         allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
       }
 
       column.width = `${allocatedWidth}%`;
     });
 
-    console.log(columnsWithDynamicWidth, "check the column width")
+    console.log(columnsWithDynamicWidth, "check the column width");
 
     return columnsWithDynamicWidth;
   };
 
   // Filter columns based on visibility
-  const visibleColumnsArray = columns.filter(column =>
-    visibleColumns[column.name as keyof typeof visibleColumns]
+  const visibleColumnsArray = columns.filter(
+    (column) => visibleColumns[column.name as keyof typeof visibleColumns]
   );
 
   // Apply dynamic widths to visible columns
@@ -393,15 +522,15 @@ function RfpList() {
 
   const resetColumnVisibility = () => {
     setVisibleColumns({
-      "RFPID": true,
+      RFPID: true,
       "Event Date": true,
       "Deadline for proposal": true,
-      "Services": true,
+      Services: true,
       "Display Name": true,
-      "Status": true,
-      "Edit": canView || canUpdate,
-      "Delete": canDelete,
-      "Convert to Quotes from Vendor": true
+      Status: true,
+      Edit: canView || canUpdate,
+      Delete: canDelete,
+      "Convert to Quotes from Vendor": true,
     });
   };
 
@@ -438,7 +567,7 @@ function RfpList() {
                   value={query}
                   onChange={handleSearchInput}
                   onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === "Enter") {
                       refetch();
                     }
                   }}
@@ -478,9 +607,9 @@ function RfpList() {
               totalRows={RfpData?.total}
               onChangePage={setPageIndex}
               onChangeRowsPerPage={setPageSize}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
+              // pagination
+              // paginationPerPage={rowsPerPage}
+              // paginationRowsPerPageOptions={[5, 10, 20]}
             />
           </div>
         </div>

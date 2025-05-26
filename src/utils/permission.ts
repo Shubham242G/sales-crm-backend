@@ -20,10 +20,9 @@ export const getPermissions = () => {
   const [role, setRole] = useState("");
   const [permissions, setPermissions] = useState<RoutePermission[]>([]);
 
- 
   const getRole = async () => {
     const decodedToken = await getAuth();
-   
+
     setUserId(decodedToken.userId);
     setRole(decodedToken.role);
   };
@@ -36,8 +35,6 @@ export const getPermissions = () => {
 
   useEffect(() => {
     if (roleDataByRole) {
-     
-
       setPermissions(
         roleDataByRole?.data?.routePermissions as RoutePermission[]
       );
@@ -52,11 +49,10 @@ export const getPermissions = () => {
 export const RoutePermission = (route: string) => {
   const permissionsData = getPermissions();
 
- 
-//  console.log(permissionsData, "permissionsData");
- 
-  const result = permissionsData?.find((item) => item.routeName === route)?.permissions?.isRouteShow
+  console.log(permissionsData, "permissionsData");
 
+  const result = permissionsData?.find((item) => item.routeName === route)
+    ?.permissions?.isRouteShow;
 
   console.log(result, "check for route");
   if (result) {
@@ -68,15 +64,13 @@ export const checkPermissionsForButtons = (routeName: string) => {
   const permissions = getPermissions();
   // console.log(permissions, "permissions");
 
-  const filterData = permissions.filter(
-    (item) => item.routeName === routeName
-  )
+  const filterData = permissions.filter((item) => item.routeName === routeName);
   // const routePermissions = useMemo(() => {
   //   const permissionsFound = permissions.find(
   //     (Permission) => Permission.routeName === routeName
   //   );
   //   return permissionsFound?.permissions || {
-  //     create: false, 
+  //     create: false,
   //     view: false,
   //     update: false,
   //     delete: false,
@@ -96,27 +90,23 @@ export const checkPermissionsForButtons = (routeName: string) => {
     canView: filterData[0]?.permissions?.view,
     canUpdate: filterData[0]?.permissions?.update,
     canDelete: filterData[0]?.permissions?.delete,
-  }
-}
+  };
+};
 
+export const CreateRoutePermission = (route: string, item: any) => {
+  const permissionsData = getPermissions();
 
-export const CreateRoutePermission =  (route: string,item:any) => {
-  const permissionsData =  getPermissions();
-
-
-
-  
   const result = permissionsData?.find((item) => item.routeName === route);
- 
-  if(result &&result?.permissions ){
+
+  if (result && result?.permissions) {
     return {
-      view: result.permissions.create || result.permissions.view ,
-      create: result.permissions.create 
-    }
+      view: result.permissions.create || result.permissions.view,
+      create: result.permissions.create,
+    };
   }
 
-    return {
-      view: false,
-      create: false 
-    };
+  return {
+    view: false,
+    create: false,
+  };
 };
