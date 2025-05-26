@@ -4,14 +4,7 @@ import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import {
-  FaFilter,
-  FaFileExport,
-  FaPlus,
-  FaFileImport,
-  FaTasks,
-  FaColumns,
-} from "react-icons/fa";
+
 import {
   FaFilter,
   FaFileExport,
@@ -638,8 +631,8 @@ function Leads() {
         column.name === "Actions"
           ? "80px"
           : totalWidth > containerWidth
-          ? "200px"
-          : `${98 / columnsArray.length}%`,
+            ? "200px"
+            : `${98 / columnsArray.length}%`,
     }));
 
     console.log(columnsWithFixedWidth, "check the column width");
@@ -789,9 +782,8 @@ function Leads() {
             {/* Export */}
             <div className="relative" id="exportDropdown">
               <button
-                className={`flex items-center gap-1 px-4 py-1.5 rounded-md text-gray-700 border border-gray-300 ${
-                  isExporting ? "opacity-75 cursor-not-allowed" : ""
-                }`}
+                className={`flex items-center gap-1 px-4 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? "opacity-75 cursor-not-allowed" : ""
+                  }`}
                 onClick={() => {
                   if (!isExporting) setShowExportOptions(!showExportOptions);
                 }}
@@ -1159,7 +1151,7 @@ function Leads() {
                 type="button"
                 className="bg-blue-500  px-3 py-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
                 onClick={handleAssignTaskSubmit}
-                // disabled={isLoading}
+              // disabled={isLoading}
               >
                 Assign Task
               </button>

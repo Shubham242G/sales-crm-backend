@@ -51,7 +51,7 @@ function RfpList() {
   // const {data: useEnquiryByIdData} = useEnquiryById(enquiryId);
 
   const { data: RfpData, isLoading, refetch } = useRfp(searchObj);
-  const { data: RfpData, isLoading, refetch } = useRfp(searchObj);
+
   const { mutateAsync: deleteRfp } = usedeleteRfpById();
   const { mutateAsync: updateRfp } = useUpdateRfpById();
 
@@ -607,9 +607,9 @@ function RfpList() {
               totalRows={RfpData?.total}
               onChangePage={setPageIndex}
               onChangeRowsPerPage={setPageSize}
-              // pagination
-              // paginationPerPage={rowsPerPage}
-              // paginationRowsPerPageOptions={[5, 10, 20]}
+            // pagination
+            // paginationPerPage={rowsPerPage}
+            // paginationRowsPerPageOptions={[5, 10, 20]}
             />
           </div>
         </div>
