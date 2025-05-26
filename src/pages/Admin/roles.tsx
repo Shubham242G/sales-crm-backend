@@ -73,7 +73,7 @@ function Roles() {
           onClick={() => navigate(`/add-role/${row._id}`)}
           className="text-black-500 text-lg "
         >
-          <FaEye className=" hover:text-orange-500" />
+          <FaEye className=" hover:text-orange-500 text-sm" />
         </button>
       ),
     },
@@ -86,7 +86,7 @@ function Roles() {
           onClick={() => handleDelete(row._id)}
           className=" text-black-400 text-lg"
         >
-          <RiDeleteBin6Line className="hover:text-red-600" />
+          <RiDeleteBin6Line className="hover:text-red-600 text-sm" />
 
         </button>
       ),

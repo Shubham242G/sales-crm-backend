@@ -909,7 +909,7 @@ function Leads() {
             )}
           </div>
           {/* React Table */}
-          <div className="overflow-x-auto -ml-8 -mr-2">
+          <div className="overflow-x-auto -ml-9 -mr-3">
             <ReactTable
               data={leadData?.data}
               columns={filteredColumns}
@@ -1158,7 +1158,7 @@ function Leads() {
           </div>
         </div>
       )}
-
+{/* 
       <NewTable
         data={leadData?.data}
         columns={filteredColumns}
@@ -1181,7 +1181,7 @@ function Leads() {
         AddButtonRouteName={"/add-leads"}
         AddButtonName={"New Lead"}
         placeholderSearch={"Search in Lead"}
-      />
+      /> */}
     </>
   );
 }

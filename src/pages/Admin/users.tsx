@@ -87,7 +87,7 @@ function Users() {
           <div className=""><Link
             to={`/add-users/${row._id}`}
             onClick={() => handleUpdate(row._id, row.data)}
-            className="  text-black-500 text-lg  hover:text-orange-500"
+            className="  text-black-500   hover:text-orange-500 text-sm"
           >
             <FaEye />
           </Link></div>
@@ -101,9 +101,9 @@ function Users() {
           <button
             type="button"
             onClick={() => handleDelete(row._id)}
-            className=" text-black-400 text-lg"
+            className=" text-black-400 text-sm"
           >
-            <RiDeleteBin6Line className="hover:text-red-600" />
+            <RiDeleteBin6Line className="hover:text-red-600 text-sm" />
           </button>
         ),
     },
@@ -115,8 +115,8 @@ function Users() {
     "Name": true,
     "Email": true,
     "Role": true,
-    "Edit": canView || canUpdate ,
-    "Delete": canDelete ,
+    "Edit": canView || canUpdate || true ,
+    "Delete": canDelete || true,
   });
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumnsUser');
@@ -222,8 +222,8 @@ function Users() {
     "Name": true,
     "Email": true,
     "Role": true,
-    "Edit": canView || canUpdate ,
-    "Delete": canDelete ,
+    "Edit": canView || canUpdate || true ,
+    "Delete": canDelete || true,
     });
   };
 
@@ -253,7 +253,7 @@ function Users() {
 
               <div className="relative">
                 <button
-                  className="flex items-center gap-1 px-4 py-1.5 text-sm rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                  className="flex items-center gap-1 px-4 py-1.5 text-sm rounded-md text-gray-700 border  border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                   onClick={() => setShowColumnSelector(!showColumnSelector)}
                 >
                   <FaColumns /> Columns
@@ -263,10 +263,10 @@ function Users() {
 
               <button
                 onClick={() => navigate("/add-users")}
-                className="flex w-full items-center py-1.5 justify-center gap-1 px-3  text-white rounded-md bg-orange-500 border border-gray-300"
+                className="flex w-full items-center py-1.5 justify-center gap-1 px-3 text-sm  text-white rounded-md bg-orange-500 border border-gray-300"
               >
                 <FaPlus />
-                <span>New User</span>
+                <span className=" text-sm">New User</span>
               </button>
             </div>
           </div>

@@ -41,7 +41,7 @@ interface RoutePermission {
 
 
 
-   
+
 
 function AddRoles() {
   const [roleName, setRoleName] = useState<string>("");
@@ -58,286 +58,286 @@ function AddRoles() {
     "Vendors",
     "RFPS",
     "Quotes from Vendors",
-    "Confirmed Quotes From Vendors", 
+    "Confirmed Quotes From Vendors",
     "Purchase Contacts",
     "Leads",
     "Customers",
- "Invoices",
+    "Invoices",
     "Quotes for Customer",
-   "Enquiry",
+    "Enquiry",
     "Invoice View",
-     "Invoice Pdf View",
-     "Confirmed Quotes Customer",
-     "Customer Outstanding",
-     "Sales Contacts",
-     "Task Management",
-"My Tasks",
-"Add Department",
-"Add Category",
- "Add Hotel",
- "Add Banquet",
- "Add Resturant",
- "Venue Search",
+    "Invoice Pdf View",
+    "Confirmed Quotes Customer",
+    "Customer Outstanding",
+    "Sales Contacts",
+    "Task Management",
+    "My Tasks",
+    "Add Department",
+    "Add Category",
+    "Add Hotel",
+    "Add Banquet",
+    "Add Resturant",
+    "Venue Search",
 
- 
-    
+
+
   ];
 
 
   const [permissions, setPermissions] = useState<RoutePermission[]>([
-        {
-          routeName: "User",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Roles",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Vendors",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "RFPS",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Quotes from Vendors",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Confirmed Quotes From Vendors",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Purchase Contacts",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Leads",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Customers",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Quotes for Customer",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Enquiry",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Invoice View",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Invoice Pdf View",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Confirmed Quotes from Customer",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Invoices",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Customer Outstanding",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Sales Contacts",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Task Management",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "My Tasks",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Add Department",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Add Category",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Add Hotel",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Add Banquet",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Add Resturant",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        },
-        {
-          routeName: "Venue Search",
-          permissions: {
-            create: true,
-            update: true,
-            delete: true,
-            view: true,
-            isRouteShow: true,
-          },
-        }]);
+    {
+      routeName: "User",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Roles",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Vendors",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "RFPS",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Quotes from Vendors",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Confirmed Quotes From Vendors",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Purchase Contacts",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Leads",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Customers",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Quotes for Customer",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Enquiry",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Invoice View",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Invoice Pdf View",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Confirmed Quotes from Customer",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Invoices",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Customer Outstanding",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Sales Contacts",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Task Management",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "My Tasks",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Add Department",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Add Category",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Add Hotel",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Add Banquet",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Add Resturant",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    },
+    {
+      routeName: "Venue Search",
+      permissions: {
+        create: true,
+        update: true,
+        delete: true,
+        view: true,
+        isRouteShow: true,
+      },
+    }]);
 
 
-          const filterRoutes = permissionRoute.filter((route) => !permissions.some((p) => p.routeName === route));
+  const filterRoutes = permissionRoute.filter((route) => !permissions.some((p) => p.routeName === route));
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [query, setQuery] = useState("");
@@ -408,7 +408,7 @@ function AddRoles() {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/roles");
-          console.log(roleName,"rolename", name, "name",);
+          console.log(roleName, "rolename", name, "name",);
         }
       }
     } catch (error) {
@@ -477,96 +477,76 @@ function AddRoles() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen w-[98%] ml-auto -mt-9  rounded-lg shadow-lg ">
-      <div className="container mx-auto p-10 ">
+    <div className=" min-h-screen w-[100%] mb-20     ">
+      <div className="container   ">
         <h1 className="text-2xl font-bold mb-4">
           {id ? "Edit Role" : "Add New Role"}
         </h1>
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
 
-          <div>
-            <label className="block font-medium mb-2">Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
-              placeholder="Enter Name"
-            />
+        <form onSubmit={handleSubmit} className="space-y-6 bg-white text-sm rounded-lg">
+          <div className="  bg-white  rounded-md text-sm space-y-4">
+
+            {/* Name */}
+            <div className="flex items-center space-x-4">
+              <label className="font-medium w-32">Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter Name"
+                className="border rounded px-3 py-2 text-sm w-[20%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+              />
+            </div>
+
+            {/* Parent Role */}
+            <div className="flex items-center space-x-4">
+              <label className="font-medium w-32">Parent Role</label>
+              <select
+                value={parentRoleName}
+                onChange={(e) => setParentRoleName(e.target.value || "")}
+                className="border rounded px-3 py-2 text-sm w-[20%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+              >
+                <option value="">--Select Parent Role--</option>
+                {allRoles
+                  .map((r: any) => r.roleName)
+                  .filter((r: any) => r !== roleName)
+                  .map((role: any) => (
+                    <option key={role} value={role}>
+                      {role}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+            {/* Role Name */}
+            <div className="flex items-center space-x-4">
+              <label className="font-medium w-32">Role Name</label>
+              <input
+                type="text"
+                value={roleName}
+                onChange={(e) => setRoleName(e.target.value.toUpperCase())}
+                placeholder="Enter Role Name"
+                className="border rounded px-3 py-2 text-sm w-[20%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+              />
+            </div>
+
+            {/* Description */}
+            <div className="flex items-start space-x-4">
+              <label className="font-medium w-32 pt-2">Description</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter Role Description"
+                rows={4}
+                className="border rounded px-3 py-2 text-sm w-[20%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+              />
+            </div>
+
           </div>
-          {/* <div>
-          <label className="block font-medium mb-2 ">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
-            placeholder="Enter Email Address"
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-2">Phone Number</label>
-          <input
-            type="number"
-            value={phoneNo}
-            onChange={(e) => setPhoneNo(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
-            placeholder="Enter Phone Number"
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-2">Department</label>
-          <input
-            type="text"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
-            placeholder="Enter Department"
-          />
-        </div> */}
-          {/* <div>
-          <label className="block font-medium mb-2">Designation</label>
-          <input
-            type="text"
-            value={designation}
-            onChange={(e) => setDesignation(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
-            placeholder="Enter Designation"
-          />
-        </div> */}
-          <div>
-            <label className="block font-medium mb-2">Parent Role</label>
-            <Autocomplete
-              options={allRoles.map((r: any) => r.roleName).filter((r: any) => r !== roleName)}
-              value={parentRoleName}
-              onChange={(_, newValue) => setParentRoleName(newValue || "")}
-              renderInput={(params) => (
-                <TextField {...params} label="Parent Role (for hierarchy)" />
-              )}
-            />
-          </div>
-          <div>
-            <label className="block font-medium mb-4">Role Name</label>
-            <input
-              type="text"
-              value={roleName}
-              onChange={(e) => setRoleName(e.target.value.toUpperCase())}
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
-              placeholder="Enter Role Name"
-            />
-          </div>
-          <div>
-            <label className="block font-medium mb-2">Description</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline outline-1  focus:outline-blue-500"
-              placeholder="Enter Role Description"
-            ></textarea>
-          </div>
+
 
           {/* Permissions Table */}
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto ">
             <table className="w-full border-collapse border border-gray-300">
               <thead>
                 <tr className="bg-gray-100">
@@ -626,7 +606,7 @@ function AddRoles() {
                           />
                         </div>
                       )}
-                      
+
                     </td>
                     <td className="border border-gray-300 p-2 text-center">
                       <input
@@ -678,20 +658,18 @@ function AddRoles() {
                 ))}
               </tbody>
             </table>
-            <div className="button flex justify-between mt-5 mb-5 ">
+            <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t border-gray-200 shadow-md py-3 px-6 flex justify-between z-50">
               <button
                 type="button"
-                className=" flex items-center  px-3 py-1.5 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                className="flex items-center px-3 py-1.5 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
                 onClick={handleAddNewRoute}
               >
                 <FaPlus className="mr-2" /> Add New Route
               </button>
 
-
-
               <button
                 type="submit"
-                className="flex items-center  px-3 py-1.5   bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="flex items-center px-3 py-1.5 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
               >
                 <FaSave className="mr-2" /> Save Role
               </button>

@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import { generateFilePath } from "@/services/urls.service";
-import { styled } from "@mui/system";
+import { fontSize, styled } from "@mui/system";
 import { Autocomplete, TextField, Popper } from "@mui/material";
 
 import { checkPermissionsForButtons } from "@/utils/permission";
@@ -666,6 +666,7 @@ const AddCustomer = () => {
     {
       value: "registered_regular",
       label: "Registered Business - Business that is registered under GST",
+      
     },
     {
       value: "registered_composite",
@@ -915,14 +916,14 @@ const AddCustomer = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-2xl font-bold mb-6">Add Customer</h1>
+    <div className="min-h-screen mb-4">
+      <div className="max-w-6xl mx-auto bg-white -mt-4  ">
+        <h1 className="text-2xl font-bold mb-6  ">Add Customer</h1>
         <form onSubmit={handleSubmit}>
           {/* Customer Type Section */}
-          <div className="mb-8">
+          <div className="mb-4">
             <div className="flex items-center gap-4 mb-4">
-              <span className="w-32 text-base font-medium text-gray-700">
+              <span className="w-32  font-medium text-gray-700 text-sm">
                 Customer Type:
               </span>
               <div className="flex gap-6">
@@ -937,7 +938,7 @@ const AddCustomer = () => {
                     }
                     className="ml-2 form-radio h-4 w-4 text-blue-600"
                   />
-                  <span className="text-gray-700">Business</span>
+                  <span className="text-gray-700 text-sm">Business</span>
                 </label>
                 <label className="flex items-center space-x-2">
                   <input
@@ -950,27 +951,27 @@ const AddCustomer = () => {
                     }
                     className="form-radio h-4 w-4 text-blue-600"
                   />
-                  <span className="text-gray-700">Individual</span>
+                  <span className="text-gray-700 text-sm">Individual</span>
                 </label>
               </div>
             </div>
           </div>
 
           {/* Primary Contact Section */}
-          <div className="mb-8">
+          <div className="mb-2">
             <div className="flex items-start gap-4">
-              <span className="w-32 text-base font-medium text-gray-700 mt-2">
+              <span className="w-32 text-sm font-medium text-gray-700  ">
                 Primary Contact:
               </span>
-              <div className="flex-1 space-y-4">
+              <div className="flex-1 space-y-4 ml-2">
                 <div className="flex gap-6">
-                  <div className="flex-1 max-w-[200px]">
+                  <div className="flex-1 max-w-[130px]">
                     <select
                       value={formData.salutation}
                       onChange={(e) =>
                         setFormData({ ...formData, salutation: e.target.value })
                       }
-                      className="w-full border border-gray-300 rounded-md p-2 text-gray-400 text-sm"
+                      className="w-full border border-gray-300 rounded-md p-1 text-gray-400 text-sm"
                     >
                       <option value="">Salutation</option>
                       <option value="Mr.">Mr.</option>
@@ -980,7 +981,7 @@ const AddCustomer = () => {
                       <option value="Dr.">Dr.</option>
                     </select>
                   </div>
-                  <div className="flex-1 max-w-[200px]">
+                  <div className="flex-1 max-w-[140px]">
                     <input
                       type="text"
                       value={formData.firstName}
@@ -988,10 +989,10 @@ const AddCustomer = () => {
                         setFormData({ ...formData, firstName: e.target.value })
                       }
                       placeholder="First Name"
-                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                      className="w-full border border-gray-300 rounded-md p-1 text-sm"
                     />
                   </div>
-                  <div className="flex-1 max-w-[200px]">
+                  <div className="flex-1 max-w-[140px]">
                     <input
                       type="text"
                       value={formData.lastName}
@@ -999,7 +1000,7 @@ const AddCustomer = () => {
                         setFormData({ ...formData, lastName: e.target.value })
                       }
                       placeholder="Last Name"
-                      className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                      className="w-full border border-gray-300 rounded-md p-1 text-sm"
                     />
                   </div>
                 </div>
@@ -1008,15 +1009,15 @@ const AddCustomer = () => {
           </div>
 
           {/* Company Details Section */}
-          <div className="mb-8">
+          <div className="mb-2">
             <div className="flex items-start gap-4">
               <div className="flex-1 space-y-6">
                 {/* Company Name */}
-                <div className="flex items-center gap-6">
-                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
+                <div className="flex items-center gap-6 -mt-3">
+                  <span className="w-32 text-sm font-medium text-gray-700 mt-2 ">
                     Company Name:
                   </span>
-                  <div className="w-96">
+                  <div className="w-[250px] mt-5">
                     {" "}
                     {/* Added width container matching other fields */}
                     <input
@@ -1029,13 +1030,30 @@ const AddCustomer = () => {
                         })
                       }
                       placeholder="Enter company name"
-                      className="w-full border border-gray-300 rounded-md p-2 pl-3 text-sm mt-1"
+                      className="w-full border border-gray-300 rounded-md p-1 pl-3 text-sm "
                     />
                   </div>
                 </div>
 
                 {/* Display Name */}
-                <div>
+                <div className="flex items-center gap-6">
+                  <span className="w-32 text-sm font-medium text-gray-700 -mt-3 ">
+                   Display Name:
+                  </span>
+                  <div className="w-[250px] -mt-2">
+                    {" "}
+                    {/* Added width container matching other fields */}
+                    <input
+                    type="text"
+                    name="displayName"
+                    value={formData.displayName}
+                    onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+                    placeholder="Display Name"
+                    className="w-full border border-gray-300 rounded-md p-1 pl-3 text-sm -mt-3 "
+                  />
+                  </div>
+                </div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
                   <input
                     type="text"
@@ -1043,13 +1061,13 @@ const AddCustomer = () => {
                     value={formData.displayName}
                     onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
                     placeholder="Display Name"
-                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border bg-gray-50 border-gray-300 rounded p-1 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
-                </div>
+                </div> */}
 
                 {/* Email Address */}
                 <div className="flex items-center gap-6">
-                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
+                  <span className="w-32 text-sm font-medium text-gray-700 -mt-3 ">
                     Email Address:
                   </span>
                   <div className="flex-1 relative">
@@ -1066,7 +1084,7 @@ const AddCustomer = () => {
                         <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     </div> */}
-                    <div className="w-96">
+                    <div className="w-[250px] -mt-2 mb-2">
                       <input
                         type="email"
                         value={formData.email}
@@ -1077,10 +1095,10 @@ const AddCustomer = () => {
                         onBlur={(e) => validateEmail(e.target.value)}
                         placeholder="Enter email address"
                         className={`w-full border ${!isEmailValid ? "border-red-500" : "border-gray-300"
-                          } rounded-md p-2 pl-3 text-sm`}
+                          } rounded-md p-1 pl-3 text-sm`}
                       />
                       {!isEmailValid && (
-                        <p className="text-red-500 text-sm mt-1">
+                        <p className="text-red-500 text-sm mt-3">
                           Please enter a valid email address
                         </p>
                       )}
@@ -1090,12 +1108,12 @@ const AddCustomer = () => {
 
                 {/* Phone Numbers */}
                 <div className="flex items-center gap-6">
-                  <span className="w-32 text-base font-medium text-gray-700 mt-2">
+                  <span className="w-32 text-sm font-medium text-gray-700 -mt-2">
                     Phone:
                   </span>
-                  <div className="flex-1 flex gap-4">
+                  <div className="flex-1 flex gap-4 -mt-4">
                     {/* Work Phone Input */}
-                    <div className="relative ">
+                    <div className="relative  ">
                       <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                         <svg
                           className="h-5 w-5 text-gray-400"
@@ -1120,7 +1138,7 @@ const AddCustomer = () => {
                             })
                           }
                           placeholder="Work Phone"
-                          className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
+                          className="w-full border border-gray-300 rounded-md p-1 pl-10 text-sm"
                         />
                       </div>
                     </div>
@@ -1148,7 +1166,7 @@ const AddCustomer = () => {
                             setFormData({ ...formData, mobile: e.target.value })
                           }
                           placeholder="Mobile"
-                          className="w-full border border-gray-300 rounded-md p-2 pl-10 text-sm"
+                          className="w-full border border-gray-300 rounded-md p-1 pl-10 text-sm"
                         />
                       </div>
                     </div>
@@ -1156,11 +1174,11 @@ const AddCustomer = () => {
                 </div>
 
                 {/* Communication Channels */}
-                <div className="flex items-center gap-6 mt-4">
-                  <span className="w-[200px] text-base font-medium text-gray-700 mt-2">
+                <div className="flex items-center gap-6 ">
+                  <span className="w-[200px] text-sm font-medium text-gray-700 ">
                     Communication Channels:
                   </span>
-                  <div className="flex gap-6 mt-2">
+                  <div className="flex gap-6">
                     <label className="flex items-center space-x-2">
                       <input
                         type="checkbox"
@@ -1173,7 +1191,7 @@ const AddCustomer = () => {
                         }
                         className="form-checkbox h-4 w-4 text-blue-600"
                       />
-                      <span className="text-gray-700">Email</span>
+                      <span className="text-gray-700 text-sm">Email</span>
                     </label>
                     <label className="flex items-center space-x-2">
                       <input
@@ -1187,7 +1205,7 @@ const AddCustomer = () => {
                         }
                         className="form-checkbox h-4 w-4 text-blue-600"
                       />
-                      <span className="text-gray-700">SMS</span>
+                      <span className="text-gray-700 text-sm">SMS</span>
                     </label>
                   </div>
                 </div>
@@ -1220,19 +1238,20 @@ const AddCustomer = () => {
                   {/* Tab Content */}
                   <div className="pt-6">
                     {activeTab === "Other Details" && (
-                      <div className="grid grid-cols-2 gap-x-10 gap-y-6 ">
+                      <div className="grid grid-cols-2 gap-x-10  ">
                         {/* GST Treatment */}
-                        <div className="col-span-2">
+                        <div className="col-span-2 gst">
                           <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700 mt-2">
+                            <span className="w-32 text-sm font-medium text-gray-700">
                               GST Treatment:
                             </span>
-                            <div className="w-96">
+                            <div className="w-[250px] ">
                               <Autocomplete
                                 disablePortal
                                 options={gstOptions}
+                                className="text-sm"
                                 value={
-                                  gstOptions.find((option) => option.value === formData.gstTreatment) || null
+                                gstOptions.find((option) => option.value === formData.gstTreatment) || null
                                 }
                                 onChange={(event, newValue) => {
                                   setFormData({
@@ -1247,11 +1266,11 @@ const AddCustomer = () => {
                                     label="Select GST Treatment"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "36px" },
+                                      style: { height: "30px",  fontSize: "14px", marginBottom:"-4px" },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
-                                        height: "40px",
+                                      height: "36px", fontSize: "14px"   
                                       },
                                       "& .MuiInputLabel-root": {
                                         fontSize: "14px",
@@ -1262,14 +1281,14 @@ const AddCustomer = () => {
                                         },
                                       },
                                       "& .MuiInputLabel-root.Mui-focused": {
-                                        transform: "translate(14px, -9px) scale(0.75)",
+                                        transform: "translate(14px, -9px) scale(0.75)", fontSize: "14px",
                                       },
                                     }}
                                   />
                                 )}
                               />
                             </div>
-                            {/* <div className="w-96 mt-1">
+                            {/* <div className="w-[250px] mt-3">
                               {" "}
                               {/* Reduced margin-top here */}
                             {/* <Autocomplete
@@ -1310,20 +1329,20 @@ const AddCustomer = () => {
                                     }}
                                   />
                                 )}
-                                className="flex-1 rounded-md p-2 text-sm"
+                                className="flex-1 rounded-md p-1 text-sm"
                               /> */}
                             {/* </div> */}
                           </div>
                         </div>
 
                         {/* Place of Supply */}
-                        <div className="col-span-2 mt-1">
+                        <div className="col-span-2 mt-3">
                           {/* Reduced margin-top here */}
                           <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700 mt-2">
+                            <span className="w-32 text-sm font-medium text-gray-700 mt-2">
                               Place of Supply:
                             </span>
-                            <div className="w-96 mt-1">
+                            <div className="w-[250px] mt-3 mb-1">
                               {/* Reduced margin-top here */}
                               <Autocomplete
                                 disablePortal
@@ -1346,8 +1365,8 @@ const AddCustomer = () => {
                                     label="Select State"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "36px" },
-
+                                      style: { height: "30px" ,marginTop:"-2px" },
+                                      
                                     }}
                                     sx={{
 
@@ -1378,12 +1397,12 @@ const AddCustomer = () => {
                         <div className="col-span-2">
                           <div className="flex items-center gap-6">
                             <label
-                              className="w-32 text-base font-medium text-gray-700"
+                              className="w-32 text-sm font-medium text-gray-700"
                               htmlFor="panNumber"
                             >
                               PAN Number:
                             </label>
-                            <div className="w-96">
+                            <div className="w-[250px]">
                               {" "}
                               {/* Removed ml-2 to match exact dropdown width */}
                               <input
@@ -1397,7 +1416,7 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Enter PAN Number"
-                                className="w-full  border border-gray-300 rounded-md p-2 text-[14px] leading-14px focus:outline-none focus:ring-2 focus:ring-blue-400 mt-1"
+                                className="w-full  border border-gray-300 rounded-md p-1 pl-4 text-[14px] leading-14px focus:outline-none focus:ring-2 focus:ring-blue-400 mt-3"
                               />
                             </div>
                           </div>
@@ -1406,7 +1425,7 @@ const AddCustomer = () => {
                         {/*Tax Preference*/}
                         {/* <div className="mt-4">
                           <div className="flex items-center gap-4 mb-4">
-                            <span className="w-32 text-base font-medium text-gray-700">
+                            <span className="w-32 text-sm font-medium text-gray-700">
                               Tax Prefernce:
                             </span>
                             <div className="flex items-center space-x-4 ml-2">
@@ -1452,10 +1471,10 @@ const AddCustomer = () => {
                         {/* Currency */}
                         {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700">
+                            <span className="w-32 text-sm font-medium text-gray-700">
                               Currency:
                             </span>
-                            <div className="w-96">
+                            <div className="w-[250px]">
                               <Autocomplete
                                 disablePortal
                                 options={currencyOptions}
@@ -1477,7 +1496,7 @@ const AddCustomer = () => {
                                     label="Select Currency"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "40px" },
+                                      style: { height: "32px" },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
@@ -1510,10 +1529,10 @@ const AddCustomer = () => {
                         {/* Credit Limit */}
                         {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700">
+                            <span className="w-32 text-sm font-medium text-gray-700">
                               Credit Limit:
                             </span>
-                            <div className="w-96">
+                            <div className="w-[250px]">
                               <TextField
                                 label="Credit Limit"
                                 value={formData.creditLimit}
@@ -1571,10 +1590,10 @@ const AddCustomer = () => {
                         {/* Payment Terms */}
                         {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700">
+                            <span className="w-32 text-sm font-medium text-gray-700">
                               Payment Terms:
                             </span>
-                            <div className="w-96">
+                            <div className="w-[250px]">
                               <Autocomplete
                                 disablePortal
                                 options={paymentTermsOptions}
@@ -1596,7 +1615,7 @@ const AddCustomer = () => {
                                     label="Select Payment Terms"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "40px" },
+                                      style: { height: "32px" },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
@@ -1625,10 +1644,10 @@ const AddCustomer = () => {
                         {/* Price List */}
                         {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700">
+                            <span className="w-32 text-sm font-medium text-gray-700">
                               Price List:
                             </span>
-                            <div className="w-96">
+                            <div className="w-[250px]">
                               <Autocomplete
                                 disablePortal
                                 options={priceListOptions}
@@ -1650,7 +1669,7 @@ const AddCustomer = () => {
                                     label="Select Price List"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "40px" },
+                                      style: { height: "32px" },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
@@ -1678,10 +1697,10 @@ const AddCustomer = () => {
 
                         {/* Enable Portal */}
                         <div className="flex items-center gap-6 mt-2 mb-4">
-                          <span className="w-32 text-base font-medium text-gray-700 mt-2">
+                          <span className="w-32 text-sm font-medium text-gray-700 mt-2">
                             Enable Portal:
                           </span>
-                          <div className="flex gap-6">
+                          <div className="flex gap-6 mt-2">
                             <label className="flex items-center space-x-2">
                               <input
                                 type="checkbox"
@@ -1694,7 +1713,7 @@ const AddCustomer = () => {
                                 }
                                 className="ml-1 form-checkbox h-4 w-4 text-blue-600"
                               />
-                              <span className="text-gray-700">
+                              <span className="text-gray-700 text-sm ">
                                 Allow portal access for this Customer
                               </span>
                             </label>
@@ -1703,10 +1722,10 @@ const AddCustomer = () => {
                         {/* Portal Language */}
                         {/* <div className="col-span-2">
                           <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700">
+                            <span className="w-32 text-sm font-medium text-gray-700">
                               Portal Language:
                             </span>
-                            <div className="w-96">
+                            <div className="w-[250px]">
                               <Autocomplete
                                 disablePortal
                                 options={languageOptions}
@@ -1728,7 +1747,7 @@ const AddCustomer = () => {
                                     label="Select Language"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "40px" },
+                                      style: { height: "32px" },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
@@ -1755,9 +1774,9 @@ const AddCustomer = () => {
                         </div> */}
 
                         {/* Documents Upload */}
-                        <div className="col-span-2 mt-4">
+                        <div className="col-span-2 ">
                           <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700">
+                            <span className="w-32 text-sm font-medium text-gray-700 -mt-8">
                               Documents:
                             </span>
                             <div className="flex-1">
@@ -1795,7 +1814,7 @@ const AddCustomer = () => {
                               <button
                                 type="button"
                                 onClick={() => fileInputRef.current?.click()}
-                                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
+                                className="flex items-center gap-1 px-2 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 "
                               >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -1809,9 +1828,9 @@ const AddCustomer = () => {
                                     clipRule="evenodd"
                                   />
                                 </svg>
-                                <span>Upload Document</span>
+                                <span className="text-sm">Upload Document</span>
                               </button>
-                              <p className="text-sm text-gray-500 mt-1">
+                              <p className="text-sm text-gray-500 mt-3">
                                 You can upload multiple PDF and JPEG files
                               </p>
                             </div>
@@ -1825,7 +1844,7 @@ const AddCustomer = () => {
                                 {selectedFiles.map((file, index) => (
                                   <div
                                     key={index}
-                                    className="flex items-center justify-between bg-gray-50 p-2 rounded"
+                                    className="flex items-center justify-between bg-gray-50 p-1 rounded"
                                   >
                                     <span className="text-sm text-gray-600">
                                       {file.name}
@@ -1880,11 +1899,11 @@ const AddCustomer = () => {
                           </div>
                         </div>
                         {/* Add More Details Section */}
-                        <div className="mt-6">
+                        <div className="">
                           <button
                             type="button"
                             onClick={() => setIsExpanded(!isExpanded)}
-                            className="flex items-center gap-2 text-base font-medium text-blue-600 hover:text-blue-700"
+                            className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
                           >
                             {isExpanded ? (
                               <>
@@ -1900,17 +1919,17 @@ const AddCustomer = () => {
                           </button>
 
                           {isExpanded && (
-                            <div className="col-span-2 mt-8">
-                              <div className="space-y-8">
+                            <div className="col-span-2 mt-3">
+                              <div className="space-y-2">
                                 {/* Website URL */}
                                 <div className="flex items-center gap-6">
                                   <label
-                                    className="w-32 text-base font-medium text-gray-700"
+                                    className="w-32 text-sm font-medium text-gray-700"
                                     htmlFor="websiteUrl"
                                   >
                                     Website URL:
                                   </label>
-                                  <div className="w-96 flex">
+                                  <div className="w-[250px] flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                       <FaGlobe className="w-4 h-4 text-gray-400" />
                                     </div>
@@ -1925,7 +1944,7 @@ const AddCustomer = () => {
                                         })
                                       }
                                       placeholder="Enter Website URL"
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      className="w-full border border-gray-300 rounded-r-md p-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     />
                                   </div>
                                 </div>
@@ -1933,12 +1952,12 @@ const AddCustomer = () => {
                                 {/* Department */}
                                 <div className="flex items-center gap-6">
                                   <label
-                                    className="w-32 text-base font-medium text-gray-700"
+                                    className="w-32 text-sm font-medium text-gray-700"
                                     htmlFor="department"
                                   >
                                     Department:
                                   </label>
-                                  <div className="w-96 flex">
+                                  <div className="w-[250px] flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                       <FaBuilding className="w-4 h-4 text-gray-400" />
                                     </div>
@@ -1953,7 +1972,7 @@ const AddCustomer = () => {
                                         })
                                       }
                                       placeholder="Enter Department"
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      className="w-full border border-gray-300 rounded-r-md p-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     />
                                   </div>
                                 </div>
@@ -1961,12 +1980,12 @@ const AddCustomer = () => {
                                 {/* Designation */}
                                 <div className="flex items-center gap-6">
                                   <label
-                                    className="w-32 text-base font-medium text-gray-700"
+                                    className="w-32 text-sm font-medium text-gray-700"
                                     htmlFor="designation"
                                   >
                                     Designation:
                                   </label>
-                                  <div className="w-96 flex">
+                                  <div className="w-[250px] flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                       <FaUserCircle className="w-4 h-4 text-gray-400" />
                                     </div>
@@ -1981,7 +2000,7 @@ const AddCustomer = () => {
                                         })
                                       }
                                       placeholder="Enter Designation"
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      className="w-full border border-gray-300 rounded-r-md p-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     />
                                   </div>
                                 </div>
@@ -1989,12 +2008,12 @@ const AddCustomer = () => {
                                 {/* Twitter */}
                                 <div className="flex items-center gap-6">
                                   <label
-                                    className="w-32 text-base font-medium text-gray-700"
+                                    className="w-32 text-sm font-medium text-gray-700"
                                     htmlFor="twitter"
                                   >
                                     Twitter:
                                   </label>
-                                  <div className="w-96 flex">
+                                  <div className="w-[250px] flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                       <FaTwitter className="w-4 h-4 text-gray-400" />
                                     </div>
@@ -2009,7 +2028,7 @@ const AddCustomer = () => {
                                         })
                                       }
                                       placeholder="Enter Twitter id..."
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      className="w-full border border-gray-300 rounded-r-md p-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     />
                                   </div>
                                 </div>
@@ -2017,12 +2036,12 @@ const AddCustomer = () => {
                                 {/* Skype */}
                                 <div className="flex items-center gap-6">
                                   <label
-                                    className="w-32 text-base font-medium text-gray-700"
+                                    className="w-32 text-sm font-medium text-gray-700"
                                     htmlFor="skype"
                                   >
                                     Skype:
                                   </label>
-                                  <div className="w-96 flex">
+                                  <div className="w-[250px] flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                       <FiMessageCircle className="w-4 h-4 text-gray-400" />
                                     </div>
@@ -2037,7 +2056,7 @@ const AddCustomer = () => {
                                         })
                                       }
                                       placeholder="Enter skype id..."
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      className="w-full border border-gray-300 rounded-r-md p-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     />
                                   </div>
                                 </div>
@@ -2045,12 +2064,12 @@ const AddCustomer = () => {
                                 {/* Facebook */}
                                 <div className="flex items-center gap-6">
                                   <label
-                                    className="w-32 text-base font-medium text-gray-700"
+                                    className="w-32 text-sm font-medium text-gray-700"
                                     htmlFor="facebook"
                                   >
                                     Facebook:
                                   </label>
-                                  <div className="w-96 flex">
+                                  <div className="w-[250px] flex">
                                     <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
                                       <FaFacebook className="w-4 h-4 text-gray-400" />
                                     </div>
@@ -2065,7 +2084,7 @@ const AddCustomer = () => {
                                         })
                                       }
                                       placeholder="Enter facebook id..."
-                                      className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                      className="w-full border border-gray-300 rounded-r-md p-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     />
                                   </div>
                                 </div>
@@ -2077,15 +2096,15 @@ const AddCustomer = () => {
                     )}
 
                     {activeTab === "Address" && (
-                      <div className="grid grid-cols-2 gap-8">
+                      <div className=" w-[400px] flex">
                         {/* Billing Address */}
-                        <div className="col-span-1">
+                        <div className="w-[400px] ">
                           <h2 className="text-2xl font-bold mb-6">
                             Billing Address
                           </h2>
                           {/* Attention */}
                           {/* <div className="flex items-center gap-6">
-                            <span className=" min-w-32 text-base font-medium text-gray-700">
+                            <span className=" min-w-32 text-sm font-medium text-gray-700">
                               Attention:
                             </span>
                             <input
@@ -2097,13 +2116,13 @@ const AddCustomer = () => {
                                   attention: e.target.value,
                                 })
                               }
-                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              className="w-full border border-gray-300 rounded-md p-1 text-sm"
                             />
                           </div> */}
                           {/* Country / Region */}
-                          <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                          <div className="">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 text-sm font-medium text-gray-700">
                                 Country / Region:
                               </span>
                               {/* <select
@@ -2114,7 +2133,7 @@ const AddCustomer = () => {
                                     countryRegion: e.target.value,
                                   })
                                 }
-                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
+                                className="flex-1 border border-gray-300 rounded-md p-1 text-sm"
                               >
                                 <option value="">Select Country/Region</option>
                                 <option value="US - United States">
@@ -2253,7 +2272,7 @@ const AddCustomer = () => {
                                     label="Select Payment Terms"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "40px" },
+                                      style: { height: "32px" },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
@@ -2274,14 +2293,14 @@ const AddCustomer = () => {
                                     }}
                                   />
                                 )}
-                                className="flex-1 rounded-md p-2 text-sm"
+                                className="flex-1 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* Address */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="text-base font-medium text-gray-700">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="text-sm font-medium text-gray-700">
                                 Address:
                               </span>
                               <input
@@ -2294,11 +2313,11 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Street 1"
-                                className="w-full ml-16 border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full ml-[76px] border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
                             <div className="flex items-center gap-6 mt-4">
-                              <span className="min-w-32 text-base font-medium text-gray-700"></span>
+                              <span className="min-w-32 text-sm font-medium text-gray-700"></span>
                               <input
                                 type="text"
                                 value={formData.addressStreet2}
@@ -2309,14 +2328,14 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Street 2"
-                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* City */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 text-sm font-medium text-gray-700">
                                 City:
                               </span>
                               <input
@@ -2328,14 +2347,14 @@ const AddCustomer = () => {
                                     city: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* State */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 -mr-1 text-sm font-medium text-gray-700">
                                 State:
                               </span>
                               {/* <select
@@ -2346,7 +2365,7 @@ const AddCustomer = () => {
                                     state: e.target.value,
                                   })
                                 }
-                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
+                                className="flex-1 border border-gray-300 rounded-md p-1 text-sm"
                               >
                                 <option value="">Select State</option>
                                 <option value="AP - Andhra Pradesh">
@@ -2464,7 +2483,7 @@ const AddCustomer = () => {
                                     label="State"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "40px" },
+                                      style: { height: "32px" },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
@@ -2485,14 +2504,14 @@ const AddCustomer = () => {
                                     }}
                                   />
                                 )}
-                                className="flex-1 rounded-md p-2 text-sm"
+                                className="flex-1 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* Pin Code */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700 w-20">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 text-sm font-medium text-gray-700 w-20">
                                 Pin Code:
                               </span>
                               <input
@@ -2504,14 +2523,14 @@ const AddCustomer = () => {
                                     pinCode: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* Phone */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 text-sm font-medium text-gray-700">
                                 Phone:
                               </span>
                               <input
@@ -2523,14 +2542,14 @@ const AddCustomer = () => {
                                     phoneNumber: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* Fax Number */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 text-sm font-medium text-gray-700">
                                 Fax Number:
                               </span>
                               <input
@@ -2542,21 +2561,21 @@ const AddCustomer = () => {
                                     faxNumber: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                         </div>
 
                         {/* Shipping Address */}
-                        <div className="col-span-1">
-                          <div className="flex items-center gap-4 mb-6">
+                        <div className="w-[400px] ml-40">
+                          <div className=" mb-6  w-[400px] flex justify-between">
                             <h2 className="text-2xl font-bold">
                               Shipping Address
                             </h2>
                             <div
                               onClick={copyBillingAddress}
-                              className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md"
+                              className="flex items-center cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md"
                             >
                               <span className="text-blue-600">
                                 Same as Billing Address
@@ -2566,7 +2585,7 @@ const AddCustomer = () => {
                           </div>
                           {/* Shipping Attention */}
                           {/* <div className="flex items-center gap-6">
-                            <span className="min-w-32 text-base font-medium text-gray-700">
+                            <span className="min-w-32 text-sm font-medium text-gray-700">
                               Attention:
                             </span>
                             <input
@@ -2578,13 +2597,13 @@ const AddCustomer = () => {
                                   shippingAttention: e.target.value,
                                 })
                               }
-                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                              className="w-full border border-gray-300 rounded-md p-1 text-sm"
                             />
                           </div> */}
                           {/* Shipping Country / Region */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center  ">
+                              <span className="min-w-32 mr-6 text-sm font-medium text-gray-700">
                                 Country / Region:
                               </span>
                               {/* <select
@@ -2595,7 +2614,7 @@ const AddCustomer = () => {
                                     shippingCountryRegion: e.target.value,
                                   })
                                 }
-                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
+                                className="flex-1 border border-gray-300 rounded-md p-1 text-sm"
                               >
                                 <option value="">Select Country/Region</option>
                                 <option value="US - United States">
@@ -2735,7 +2754,7 @@ const AddCustomer = () => {
                                     label="State"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "40px" },
+                                      style: { height: "32px" },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
@@ -2756,14 +2775,14 @@ const AddCustomer = () => {
                                     }}
                                   />
                                 )}
-                                className="flex-1 rounded-md p-2 text-sm"
+                                className="flex-1 rounded-md  text-sm"
                               />
                             </div>
                           </div>
                           {/* Shipping Address */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center  mt-3">
+                              <span className="min-w-32 mr-6 text-sm font-medium text-gray-700">
                                 Address:
                               </span>
                               <input
@@ -2776,11 +2795,11 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Street 1"
-                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-1 mt-2 text-sm"
                               />
                             </div>
-                            <div className="flex items-center gap-6 mt-4">
-                              <span className="min-w-32 text-base font-medium text-gray-700"></span>
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 text-sm font-medium text-gray-700"></span>
                               <input
                                 type="text"
                                 value={formData.shippingAddressStreet2}
@@ -2791,14 +2810,14 @@ const AddCustomer = () => {
                                   })
                                 }
                                 placeholder="Street 2"
-                                className="w-full border border-gray-300 rounded-md p-8 text-sm"
+                                className="w-full border border-gray-300 mt-1 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* Shippping City */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 text-sm font-medium text-gray-700">
                                 City:
                               </span>
                               <input
@@ -2810,14 +2829,14 @@ const AddCustomer = () => {
                                     shippingCity: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* Shipping State */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center  mt-3">
+                              <span className="min-w-32 mr-5 text-sm font-medium text-gray-700">
                                 State:
                               </span>
                               {/* <select
@@ -2828,7 +2847,7 @@ const AddCustomer = () => {
                                     shippingState: e.target.value,
                                   })
                                 }
-                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
+                                className="flex-1 border border-gray-300 rounded-md p-1 text-sm"
                               >
                                 <option value="">Select State</option>
                                 <option value="AP - Andhra Pradesh">
@@ -2947,7 +2966,7 @@ const AddCustomer = () => {
                                     label="State"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "40px" },
+                                      style: { height: "32px" },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
@@ -2968,14 +2987,14 @@ const AddCustomer = () => {
                                     }}
                                   />
                                 )}
-                                className="flex-1 rounded-md p-2 text-sm"
+                                className="flex-1 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* Shipping Pin Code */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 text-sm font-medium text-gray-700">
                                 Pin Code:
                               </span>
                               <input
@@ -2987,14 +3006,14 @@ const AddCustomer = () => {
                                     shippingPinCode: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* Shipping Phone */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 text-sm font-medium text-gray-700">
                                 Phone:
                               </span>
                               <input
@@ -3006,14 +3025,14 @@ const AddCustomer = () => {
                                     shippingPhoneNumber: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
                           {/* Shipping Fax Number */}
                           <div className="col-span-2">
-                            <div className="flex items-center gap-6 mt-6">
-                              <span className="min-w-32 text-base font-medium text-gray-700">
+                            <div className="flex items-center gap-6 mt-3">
+                              <span className="min-w-32 text-sm font-medium text-gray-700">
                                 Fax Number:
                               </span>
                               <input
@@ -3025,7 +3044,7 @@ const AddCustomer = () => {
                                     shippingFaxNumber: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
                           </div>
@@ -3038,7 +3057,7 @@ const AddCustomer = () => {
                         <div className="col-span-2">
                           <div className="overflow-x-auto">
                             <table className="min-w-full border border-gray-200">
-                              <thead className="bg-gray-50 sticky top-0">
+                              <thead className="bg-gray-50 sticky top-1">
                                 <tr>
                                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
                                     Salutation
@@ -3350,18 +3369,18 @@ const AddCustomer = () => {
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-end gap-4 mt-8">
+          <div className="flex justify-start gap-4 mt-3   ">
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
+              className="px-3 py-1.5 border border-gray-300 rounded-md text-sm text-gray-700"
             >
               Cancel
             </button>
             {((!id && canCreate) || (id && canUpdate)) && (
               <button
                 type="submit"
-                className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+                className="px-3 py-1.5 bg-orange-500 text-white rounded-md text-sm hover:bg-orange-600"
               >
                 Save
               </button>
@@ -3445,8 +3464,8 @@ export default AddCustomer;
 //   };
 
 //   return (
-//     <div className="min-h-screen bg-gray-100 p-8">
-//       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
+//     <div className="min-h-screen bg-gray-100 p-2">
+//       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-2">
 //         <h1 className="text-2xl font-bold mb-6">Add Customer</h1>
 //         <form onSubmit={handleSubmit}>
 //           {/* Contact Details Section */}
@@ -3465,7 +3484,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter contact name"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 
@@ -3482,7 +3501,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Auto fill"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //                 disabled
 //               />
 //             </div>
@@ -3500,7 +3519,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter company name"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 
@@ -3517,7 +3536,7 @@ export default AddCustomer;
 //                 }
 //                 type="email"
 //                 placeholder="Enter email"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 
@@ -3534,7 +3553,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter phone number"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 
@@ -3551,7 +3570,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter PAN number"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 
@@ -3567,7 +3586,7 @@ export default AddCustomer;
 //                   setFormData({ ...formData, placeOfSupply: e.target.value })
 //                 }
 //                 value={formData.placeOfSupply}
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //                 defaultValue=""
 //               >
 //                 <option value="">Select place of supply</option>
@@ -3592,7 +3611,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter state"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 //             <div>
@@ -3607,7 +3626,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter city"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 //             <div>
@@ -3622,7 +3641,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter area"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 //             <div>
@@ -3637,7 +3656,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter address"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 //           </div>
@@ -3656,7 +3675,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter bank name"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 //             <div>
@@ -3674,7 +3693,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter account number"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 //             <div>
@@ -3689,7 +3708,7 @@ export default AddCustomer;
 //                 }
 //                 type="text"
 //                 placeholder="Enter IFSC code"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 //           </div>
@@ -3706,7 +3725,7 @@ export default AddCustomer;
 //                   setFormData({ ...formData, salutation: e.target.value })
 //                 }
 //                 value={formData.salutation}
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //                 defaultValue=""
 //               >
 //                 <option value="">Select salutation</option>
@@ -3730,7 +3749,7 @@ export default AddCustomer;
 //                 value={formData.contactPersonName}
 //                 type="text"
 //                 placeholder="Enter name"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 //             <div>
@@ -3748,7 +3767,7 @@ export default AddCustomer;
 //                 value={formData.contactPersonEmail}
 //                 type="email"
 //                 placeholder="Enter email"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 //             <div>
@@ -3766,7 +3785,7 @@ export default AddCustomer;
 //                 value={formData.contactPersonPhoneNumber}
 //                 type="text"
 //                 placeholder="Enter phone number"
-//                 className="w-full border border-gray-300 rounded-md p-2"
+//                 className="w-full border border-gray-300 rounded-md p-1"
 //               />
 //             </div>
 //           </div>

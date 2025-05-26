@@ -19,6 +19,7 @@ import { SiConvertio } from "react-icons/si";
 import { Margin } from "@mui/icons-material";
 import { l } from "vite/dist/node/types.d-aGj9QkWt";
 import { Switch } from "@mui/material";
+import { FiEdit } from "react-icons/fi";
 
 function RfpList() {
   const navigate = useNavigate();
@@ -147,6 +148,9 @@ function RfpList() {
       toastError(error);
     }
   };
+  const [isOpenAction, setIsOpenAction] = useState(false);
+    const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
+  
 
   const columns = [
     {
@@ -196,8 +200,17 @@ function RfpList() {
     {
       name: "Services",
       selector: (row: any) => (
-        <div className="flex flex-wrap justify-around " >{row.serviceType.length > 0 && row.serviceType.map((item: any, index: number) => <div key={index}
-          className="bg-purple-100 text-purple-800 text-sm px-3 py-1 mb-1 rounded-full border border-purple-300 shadow-sm"> {item} </div>)}</div>
+        <div className="flex flex-wrap justify-around gap-1">
+          {row.serviceType.length > 0 &&
+            row.serviceType.map((item: any, index: number) => (
+              <div
+                key={index}
+                className="bg-sky-100 text-blue-800 text-xs px-2 py-1 rounded-full border border-sky-300 shadow-sm"
+              >
+                {item}
+              </div>
+            ))}
+        </div>
       ),
       width: "16%",
 
@@ -219,29 +232,52 @@ function RfpList() {
       width: "20%",
     },
     {
-      name: "Edit",
-      width: "7%",
+      name: "Actions",
+      width: "50px",
       selector: (row: any) => (
-        <Link
-          to={`/add-rfps/${row._id}`}
-          className=" text-black-400 text-lg flex items-center  hover:text-orange-500"
-          onClick={() => handleUpdate(row._id, row.data)}
-        >
-          <FaEye />
-        </Link>
-      ),
-    },
-    {
-      name: "Delete",
-      width: "7%",
-      selector: (row: any) => (
-        <Link
-          to="/rfps"
-          className=" text-black-400 text-lg"
-          onClick={() => handleDelete(row._id)}
-        >
-          <RiDeleteBin6Line className="hover:text-red-600" />
-        </Link>
+        <div className="">
+          <button
+            type="button"
+            title="More Actions"
+            onClick={(e) => {
+              setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true);
+              setSelectedRowId(row._id);
+            }}
+          >
+            <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 ">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="rgba(255,255,255,1)"
+              >
+                <path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path>
+              </svg>
+            </span>
+          </button>
+          {selectedRowId === row._id && isOpenAction && (
+            <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden border">
+              <Link
+                to={`/add-rfps/${row?._id}`}
+                className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                title="View RFP"
+              >
+                <FiEdit className="text-xs" />
+                Edit
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDelete(row._id)}
+                className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                title="Delete RFP"
+              >
+                <RiDeleteBin6Line className="text-xs" />
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
       ),
     },
     {
@@ -251,10 +287,10 @@ function RfpList() {
         <div className="flex items-center ">
           <Link
             to={`/add-sales-contact/${row?._id}`}
-            className="text-black-400 text-lg flex items-center"
+            className="text-black-400 text-sm flex items-center"
           ></Link>
           <button
-            className="  text-black-400 text-lg"
+            className="  text-black-400 text-sm"
             onClick={() => handleConvertRfptoQuotesFromVendor(row._id)}
           >
             <SiConvertio />
@@ -277,17 +313,20 @@ function RfpList() {
   // Column selector
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
-  const [visibleColumns, setVisibleColumns] = useState({
-    "RFPID": true,
-    "Event Date": true,
-    "Deadline for proposal": true,
-    "Services": true,
-    "Display Name": true,
-    "Status": true,
-    "Edit": canView || canUpdate || true,
-    "Delete": canDelete || true,
-    "Convert to Quotes from Vendor": true
-  });
+  const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>(
+    {
+      RFPID: true,
+      "Event Date": true,
+      "Deadline for proposal": true,
+      Services: true,
+      "Display Name": true,
+      Status: true,
+      Edit: canView || canUpdate || true,
+      Delete: canDelete || true,
+      Actions: true,
+      "Convert to Quotes from Vendor": true,
+    }
+  );
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumns');
     if (savedColumns) {
@@ -390,10 +429,11 @@ function RfpList() {
       "Deadline for proposal": true,
       Services: true,
       "Display Name": true,
-      "Status": true,
-      "Edit": canView || canUpdate || true,
-      "Delete": canDelete || true,
-      "Convert to Quotes from Vendor": true
+      Status: true,
+      Edit: canView || canUpdate,
+      Delete: canDelete,
+       Actions: true,
+      "Convert to Quotes from Vendor": true,
     });
   };
 
@@ -412,7 +452,7 @@ function RfpList() {
       /> */}
 
       <div className="container top-0 b sticky -mt-7  ">
-        <div className="bg-white table_container rounded-xl   px-3 py-1  ">
+        <div className="bg-white table_container rounded-xl   px-3 py-1.5  ">
           <div className="search_boxes flex justify-between items-center mb-3 mr-6">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
@@ -425,7 +465,7 @@ function RfpList() {
               <div className="w-full">
                 <input
                   type="search"
-                  className="rounded-md w-full border px-3 border-gray-300 py-1.5  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  className="rounded-md w-full border text-sm px-3 border-gray-300 py-1.5  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                   placeholder="Search by RFPID"
                   value={query}
                   onChange={handleSearchInput}
@@ -438,7 +478,7 @@ function RfpList() {
               </div>
               <div className="relative">
                 <button
-                  className="flex items-center gap-1 px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                  className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                   onClick={() => setShowColumnSelector(!showColumnSelector)}
                 >
                   <FaColumns /> Columns
@@ -449,12 +489,12 @@ function RfpList() {
               {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */}
-              <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+              <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
               <button
                 onClick={() => navigate("/add-rfps")}
-                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-400 border border-gray-300"
+                className="flex w-full items-center justify-center gap-1 px-3 py-1.5 text-sm text-white rounded-md bg-orange-400 border border-gray-300"
               >
                 <FaPlus />
                 <span>New RFPs</span>

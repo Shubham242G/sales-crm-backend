@@ -10,6 +10,7 @@ import {
 import { generatePassword } from "@/utils/passwordGenerator";
 import { useRoles } from "@/services/roles.service";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import FixedActionButtons from "@/_components/buttons/page";
 
 const AddNewUser = () => {
   const [formData, setFormData] = useState({
@@ -112,137 +113,87 @@ const AddNewUser = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-12">
-      <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-16">
-        <h1 className="text-2xl font-bold mb-10">Add New User</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Name*
-            </label>
-            <input
-              type="text"
-              value={formData.name}
-              required
-              name="name"
-              onChange={(e) => {
-                const upperCaseValue = e.target.value.toUpperCase();
-                setFormData(prev => ({
-                  ...prev,
-                  name: upperCaseValue
-                }));
-              }}
-              placeholder="Enter full name"
-              className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
-            />
-          </div>
+    <div className="w-[40%]  p-2 bg-white rounded-md-md text-sm">
+     
+        <h1 className="text-2xl font-semibold  mb-6">Add New User</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name */}
+        <div className="flex items-center space-x-4">
+          <label className="font-medium w-32">Name<span className="text-red-600">*</span></label>
+          <input
+            type="text"
+            value={formData.name}
+            required
+            name="name"
+            onChange={(e) => {
+              const upperCaseValue = e.target.value.toUpperCase();
+              setFormData(prev => ({ ...prev, name: upperCaseValue }));
+            }}
+            placeholder="Enter full name"
+            className="border rounded-md px-3 py-2 text-sm flex-1 w-1/2 placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+          />
+        </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address*
-              </label>
-              <input
-                type="email"
-                value={formData.email}
-                required
-                name="email"
-                onChange={(e) => {
-                  const lowerCaseValue = e.target.value.toLowerCase();
-                  setFormData(prev => ({
-                    ...prev,
-                    email: lowerCaseValue
-                  }));
-                }}
-                placeholder="Enter email address"
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
-              />
-            </div>
+        {/* Email */}
+        <div className="flex items-center space-x-4">
+          <label className="font-medium w-32">Email Address<span className="text-red-600">*</span></label>
+          <input
+            type="email"
+            value={formData.email}
+            required
+            name="email"
+            onChange={(e) => {
+              const lowerCaseValue = e.target.value.toLowerCase();
+              setFormData(prev => ({ ...prev, email: lowerCaseValue }));
+            }}
+            placeholder="Enter email address"
+            className="border rounded-md px-3 py-2 text-sm flex-1 w-1/2 placeholder-gray-400 hover:border-[#3b82f6] focus-within:ring-1 focus-within:ring-light-blue-500"
+          />
+        </div>
 
-            {/* <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                value={formData.password}
-                name="password"
-                onChange={handleInputChange}
-                placeholder="Enter password"
-                readOnly={!id}
-                className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
-              />
-              <div
-                className="absolute inset-y-0 right-4 flex items-center cursor-pointer mt-6"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <EyeOff size={0} /> : <Eye size={20} />}
-              </div>
-            </div> */}
+        {/* Phone */}
+        <div className="flex items-center space-x-4">
+          <label className="font-medium w-32">Phone Number</label>
+          <input
+            type="tel"
+            value={formData.phone}
+            name="phone"
+            onChange={(e) => {
+              const cleanedValue = e.target.value.replace(/\D/g, "");
+              if (cleanedValue.length <= 10) {
+                setFormData(prev => ({ ...prev, phone: cleanedValue }));
+              }
+            }}
+            placeholder="Enter phone number"
+            className="border rounded-md px-3 py-2 text-sm flex-1 w-1/2 placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+          />
+        </div>
 
-<div>
-  <label className="block text-sm font-medium text-gray-700 mb-2">
-    Phone Number
-  </label>
-  <input
-    type={"tel"}
-    value={formData.phone}
-    name="phone"
-    onChange={(e) => {
-      const cleanedValue = e.target.value.replace(/\D/g, "");
-      if (cleanedValue.length <= 10) {
-        setFormData(prev => ({
-          ...prev,
-          phone: cleanedValue
-        }));
-      }
-    }}
-    placeholder="Enter phone number"
-    className="w-full border border-gray-300 rounded-md p-4 placeholder-gray-400"
-  />
-</div>
+        {/* Role */}
+        <div className="flex items-center space-x-4">
+          <label className="font-medium w-32">Role</label>
+          <select
+            name="role"
+            onChange={handleInputChange}
+            value={formData.role}
+            className="border rounded-md px-3 py-2 text-sm flex-1 w-1/2 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+          >
+            <option value="" disabled hidden>Select a Role</option>
+            {roleOptions.map((option:any) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </select>
+        </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Role
-              </label>
-              <select
-                name="role"
-                onChange={handleInputChange}
-                value={formData.role}
-                className="border border-gray-300 rounded-md p-4 w-full"
-              >
-                <option value="" disabled hidden>
-                  Select a Role
-                </option>
-                {roleOptions.map((option: any) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+        {/* Buttons */}
+     <FixedActionButtons
+  onSave={() => handleSubmit(new Event("submit") as unknown as React.FormEvent)}
+  onCancel={() => navigate("/users")}
+  showSave={Boolean((!id && canCreate) || (id && canUpdate))}
+/>
 
-          <div className="flex justify-end gap-8">
-            <button
-              type="button"
-              className="px-6 py-3 border border-gray-300 rounded-md text-gray-700"
-              onClick={() => navigate("/users")}
-            >
-              Cancel
-            </button>
-            {((!id && canCreate) || (id && canUpdate)) && (
-              <button
-                type="submit"
-                className="px-6 py-3 bg-orange-500 text-white rounded-md"
-              >
-                Save
-              </button>
-            )}
-          </div>
         </form>
-      </div>
+      
     </div>
   );
 };

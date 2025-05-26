@@ -381,8 +381,8 @@ function TaskManagement() {
 
   return (
     <>
-      <div className="container px-6">
-        <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
+      <div className="container ">
+        <div className="bg-white table_container rounded-xl mr-4 -mt-5">
           <div className="search_boxes flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-800">
               Task Management List
@@ -425,8 +425,8 @@ function TaskManagement() {
               )}
             </div>
           </div>
-
-          <ReactTable
+          <div className="-ml-5 -mr-3">
+            <ReactTable
             data={TaskManagementData.data}
             columns={filteredColumns}
             loading={false}
@@ -437,6 +437,10 @@ function TaskManagement() {
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
           />
+
+          </div>
+
+          
         </div>
       </div>
     </>

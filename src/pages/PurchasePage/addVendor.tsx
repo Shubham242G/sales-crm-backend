@@ -30,13 +30,14 @@ import {
 import { checkPermissionsForButtons } from "@/utils/permission";
 import moment from "moment";
 import { clippingParents } from "@popperjs/core";
+import FixedActionButtons from "@/_components/buttons/page";
 
 interface IVendor {
   salutation: string;
   firstName: string;
   lastName: string;
   email: string;
-  leadId: string;
+
   companyName: string;
   contactName: string;
   contactOwner: string;
@@ -82,6 +83,7 @@ interface IBanquet {
   banquetVegPrice: string;
   banquetNonVegPrice: string;
   banquetFloor: string;
+  banquetLocation: string;
   banquetLocation: string;
   prefuntionAreaSize: string;
 }
@@ -203,7 +205,7 @@ const AddVendorForm = () => {
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
-  const [leadId, setLeadId] = useState("");
+
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Vendors");
@@ -231,7 +233,7 @@ const AddVendorForm = () => {
     lastName: "",
     contactName: "",
     contactOwner: "",
-    leadId: "",
+  
     panNumber: "",
     gst: "",
     vendorType: [],
@@ -1373,17 +1375,17 @@ const AddVendorForm = () => {
 
 
     <>
-      <div className="min-h-screen m-[60px] bg-white">
+      <div className="min-h-screen -mt-4 bg-white">
 
         <form onSubmit={handleSubmit}>
           <h1 className="text-2xl font-bold mb-6">Add Vendor</h1>
 
-          <div className=" mx-auto">
+          <div className=" -mt-6 -ml-2">
             <div className="mb-8">
               <div className="items-start ">
-                <div className=" space-y-6 rounded-lg ">
+                <div className=" space-y-6 rounded-lg  ">
                   {/* Primary Contact Section */}
-                  <div className="bg-[#FAFAFA] border-[#D1D1D1] rounded-lg border grid lg:grid-cols-3  md:gap-[20px] md:grid-cols-1  p-[20px]">
+                  <div className=" border-[#D1D1D1] -ml-2 grid lg:grid-cols-3   md:gap-[20px] md:grid-cols-1  p-[20px]">
                     <div className="flex flex-wrap h-[75px] ">
                       <div className="flex flex-col gap-[8px] lg:items-start sm:items-center ">
                         <div >
@@ -1400,7 +1402,7 @@ const AddVendorForm = () => {
                                   onChange={(e) =>
                                     setVendor({ ...vendor, salutation: e.target.value })
                                   }
-                                  className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
+                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
                                 >
                                   <option value="">Salutation</option>
                                   <option value="Mr.">Mr.</option>
@@ -1418,7 +1420,7 @@ const AddVendorForm = () => {
                                     setVendor({ ...vendor, firstName: e.target.value })
                                   }
                                   placeholder="First Name"
-                                  className="w-full border border-gray-300 bg-gray-50 rounded-md p-2 text-sm"
+                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
                                 />
                               </div>
                               <div className="flex-1 max-w-[200px]">
@@ -1429,7 +1431,7 @@ const AddVendorForm = () => {
                                     setVendor({ ...vendor, lastName: e.target.value })
                                   }
                                   placeholder="Last Name"
-                                  className="w-full border border-gray-300 bg-gray-50 rounded-md p-2 text-sm"
+                                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
                                 />
                               </div>
                             </div>
@@ -1450,7 +1452,7 @@ const AddVendorForm = () => {
                             setVendor({ ...vendor, companyName: e.target.value })
                           }
                           placeholder="Enter company name"
-                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
+                          className="w-full border border-gray-300 rounded-md p-2 text-sm"
                         />
                       </div>
                     </div>
@@ -1467,7 +1469,7 @@ const AddVendorForm = () => {
                             setVendor({ ...vendor, contactName: e.target.value })
                           }
                           placeholder="Enter contact name"
-                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-2 text-sm"
+                          className="w-full border border-gray-300 rounded-md p-2 text-sm"
                         />
                       </div>
                     </div>
@@ -1484,7 +1486,7 @@ const AddVendorForm = () => {
                             setVendor({ ...vendor, contactOwner: e.target.value })
                           }
                           placeholder="Enter contact owner"
-                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-2 text-sm"
+                          className="w-full border border-gray-300 rounded-md p-2 text-sm"
                         />
                       </div>
                     </div>
@@ -1501,7 +1503,7 @@ const AddVendorForm = () => {
                           setVendor({ ...vendor, displayName: e.target.value })
                         }
                         type="text"
-                        className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
+                        className="w-full border border-gray-300 rounded-md p-2"
                         placeholder="Enter display name"
                       />
                     </div>
@@ -1522,7 +1524,7 @@ const AddVendorForm = () => {
                           onBlur={(e) => validateEmail(e.target.value)}
                           placeholder="Enter email address"
                           className={`w-full border ${!isEmailValid ? "border-red-500" : "border-gray-300"
-                            } bg-gray-50 rounded-md p-2 text-sm pl-10`}
+                            } rounded-md p-2 text-sm pl-10`}
                         />
                         <div className="absolute top-[9px] left-[6px] ">
 
@@ -1544,7 +1546,7 @@ const AddVendorForm = () => {
 
                     {/* Phone Numbers */}
                     <div className="flex flex-col gap-[8px] lg:items-start md:items-center">
-                      <h1 className="text-[14px] font-medium text-black font-newbold">
+                      <h1 className="text-[14px] font-medium text-black ">
                         Phone Number
                       </h1>
                       <div className="flex-1 flex gap-4">
@@ -1559,7 +1561,7 @@ const AddVendorForm = () => {
                               })
                             }
                             placeholder="Work Phone"
-                            className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm pl-10"
+                            className="w-full border border-gray-300 rounded-md p-2 text-sm pl-10"
                           />
                           <svg
                             className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
@@ -1584,7 +1586,7 @@ const AddVendorForm = () => {
                               })
                             }
                             placeholder="Mobile"
-                            className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm pl-10"
+                            className="w-full border border-gray-300 rounded-md p-2 text-sm pl-10"
                           />
                           <svg
                             className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
@@ -1615,7 +1617,7 @@ const AddVendorForm = () => {
                             setVendor({ ...vendor, panNumber: e.target.value })
                           }
                           placeholder="Enter PAN number"
-                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
+                          className="w-full border border-gray-300 rounded-md p-2 text-sm"
                         />
                       </div>
                     </div>
@@ -1632,7 +1634,7 @@ const AddVendorForm = () => {
                             setVendor({ ...vendor, gst: e.target.value })
                           }
                           placeholder="Enter GST number"
-                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
+                          className="w-full border border-gray-300 rounded-md p-2 text-sm"
                         />
                       </div>
                     </div>
@@ -1642,34 +1644,23 @@ const AddVendorForm = () => {
                         Vendor Type:
                       </span>
                       <div className="w-full ">
-                        <Select
-                          isMulti
-                          options={[
-                            { value: "Hotel", label: "Hotel" },
-                            { value: "Banquet", label: "Banquet" },
-                            { value: "Event Companies", label: "Event Companies" },
-                            {
-                              value: "Transport Service",
-                              label: "Transport Service",
-                            },
-                            { value: "Gifting", label: "Gifting" },
-                          ]}
-                          value={vendor.vendorType.map((type) => ({
-                            value: type,
-                            label: type,
-                          }))}
-                          onChange={(selectedOptions) => {
-                            const newVendorTypes = selectedOptions
-                              ? selectedOptions.map((option) => option.value)
-                              : [];
+                        <select
+                          value={vendor.vendorType.join(", ")}
+                          onChange={(e) => {
+                            const newVendorTypes = e.target.value
+                              .split(", ")
+                              .filter((type) => type);
                             setVendor({ ...vendor, vendorType: newVendorTypes });
                           }}
-                          className=" bg-gray-50 basic-multi-select"
-                          classNamePrefix="select"
-                          placeholder="Select vendor types"
-                          // styles={customStyles}
-                          styles={customReactStylesSmall}
-                        />
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        >
+                          <option value="">Select vendor types</option>
+                          <option value="Hotel">Hotel</option>
+                          <option value="Banquet">Banquet</option>
+                          <option value="Event Companies">Event Companies</option>
+                          <option value="Transport Service">Transport Service</option>
+                          <option value="Gifting">Gifting</option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -1691,7 +1682,7 @@ const AddVendorForm = () => {
                                     state: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
+                                className="w-full border border-gray-300 rounded-md p-2"
                                 placeholder="Enter state"
                               />
                             </div>
@@ -1705,7 +1696,7 @@ const AddVendorForm = () => {
                                 onChange={(e) =>
                                   setLocation({ ...location, city: e.target.value })
                                 }
-                                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                                className="w-full border border-gray-300 rounded-md p-2"
                                 placeholder="Enter city"
                               />
                             </div>
@@ -1719,7 +1710,7 @@ const AddVendorForm = () => {
                                 onChange={(e) =>
                                   setLocation({ ...location, area: e.target.value })
                                 }
-                                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                                className="w-full border border-gray-300 rounded-md p-2"
                                 placeholder="Enter area"
                               />
                             </div>
@@ -1736,7 +1727,7 @@ const AddVendorForm = () => {
                                     address: e.target.value,
                                   })
                                 }
-                                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                                className="w-full border border-gray-300 rounded-md p-2"
                                 placeholder="Enter address"
                               />
                             </div>
@@ -1747,7 +1738,7 @@ const AddVendorForm = () => {
                           <h2 className="font-bold text-lg mb-4">Category</h2>
                           <div className="w-full">
                             <select
-                              className="w-full border bg-gray-50 font-satoshiMedium border-gray-300 rounded-md p-2 text-sm"
+                              className="w-full border font-satoshiMedium border-gray-300 rounded-md p-2 text-sm"
                               value={category.categoryType}
                               onChange={(e) =>
                                 setCategory({
@@ -1768,7 +1759,7 @@ const AddVendorForm = () => {
 
                         {/* {isRoomDetailsVisible && ( */}
                         {!isRoomDetailsVisible && (
-                          <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
+                          <div className="border rounded-lg mt-8 p-6 shadow">
                             <div className="flex justify-between items-center mb-6">
                               <h2 className="text-xl font-bold">Room Details </h2>
                               {/* <div>
@@ -1787,12 +1778,13 @@ const AddVendorForm = () => {
                             {/* new room details   */}
 
 
-                            <div className=" bg-gray-50 rounded-lg mt-8 p-6 ">
+                            <div className=" rounded-lg mt-8 p-6 ">
 
                               {!isRoomDetailsVisible && (
                                 <>
                                   {/* Number of Rooms Dropdown */}
-                                  <div className="mb-6">
+                                  <div className="-ml-6">
+                                  <div className="mb-6 ">
                                     <label className="block text-sm font-medium text-black mb-2">
                                       Number Of Rooms
                                     </label>
@@ -1818,7 +1810,7 @@ const AddVendorForm = () => {
                                           setRooms(rooms.slice(0, count));
                                         }
                                       }}
-                                      className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                      className="border border-gray-300 p-2 rounded-md w-full"
                                     >
                                       {[1, 2, 3, 4, 5].map((num) => (
                                         <option key={num} value={num}>{num}</option>
@@ -1829,7 +1821,7 @@ const AddVendorForm = () => {
                                   {rooms.map((room, index) => (
                                     <div
                                       key={index}
-                                      className="mb-8 bg-gray-50 pb-6 border-b border-gray-200"
+                                      className="mb-8 pb-6 border-b border-gray-200"
                                     >
                                       <div className="flex justify-between items-center mb-4">
                                         <h3 className="font-medium text-lg">{index + 1}. Room</h3>
@@ -1849,7 +1841,7 @@ const AddVendorForm = () => {
 
                                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {/* Left column - Room details */}
-                                        <div>
+                                        <div >
                                           <div className="grid grid-cols-2 gap-4 mb-4">
                                             <div>
                                               <label className="block text-sm font-medium text-black mb-2">
@@ -1862,7 +1854,7 @@ const AddVendorForm = () => {
                                                   newRooms[index].roomCategory = e.target.value;
                                                   setRooms(newRooms);
                                                 }}
-                                                className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                                className="border border-gray-300 p-2 rounded-md w-full"
                                               >
                                                 <option value="">Select Category</option>
                                                 {categoryOptions.map((option) => (
@@ -1888,7 +1880,7 @@ const AddVendorForm = () => {
                                                     parseInt(e.target.value) || 0;
                                                   setRooms(newRooms);
                                                 }}
-                                                className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                                className="border border-gray-300 p-2 rounded-md w-full"
                                               />
                                             </div>
                                           </div>
@@ -1907,7 +1899,7 @@ const AddVendorForm = () => {
                                                 newRooms[index].roomSize = e.target.value;
                                                 setRooms(newRooms);
                                               }}
-                                              className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                              className="border border-gray-300 p-2 rounded-md w-full"
                                             />
                                           </div>
 
@@ -1930,7 +1922,7 @@ const AddVendorForm = () => {
                                                         e.target.value;
                                                       setRooms(newRooms);
                                                     }}
-                                                    className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                                    className="border border-gray-300 p-2 rounded-md w-full"
                                                   >
                                                     <option value="">Select Room Type</option>
                                                     {roomCategoryOptions.map((option) => (
@@ -1953,7 +1945,7 @@ const AddVendorForm = () => {
                                                         e.target.value;
                                                       setRooms(newRooms);
                                                     }}
-                                                    className="border border-gray-300 bg-gray-50 p-2 rounded-l-md w-full"
+                                                    className="border border-gray-300 p-2 rounded-l-md w-full"
                                                   />
                                                   <span className="inline-flex items-center border border-l-0 border-gray-300 bg-gray-100 px-3 rounded-r-md text-sm text-gray-500">
                                                     per night
@@ -1986,7 +1978,7 @@ const AddVendorForm = () => {
                                         </div>
 
                                         {/* Right column - Image upload */}
-                                        <div>
+                                        <div >
                                           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 h-full">
                                             <label className="block text-sm font-medium text-black mb-4">
                                               Upload image
@@ -2018,7 +2010,7 @@ const AddVendorForm = () => {
                                                 onChange={(e) =>
                                                   ImageUpload(e, index, rooms, setRooms, "roomImageUpload")
                                                 }
-                                                className="hidden bg-gray-50"
+                                                className="hidden"
                                                 id={`room-image-upload-${index}`}
                                               />
                                               <label
@@ -2095,9 +2087,11 @@ const AddVendorForm = () => {
                                       Add Room
                                     </button>
                                   </div>
+                                  </div>
                                 </>
                               )}
                             </div>
+                            
 
                             {/* Number of Rooms Dropdown */}
 
@@ -2345,21 +2339,21 @@ const AddVendorForm = () => {
                         </div>
                       </div>
                     )} */}
-
-                    <div>
-                      <label className="inline-flex items-center">
+                    <div className="-mt-6">
+                      <label className="inline-flex items-center ">
                         <input
                           type="checkbox"
                           checked={isBanquetDetailsVisible}
                           onChange={() => setIsBanquetDetailsVisible(!isBanquetDetailsVisible)}
-                          className="form-checkbox"
+                          className="form-checkbox -ml-10 "
                         />
-                        <span className="ml-2 text-sm">Do you have Banquet</span>
+                        <span className=" text-sm -ml-10 w-[270px]">Do you have Banquet</span>
                       </label>
                     </div>
 
+
                     {isBanquetDetailsVisible && (
-                      <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
+                      <div className="border rounded-lg mt-8 p-6 shadow">
                         <div className="flex justify-between items-center mb-6">
                           <h2 className="text-xl font-bold">Banquet Details</h2>
                         </div>
@@ -2394,7 +2388,7 @@ const AddVendorForm = () => {
                                 setBanquets(banquets.slice(0, count));
                               }
                             }}
-                            className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                            className="border border-gray-300 p-2 rounded-md w-full"
                           >
                             {[1, 2, 3, 4, 5].map(num => (
                               <option key={num} value={num}>{num}</option>
@@ -2403,7 +2397,7 @@ const AddVendorForm = () => {
                         </div>
 
                         {banquets.map((banquet, index) => (
-                          <div key={index} className="mb-8 bg-gray-50 pb-6 border-b border-gray-200">
+                          <div key={index} className="mb-8 pb-6 border-b border-gray-200">
                             <div className="flex justify-between items-center mb-4">
                               <h3 className="font-medium text-lg">{index + 1}. Banquet</h3>
                               {index > 0 && (
@@ -2435,7 +2429,7 @@ const AddVendorForm = () => {
                                         newBanquet[index].banquetCategory = e.target.value;
                                         setBanquets(newBanquet);
                                       }}
-                                      className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                      className="border border-gray-300 p-2 rounded-md w-full"
                                     >
                                       <option value="">Select category (Head)</option>
                                       {categoryOptions.map((option) => (
@@ -2461,7 +2455,7 @@ const AddVendorForm = () => {
                                       newBanquet[index].banquetName = e.target.value;
                                       setBanquets(newBanquet);
                                     }}
-                                    className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                    className="border border-gray-300 p-2 rounded-md w-full"
                                   />
                                 </div>
 
@@ -2480,7 +2474,7 @@ const AddVendorForm = () => {
                                         newBanquet[index].banquetSize = e.target.value;
                                         setBanquets(newBanquet);
                                       }}
-                                      className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                      className="border border-gray-300 p-2 rounded-md w-full"
                                     />
                                   </div>
 
@@ -2497,7 +2491,7 @@ const AddVendorForm = () => {
                                         newBanquet[index].banquetSetup = e.target.value;
                                         setBanquets(newBanquet);
                                       }}
-                                      className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                      className="border border-gray-300 p-2 rounded-md w-full"
                                     />
                                   </div>
                                 </div>
@@ -2518,7 +2512,7 @@ const AddVendorForm = () => {
                                           newBanquet[index].banquetVegPrice = e.target.value;
                                           setBanquets(newBanquet);
                                         }}
-                                        className="border border-gray-300 bg-gray-50 p-2 rounded-l-md w-full"
+                                        className="border border-gray-300 p-2 rounded-l-md w-full"
                                       />
                                       <span className="inline-flex items-center border border-l-0 border-gray-300 bg-gray-100 px-3 rounded-r-md text-sm text-gray-500">
                                         per plate
@@ -2541,7 +2535,7 @@ const AddVendorForm = () => {
                                           newBanquet[index].banquetNonVegPrice = e.target.value;
                                           setBanquets(newBanquet);
                                         }}
-                                        className="border border-gray-300 bg-gray-50 p-2 rounded-l-md w-full"
+                                        className="border border-gray-300 p-2 rounded-l-md w-full"
                                       />
                                       <span className="inline-flex items-center border border-l-0 border-gray-300 bg-gray-100 px-3 rounded-r-md text-sm text-gray-500">
                                         per plate
@@ -2562,7 +2556,7 @@ const AddVendorForm = () => {
                                       newBanquet[index].banquetLocation = e.target.value;
                                       setBanquets(newBanquet);
                                     }}
-                                    className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                    className="border border-gray-300 p-2 rounded-md w-full"
                                   />
                                 </div>
 
@@ -2577,7 +2571,7 @@ const AddVendorForm = () => {
                                       newBanquet[index].banquetFloor = e.target.value;
                                       setBanquets(newBanquet);
                                     }}
-                                    className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                    className="border border-gray-300 p-2 rounded-md w-full"
                                   >
                                     <option value="">Select floor</option>
                                     {floorOptions.map((option) => (
@@ -2588,15 +2582,15 @@ const AddVendorForm = () => {
                                   </select>
                                 </div>
 
-                                <div className="mt-6">
+                                <div className="mt-6 ">
                                   <label className="inline-flex items-center">
                                     <input
                                       type="checkbox"
                                       checked={isPrefunctionAreaVisible}
                                       onChange={() => setIsPrefunctionAreaVisible(!isPrefunctionAreaVisible)}
-                                      className="form-checkbox"
+                                      className="form-checkbox -ml-[5.5rem]"
                                     />
-                                    <span className="ml-2 text-sm">Do you have PFA (prefunction area)</span>
+                                    <span className="w-[500px] -ml-[94px] text-sm">Do you have PFA (prefunction area)</span>
                                   </label>
 
                                   {isPrefunctionAreaVisible && (
@@ -2614,7 +2608,7 @@ const AddVendorForm = () => {
                                           newBanquet[index].prefuntionAreaSize = e.target.value;
                                           setBanquets(newBanquet);
                                         }}
-                                        className="border border-gray-300 bg-gray-50 p-2 rounded-md w-full"
+                                        className="border border-gray-300 p-2 rounded-md w-full"
                                       />
                                     </div>
                                   )}
@@ -2639,7 +2633,7 @@ const AddVendorForm = () => {
                                       accept=".xls,.jpg,.png"
                                       multiple
                                       onChange={(e) => ImageUpload(e, index, banquets, setBanquets, "banquetImageUpload")}
-                                      className="hidden bg-gray-50"
+                                      className="hidden"
                                       id={`banquet-image-upload-${index}`}
                                     />
                                     <label
@@ -2696,7 +2690,7 @@ const AddVendorForm = () => {
                       <div>
                         {/* Services Section */}
                         <div className="mb-4 mt-8">
-                          <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
+                          <div className="border rounded-lg mt-8 p-6 shadow">
                             <div className="flex justify-between items-center mb-4">
                               <h2 className="text-lg font-bold">Event Services</h2>
                               <button
@@ -2730,7 +2724,7 @@ const AddVendorForm = () => {
                                       newServices[index].services = e.target.value;
                                       setEventServices(newServices);
                                     }}
-                                    className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
+                                    className="w-full border border-gray-300 rounded-md p-2 text-sm"
                                   >
                                     <option value="">Select Service</option>
                                     <option value="catering">Catering</option>
@@ -2758,7 +2752,7 @@ const AddVendorForm = () => {
                                       newServices[index].rate = e.target.value;
                                       setEventServices(newServices);
                                     }}
-                                    className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
+                                    className="w-full border border-gray-300 rounded-md p-2 text-sm"
                                   />
                                 </div>
 
@@ -2784,7 +2778,7 @@ const AddVendorForm = () => {
 
                         {/* Location Section */}
                         <div className="mb-4 mt-8">
-                          <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
+                          <div className="border rounded-lg mt-8 p-6 shadow">
                             <h2 className="text-lg font-bold mb-4">Location</h2>
                             <div className="grid grid-cols-2 gap-6">
                               <div>
@@ -2800,7 +2794,7 @@ const AddVendorForm = () => {
                                       state: e.target.value,
                                     })
                                   }
-                                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                                  className="w-full border border-gray-300 rounded-md p-2"
                                   placeholder="Enter state"
                                 />
                               </div>
@@ -2817,7 +2811,7 @@ const AddVendorForm = () => {
                                       city: e.target.value,
                                     })
                                   }
-                                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                                  className="w-full border border-gray-300 rounded-md p-2"
                                   placeholder="Enter city"
                                 />
                               </div>
@@ -2834,7 +2828,7 @@ const AddVendorForm = () => {
                                       area: e.target.value,
                                     })
                                   }
-                                  className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                                  className="w-full border border-gray-300 rounded-md p-2"
                                   placeholder="Enter area"
                                 />
                               </div>
@@ -2876,7 +2870,7 @@ const AddVendorForm = () => {
 
                     {vendor.vendorType.includes("Transport Service") && (
                       <div className="mb-4 mt-8">
-                        <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
+                        <div className="border rounded-lg mt-8 p-6 shadow">
                           <h2 className="text-lg font-bold mb-4">
                             Location Details
                           </h2>
@@ -2894,7 +2888,7 @@ const AddVendorForm = () => {
                                     state: e.target.value,
                                   })
                                 }
-                                className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
                               >
                                 <option value="">Select State</option>
                                 {stateOptions.map((option) => (
@@ -2918,7 +2912,7 @@ const AddVendorForm = () => {
                                     city: e.target.value,
                                   })
                                 }
-                                className="w-full border border-gray-300 bg-gray-50 rounded-md p-2 text-sm"
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
                               >
                                 <option value="">Select City</option>
                                 <option value="mumbai">Mumbai</option>
@@ -2991,7 +2985,7 @@ const AddVendorForm = () => {
                                     serviceAreas: newServiceAreas,
                                   });
                                 }}
-                                className=" basic-multi-select bg-gray-50"
+                                className=" basic-multi-select"
                                 classNamePrefix="select"
                                 placeholder="Select service areas"
                                 styles={customReactStylesSmall}
@@ -3005,7 +2999,7 @@ const AddVendorForm = () => {
                   {/* Car Details Block */}
                   {(transportLocation.travelLocal ||
                     transportLocation.travelOutStation) && (
-                      <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
+                      <div className="border rounded-lg mt-8 p-6 shadow">
                         <div className="mt-6">
                           <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-bold">Car Details</h2>
@@ -3213,7 +3207,7 @@ const AddVendorForm = () => {
                   {/* bANK dETAILS */}
 
 
-                  <div className="border rounded-lg mt-8 p-6 shadow bg-gray-50">
+                  <div className="border rounded-lg mt-8 p-6 -ml-4shadow">
                     <h2 className="text-lg font-semibold mb-4">Bank Details</h2>
 
                     <div className="grid grid-cols-3 gap-6">
@@ -3232,7 +3226,7 @@ const AddVendorForm = () => {
                             })
                           }
                           placeholder="Bank Name"
-                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                          className="w-full border border-gray-300 rounded-md p-2"
                         />
                       </div>
 
@@ -3243,6 +3237,7 @@ const AddVendorForm = () => {
                         <input
                           type="number"
                           name="bankAccountNumber"
+                          min={0}
                           value={bankDetails.bankAccountNumber}
                           onChange={(e) =>
                             setBankDetails({
@@ -3251,7 +3246,7 @@ const AddVendorForm = () => {
                             })
                           }
                           placeholder="Bank Account Number"
-                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                          className="w-full border border-gray-300 rounded-md p-2"
                         />
                       </div>
 
@@ -3270,7 +3265,7 @@ const AddVendorForm = () => {
                             })
                           }
                           placeholder="IFSC Code"
-                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                          className="w-full border border-gray-300 rounded-md p-2"
                         />
                       </div>
 
@@ -3289,7 +3284,7 @@ const AddVendorForm = () => {
                             })
                           }
                           placeholder="Point of Contact"
-                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                          className="w-full border border-gray-300 rounded-md p-2"
                         />
                       </div>
 
@@ -3308,7 +3303,7 @@ const AddVendorForm = () => {
                             })
                           }
                           placeholder="Email"
-                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                          className="w-full border border-gray-300 rounded-md p-2"
                         />
                       </div>
 
@@ -3317,7 +3312,7 @@ const AddVendorForm = () => {
                           Phone Number
                         </label>
                         <input
-                          type="text"
+                          type="Number"
                           name="phoneNumber"
                           value={bankDetails.phoneNumber}
                           onChange={(e) =>
@@ -3327,7 +3322,7 @@ const AddVendorForm = () => {
                             })
                           }
                           placeholder="Phone Number"
-                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                          className="w-full border border-gray-300 rounded-md p-2"
                         />
                       </div>
 
@@ -3346,7 +3341,7 @@ const AddVendorForm = () => {
                             })
                           }
                           placeholder="Billing Address"
-                          className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                          className="w-full border border-gray-300 rounded-md p-2"
                         />
                       </div>
                     </div>
@@ -3355,8 +3350,8 @@ const AddVendorForm = () => {
 
                   {/* Tab Menu */}
                   <div className="mt-8 p-3">
-                    <div className="border border-gray-400 bg-gray-50 ">
-                      <nav className="flex space-x-8 mt-5 ml-2  ">
+                    <div className=" ">
+                      <nav className="flex space-x-8 mt-5  ">
                         {["Other Details", "Address", "Contact Persons"].map(
                           (tab) => (
                             <button
@@ -3376,18 +3371,16 @@ const AddVendorForm = () => {
                     </div>
 
                     {/* Tab Content */}
-                    <div className="p-6 bg-gray-50 border border-gray-300">
+                    <div className="p-6 -ml-6 ">
                       {activeTab === "Other Details" && (
                         <div className="grid grid-cols-4 gap-6">
                           {/* GST Treatment */}
-                          <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="text-base font-medium text-gray-700 mt-2">
+                          <div className="col-span-1">
+                            <div className="flex flex-col gap-2">
+                              <span className="text-sm font-medium text-gray-700">
                                 GST Treatment:
                               </span>
-                              <div className="w-full mt-2 ml-8">
-                                {" "}
-                                {/* Adjusting width for consistency */}
+                              <div className="w-full">
                                 <select
                                   value={otherDetails.gstTreatment}
                                   onChange={(e) =>
@@ -3422,14 +3415,12 @@ const AddVendorForm = () => {
                           </div>
 
                           {/* GSTIN */}
-                          <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="text-base font-medium text-gray-700">
+                          <div className="col-span-1">
+                            <div className="flex flex-col gap-2">
+                              <span className="text-sm font-medium text-gray-700">
                                 GSTIN:
                               </span>
-                              <div className="w-full ml-20">
-                                {" "}
-                                {/* Set width for consistency */}
+                              <div className="w-full">
                                 <input
                                   type="text"
                                   value={otherDetails.gstin}
@@ -3446,12 +3437,12 @@ const AddVendorForm = () => {
                           </div>
 
                           {/* Place of Supply */}
-                          <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="text-base font-medium text-gray-700">
+                          <div className="col-span-1">
+                            <div className="flex flex-col gap-2">
+                              <span className="text-sm font-medium text-gray-700">
                                 Place of Supply:
                               </span>
-                              <div className="w-full ml-4">
+                              <div className="w-full">
                                 <select
                                   value={otherDetails.sourceOfSupply}
                                   onChange={(e) =>
@@ -3483,14 +3474,12 @@ const AddVendorForm = () => {
                           </div>
 
                           {/* PAN Number */}
-                          <div className="col-span-2">
-                            <div className="flex items-center gap-6">
-                              <span className="text-base font-medium text-gray-700">
+                          <div className="col-span-1">
+                            <div className="flex flex-col gap-2">
+                              <span className="text-sm font-medium text-gray-700">
                                 PAN:
                               </span>
-                              <div className="w-full ml-24">
-                                {" "}
-                                {/* Same width as the "Place of Supply" field */}
+                              <div className="w-full">
                                 <input
                                   type="text"
                                   value={otherDetails.pan}
@@ -3505,794 +3494,430 @@ const AddVendorForm = () => {
                               </div>
                             </div>
                           </div>
-
-                          {/*Msme registered*/}
-                          <div className="flex items-center gap-6 mt-4">
-                            <span className="text-base font-medium text-gray-700 mt-2">
-                              MSME Registered?:
-                            </span>
-                            <div className="flex gap-6 mt-2">
-                              <label className="flex items-center space-x-2">
-                                <input
-                                  type="checkbox"
-                                  checked={otherDetails.msmeRegistered}
-                                  onChange={(e) =>
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      msmeRegistered: e.target.checked,
-                                    })
-                                  }
-                                  className="form-checkbox h-4 w-4 text-blue-600"
-                                />
-                                <span className="text-gray-700">
-                                  Allow portal access for this Customer
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                          {/* Currency */}
-                          {/* <div className="col-span-2">
-                          <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
-                              Currency:
-                            </span>
-                            <div className="w-full ml-16">
-                              {" "}
-                               Set width for consistency 
-                              <select
-                                value={otherDetails.currency}
-                                onChange={(e) =>
-                                  setOtherDetails({
-                                    ...otherDetails,
-                                    currency: e.target.value,
-                                  })
-                                }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                              >
-                                <option value="">Select Currency</option>
-                                <option value="INR - Indian Rupee">
-                                  INR - Indian Rupee
-                                </option>
-                                <option value="USD - United States Dollar">
-                                  USD - United States Dollar
-                                </option>
-                                <option value="EUR - Euro">EUR - Euro</option>
-                                <option value="JPY - Japanese Yen">
-                                  JPY - Japanese Yen
-                                </option>
-                                <option value="GBP - British Pound Sterling">
-                                  GBP - British Pound Sterling
-                                </option>
-                                <option value="AUD - Australian Dollar">
-                                  AUD - Australian Dollar
-                                </option>
-                                <option value="CAD - Canadian Dollar">
-                                  CAD - Canadian Dollar
-                                </option>
-                                <option value="CHF - Swiss Franc">
-                                  CHF - Swiss Franc
-                                </option>
-                                <option value="CNY - Chinese Yuan">
-                                  CNY - Chinese Yuan
-                                </option>
-                                <option value="HKD - Hong Kong Dollar">
-                                  HKD - Hong Kong Dollar
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-                        </div> */}
-
-                          {/* Opening Balance */}
-                          {/* <div className="col-span-2">
-                          <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700">
-                              Opening Balance:
-                            </span>
-                            <div className="flex gap-4">
-                              
-                              <div className="w-48">
-                                <Autocomplete
-                                  disablePortal
-                                  options={stateOptions}
-                                  value={
-                                    stateOptions.find(
-                                      (option) =>
-                                        option.value ===
-                                        otherDetails.openingBalanceState
-                                    ) || null
-                                  }
-                                  onChange={(event, newValue) => {
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      openingBalanceState:
-                                        newValue?.value || "",
-                                    });
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      label="Select State"
-                                      InputProps={{
-                                        ...params.InputProps,
-                                        style: { height: "40px" },
-                                      }}
-                                      sx={{
-                                        "& .MuiInputBase-root": {
-                                          height: "40px",
-                                        },
-                                        "& .MuiInputLabel-root": {
-                                          transform:
-                                            "translate(14px, 10px) scale(1)",
-                                          "&.MuiInputLabel-shrink": {
-                                            transform:
-                                              "translate(14px, -9px) scale(0.75)",
-                                          },
-                                        },
-                                        "& .MuiInputLabel-root.Mui-focused": {
-                                          transform:
-                                            "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      }}
-                                    />
-                                  )}
-                                />
-                              </div>
-
-                              
-                            </div>
-                          </div>
-                        </div> */}
-
-                          {/* Credit Limit */}
-                          {/* <div className="col-span-2">
-                          <div className="flex items-center gap-6">
-                            <span className="w-32 text-base font-medium text-gray-700">
-                              Credit Limit:
-                            </span>
-                            <div className="w-full">
-                              <TextField
-                                label="Credit Limit"
-                                value={otherDetails.creditLimit}
-                                onChange={(e) =>
-                                  setOtherDetails({
-                                    ...otherDetails,
-                                    creditLimit: e.target.value,
-                                  })
-                                }
-                                InputProps={{
-                                  startAdornment: (
-                                    <div
-                                      className="absolute left-0 pl-3 text-gray-700 bg-gray-50 border-r border-gray-300 flex items-center"
-                                      style={{
-                                        height: "100%",
-                                        fontWeight: "500",
-                                        minWidth: "50px",
-                                      }}
-                                    >
-                                      {currencyOptions
-                                        .find(
-                                          (option) =>
-                                            option.value ===
-                                            otherDetails.currency
-                                        )
-                                        ?.value.split(" ")[0] || ""}
-                                    </div>
-                                  ),
-                                  style: {
-                                    paddingLeft: "60px",
-                                    height: "40px",
-                                  },
-                                }}
-                                sx={{
-                                  "& .MuiInputBase-root": {
-                                    height: "40px",
-                                  },
-                                  "& .MuiInputLabel-root": {
-                                    transform: "translate(14px, 10px) scale(1)",
-                                    "&.MuiInputLabel-shrink": {
-                                      transform:
-                                        "translate(14px, -9px) scale(0.75)",
-                                    },
-                                  },
-                                  "& .MuiInputLabel-root.Mui-focused": {
-                                    transform:
-                                      "translate(14px, -9px) scale(0.75)",
-                                  },
-                                }}
-                                fullWidth
-                              />
-                            </div>
-                          </div>
-                        </div> */}
-
-                          {/* Payment Terms */}
-                          {/* <div className="col-span-2">
-                          <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
-                              Payment Terms:
-                            </span>
-                            <div className="w-full ml-4">
-                              {" "}
-                              Set width for consistency 
-                              <select
-                                value={otherDetails.paymentTerms}
-                                onChange={(e) =>
-                                  setOtherDetails({
-                                    ...otherDetails,
-                                    paymentTerms: e.target.value,
-                                  })
-                                }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                              >
-                                <option value="">Select Payment Terms</option>
-                                <option value="Due on Receipt">
-                                  Due on Receipt
-                                </option>
-                                <option value="End of Month (EOM)">
-                                  End of Month (EOM)
-                                </option>
-                                <option value="Cash in Advance (CIA)">
-                                  Cash in Advance (CIA)
-                                </option>
-                                <option value="Cash on Delivery (COD)">
-                                  Cash on Delivery (COD)
-                                </option>
-                                <option value="Partial Payment">
-                                  Partial Payment
-                                </option>
-                                <option value="Progressive Payment">
-                                  Progressive Payment
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-                        </div> */}
-
-                          {/* TDS */}
-                          {/* <div className="col-span-2">
-                          <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
-                              TDS:
-                            </span>
-                            <div className="w-full ml-24">
-                              {" "}
-                               Set width for consistency
-                              <select
-                                value={otherDetails.tds}
-                                onChange={(e) =>
-                                  setOtherDetails({
-                                    ...otherDetails,
-                                    tds: e.target.value,
-                                  })
-                                }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                              >
-                                <option value="">Select Price List</option>
-                                <option value="Basic SEO Package">
-                                  Basic SEO Package
-                                </option>
-                                <option value="Social Media Management">
-                                  Social Media Management
-                                </option>
-                                <option value="Pay-Per-Click (PPC) Campaign Setup">
-                                  Pay-Per-Click (PPC) Campaign Setup
-                                </option>
-                                <option value="Content Writing">
-                                  Content Writing
-                                </option>
-                                <option value="Website Audit">
-                                  Website Audit
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-                        </div> */}
-
-                          {/* Price List */}
-                          {/* <div className="col-span-2">
-                          <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
-                              Price List:
-                            </span>
-                            <div className="w-full ml-16">
-                              {" "}
-                               Set width for consistency 
-                              <select
-                                value={otherDetails.priceList}
-                                onChange={(e) =>
-                                  setOtherDetails({
-                                    ...otherDetails,
-                                    priceList: e.target.value,
-                                  })
-                                }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                              >
-                                <option value="">Select Price List</option>
-                                <option value="Basic SEO Package">
-                                  Basic SEO Package
-                                </option>
-                                <option value="Social Media Management">
-                                  Social Media Management
-                                </option>
-                                <option value="Pay-Per-Click (PPC) Campaign Setup">
-                                  Pay-Per-Click (PPC) Campaign Setup
-                                </option>
-                                <option value="Content Writing">
-                                  Content Writing
-                                </option>
-                                <option value="Website Audit">
-                                  Website Audit
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-                        </div> */}
-
-                          {/* Enable Portal */}
-                          <div className="flex items-center gap-6 mt-4">
-                            <span className="text-base font-medium text-gray-700 mt-2">
-                              Enable Portal:
-                            </span>
-                            <div className="flex gap-6 mt-2 ml-8">
-                              <label className="flex items-center space-x-2">
-                                <input
-                                  type="checkbox"
-                                  checked={otherDetails.enablePortal}
-                                  onChange={(e) =>
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      enablePortal: e.target.checked,
-                                    })
-                                  }
-                                  className="form-checkbox h-4 w-4 text-blue-600"
-                                />
-                                <span className="text-gray-700">
-                                  Allow portal access for this Customer
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                          {/* Portal Language */}
-                          {/* <div className="col-span-2">
-                          <div className="flex items-center gap-6">
-                            <span className="text-base font-medium text-gray-700">
-                              Portal Language:
-                            </span>
-                            <div className="w-full ml-2">
-                              {" "}
-                               Set width for consistency 
-                              <select
-                                value={otherDetails.portalLanguage}
-                                onChange={(e) =>
-                                  setOtherDetails({
-                                    ...otherDetails,
-                                    portalLanguage: e.target.value,
-                                  })
-                                }
-                                className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                              >
-                                <option value="">Select Portal Language</option>
-                                <option value="English (EN)">
-                                  English (EN)
-                                </option>
-                                <option value="Spanish (ES)">
-                                  Espanol (ES)
-                                </option>
-                                <option value="French (FR)">French (FR)</option>
-                                <option value="German (DE)">German (DE)</option>
-                                <option value="Hindi (HI)">Hindi (HI)</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div> */}
-
-                          {/* Documents Upload */}
-                          <div className="col-span-2 mt-4">
-                            <div className="flex items-center gap-6">
-                              <span className="w-32 text-base font-medium text-gray-700">
-                                Documents:
+                          <div> {/*Msme registered*/}
+                            <div className=" items-center gap-6 mt-4">
+                              <span className="text-sm font-medium text-gray-700 mt-2 ">
+                                MSME Registered?:
                               </span>
-                              <div className="flex-1">
-                                <input
-                                  type="file"
-                                  accept=".pdf,.jpg,.jpeg"
-                                  multiple
-                                  onChange={(e) => {
-                                    const files = e.target.files;
-                                    if (files) {
-                                      const validFiles = Array.from(files).filter(
-                                        (file) =>
-                                          file.type === "application/pdf" ||
-                                          file.type === "image/jpeg"
-                                      );
-
-                                      if (validFiles.length !== files.length) {
-                                        alert(
-                                          "Only PDF and JPEG files are allowed"
-                                        );
-                                      }
-
-                                      setSelectedFiles((prev) => [
-                                        ...prev,
-                                        ...validFiles,
-                                      ]);
-                                      handleImageUpload(e, setOtherDetails);
+                              <div className="flex gap-6 mt-2">
+                                <label className="flex items-center space-x-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={otherDetails.msmeRegistered}
+                                    onChange={(e) =>
+                                      setOtherDetails({
+                                        ...otherDetails,
+                                        msmeRegistered: e.target.checked,
+                                      })
                                     }
-                                  }}
-                                  className="hidden"
-                                  ref={fileInputRef}
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => fileInputRef.current?.click()}
-                                  className="flex items-center gap-2  px-3 py-1.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 mt-4"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5 text-gray-400"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                  <span>Upload Document</span>
-                                </button>
-                                <p className="text-sm text-gray-500 mt-1">
-                                  You can upload multiple PDF and JPEG files
-                                </p>
+                                    className="form-checkbox h-4 w-4 text-blue-600"
+                                  />
+                                  <span className="text-gray-700 text-sm">
+                                    Allow portal access for this Customer
+                                  </span>
+                                </label>
                               </div>
                             </div>
 
-                            {selectedFiles.length > 0 && (
-                              <div className="mt-4">
-                                <h4 className="text-sm font-medium text-gray-700 mb-2">
-                                  Selected Files:
-                                </h4>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                  {selectedFiles.map((file, index) => (
-                                    <div
-                                      key={index}
-                                      className="flex items-center bg-gray-100 p-3 rounded-lg shadow-sm relative"
-                                    >
-                                      {file.type === "application/pdf" ? (
-                                        <svg
-                                          className="w-6 h-6 text-red-500 mr-2"
-                                          fill="currentColor"
-                                          viewBox="0 0 20 20"
-                                        >
-                                          <path
-                                            fillRule="evenodd"
-                                            d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0013.414 5L10 2.586A2 2 0 008.586 2H6z"
-                                            clipRule="evenodd"
-                                          />
-                                        </svg>
-                                      ) : (
-                                        <img
-                                          src={URL.createObjectURL(file)}
-                                          alt="preview"
-                                          className="w-10 h-10 object-cover rounded mr-2"
-                                        />
-                                      )}
-                                      <span className="text-sm text-gray-700 flex-1 truncate">
-                                        {file.name}
-                                      </span>
-                                      <button
-                                        type="button"
-                                        onClick={() => handleRemoveFile(index)}
-                                        className="text-red-500 hover:text-red-700 absolute top-1 right-1"
-                                      >
-                                        ✕
-                                      </button>
-                                    </div>
-                                  ))}
-                                </div>
+                            {/* Enable Portal */}
+                            <div className=" items-center gap-6 mt-4">
+                              <span className="text-sm font-medium text-gray-700 mt-2">
+                                Enable Portal:
+                              </span>
+                              <div className="flex gap-6 mt-2 ">
+                                <label className="flex items-center space-x-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={otherDetails.enablePortal}
+                                    onChange={(e) =>
+                                      setOtherDetails({
+                                        ...otherDetails,
+                                        enablePortal: e.target.checked,
+                                      })
+                                    }
+                                    className="form-checkbox h-4 w-4 text-blue-600 "
+                                  />
+                                  <span className="text-gray-700 text-sm">
+                                    Allow portal access for this Customer
+                                  </span>
+                                </label>
                               </div>
-                            )}
+                            </div>
 
-                            {otherDetails.documents?.length > 0 && (
-                              <div className="mt-4">
-                                <h4 className="text-sm font-medium text-gray-700 mb-2">
-                                  Uploaded Files:
-                                </h4>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                  {otherDetails.documents.map((doc, index) => (
-                                    <div
-                                      key={index}
-                                      className="relative flex flex-col items-center bg-white shadow-sm p-3 rounded-lg border"
-                                    >
-                                      {doc.includes(".pdf") ? (
-                                        <svg
-                                          className="w-10 h-10 text-red-500 mb-2"
-                                          fill="currentColor"
-                                          viewBox="0 0 20 20"
-                                        >
-                                          <path
-                                            fillRule="evenodd"
-                                            d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0013.414 5L10 2.586A2 2 0 008.586 2H6z"
-                                            clipRule="evenodd"
-                                          />
-                                        </svg>
-                                      ) : (
-                                        <img
-                                          src={generateFilePath(doc)}
-                                          alt="uploaded"
-                                          className="w-16 h-16 object-cover rounded"
-                                        />
-                                      )}
-                                      <a
-                                        href={
-                                          doc.includes("base64")
-                                            ? doc
-                                            : generateFilePath(doc)
-                                        }
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-500 hover:underline text-sm mt-2"
-                                      >
-                                        {doc.includes(".pdf")
-                                          ? "View PDF"
-                                          : "View Image"}
-                                      </a>
-                                      <button
-                                        type="button"
-                                        onClick={() => {
-                                          const newDocuments = [
-                                            ...otherDetails.documents,
-                                          ];
-                                          newDocuments.splice(index, 1);
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            documents: newDocuments,
-                                          });
-                                          toastSuccess(
-                                            "Document removed successfully"
+
+                            {/* Documents Upload */}
+                            <div className="col-span-2 mt-4  ">
+                              <div className=" items-center">
+                                <span className="w-32 text-sm font-medium text-gray-700 ml-4">
+                                  Documents:
+                                </span>
+                                <div className="flex flex-col items-start gap-2 ml-4 ">
+                                  <input
+                                    type="file"
+                                    accept=".pdf,.jpg,.jpeg"
+                                    multiple
+                                    onChange={(e) => {
+                                      const files = e.target.files;
+                                      if (files) {
+                                        const validFiles = Array.from(files).filter(
+                                          (file) =>
+                                            file.type === "application/pdf" ||
+                                            file.type === "image/jpeg"
+                                        );
+
+                                        if (validFiles.length !== files.length) {
+                                          alert(
+                                            "Only PDF and JPEG files are allowed"
                                           );
-                                        }}
-                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
-                                      >
-                                        ✕
-                                      </button>
-                                    </div>
-                                  ))}
+                                        }
+
+                                        setSelectedFiles((prev) => [
+                                          ...prev,
+                                          ...validFiles,
+                                        ]);
+                                        handleImageUpload(e, setOtherDetails);
+                                      }
+                                    }}
+                                    className="hidden"
+                                    ref={fileInputRef}
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="flex items-center gap-1.5  px-3 py-1 border mt-1 border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 "
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-5 w-5 text-gray-400"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                    <span className="text-sm">Upload Document</span>
+                                  </button>
+                                  <p className="text-sm text-gray-500 mt-1">
+                                    You can upload multiple PDF and JPEG files
+                                  </p>
                                 </div>
                               </div>
-                            )}
+
+                              {selectedFiles.length > 0 && (
+                                <div className="mt-4">
+                                  <h4 className="text-sm font-medium text-gray-700 mb-2">
+                                    Selected Files:
+                                  </h4>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                    {selectedFiles.map((file, index) => (
+                                      <div
+                                        key={index}
+                                        className="flex items-center bg-gray-100 p-3 rounded-lg shadow-sm relative"
+                                      >
+                                        {file.type === "application/pdf" ? (
+                                          <svg
+                                            className="w-6 h-6 text-red-500 mr-2"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                          >
+                                            <path
+                                              fillRule="evenodd"
+                                              d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0013.414 5L10 2.586A2 2 0 008.586 2H6z"
+                                              clipRule="evenodd"
+                                            />
+                                          </svg>
+                                        ) : (
+                                          <img
+                                            src={URL.createObjectURL(file)}
+                                            alt="preview"
+                                            className="w-10 h-10 object-cover rounded mr-2"
+                                          />
+                                        )}
+                                        <span className="text-sm text-gray-700 flex-1 truncate">
+                                          {file.name}
+                                        </span>
+                                        <button
+                                          type="button"
+                                          onClick={() => handleRemoveFile(index)}
+                                          className="text-red-500 hover:text-red-700 absolute top-1 right-1"
+                                        >
+                                          ✕
+                                        </button>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
+                              {otherDetails.documents?.length > 0 && (
+                                <div className="mt-4">
+                                  <h4 className="text-sm font-medium text-gray-700 mb-2">
+                                    Uploaded Files:
+                                  </h4>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                    {otherDetails.documents.map((doc, index) => (
+                                      <div
+                                        key={index}
+                                        className="relative flex flex-col items-center bg-white shadow-sm p-3 rounded-lg border"
+                                      >
+                                        {doc.includes(".pdf") ? (
+                                          <svg
+                                            className="w-10 h-10 text-red-500 mb-2"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                          >
+                                            <path
+                                              fillRule="evenodd"
+                                              d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0013.414 5L10 2.586A2 2 0 008.586 2H6z"
+                                              clipRule="evenodd"
+                                            />
+                                          </svg>
+                                        ) : (
+                                          <img
+                                            src={generateFilePath(doc)}
+                                            alt="uploaded"
+                                            className="w-16 h-16 object-cover rounded"
+                                          />
+                                        )}
+                                        <a
+                                          href={
+                                            doc.includes("base64")
+                                              ? doc
+                                              : generateFilePath(doc)
+                                          }
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-blue-500 hover:underline text-sm mt-2"
+                                        >
+                                          {doc.includes(".pdf")
+                                            ? "View PDF"
+                                            : "View Image"}
+                                        </a>
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            const newDocuments = [
+                                              ...otherDetails.documents,
+                                            ];
+                                            newDocuments.splice(index, 1);
+                                            setOtherDetails({
+                                              ...otherDetails,
+                                              documents: newDocuments,
+                                            });
+                                            toastSuccess(
+                                              "Document removed successfully"
+                                            );
+                                          }}
+                                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                                        >
+                                          ✕
+                                        </button>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                            <div className="mt-6">
+                              <button
+                                type="button"
+                                onClick={() => setIsExpanded(!isExpanded)}
+                                className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+                              >
+                                {isExpanded ? (
+                                  <>
+                                    <ChevronUp className="w-5 h-5" />
+                                    Hide More Details
+                                  </>
+                                ) : (
+                                  <>
+                                    <ChevronDown className="w-5 h-5" />
+                                    Add More Details
+                                  </>
+                                )}
+                              </button>
+                              {isExpanded && (
+                                <div className="col-span-2 mt-8">
+                                  <div className="space-y-8 w-[400px]">
+                                    {/* Website URL */}
+                                    <div className="flex items-center ">
+                                      <label
+                                        className="w-[200px] text-sm font-medium text-gray-700"
+                                        htmlFor="websiteUrl"
+                                      >
+                                        Website URL:
+                                      </label>
+                                      <div className="w-96 flex">
+                                        <div className="flex items-center justify-center w-12 border border-r-0 border-gray-300 rounded-l-md">
+                                          <Globe className="w-4 h-4 text-gray-400" />
+                                        </div>
+                                        <input
+                                          id="websiteUrl"
+                                          type="text"
+                                          value={otherDetails.websiteUrl}
+                                          onChange={(e) =>
+                                            setOtherDetails({
+                                              ...otherDetails,
+                                              websiteUrl: e.target.value,
+                                            })
+                                          }
+                                          placeholder="Enter Website URL"
+                                          className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    {/* Department */}
+                                    <div className="flex items-center ">
+                                      <label
+                                        className="w-[200px] text-sm font-medium text-gray-700"
+                                        htmlFor="department"
+                                      >
+                                        Department:
+                                      </label>
+                                      <div className="w-96 flex">
+                                        <div className="flex items-center justify-center w-12 border border-r-0 border-gray-300 rounded-l-md">
+                                          <Building2 className="w-4 h-4 text-gray-400" />
+                                        </div>
+                                        <input
+                                          id="department"
+                                          type="text"
+                                          value={otherDetails.department}
+                                          onChange={(e) =>
+                                            setOtherDetails({
+                                              ...otherDetails,
+                                              department: e.target.value,
+                                            })
+                                          }
+                                          placeholder="Enter Department"
+                                          className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    {/* Designation */}
+                                    <div className="flex items-center ">
+                                      <label
+                                        className="w-[200px] text-sm font-medium text-gray-700"
+                                        htmlFor="designation"
+                                      >
+                                        Designation:
+                                      </label>
+                                      <div className="w-96 flex">
+                                        <div className="flex items-center justify-center w-12 border border-r-0 border-gray-300 rounded-l-md">
+                                          <UserRound className="w-4 h-4 text-gray-400" />
+                                        </div>
+                                        <input
+                                          id="designation"
+                                          type="text"
+                                          value={otherDetails.designation}
+                                          onChange={(e) =>
+                                            setOtherDetails({
+                                              ...otherDetails,
+                                              designation: e.target.value,
+                                            })
+                                          }
+                                          placeholder="Enter Designation"
+                                          className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    {/* Twitter */}
+                                    <div className="flex items-center ">
+                                      <label
+                                        className="w-[200px] text-sm font-medium text-gray-700"
+                                        htmlFor="twitter"
+                                      >
+                                        Twitter:
+                                      </label>
+                                      <div className="w-96 flex">
+                                        <div className="flex items-center justify-center w-12 border border-r-0 border-gray-300 rounded-l-md">
+                                          <Twitter className="w-4 h-4 text-gray-400" />
+                                        </div>
+                                        <input
+                                          id="twitter"
+                                          type="text"
+                                          value={otherDetails.twitter}
+                                          onChange={(e) =>
+                                            setOtherDetails({
+                                              ...otherDetails,
+                                              twitter: e.target.value,
+                                            })
+                                          }
+                                          placeholder="Enter Twitter id..."
+                                          className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    {/* Skype */}
+                                    <div className="flex items-center ">
+                                      <label
+                                        className="w-[200px] text-sm font-medium text-gray-700"
+                                        htmlFor="skype"
+                                      >
+                                        Skype:
+                                      </label>
+                                      <div className="w-96 flex">
+                                        <div className="flex items-center justify-center w-12 border border-r-0 border-gray-300 rounded-l-md">
+                                          <MessageCircle className="w-4 h-4 text-gray-400" />
+                                        </div>
+                                        <input
+                                          id="skype"
+                                          type="text"
+                                          value={otherDetails.skype}
+                                          onChange={(e) =>
+                                            setOtherDetails({
+                                              ...otherDetails,
+                                              skype: e.target.value,
+                                            })
+                                          }
+                                          placeholder="Enter skype id..."
+                                          className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    {/* Facebook */}
+                                    <div className="flex items-center">
+                                      <label
+                                        className="w-[200px] text-sm font-medium text-gray-700"
+                                        htmlFor="facebook"
+                                      >
+                                        Facebook:
+                                      </label>
+                                      <div className="w-96 flex">
+                                        <div className="flex items-center justify-center w-12 border border-r-0 border-gray-300 rounded-l-md">
+                                          <Facebook className="w-4 h-4 text-gray-400" />
+                                        </div>
+                                        <input
+                                          id="facebook"
+                                          type="text"
+                                          value={otherDetails.facebook}
+                                          onChange={(e) =>
+                                            setOtherDetails({
+                                              ...otherDetails,
+                                              facebook: e.target.value,
+                                            })
+                                          }
+                                          placeholder="Enter facebook id..."
+                                          className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                           </div>
 
                           {/* Add More Details Section */}
-                          <div className="mt-6">
-                            <button
-                              type="button"
-                              onClick={() => setIsExpanded(!isExpanded)}
-                              className="flex items-center gap-2 text-base font-medium text-blue-600 hover:text-blue-700"
-                            >
-                              {isExpanded ? (
-                                <>
-                                  <ChevronUp className="w-5 h-5" />
-                                  Hide More Details
-                                </>
-                              ) : (
-                                <>
-                                  <ChevronDown className="w-5 h-5" />
-                                  Add More Details
-                                </>
-                              )}
-                            </button>
-                            {isExpanded && (
-                              <div className="col-span-2 mt-8">
-                                <div className="space-y-8 w-[400px]">
-                                  {/* Website URL */}
-                                  <div className="flex items-center ">
-                                    <label
-                                      className="w-[200px] text-base font-medium text-gray-700"
-                                      htmlFor="websiteUrl"
-                                    >
-                                      Website URL:
-                                    </label>
-                                    <div className="w-96 flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Globe className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="websiteUrl"
-                                        type="text"
-                                        value={otherDetails.websiteUrl}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            websiteUrl: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Website URL"
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
-                                    </div>
-                                  </div>
 
-                                  {/* Department */}
-                                  <div className="flex items-center ">
-                                    <label
-                                      className="w-[200px] text-base font-medium text-gray-700"
-                                      htmlFor="department"
-                                    >
-                                      Department:
-                                    </label>
-                                    <div className="w-96 flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Building2 className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="department"
-                                        type="text"
-                                        value={otherDetails.department}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            department: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Department"
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
-                                    </div>
-                                  </div>
 
-                                  {/* Designation */}
-                                  <div className="flex items-center ">
-                                    <label
-                                      className="w-[200px] text-base font-medium text-gray-700"
-                                      htmlFor="designation"
-                                    >
-                                      Designation:
-                                    </label>
-                                    <div className="w-96 flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <UserRound className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="designation"
-                                        type="text"
-                                        value={otherDetails.designation}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            designation: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Designation"
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
-                                    </div>
-                                  </div>
-
-                                  {/* Twitter */}
-                                  <div className="flex items-center ">
-                                    <label
-                                      className="w-[200px] text-base font-medium text-gray-700"
-                                      htmlFor="twitter"
-                                    >
-                                      Twitter:
-                                    </label>
-                                    <div className="w-96 flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Twitter className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="twitter"
-                                        type="text"
-                                        value={otherDetails.twitter}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            twitter: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter Twitter id..."
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
-                                    </div>
-                                  </div>
-
-                                  {/* Skype */}
-                                  <div className="flex items-center ">
-                                    <label
-                                      className="w-[200px] text-base font-medium text-gray-700"
-                                      htmlFor="skype"
-                                    >
-                                      Skype:
-                                    </label>
-                                    <div className="w-96 flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <MessageCircle className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="skype"
-                                        type="text"
-                                        value={otherDetails.skype}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            skype: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter skype id..."
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
-                                    </div>
-                                  </div>
-
-                                  {/* Facebook */}
-                                  <div className="flex items-center">
-                                    <label
-                                      className="w-[200px] text-base font-medium text-gray-700"
-                                      htmlFor="facebook"
-                                    >
-                                      Facebook:
-                                    </label>
-                                    <div className="w-96 flex">
-                                      <div className="flex items-center justify-center w-12 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-                                        <Facebook className="w-4 h-4 text-gray-400" />
-                                      </div>
-                                      <input
-                                        id="facebook"
-                                        type="text"
-                                        value={otherDetails.facebook}
-                                        onChange={(e) =>
-                                          setOtherDetails({
-                                            ...otherDetails,
-                                            facebook: e.target.value,
-                                          })
-                                        }
-                                        placeholder="Enter facebook id..."
-                                        className="w-full border border-gray-300 rounded-r-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                          {/* <div>
-                          <div style={{ display: "flex", flexWrap: "wrap" }}>
-                            {otherDetails &&
-                              otherDetails.documents.length > 0 &&
-                              otherDetails.documents.map(
-                                (image: string, index) => (
-                                  <img
-                                    key={index}
-                                    style={{
-                                      height: 100,
-                                      width: 100,
-                                      objectFit: "cover",
-                                      border: "1px solid #ddd",
-                                      borderRadius: "5px",
-                                      marginTop: "10px",
-                                    }}
-                                    src={
-                                      image?.includes("base64")
-                                        ? image
-                                        : generateFilePath(image)
-                                    }
-                                    alt={`Image Preview ${index + 1}`}
-                                  />
-                                )
-                              )}
-                          </div>
-                          <input
-                            type="file"
-                            accept="image/csv/*"
-                            multiple
-                            onChange={(e) =>
-                              handleImageUpload(e, setUploadFiles)
-                            }
-                            style={{ marginTop: "10px", display: "block" }}
-                          />
-                        </div> */}
                         </div>
                       )}
 
@@ -4303,212 +3928,36 @@ const AddVendorForm = () => {
                             <h2 className="text-2xl font-bold mb-6">
                               Billing Address
                             </h2>
-                            {/* Attention */}
-                            {/* <div className="flex items-center gap-6">
-                            <span className=" min-w-32 text-base font-medium text-gray-700">
-                              Attention:
-                            </span>
-                            <input
-                              type="text"
-                              value={otherDetails.attention}
-                              onChange={(e) =>
-                                setotherDetails({
-                                  ...otherDetails,
-                                  attention: e.target.value,
-                                })
-                              }
-                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                            />
-                          </div> */}
+
                             {/* Country / Region */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   Country / Region:
                                 </span>
-                                {/* <select
-                                value={otherDetails.countryRegion}
-                                onChange={(e) =>
-                                  setotherDetails({
-                                    ...otherDetails,
-                                    countryRegion: e.target.value,
-                                  })
-                                }
-                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                              >
-                                <option value="">Select Country/Region</option>
-                                <option value="US - United States">
-                                  US - United States
-                                </option>
-                                <option value="CA - Canada">CA - Canada</option>
-                                <option value="GB - United Kingdom">
-                                  GB - United Kingdom
-                                </option>
-                                <option value="AU - Australia">
-                                  AU - Australia
-                                </option>
-                                <option value="IN - India">IN - India</option>
-                                <option value="CN - China">CN - China</option>
-                                <option value="JP - Japan">JP - Japan</option>
-                                <option value="DE - Germany">
-                                  DE - Germany
-                                </option>
-                                <option value="FR - France">FR - France</option>
-                                <option value="IT - Italy">IT - Italy</option>
-                                <option value="ES - Spain">ES - Spain</option>
-                                <option value="BR - Brazil">BR - Brazil</option>
-                                <option value="MX - Mexico">MX - Mexico</option>
-                                <option value="ZA - South Africa">
-                                  ZA - South Africa
-                                </option>
-                                <option value="RU - Russia">RU - Russia</option>
-                                <option value="KR - South Korea">
-                                  KR - South Korea
-                                </option>
-                                <option value="AR - Argentina">
-                                  AR - Argentina
-                                </option>
-                                <option value="NG - Nigeria">
-                                  NG - Nigeria
-                                </option>
-                                <option value="EG - Egypt">EG - Egypt</option>
-                                <option value="SE - Sweden">SE - Sweden</option>
-                                <option value="NO - Norway">NO - Norway</option>
-                                <option value="FI - Finland">
-                                  FI - Finland
-                                </option>
-                                <option value="PL - Poland">PL - Poland</option>
-                                <option value="GR - Greece">GR - Greece</option>
-                                <option value="TR - Turkey">TR - Turkey</option>
-                                <option value="PH - Philippines">
-                                  PH - Philippines
-                                </option>
-                                <option value="TH - Thailand">
-                                  TH - Thailand
-                                </option>
-                                <option value="SG - Singapore">
-                                  SG - Singapore
-                                </option>
-                                <option value="HK - Hong Kong">
-                                  HK - Hong Kong
-                                </option>
-                                <option value="MY - Malaysia">
-                                  MY - Malaysia
-                                </option>
-                                <option value="KR - South Korea">
-                                  KR - South Korea
-                                </option>
-                                <option value="CH - Switzerland">
-                                  CH - Switzerland
-                                </option>
-                                <option value="BE - Belgium">
-                                  BE - Belgium
-                                </option>
-                                <option value="NL - Netherlands">
-                                  NL - Netherlands
-                                </option>
-                                <option value="PL - Poland">PL - Poland</option>
-                                <option value="UA - Ukraine">
-                                  UA - Ukraine
-                                </option>
-                                <option value="CZ - Czech Republic">
-                                  CZ - Czech Republic
-                                </option>
-                                <option value="SK - Slovakia">
-                                  SK - Slovakia
-                                </option>
-                                <option value="RO - Romania">
-                                  RO - Romania
-                                </option>
-                                <option value="BG - Bulgaria">
-                                  BG - Bulgaria
-                                </option>
-                                <option value="PT - Portugal">
-                                  PT - Portugal
-                                </option>
-                                <option value="AT - Austria">
-                                  AT - Austria
-                                </option>
-                                <option value="KE - Kenya">KE - Kenya</option>
-                                <option value="AE - United Arab Emirates">
-                                  AE - United Arab Emirates
-                                </option>
-                                <option value="SA - Saudi Arabia">
-                                  SA - Saudi Arabia
-                                </option>
-                                <option value="KW - Kuwait">KW - Kuwait</option>
-                                <option value="IQ - Iraq">IQ - Iraq</option>
-                                <option value="ID - Indonesia">
-                                  ID - Indonesia
-                                </option>
-                                <option value="VN - Vietnam">
-                                  VN - Vietnam
-                                </option>
-                                <option value="PE - Peru">PE - Peru</option>
-                                <option value="CO - Colombia">
-                                  CO - Colombia
-                                </option>
-                                <option value="CL - Chile">CL - Chile</option>
-                              </select> */}
-                                <Autocomplete
-                                  disablePortal
-                                  options={countryOptions}
-                                  sx={{ width: 600 }}
-                                  defaultValue={{
-                                    value: "IN - India",
-                                    label: "IN - India",
-                                  }}
-                                  value={
-                                    countryOptions.find(
-                                      (option) =>
-                                        option.value ===
-                                        billingAddress.billingCountry
-                                    ) || {
-                                      value: "IN - India",
-                                      label: "IN - India",
-                                    }
-                                  }
-                                  onChange={(event, newValue) => {
+
+                                <select
+                                  value={billingAddress.billingCountry || "IN - India"}
+                                  onChange={(e) =>
                                     setBillingAddress({
                                       ...billingAddress,
-                                      billingCountry: newValue?.value || "",
-                                    });
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      label="Country"
-                                      InputProps={{
-                                        ...params.InputProps,
-                                        style: { height: "40px" },
-                                      }}
-                                      sx={{
-                                        "& .MuiInputBase-root": {
-                                          height: "40px",
-                                        },
-                                        "& .MuiInputLabel-root": {
-                                          transform:
-                                            "translate(14px, 10px) scale(1)",
-                                          "&.MuiInputLabel-shrink": {
-                                            transform:
-                                              "translate(14px, -9px) scale(0.75)",
-                                          },
-                                        },
-                                        "& .MuiInputLabel-root.Mui-focused": {
-                                          transform:
-                                            "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      }}
-                                    />
-                                  )}
-                                  className="flex-1 rounded-md p-2 text-sm"
-                                />
+                                      billingCountry: e.target.value,
+                                    })
+                                  }
+                                  className="flex-1 rounded-md p-2 text-sm w-full h-10"
+                                >
+                                  {countryOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                      {option.label}
+                                    </option>
+                                  ))}
+                                </select>
                               </div>
                             </div>
                             {/* Address */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="text-base font-medium text-gray-700">
+                                <span className="text-sm ml-3 font-medium text-gray-700">
                                   Address:
                                 </span>
                                 <input
@@ -4525,7 +3974,7 @@ const AddVendorForm = () => {
                                 />
                               </div>
                               <div className="flex items-center gap-6 mt-4">
-                                <span className="min-w-32 text-base font-medium text-gray-700"></span>
+                                <span className="min-w-32 text-sm font-medium text-gray-700"></span>
                                 <input
                                   type="text"
                                   value={billingAddress.billingAddressStreet2}
@@ -4543,7 +3992,7 @@ const AddVendorForm = () => {
                             {/* City */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   City:
                                 </span>
                                 <input
@@ -4562,166 +4011,33 @@ const AddVendorForm = () => {
                             {/* State */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   State:
                                 </span>
-                                {/* <select
-                                value={otherDetails.state}
-                                onChange={(e) =>
-                                  setotherDetails({
-                                    ...otherDetails,
-                                    state: e.target.value,
-                                  })
-                                }
-                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm"
-                              >
-                                <option value="">Select State</option>
-                                <option value="AP - Andhra Pradesh">
-                                  AP - Andhra Pradesh
-                                </option>
-                                <option value="AR - Arunachal Pradesh">
-                                  AR - Arunachal Pradesh
-                                </option>
-                                <option value="AS - Assam">AS - Assam</option>
-                                <option value="BR - Bihar">BR - Bihar</option>
-                                <option value="CT - Chhattisgarh">
-                                  CT - Chhattisgarh
-                                </option>
-                                <option value="GA - Goa">GA - Goa</option>
-                                <option value="GJ - Gujarat">
-                                  GJ - Gujarat
-                                </option>
-                                <option value="HR - Haryana">
-                                  HR - Haryana
-                                </option>
-                                <option value="HP - Himachal Pradesh">
-                                  HP - Himachal Pradesh
-                                </option>
-                                <option value="JK - Jammu and Kashmir">
-                                  JK - Jammu and Kashmir
-                                </option>
-                                <option value="JH - Jharkhand">
-                                  JH - Jharkhand
-                                </option>
-                                <option value="KA - Karnataka">
-                                  KA - Karnataka
-                                </option>
-                                <option value="KL - Kerala">KL - Kerala</option>
-                                <option value="MP - Madhya Pradesh">
-                                  MP - Madhya Pradesh
-                                </option>
-                                <option value="MH - Maharashtra">
-                                  MH - Maharashtra
-                                </option>
-                                <option value="MN - Manipur">
-                                  MN - Manipur
-                                </option>
-                                <option value="ML - Meghalaya">
-                                  ML - Meghalaya
-                                </option>
-                                <option value="MZ - Mizoram">
-                                  MZ - Mizoram
-                                </option>
-                                <option value="NL - Nagaland">
-                                  NL - Nagaland
-                                </option>
-                                <option value="OD - Odisha">OD - Odisha</option>
-                                <option value="PB - Punjab">PB - Punjab</option>
-                                <option value="RJ - Rajasthan">
-                                  RJ - Rajasthan
-                                </option>
-                                <option value="SK - Sikkim">SK - Sikkim</option>
-                                <option value="TN - Tamil Nadu">
-                                  TN - Tamil Nadu
-                                </option>
-                                <option value="TS - Telangana">
-                                  TS - Telangana
-                                </option>
-                                <option value="UP - Uttar Pradesh">
-                                  UP - Uttar Pradesh
-                                </option>
-                                <option value="UK - Uttarakhand">
-                                  UK - Uttarakhand
-                                </option>
-                                <option value="WB - West Bengal">
-                                  WB - West Bengal
-                                </option>
-                                <option value="AN - Andaman and Nicobar Islands">
-                                  AN - Andaman and Nicobar Islands
-                                </option>
-                                <option value="CH - Chandigarh">
-                                  CH - Chandigarh
-                                </option>
-                                <option value="DN - Dadra and Nagar Haveli and Daman and Diu">
-                                  DN - Dadra and Nagar Haveli and Daman and Diu
-                                </option>
-                                <option value="DD - Lakshadweep">
-                                  DD - Lakshadweep
-                                </option>
-                                <option value="DL - Delhi">DL - Delhi</option>
-                                <option value="PY - Puducherry">
-                                  PY - Puducherry
-                                </option>
-                                <option value="LD - Ladakh">LD - Ladakh</option>
-                                <option value="LC - Lakshadweep">
-                                  LC - Lakshadweep
-                                </option>
-                                <option value="TN - Tamil Nadu">
-                                  TN - Tamil Nadu
-                                </option>
-                              </select> */}
-                                <Autocomplete
-                                  disablePortal
-                                  options={stateOptions}
-                                  sx={{ width: 600 }}
-                                  value={
-                                    stateOptions.find(
-                                      (option) =>
-                                        option.value ===
-                                        billingAddress.billingState
-                                    ) || null
-                                  }
-                                  onChange={(event, newValue) => {
+
+                                <select
+                                  className="flex-1 rounded-md p-2 text-sm"
+                                  value={billingAddress.billingState}
+                                  onChange={(e) =>
                                     setBillingAddress({
                                       ...billingAddress,
-                                      billingState: newValue?.value || "",
-                                    });
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      label="Enter State"
-                                      InputProps={{
-                                        ...params.InputProps,
-                                        style: { height: "40px" },
-                                      }}
-                                      sx={{
-                                        "& .MuiInputBase-root": {
-                                          height: "40px",
-                                        },
-                                        "& .MuiInputLabel-root": {
-                                          transform:
-                                            "translate(14px, 10px) scale(1)",
-                                          "&.MuiInputLabel-shrink": {
-                                            transform:
-                                              "translate(14px, -9px) scale(0.75)",
-                                          },
-                                        },
-                                        "& .MuiInputLabel-root.Mui-focused": {
-                                          transform:
-                                            "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      }}
-                                    />
-                                  )}
-                                  className="flex-1 rounded-md p-2 text-sm"
-                                />
+                                      billingState: e.target.value,
+                                    })
+                                  }
+                                >
+                                  <option value="">Select State</option>
+                                  {stateOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                      {option.label}
+                                    </option>
+                                  ))}
+                                </select>
                               </div>
                             </div>
                             {/* Pin Code */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700 w-20">
+                                <span className="min-w-32 text-sm font-medium text-gray-700 w-20">
                                   Pin Code:
                                 </span>
                                 <input
@@ -4730,7 +4046,7 @@ const AddVendorForm = () => {
                                   onChange={(e) =>
                                     setBillingAddress({
                                       ...billingAddress,
-                                      billingPincode: e.target.value.replace(/\D/g, '').slice(0, 7),
+                                      billingPincode: e.target.value.replace(/\D/g, '').slice(0, 6),
                                     })
                                   }
                                   className="w-full border border-gray-300 rounded-md p-2 text-sm"
@@ -4740,7 +4056,7 @@ const AddVendorForm = () => {
                             {/* Phone */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   Phone:
                                 </span>
                                 <input
@@ -4759,7 +4075,7 @@ const AddVendorForm = () => {
                             {/* Fax Number */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   Fax Number:
                                 </span>
                                 <input
@@ -4793,87 +4109,35 @@ const AddVendorForm = () => {
                                 <ChevronDown className="h-4 w-4 text-blue-600" />
                               </div>
                             </div>
-                            {/* Shipping Attention */}
-                            {/* <div className="flex items-center gap-6">
-                            <span className="min-w-32 text-base font-medium text-gray-700">
-                              Attention:
-                            </span>
-                            <input
-                              type="text"
-                              value={otherDetails.shippingAttention}
-                              onChange={(e) =>
-                                setotherDetails({
-                                  ...otherDetails,
-                                  shippingAttention: e.target.value,
-                                })
-                              }
-                              className="w-full border border-gray-300 rounded-md p-2 text-sm"
-                            />
-                          </div> */}
+
                             {/* Shipping Country / Region */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   Country / Region:
                                 </span>
-                                <Autocomplete
-                                  disablePortal
-                                  options={countryOptions}
-                                  defaultValue={{
-                                    value: "IN - India",
-                                    label: "IN - India",
-                                  }}
-                                  value={
-                                    countryOptions.find(
-                                      (option) =>
-                                        option.value ===
-                                        shippingAddress.shippingCountry
-                                    ) || {
-                                      value: "IN - India",
-                                      label: "IN - India",
-                                    }
-                                  }
-                                  onChange={(event, newValue) => {
+                                <select
+                                  value={shippingAddress.shippingCountry}
+                                  onChange={(e) =>
                                     setShippingAddress({
                                       ...shippingAddress,
-                                      shippingCountry: newValue?.value || "",
-                                    });
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      label="Enter Country/Region"
-                                      InputProps={{
-                                        ...params.InputProps,
-                                        style: { height: "40px" },
-                                      }}
-                                      sx={{
-                                        "& .MuiInputBase-root": {
-                                          height: "40px",
-                                        },
-                                        "& .MuiInputLabel-root": {
-                                          transform:
-                                            "translate(14px, 10px) scale(1)",
-                                          "&.MuiInputLabel-shrink": {
-                                            transform:
-                                              "translate(14px, -9px) scale(0.75)",
-                                          },
-                                        },
-                                        "& .MuiInputLabel-root.Mui-focused": {
-                                          transform:
-                                            "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      }}
-                                    />
-                                  )}
+                                      shippingCountry: e.target.value,
+                                    })
+                                  }
                                   className="flex-1 rounded-md p-2 text-sm"
-                                />
+                                >
+                                  {countryOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                      {option.label}
+                                    </option>
+                                  ))}
+                                </select>
                               </div>
                             </div>
                             {/* Shipping Address */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   Address:
                                 </span>
                                 <input
@@ -4890,7 +4154,7 @@ const AddVendorForm = () => {
                                 />
                               </div>
                               <div className="flex items-center gap-6 mt-4">
-                                <span className="min-w-32 text-base font-medium text-gray-700"></span>
+                                <span className="min-w-32 text-sm font-medium text-gray-700"></span>
                                 <input
                                   type="text"
                                   value={shippingAddress.shippingAddressStreet2}
@@ -4908,7 +4172,7 @@ const AddVendorForm = () => {
                             {/* Shippping City */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   City:
                                 </span>
                                 <input
@@ -4927,61 +4191,32 @@ const AddVendorForm = () => {
                             {/* Shipping State */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   State:
                                 </span>
-                                <Autocomplete
-                                  disablePortal
-                                  options={stateOptions}
-                                  sx={{ width: 600 }}
-                                  value={
-                                    stateOptions.find(
-                                      (option) =>
-                                        option.value ===
-                                        shippingAddress.shippingState
-                                    ) || null
-                                  }
-                                  onChange={(event, newValue) => {
+                                <select
+                                  value={shippingAddress.shippingState}
+                                  onChange={(e) =>
                                     setShippingAddress({
                                       ...shippingAddress,
-                                      shippingState: newValue?.value || "",
-                                    });
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      label="Enter State"
-                                      InputProps={{
-                                        ...params.InputProps,
-                                        style: { height: "40px" },
-                                      }}
-                                      sx={{
-                                        "& .MuiInputBase-root": {
-                                          height: "40px",
-                                        },
-                                        "& .MuiInputLabel-root": {
-                                          transform:
-                                            "translate(14px, 10px) scale(1)",
-                                          "&.MuiInputLabel-shrink": {
-                                            transform:
-                                              "translate(14px, -9px) scale(0.75)",
-                                          },
-                                        },
-                                        "& .MuiInputLabel-root.Mui-focused": {
-                                          transform:
-                                            "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      }}
-                                    />
-                                  )}
+                                      shippingState: e.target.value,
+                                    })
+                                  }
                                   className="flex-1 rounded-md p-2 text-sm"
-                                />
+                                >
+                                  <option value="">Select State</option>
+                                  {stateOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                      {option.label}
+                                    </option>
+                                  ))}
+                                </select>
                               </div>
                             </div>
                             {/* Shipping Pin Code */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   Pin Code:
                                 </span>
                                 <input
@@ -5000,7 +4235,7 @@ const AddVendorForm = () => {
                             {/* Shipping Phone */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   Phone:
                                 </span>
                                 <input
@@ -5019,7 +4254,7 @@ const AddVendorForm = () => {
                             {/* Shipping Fax Number */}
                             <div className="col-span-2">
                               <div className="flex items-center gap-6 mt-6">
-                                <span className="min-w-32 text-base font-medium text-gray-700">
+                                <span className="min-w-32 text-sm font-medium text-gray-700">
                                   Fax Number:
                                 </span>
                                 <input
@@ -5288,30 +4523,11 @@ const AddVendorForm = () => {
             </div>
 
             {/* Buttons */}
-            <div className="flex justify-end gap-4 mt-8">
-              {/* <button
-                type="button"
-                onClick={populateDemoData}
-                className=" px-3 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600"
-              >
-                Populate Demo Data
-              </button> */}
-              <button
-                type="button"
-                onClick={() => navigate(-1)}
-                className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
-              >
-                Cancel
-              </button>
-              {((!id && canCreate) || (id && canUpdate)) && (
-                <button
-                  type="submit"
-                  className=" px-3 py-1.5 bg-orange-500 text-white rounded-md hover:bg-orange-600"
-                >
-                  Save
-                </button>
-              )}
-            </div>
+            <FixedActionButtons
+              onSave={() => handleSubmit(new Event("submit") as unknown as React.FormEvent)}
+              onCancel={() => navigate("/vendorList")}
+              showSave={Boolean((!id && canCreate) || (id && canUpdate))}
+            />
 
           </div>
         </form>

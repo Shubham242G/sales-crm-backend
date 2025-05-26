@@ -8,7 +8,7 @@ function Layout() {
   return (
     <div className="">
       <main>
-        <div className="grid grid-cols-12">
+        <div className="grid grid-cols-12 ">
           <div className="col-span-2">
             <Sidebar />
           </div>

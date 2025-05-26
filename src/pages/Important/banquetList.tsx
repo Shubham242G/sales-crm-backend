@@ -261,8 +261,8 @@ function BanquetList() {
         filterbuttn={false}
       /> */}
 
-      <div className="container px-6">
-        <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
+      <div className="container ">
+        <div className="bg-white table_container rounded-xl  -mt-5">
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
@@ -270,7 +270,7 @@ function BanquetList() {
             </h2>
 
             {/* Search and Buttons on the Right */}
-            <div className="flex items-center justify-start gap-2">
+            <div className="flex items-center justify-start gap-2 mr-4">
               {/* Search Box */}
               <div className="w-full">
                 <input
@@ -310,7 +310,7 @@ function BanquetList() {
           </div>
 
           {/* React Table */}
-         
+         <div className="-ml-5 mt-5">
           <ReactTable
             data={banquetData?.data}
             columns={filteredColumns}
@@ -323,6 +323,8 @@ function BanquetList() {
             isServerPropsDisabled={false}
           />
          
+         </div>
+          
         </div>
       </div>
     </>

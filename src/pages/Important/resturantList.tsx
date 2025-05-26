@@ -265,8 +265,8 @@ function ResturantList() {
         filterbuttn={false}
       /> */}
 
-      <div className="container px-6">
-        <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
+      <div className="container  ">
+        <div className="bg-white table_container rounded-xl  -mt-5">
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
@@ -274,7 +274,7 @@ function ResturantList() {
             </h2>
 
             {/* Search and Buttons on the Right */}
-            <div className="flex items-center justify-start gap-2">
+            <div className="flex items-center justify-start gap-2 mr-4">
               {/* Search Box */}
               <div className="w-full">
                 <input
@@ -284,7 +284,7 @@ function ResturantList() {
                 />
               </div>
               
-  <div className="relative">
+               <div className="relative">
                             <button
                               className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                               onClick={() => setShowColumnSelector(!showColumnSelector)}
@@ -313,9 +313,10 @@ function ResturantList() {
             </div>
           </div>
           {/* React Table */}
-          <ReactTable
+         <div className="-ml-5 mt-5">
+           <ReactTable
             data={resturantData?.data}
-             columns={filteredColumns}
+            columns={filteredColumns}
             loading={false}
             totalRows={resturantData.total}
             onChangePage={handlePageChange}
@@ -324,6 +325,7 @@ function ResturantList() {
             paginationRowsPerPageOptions={[5, 10, 20]}
             isServerPropsDisabled={false}
           />
+         </div>
         </div>
       </div>
     </>

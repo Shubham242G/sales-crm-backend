@@ -322,24 +322,24 @@ function MyTask() {
 
   return (
     <>
-      <div className="container px-6">
-        <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
+      <div className="container ">
+        <div className="bg-white table_container rounded-xl mr-4 -mt-5">
           <div className="search_boxes flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-800">
               My Tasks List
             </h2>
 
-            <div className="flex items-center justify-start gap-2">
-              <div className="w-full flex items-center ">
+            <div className="flex items-center justify-start gap-2 ">
+              <div className="w-full flex items-center  ">
                 <input
                   type="search"
-                  className="rounded-md w-[250px] border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  className="rounded-md w-[250px] border text-sm px-3 border-gray-300 py-1.5  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                   placeholder="Search by contact name"
                 />
 
                 <div className="relative">
                   <button
-                    className="flex items-center gap-1  px-3 py-1.5 ml-3 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                    className="flex items-center gap-1 text-sm  px-3 py-1.5 ml-3 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                     onClick={() => setShowColumnSelector(!showColumnSelector)}
                   >
                     <FaColumns /> Columns
@@ -357,7 +357,7 @@ function MyTask() {
               {canCreate && (
                 <button
                   onClick={() => navigate("/add-TaskManagement")}
-                  className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                  className="flex w-full items-center justify-center gap-1 px-3 py-1.5 text-sm text-white rounded-md bg-orange-500 border border-gray-300"
                 >
                   <FaPlus />
                   <span>New TaskManagement</span>
@@ -365,7 +365,9 @@ function MyTask() {
               )}
             </div>
           </div>
-          <ReactTable
+          
+          <div className="-ml-5 -mr-2 mt-5">
+<ReactTable
             data={TaskManagementData.data}
             columns={filteredColumns}
             loading={false}
@@ -376,6 +378,8 @@ function MyTask() {
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
           />
+          </div>
+          
         </div>
       </div>
     </>

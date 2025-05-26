@@ -4,17 +4,17 @@
 export const customReactStyles = {
     control: (base: any) => ({
         ...base,
-        border: '1px solid #D9D9D9 !important',
-        boxShadow: '0 !important',
+        // border: '1px solid #D9D9D9 !important',
+        // boxShadow: '0 !important',
         // padding:'8px',
         zindex:'3',
-        height:"40px",
-        minHeight:'30px',
+        // height:"40px",
+        // minHeight:'30px',
         // '&:hover': {
         //     border: '2px solid #D9D9D9 !important',
         //     bgColor:"#990a3e",
         // },
-        backgroundColor: "#fafafa"
+        
       
         
     })

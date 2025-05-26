@@ -242,7 +242,7 @@ export const ReactTable = ({
       responsive
       selectableRows= {selectableRows }
        fixedHeader
-      fixedHeaderScrollHeight="460px"
+      fixedHeaderScrollHeight="532px"
       className={className}
       onSelectedRowsChange={onSelectedRowsChange}
     />

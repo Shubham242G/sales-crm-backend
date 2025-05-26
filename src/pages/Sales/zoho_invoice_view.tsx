@@ -444,23 +444,23 @@ function ZohoInvoiceView() {
 
 
     return (
-        <div className="container px-6">
-            <div className="bg-white rounded-xl shadow-xl p-6 -mt-5">
+        <div className="container -ml-5">
+            <div className=" rounded-xl   -mt-5">
                 <div className="flex justify-between items-center ">
-                    <h2 className="text-xl font-semibold text-gray-800">
+                    <h2 className="text-xl ml-2 font-semibold text-gray-800">
                         Zoho Invoice List
                     </h2>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center mb-5 gap-2">
                         <input
                             type="search"
                             placeholder="Search customer..."
                             onChange={(e) => setQuery(e.target.value)}
-                            className=" px-3 py-1.5 rounded-md text-gray-700 border w[200px] border-gray-300"
+                            className=" px-3 py-1.5 text-sm rounded-md text-gray-700 border w[200px] border-gray-300"
                         />
                          <div className="relative">
                             <button
-                              className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                              className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                               onClick={() => setShowColumnSelector(!showColumnSelector)}
                             >
                               <FaColumns/> Columns
@@ -471,7 +471,7 @@ function ZohoInvoiceView() {
 
 
                         <select
-                            className="flex items-center gap-1 px-5 py-2.5 rounded-md text-gray-700 border border-gray-300"
+                            className="flex items-center gap-1 px-3 py-2 rounded-md text-gray-700 border border-gray-300"
                             value={selectedStatus}
                             onChange={(e) => setSelectedStatus(e.target.value)}
                         >
@@ -487,20 +487,20 @@ function ZohoInvoiceView() {
                         </button> */}
                         <button
                             onClick={handleSyncInvoices}
-                            className="flex items-center w-[140px] text-sm gap-1  px-3 py-1.5.5 rounded-md text-gray-700 border border-gray-300"
+                            className="flex items-center w-[140px] text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
                             disabled={syncInvoicesMutation.isPending}
                         >
                             <FaSync className="pl-1" /> {syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}
                         </button>
                         <div className="relative flex items-center " id="exportDropdown">
                             <button
-                                className={`flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
+                                className={`flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
                                 onClick={() => !isExporting && setShowExportOptions(!showExportOptions)}
                                 disabled={isExporting}
                             >
                                 <FaFileExport />
                                 {isExporting ? 'Exporting...' : 'Export'}
-                                <IoMdArrowDropdown className="ml-1" />
+                                <IoMdArrowDropdown className="ml-1 text-sm" />
                             </button>
 
                             {/* {showExportOptions && (
@@ -567,25 +567,27 @@ function ZohoInvoiceView() {
                                 </div>
                             )} */}
                         </div>
-                        <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+                        <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border text-sm border-gray-300">
                             Advance Search
                         </button>
 
 
                     </div>
                 </div>
-
-                <ReactTable
+                <div className=" -mr-4 ">
+                     <ReactTable
                     data={data?.data.slice(0, pageSize) || []}
                     columns={filteredColumns}
                     loading={isLoading || syncInvoicesMutation.isPending}
-                    totalRows={data?.total}
+                    totalRows={data?.total ||0}
                     onChangeRowsPerPage={setPageSize}
                     onChangePage={setPageIndex}
                     page={pageIndex}
                     rowsPerPageText={pageSize}
                     isServerPropsDisabled={false}
                 />
+                </div>
+               
             </div>
         </div>
     );
