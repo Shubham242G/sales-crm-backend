@@ -288,14 +288,10 @@ function Sidebar() {
   };
   const filteredSidebarArr = sidebarArr
     .map((item) => {
-      if (item.heading === "Dashboard" || item.heading === "Admin") return item;
+      if (item.heading === "Dashboard") return item;
 
       let filteredDropArr = item.dropArr
-        ? item.dropArr.filter(
-          (dropItem) =>
-            RoutePermission(dropItem.dropHead) ||
-            ["User", "Roles"].includes(dropItem.dropHead)
-        )
+        ? item.dropArr.filter((dropItem) => RoutePermission(dropItem.dropHead))
         : null;
 
       const hasMainPermission = RoutePermission(item.heading);
