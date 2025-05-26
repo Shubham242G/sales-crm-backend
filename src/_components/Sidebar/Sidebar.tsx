@@ -288,7 +288,7 @@ function Sidebar() {
   };
   const filteredSidebarArr = sidebarArr
     .map((item) => {
-      if (item.heading === "Dashboard") return item;
+      if (item.heading === "Dashboard" || item.heading === "User" || item.heading === "Roles") return item;
 
       let filteredDropArr = item.dropArr
         ? item.dropArr.filter((dropItem) => RoutePermission(dropItem.dropHead))
