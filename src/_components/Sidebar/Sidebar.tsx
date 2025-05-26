@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 import mainlogo from "../../assets/mainlogo/favicon-9.png";
 import logosm from "../../assets/header/360solutions_white_text_high_quality.png";
 
+
 import { getAuth } from "@/utils/auth";
 import { useRolesById, useRolesByRole } from "@/services/roles.service";
 import {
@@ -306,7 +307,7 @@ function Sidebar() {
 
   return (
     <>
-      <div className=" flex justify-center  fixed z-10 h-[48px] bg-[#21263C] w-[260px] ">
+      <div className=" flex justify-center  fixed z-10 h-[48px] bg-[#21263C] w-[260px]">
         <img
           src={logosm}
           alt="logosm"
@@ -324,16 +325,16 @@ function Sidebar() {
           />
         </div>
 
-        <ul className="main-list w-full overflow-auto h-[100vh] mt-2 ">
+        <ul className="main-list w-full overflow-auto h-[100vh] mt-2">
           {filteredSidebarArr.map((el, index) => (
-            <li className="relative mt-4 -mb-2 ml-1 text-[14px] " key={index}>
+            <li className="relative mt-4 -mb-2 ml-2 text-sm " key={index}>
               {el?.dropArr ? (
                 <button
                   type="button"
                   className="flex text-gray-850 items-center p-3 w-full bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors justify-between"
                   onClick={() => handleDropShow(index)}
                 >
-                  <div className="icon w-4 h-3 mr-4   flex flex-row items-center gap-2">
+                  <div className="icon w-5 h-3 mr-4   flex flex-row items-center gap-2">
                     <img
                       src={showdrop === index ? el.activeIcon : el.icon}
                       alt={el.heading}
@@ -351,7 +352,7 @@ function Sidebar() {
                   to={el?.mainlink ? el.mainlink : ""}
                   className="flex items-center p-3 w-full  bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors"
                 >
-                  <div className="icon w-4 h-3 mr-2">
+                  <div className="icon w-5 h-3 mr-2">
                     <img src={el?.icon} alt={el?.heading} />
                   </div>
                   <h6 className=" flex-1 whitespace-nowrap ml-1 -mb-2">
@@ -361,7 +362,7 @@ function Sidebar() {
               )}
 
               {el?.dropArr && showdrop === index && (
-                <div className="dropdown_list max-h-40 ml-6 overflow-y-auto    ">
+                <div className="dropdown_list max-h-40 ml-6 overflow-y-auto">
                   <ul className="pl-6">
                     {el.dropArr.map((ele, idx) => (
                       <li key={idx} className="py-1">
@@ -370,7 +371,7 @@ function Sidebar() {
                             <>
                               <Link
                                 to={ele.link}
-                                className=" text-[13px] text-grey-850 hover:text-orange-500 hover:rounded-lg "
+                                className=" text-sm text-grey-850 hover:text-orange-500 hover:rounded-lg "
                               >
                                 {ele.dropHead}
                               </Link>

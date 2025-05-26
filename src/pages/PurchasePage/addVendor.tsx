@@ -37,7 +37,6 @@ interface IVendor {
   lastName: string;
   email: string;
   leadId: string;
-
   companyName: string;
   contactName: string;
   contactOwner: string;
@@ -1489,22 +1488,22 @@ const AddVendorForm = () => {
                         </div>
                       </div>
 
-                      {/* Display Name */}
-                      <div>
-                        <label className="block text-sm font-medium text-black mb-1">
-                          Display Name
-                        </label>
-                        <input
-                          name="displayName"
-                          value={vendor.displayName}
-                          onChange={(e) =>
-                            setVendor({ ...vendor, displayName: e.target.value })
-                          }
-                          type="text"
-                          className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
-                          placeholder="Enter display name"
-                        />
-                      </div>
+                    {/* Display Name */}
+                    <div>
+            <label className="block text-sm font-medium text-black mb-1">
+              Display Name
+            </label>
+            <input
+              name="displayName"
+              value={vendor.displayName}
+              onChange={(e) =>
+                setVendor({ ...vendor, displayName: e.target.value })
+              }
+              type="text"
+              className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
+              placeholder="Enter display name"
+            />
+          </div>
 
                       {/* Email Address */}
                       <div className="flex flex-col gap-[8px] lg:items-start md:items-center">

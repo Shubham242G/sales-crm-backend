@@ -190,11 +190,10 @@ function Leads() {
     try {
       const { data: res } = await convertLead(id);
 
-      console.log(res.data.id, "check the id lead when convert to contact");
-
       if (res) {
         toastSuccess(res.message);
         refetch();
+        navigate(`/add-customer/${res.data.id}`, { replace: true });
         navigate(`/add-customer/${res.data.id}`, { replace: true });
       }
     } catch (error) {

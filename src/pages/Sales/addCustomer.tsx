@@ -10,9 +10,7 @@ import { useRef } from "react";
 import { generateFilePath } from "@/services/urls.service";
 import { styled } from "@mui/system";
 import { Autocomplete, TextField, Popper } from "@mui/material";
-import {
 
-} from "react-icons"
 import { checkPermissionsForButtons } from "@/utils/permission";
 
 import { Type } from "typescript";
@@ -1274,6 +1272,7 @@ const AddCustomer = () => {
                             {/* <div className="w-96 mt-1">
                               {" "}
                               {/* Reduced margin-top here */}
+                            {/* <Autocomplete
                             {/* <Autocomplete
                                 disablePortal
                                 options={gstOptions}
