@@ -7,7 +7,7 @@ interface MultiFileUploadProps {
   onFileChange: (files: { value: string }[]) => void;
   accept?: string;
   label?: string;
-  value?: {value:string}[];
+  value?: { value: string }[];
 }
 
 
@@ -21,7 +21,7 @@ const MultiFileUpload: React.FC<MultiFileUploadProps> = ({
 }) => {
   const [error, setError] = useState<string | null>(null);
 
-  
+
   const getBase64 = (file: File, cb: (result: string) => void) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -43,7 +43,7 @@ const MultiFileUpload: React.FC<MultiFileUploadProps> = ({
 
           getBase64(file, (result) => {
             const filePath = generateFilePath(file.name);
-            newFiles.push({  preview: result });
+            newFiles.push({ preview: result });
             resolve();
           });
         })
@@ -51,15 +51,15 @@ const MultiFileUpload: React.FC<MultiFileUploadProps> = ({
 
     await Promise.all(filePromises);
 
-    let finalArr:any = []
+    let finalArr: any = []
 
 
-    if(value && value.length > 0 ){
+    if (value && value.length > 0) {
       finalArr = [...value, ...newFiles.map(({ preview }) => ({
         value: preview,
       }))]
     }
-    else{
+    else {
       finalArr = [
         ...newFiles.map(({ preview }) => ({
           value: preview,
@@ -70,16 +70,16 @@ const MultiFileUpload: React.FC<MultiFileUploadProps> = ({
   };
 
   const handleRemoveFile = (index: number) => {
-    if(value && value.length > 0 ){
-      const updatedFiles:any = value.filter((_, i) => i !== index);
+    if (value && value.length > 0) {
+      const updatedFiles: any = value.filter((_, i) => i !== index);
       console.log(updatedFiles, "updatedFiles")
-     
+
       onFileChange(
-        updatedFiles.map(({ value }:any) => ({
+        updatedFiles.map(({ value }: any) => ({
           value: value,
         }))
       );
-    } 
+    }
   };
   console.log(value, "valuevaluevaluevaluevaluevaluevalue")
 
@@ -89,13 +89,13 @@ const MultiFileUpload: React.FC<MultiFileUploadProps> = ({
 
       {error && <p className="file-upload-error">{error}</p>}
       <div className="file-preview-container">
-        {value && value.map((fileObj:any, index:number) => (
+        {value && value.map((fileObj: any, index: number) => (
           <div key={index} className="file-preview-box">
             <img
               src={
-                fileObj &&fileObj.value && fileObj.value.includes("base64")
+                fileObj && fileObj.value && fileObj.value.includes("base64")
                   ? fileObj.value
-                  : generateFilePath(fileObj.value)
+                  : generateFilePath(fileObj?.value)
               }
               alt="Preview"
               className="file-preview-image"

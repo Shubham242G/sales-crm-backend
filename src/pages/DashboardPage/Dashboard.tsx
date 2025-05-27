@@ -235,15 +235,7 @@ type FieldVisibility = {
   admin: { totalRevenue: boolean; expenses: boolean; profit: boolean };
 };
 
-const fetchDailyQuote = async () => {
-  try {
-    const response = await fetch('https://api.quotable.io/random');
-    const data = await response.json();
-    return { text: data.content, author: data.author };
-  } catch (error) {
-    return staticQuotes[Math.floor(Math.random() * staticQuotes.length)];
-  }
-};
+
 
 const Dashboard: React.FC = () => {
   const [userRole, setUserRole] = useState<UserRole>('sales');
@@ -278,29 +270,7 @@ const Dashboard: React.FC = () => {
   const revenue = dashboard.revenue || '0';
 
   // Fetch quote on mount and update daily
-  useEffect(() => {
-    const updateQuote = async () => {
-      const newQuote = await fetchDailyQuote();
-      setQuote(newQuote);
-    };
 
-    updateQuote();
-
-    const checkDailyUpdate = () => {
-      const now = new Date();
-      const lastFetchDate = localStorage.getItem('lastQuoteFetchDate');
-      const today = now.toDateString();
-
-      if (lastFetchDate !== today) {
-        updateQuote();
-        localStorage.setItem('lastQuoteFetchDate', today);
-      }
-    };
-
-    const interval = setInterval(checkDailyUpdate, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const getData = () => {
     if (userRole === 'sales') return salesData;
@@ -420,7 +390,7 @@ const Dashboard: React.FC = () => {
               ))}
             </Pie>
             <Tooltip />
-            <Legend  />
+            <Legend />
           </PieChart>
         );
       } else {
@@ -629,10 +599,10 @@ const Dashboard: React.FC = () => {
 
           {/* Show the chart */}
           <div className='ml-20'>
-          <ResponsiveContainer width="90%" height={350} >
-            {renderChart() ?? <p className="text-gray-500">No data available for the selected chart type.</p>}
-          </ResponsiveContainer>
-        </div>
+            <ResponsiveContainer width="90%" height={350} >
+              {renderChart() ?? <p className="text-gray-500">No data available for the selected chart type.</p>}
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </div>

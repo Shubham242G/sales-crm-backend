@@ -611,13 +611,13 @@ const AddQuotesFromVendors = () => {
                           type="number"
                           min={0}
                           value={item.orignalAmount}
-                          // onChange={(e) =>
-                          //   // handleOriginalChange(
-                          //   //   // index,
-                          //   //   // "originalAmount",
-                          //   //   e.target.value
-                          //   // )
-                          //}
+                          onChange={(e) =>
+                            handleOriginalChange(
+                              index,
+                              "orignalAmount",
+                              e.target.value
+                            )
+                          }
                           className="w-full border border-gray-300 bg-gray-50 rounded-md p-3 text-gray-600  transition duration-200"
                           placeholder="Enter original amount"
                         />

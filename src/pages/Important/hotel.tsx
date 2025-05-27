@@ -29,11 +29,19 @@ const AddHotel = () => {
     // Prefill form when editing
     if (hotelDataById) {
       setName(hotelDataById?.data?.name || "");
+
+      setImages(
+        hotelDataById?.data?.imagesArr?.length > 0
+          ? hotelDataById?.data?.imagesArr.map((el: any) => ({ image: el.image }))
+          : [{ image: "" }]
+      );
+
     }
   }, [hotelDataById]);
   const handleImageUpload = (files: { value: string }[]) => {
-  
+
     setImages(files.map((el) => ({ image: el.value })));
+    console.log(images, "<------images in hotel");
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,12 +141,29 @@ const AddHotel = () => {
             {/* <Grid item lg={12} className={styles.mb_3}> */}
             {/* <h2>Upload Multiple Images</h2> */}
 
+            {/* <div className="mt-4">
+              <h2 className="text-lg font-semibold mb-2">Uploaded Images</h2>
+              <div className="flex flex-wrap gap-4">
+                {images && images.length > 0 ? (
+                  images
+                    .filter((el) => el.image !== "")
+                    .map((el, index) => (
+                      <div key={index} className="relative w-24 h-24 border rounded overflow-hidden">
+                        <img src={el.image} alt={`Uploaded ${index}`} className="object-cover w-full h-full" />
+                      </div>
+                    ))
+                ) : (
+                  <p>No images uploaded yet.</p>
+                )}
+              </div>
+            </div> */}
+
             <MultiFileUpload
               value={
                 images && images.length > 0
                   ? images
-                      .filter((el) => el.image != "")
-                      .map((el) => ({ value: el.image }))
+                    .filter((el) => el.image != "")
+                    .map((el) => ({ value: el.image }))
                   : []
               }
               onFileChange={handleImageUpload}
