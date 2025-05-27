@@ -26,6 +26,8 @@ import {
   CreateRoutePermission,
   RoutePermission,
 } from "@/utils/permission";
+import { AiFillCloseSquare } from "react-icons/ai";
+import { FaBars } from "react-icons/fa";
 
 function Sidebar() {
 
@@ -281,6 +283,7 @@ function Sidebar() {
 
   ]);
 
+  const [showMenu, setShowMenu] = useState(false);
   const [showdrop, setShowDrop] = useState(null);
 
   const handleDropShow = (index: any) => {
@@ -303,31 +306,47 @@ function Sidebar() {
     })
     .filter(Boolean);
 
-
+  const handleToggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
 
   return (
     <>
-      <div className=" flex justify-center  fixed z-10 h-[48px] bg-[#21263C] w-[260px]">
+      <div className="">
         <img
           src={logosm}
           alt="logosm"
-          className=" w-12 h-7 -ml-14 mt-3"
+          className="w-12 h-7 -ml-14 mt-3"
         />
         <h1 className="mt-4 text-sm text-white">A MICE COMPANY</h1>
+        <button
+          type="button"
+          className="lg:hidden absolute right-4 top-2"
+          onClick={handleToggleMenu}
+        >
+          {showMenu ? (
+            <AiFillCloseSquare className="w-6 h-6 text-white" />
+          ) : (
+            <FaBars className="w-6 h-6 text-white" />
+          )}
+        </button>
       </div>
-      <div className=" text-gray-850 bg-[#f7f8ff] h-full lg:h-[100vh]  w-[210px] fixed border-r-2">
-
-        <div className="  mt-14 p-2 ml-9  w-[130px] h-[120px]    ">
+      <div
+        className={`${
+          showMenu ? "" : "hidden"
+        } lg:flex lg:flex-col lg:w-[210px] lg:h-full lg:bg-[#f7f8ff] lg:border-r-2 lg:fixed lg:top-0 lg:left-0 lg:z-10 transition-all duration-200`}
+      >
+        <div className="mt-14 p-2 ml-9  w-[130px] h-[120px]    ">
           <img
             src={mainlogo}
             alt="mainlogo"
-            className=" mx-auto"
+            className="mx-auto"
           />
         </div>
 
         <ul className="main-list w-full overflow-auto h-[100vh] mt-2">
           {filteredSidebarArr.map((el, index) => (
-            <li className="relative mt-4 -mb-2 ml-2 text-sm " key={index}>
+            <li className="relative mt-4 -mb-2 ml-2 text-sm" key={index}>
               {el?.dropArr ? (
                 <button
                   type="button"
@@ -339,12 +358,14 @@ function Sidebar() {
                       src={showdrop === index ? el.activeIcon : el.icon}
                       alt={el.heading}
                     />
-                    <h6 className=" flex-1 group-hover:text-white ml-1 whitespace-nowrap">
+                    <h6 className="flex-1 group-hover:text-white ml-1 whitespace-nowrap">
                       {el.heading}
                     </h6>
                   </div>
                   <MdChevronRight
-                    className={`transition-transform ${showdrop === index ? "rotate-90" : ""}`}
+                    className={`transition-transform ${
+                      showdrop === index ? "rotate-90" : ""
+                    }`}
                   />
                 </button>
               ) : (
@@ -355,7 +376,7 @@ function Sidebar() {
                   <div className="icon w-5 h-3 mr-2">
                     <img src={el?.icon} alt={el?.heading} />
                   </div>
-                  <h6 className=" flex-1 whitespace-nowrap ml-1 -mb-2">
+                  <h6 className="flex-1 whitespace-nowrap ml-1 -mb-2">
                     {el?.heading}
                   </h6>
                 </Link>
@@ -371,7 +392,7 @@ function Sidebar() {
                             <>
                               <Link
                                 to={ele.link}
-                                className=" text-sm text-grey-850 hover:text-orange-500 hover:rounded-lg "
+                                className="text-sm text-grey-850 hover:text-orange-500 hover:rounded-lg "
                               >
                                 {ele.dropHead}
                               </Link>

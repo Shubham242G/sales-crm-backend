@@ -218,7 +218,7 @@ function VendorList() {
             <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
           </button>
           { selectedRowId === row._id   &&  (isOpenAction) && (
-            <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden border">
+            <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
 
               <Link
                 to={`/add-vendor/${row?._id}`}
@@ -347,45 +347,31 @@ function VendorList() {
     </div>
   );
 
-  const calculateDynamicWidths = (columnsArray: any[]) => {
-    const visibleColumnsCount = columnsArray.length;
-    
-    if (visibleColumnsCount === 0) return columnsArray;
-    
-    const columnsWithDynamicWidth = columnsArray.map(column => ({...column}));
-    
-    const baseWidth = 100 / visibleColumnsCount; 
+  const calculateFixedWidths = (columnsArray: any[]) => {
+    const totalWidth = columnsArray.length > 0 ? columnsArray.length * 190 : 1;
+    const containerWidth = window.innerWidth - 100; // Adjust for padding/margins
+    const columnsWithFixedWidth = columnsArray.map((column) => ({
+      ...column,
+      width:
+        column.name === "Actions"
+          ? "120px"
+          : totalWidth > containerWidth
+            ? "200px"
+            : `${98 / columnsArray.length}%`,
+    }));
 
-    const MIN_WIDTH = 8; 
-    const MAX_WIDTH = 20; 
+    console.log(columnsWithFixedWidth, "check the column width");
 
-    columnsWithDynamicWidth.forEach(column => {
-      let allocatedWidth = baseWidth;
-
-      // Columns that typically need less space
-      if (column.name === "Delete" || column.name === "Edit") {
-        allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
-      }
-      // Columns that might need more space
-      else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-        allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
-      }
-
-      column.width = `${allocatedWidth}%`;
-    });
-
-    console.log(columnsWithDynamicWidth, "check the column width")
-    
-    return columnsWithDynamicWidth;
+    return columnsWithFixedWidth;
   };
 
   // Filter columns based on visibility
-  const visibleColumnsArray = columns.filter(column => 
-    visibleColumns[column.name as keyof typeof visibleColumns]
+  const visibleColumnsArray = columns.filter(
+    (column) => visibleColumns[column.name as keyof typeof visibleColumns]
   );
-  
-  // Apply dynamic widths to visible columns
-  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+
+  // Apply fixed widths to visible columns
+  const filteredColumns = calculateFixedWidths(visibleColumnsArray);
 
   const resetColumnVisibility = () => {
     setVisibleColumns({

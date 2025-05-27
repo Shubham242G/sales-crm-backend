@@ -84,7 +84,7 @@ interface IBanquet {
   banquetNonVegPrice: string;
   banquetFloor: string;
   banquetLocation: string;
-  banquetLocation: string;
+  
   prefuntionAreaSize: string;
 }
 
@@ -407,7 +407,6 @@ const AddVendorForm = () => {
       contactName: "John Doe",
       contactOwner: "Jane Smith",
       panNumber: "ABCDE1234F",
-      leadId: "12345",
       gst: "27ABCDE1234F1Z5",
       vendorType: ["Hotel"],
       landLine: "022-12345678",

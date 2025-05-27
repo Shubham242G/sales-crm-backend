@@ -66,15 +66,15 @@ function Header() {
 
   return (
     <>
-      <header className="w-full mb-9 z-50  ">  
+      <header className="w-full mb-9 z-50 fixed top-0 left-0">
         <div className="flex flex-row">
-          <div className="w-[100vw]  h-[48px] ">
-            <div className="right_header flex justify-end bg-[#21263C] px-5 py-4 h-full ">
+          <div className="w-[100%] h-[48px]">
+            <div className="right_header flex justify-end bg-[#21263C] px-5 py-4 h-full">
               <div className="button_group flex gap-4 items-center">
                 {/* Notification Button */}
                 <button
                   type="button"
-                  className="text-secondarycolor flex items-center text-2xl relative "
+                  className="text-secondarycolor flex items-center text-2xl relative"
                   onClick={handleNotification}
                 >
                   {notificationCount > 0 && (
@@ -82,7 +82,7 @@ function Header() {
                       {notificationCount}
                     </p>
                   )}
-                  <FaBell className="text-white z-40 w-[20px] h-[20px] " />
+                  <FaBell className="text-white z-40 w-[20px] h-[20px]" />
                 </button>
 
                 {/* User Dropdown Button with Name */}
@@ -90,7 +90,7 @@ function Header() {
                   <button
                     type="button"
                     onClick={() => setLoginDrop(!loginDrop)}
-                    className="flex items-center gap-2 py-1  px-4 rounded-md font-medium text-white bg-orange-500 hover:text-white"
+                    className="flex items-center gap-2 py-1 px-4 rounded-md font-medium text-white bg-orange-500 hover:text-white"
                   >
                     <span className="text-sm font-semibold">{formData?.name}</span>
                     <IoChevronDown className="text-lg text-white" />
@@ -98,45 +98,30 @@ function Header() {
 
                   {/* Dropdown Menu */}
                   {loginDrop && (
-                    // <div className="w-[200px] min-h-[110px] bg-[#f9f9f9] border z-10 border-[#e3e3e3] dropdown_list shadow-xl absolute -bottom-[115px] -left-28">
-                    //   <ul className="flex gap-[10px] border-b border-[#e3e3e3] p-3">
-                    //     <li>
-                    //       <h6 className="text-secondarycolor font-semibold text-left">{formData?.name}</h6>
-                    //       <p className="text-paracolor uppercase text-sm text-left">{formData?.email}</p>
-                    //       <p className="text-paracolor uppercase text-sm text-left">{formData?.role}</p>
-                    //     </li>
-                    //   </ul>
-                    //   <button
-                    //     onClick={handleLogout}
-                    //     className="text-paracolor py-2 px-3 w-full text-left tracking-wide hover:bg-buttnhover hover:text-white"
-                    //   >
-                    //     Logout
-                    //   </button>
-                    // </div>
-                    <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-lg p-6 space-y-4 hover:shadow-xl z-10 -left-40  absolute transition-shadow duration-300">
-                    <div className="flex items-center space-x-4">
-                      <div className="bg-orange-100 text-orange-500 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl">
-                        {formData?.name.charAt(0).toUpperCase()}
+                    <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-lg p-6 space-y-4 hover:shadow-xl z-10 -left-40 absolute transition-shadow duration-300">
+                      <div className="flex items-center space-x-4">
+                        <div className="bg-orange-100 text-orange-500 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl">
+                          {formData?.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <h2 className="text-xl font-semibold text-gray-800">{formData?.name}</h2>
+                          <p className="text-sm text-gray-500">{formData?.email}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h2 className="text-xl font-semibold text-gray-800">{formData?.name}</h2>
-                        <p className="text-sm text-gray-500">{formData?.email}</p>
+
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-white bg-orange-500 px-3 py-1 rounded-full">
+                          {formData?.role}
+                        </span>
+
+                        <button
+                          onClick={handleLogout}
+                          className="text-sm text-red-700 border border-red-500 px-3 py-1 rounded-full hover:bg-red-100 transition duration-200"
+                        >
+                          Logout
+                        </button>
                       </div>
                     </div>
-              
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-white bg-orange-500 px-3 py-1 rounded-full">
-                        {formData?.role}
-                      </span>
-              
-                      <button
-                        onClick={handleLogout}
-                        className="text-sm text-red-700 border border-red-500 px-3 py-1 rounded-full hover:bg-red-100 transition duration-200"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  </div>
                   )}
                 </div>
               </div>
