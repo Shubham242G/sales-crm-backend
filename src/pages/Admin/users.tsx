@@ -232,7 +232,7 @@ function Users() {
 
   return (
     <>
-     <div className="container mt-16 -ml-3">
+     <div className="container mt-16 -ml-3 p-5">
         <div className=" table_container rounded-xl   ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
             <h2 className="text-lg ml-1 font-semibold text-[#2a2929]">Users List</h2>

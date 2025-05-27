@@ -451,8 +451,8 @@ function RfpList() {
         filterbuttn={false}
       /> */}
 
-      <div className="container top-0 b sticky -mt-7  ">
-        <div className="bg-white table_container rounded-xl   px-3 py-1.5  ">
+      <div className="container top-0 b sticky  mt-20 ">
+        <div className="bg-white table_container rounded-xl p-8  ">
           <div className="search_boxes flex justify-between items-center mb-3 mr-6">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
