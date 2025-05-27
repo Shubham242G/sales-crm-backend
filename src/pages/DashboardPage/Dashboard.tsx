@@ -516,16 +516,16 @@ const Dashboard: React.FC = () => {
         
         {/* Quote */}
         <blockquote className="text-xl text-gray-800 leading-relaxed mb-6 font-medium">
-          {quote ? `"${quote.text}"` : "Loading Quotes..."}
+          {staticQuotes[Math.floor(Math.random() * staticQuotes.length)] ? `"${staticQuotes[Math.floor(Math.random() * staticQuotes.length)].text}"` : "Loading Quotes..."}
         </blockquote>
         
         {/* Author with avatar placeholder */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-              {quote?.author?.split(' ').map(n => n[0]).join('')}
-            </div>
-            <span className="text-gray-700 font-medium">{quote?.author}</span>
+            {/* <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+              {staticQuotes[Math.floor(Math.random() * staticQuotes.length)]?.author?.split(' ').map(n => n[0]).join('')}
+            </div> */}
+            <span className="text-gray-700 font-medium">{ staticQuotes[Math.floor(Math.random() * staticQuotes.length)]?.author}</span>
           </div>
           <div className="text-2xl">📚</div>
         </div>
@@ -533,22 +533,22 @@ const Dashboard: React.FC = () => {
     </div>
 
         {/* Buttons to switch roles */}
-        <div className="flex justify-center gap-4 ">
+        <div className="flex justify-center gap-4 -ml-16 ">
           <button
             onClick={() => setUserRole('sales')}
-            className={`  bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-2xl font-medium shadow-lg" ${userRole === 'sales' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className="bg-blue-500 text-white px-3 py-1.5 rounded-md font-medium shadow-lg" 
           >
             Sales
           </button>
           <button
             onClick={() => setUserRole('operations')}
-            className={` bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-2xl font-medium shadow-lg"${userRole === 'operations' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className="bg-blue-500 text-white  px-3 py-1.5 rounded-md font-medium shadow-lg" 
           >
             Operations
           </button>
           <button
             onClick={() => setUserRole('admin')}
-            className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-2xl font-medium shadow-lg" ${userRole === 'admin' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+           className="bg-blue-500 text-white px-3 py-1.5 rounded-md font-medium shadow-lg" 
           >
             Admin
           </button>
@@ -556,7 +556,7 @@ const Dashboard: React.FC = () => {
 
         {/* Chart section */}
         <div className="bg-white p-6 rounded-lg shadow-lg ">
-          <h2 className="text-lg font-semibold mb-4 text-center mt-2">{userRole.toUpperCase()} DASHBOARD</h2>
+          <h2 className="text-lg font-semibold mb-4 text-center mt-2 -ml-16">{userRole.toUpperCase()} DASHBOARD</h2>
 
           {/* Pick a chart type */}
           <div className="flex gap-4 mb-4 items-center">

@@ -738,7 +738,7 @@ function Leads() {
               <input
                 type="search"
                 className="rounded-md border px-3 py-1.5 w-[200px] border-gray-300 placeholder-gray-500 text-sm focus:outline-none focus:border-orange-500"
-                placeholder="  Search by contact name"
+                placeholder="  Search by Display name"
                 value={searchQuery}
                 onChange={handleSearchInput}
                 onKeyPress={(e) => {
