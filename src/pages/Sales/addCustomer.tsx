@@ -255,100 +255,32 @@ const AddCustomer = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Update your useEffect to use optional chaining
+
   useEffect(() => {
     if (customerDataById) {
       const apiData = customerDataById.data;
 
       console.log(apiData, "checking the api data");
-      // Update your useEffect to use optional chaining
-      useEffect(() => {
-        if (customerDataById) {
-          const apiData = customerDataById.data;
 
-          console.log(apiData, "checking the api data");
+      if (apiData?.contactPersons) {
+        setContactPersons(
+          apiData.contactPersons.map((person: any) => ({
+            salutation: person.salutation || "",
+            firstName: person.firstName || "",
+            lastName: person.lastName || "",
+            email: person.email || "",
+            leadId: person.leadId || "",
+            workPhone: person.workPhone || "",
+            mobilePhone: person.mobilePhone || "",
+            contactPersonDateOfBirth: person.contactPersonDateOfBirth || "",
+            contactPersonAnniversary: person.contactPersonAnniversary || "",
+            contactPersonDesignation: person.contactPersonDesignation || "",
+            contactPersonDepartment: person.contactPersonDepartment || "",
+            communicationChannels: person.communicationChannels || [],
+          }))
+        );
+      }
 
-          if (apiData?.contactPersons) {
-            setContactPersons(
-              apiData.contactPersons.map((person: any) => ({
-                salutation: person.salutation || "",
-                firstName: person.firstName || "",
-                lastName: person.lastName || "",
-                email: person.email || "",
-                leadId: person.leadId || "",
-                workPhone: person.workPhone || "",
-                mobilePhone: person.mobilePhone || "",
-                contactPersonDateOfBirth: person.contactPersonDateOfBirth || "",
-                contactPersonAnniversary: person.contactPersonAnniversary || "",
-                contactPersonDesignation: person.contactPersonDesignation || "",
-                contactPersonDepartment: person.contactPersonDepartment || "",
-                communicationChannels: person.communicationChannels || [],
-              }))
-            );
-          }
-
-          setFormData((prev) => ({
-            ...prev,
-
-            email: apiData?.email || "",
-            phone: apiData?.phone || "",
-            mobile: apiData?.mobile || "",
-            panNumber: apiData?.panNumber || "",
-            placeOfSupply: apiData?.placeOfSupply || "",
-            companyName: apiData?.companyName || "",
-            displayName: apiData?.displayName || "",
-            customerType: apiData?.customerType || "",
-            salutation: apiData?.salutation || "",
-            leadId: String(apiData?.leadId || ""),
-            firstName: apiData?.firstName || "",
-            lastName: apiData?.lastName || "",
-            taxPreference: apiData?.taxPreference || "",
-            gstTreatment: apiData?.gstTreatment || "",
-            openingBalanceState: apiData?.openingBalanceState || "",
-            openingBalance: apiData?.openingBalance || "",
-            creditLimit: apiData?.creditLimit || "",
-            enablePortal: apiData?.enablePortal || false,
-            currency: apiData?.currency || "",
-            paymentTerms: apiData?.paymentTerms || "",
-            priceList: apiData?.priceList || "",
-            portalLanguage: apiData?.portalLanguage || "",
-            // attention: apiData?.attention || "",
-            countryRegion: apiData?.countryRegion || "",
-            addressStreet1: apiData?.addressStreet1 || "",
-            addressStreet2: apiData?.addressStreet2 || "",
-            pinCode: apiData?.pinCode || "",
-            city: apiData?.city || "",
-            state: apiData?.state || "",
-            prefersEmail: apiData?.prefersEmail,
-            prefersSms: apiData?.prefersSms,
-            phoneNumber: apiData?.phoneNumber || "",
-            faxNumber: apiData?.faxNumber || "",
-            // shippingAttention: apiData?.shippingAttention || "",
-            shippingCountryRegion: apiData?.shippingCountryRegion || "",
-            shippingAddressStreet1: apiData?.shippingAddressStreet1 || "",
-            shippingAddressStreet2: apiData?.shippingAddressStreet2 || "",
-            shippingCity: apiData?.shippingCity || "",
-            shippingState: apiData?.shippingState || "",
-            shippingPinCode: apiData?.shippingPinCode || "",
-            shippingPhoneNumber: apiData?.shippingPhoneNumber || "",
-            shippingFaxNumber: apiData?.shippingFaxNumber || "",
-            documentArray: apiData?.documentArray || [],
-            websiteUrl: apiData?.websiteUrl || "",
-            department: apiData?.department || "",
-            designation: apiData?.designation || "",
-            twitter: apiData?.twitter || "",
-            skype: apiData?.skype || "",
-            facebook: apiData?.facebook || "",
-            // communicationChannels: apiData?.communicationChannels || [],
-            // contactPersonsSalutation: apiData?.contactPersonsSalutation || "",
-            // contactPersonsFirstName: apiData?.contactPersonsFirstName || "",
-            // contactPersonsLastName: apiData?.contactPersonsLastName || "",
-            // contactPersonsEmail: apiData?.contactPersonsEmail || "",
-            // contactPersonsWorkPhone: apiData?.contactPersonsWorkPhone || "",
-            // contactPersonsMobile: apiData?.contactPersonsMobile || "",
-            // contactPersonsCommunicationChannels: apiData?. contactPersonsCommunicationChannels || "",
-          }));
-        }
-      }, [customerDataById]);
       setFormData((prev) => ({
         ...prev,
 
@@ -412,6 +344,7 @@ const AddCustomer = () => {
       }));
     }
   }, [customerDataById]);
+
 
 
   console.log(formData.salutation, "checking the salutation");
@@ -666,7 +599,7 @@ const AddCustomer = () => {
     {
       value: "registered_regular",
       label: "Registered Business - Business that is registered under GST",
-      
+
     },
     {
       value: "registered_composite",
@@ -1038,19 +971,19 @@ const AddCustomer = () => {
                 {/* Display Name */}
                 <div className="flex items-center gap-6">
                   <span className="w-32 text-sm font-medium text-gray-700 -mt-3 ">
-                   Display Name:
+                    Display Name:
                   </span>
                   <div className="w-[250px] -mt-2">
                     {" "}
                     {/* Added width container matching other fields */}
                     <input
-                    type="text"
-                    name="displayName"
-                    value={formData.displayName}
-                    onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
-                    placeholder="Display Name"
-                    className="w-full border border-gray-300 rounded-md p-1 pl-3 text-sm -mt-3 "
-                  />
+                      type="text"
+                      name="displayName"
+                      value={formData.displayName}
+                      onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+                      placeholder="Display Name"
+                      className="w-full border border-gray-300 rounded-md p-1 pl-3 text-sm -mt-3 "
+                    />
                   </div>
                 </div>
                 {/* <div>
@@ -1251,7 +1184,7 @@ const AddCustomer = () => {
                                 options={gstOptions}
                                 className="text-sm"
                                 value={
-                                gstOptions.find((option) => option.value === formData.gstTreatment) || null
+                                  gstOptions.find((option) => option.value === formData.gstTreatment) || null
                                 }
                                 onChange={(event, newValue) => {
                                   setFormData({
@@ -1266,11 +1199,11 @@ const AddCustomer = () => {
                                     label="Select GST Treatment"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "30px",  fontSize: "14px", marginBottom:"-4px" },
+                                      style: { height: "30px", fontSize: "14px", marginBottom: "-4px" },
                                     }}
                                     sx={{
                                       "& .MuiInputBase-root": {
-                                      height: "36px", fontSize: "14px"   
+                                        height: "36px", fontSize: "14px"
                                       },
                                       "& .MuiInputLabel-root": {
                                         fontSize: "14px",
@@ -1365,8 +1298,8 @@ const AddCustomer = () => {
                                     label="Select State"
                                     InputProps={{
                                       ...params.InputProps,
-                                      style: { height: "30px" ,marginTop:"-2px" },
-                                      
+                                      style: { height: "30px", marginTop: "-2px" },
+
                                     }}
                                     sx={{
 
