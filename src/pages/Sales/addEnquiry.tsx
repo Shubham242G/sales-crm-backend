@@ -23,6 +23,7 @@ import {
   useZohoCustomers,
 } from "@/services/customer.service";
 import { SiReactquery } from "react-icons/si";
+import { getEffectiveConstraintOfTypeParameter } from "typescript";
 
 interface Products {
   id: number,
@@ -1162,8 +1163,22 @@ const AddEnquiryForm = () => {
     return sum + amount;
   }, 0);
 
+
   useEffect(() => {
-    
+
+
+    if (enquiryType === "banquet") {
+
+      setCheckIn("")
+      setCheckOut("")
+
+
+    }
+
+  }, [enquiryType])
+
+  useEffect(() => {
+
     if (enquiryDataById && enquiryDataById?.data) {
       const { eventSetup } = enquiryDataById.data;
 
@@ -1751,7 +1766,7 @@ const AddEnquiryForm = () => {
               </div>
 
               {/* Rate Required for (Occupancy) */}
-              <div>
+              {enquiryType === "room" && <div>
                 <label className="block text-sm font-medium text-gray-700 mt-1 mb-1">
                   Rate Required for (Occupancy)
                 </label>
@@ -1787,7 +1802,7 @@ const AddEnquiryForm = () => {
                     <span className="text-sm">Extra Bed</span>
                   </label>
                 </div>
-              </div>
+              </div>}
             </div>
           </div>
 
@@ -2811,6 +2826,7 @@ const AddEnquiryForm = () => {
                             <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <input
                                 type="number"
+                                min={0}
                                 value={row?.noOfVehicles}
                                 onChange={(e) =>
                                   handleTableChange(

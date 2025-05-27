@@ -84,6 +84,7 @@ interface IBanquet {
   banquetNonVegPrice: string;
   banquetFloor: string;
   banquetLocation: string;
+  
   prefuntionAreaSize: string;
 }
 

@@ -728,9 +728,9 @@ function Leads() {
 
   return (
     <>
-      <div className="container top-0 bg-white sticky ">
+      <div className="container bg-white sticky mt-[4pc]">
         <div className=" table_container rounded-xl px-4    ">
-          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm -ml-4 -mt-5 mb-4">
+          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm mb-4">
             {/* Heading on the Left */}
             <h2 className="text-lg font-semibold text-gray-800 ">Leads List</h2>
             {/* Search Input */}
@@ -909,7 +909,7 @@ function Leads() {
             )}
           </div>
           {/* React Table */}
-          <div className="overflow-x-auto -ml-9 -mr-3">
+          <div className="overflow-x-auto ">
             <ReactTable
               data={leadData?.data}
               columns={filteredColumns}

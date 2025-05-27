@@ -232,9 +232,9 @@ function Users() {
 
   return (
     <>
-     <div className="container -mt-6 ">
-        <div className=" table_container rounded-xl px-4 pt-1.5  ">
-          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm -ml-5 mb-4 ">
+     <div className="container mt-16 -ml-3">
+        <div className=" table_container rounded-xl   ">
+          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
             <h2 className="text-lg ml-1 font-semibold text-[#2a2929]">Users List</h2>
 
             <div className="flex items-center justify-start gap-2">
@@ -272,7 +272,7 @@ function Users() {
           </div>
 
 
-         <div className="  shadow-lg   -ml-9     -mr-4 overflow-y-auto ">
+         <div className=" mt-5  ">
           <ReactTable
             data={UserData?.data}
             columns={filteredColumns}

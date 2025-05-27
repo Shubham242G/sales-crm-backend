@@ -41,23 +41,9 @@ const leadManagementEdit = () => {
   );
 
   const [selectedRole , setSelectedRole] = useState('');
-
-  
-
-  
-
-
-
-
   const {data : usersData} = useUser(searchObj);
   const {data: leadData} = useLead(searchObj);
-
   const {data: roleData } = useRoles(searchObj)
-
-
-
- 
- 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

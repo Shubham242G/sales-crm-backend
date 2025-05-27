@@ -214,9 +214,9 @@ function Roles() {
 
   return (
     <>
-    <div className="container  -mt-12">
-         <div className=" table_container rounded-xl   px-3 py-1.5   ">
-          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm -ml-4 mt-5 mb-4">
+    <div className="container mt-16 -ml-3 ">
+         <div className=" table_container rounded-xl    ">
+          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
           <h2 className="text-lg font-semibold text-gray-800">Roles List</h2>
           <div className="flex items-center justify-start gap-2">
             <div className="w-full flex items-center">
@@ -251,7 +251,7 @@ function Roles() {
           </div>
         </div>
 
-         <div className=" table_container  shadow-xl -ml-8   text-sm  -mr-2 overflow-y-auto  ">
+         <div className=" mt-5 ">
          <ReactTable
           data={roleData?.data}
           columns={filteredColumns}

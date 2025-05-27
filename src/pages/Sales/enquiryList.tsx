@@ -587,8 +587,8 @@ export default function EnquiryLIst() {
 
   return (
     <>
-      <div className="container top-0 b sticky -mt-5">
-        <div className=" table_container rounded-xl  -mt-5 -ml-3 ">
+      <div className="container   sticky ">
+        <div className=" table_container rounded-xl mt-20  ">
           <div className="search_boxes flex justify-between items-center ml-2 ">
             <h2 className="text-xl font-semibold text-gray-800">
               Enquiry List
@@ -675,7 +675,7 @@ export default function EnquiryLIst() {
             </div>
           </div>
 
-          <div className="-ml-2 mt-4 ">
+          <div className="w-full ">
             <ReactTable
               data={EnquiryData?.data}
               columns={filteredColumns}

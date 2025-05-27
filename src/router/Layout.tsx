@@ -8,19 +8,15 @@ function Layout() {
   return (
     <div className="">
       <main>
-        <div className="grid grid-cols-12 ">
-          <div className="col-span-2">
+        <div className="flex flex-col md:flex-row w-[100%] h-[100vh]">
+          <div className="w-[15%]">
             <Sidebar />
           </div>
-          <div className="col-span-10  ">
-            <div
-              className=" shadow-md sticky top-0 z-10" >
-               <Header    />
-            </div>
-             
-            <div>
-              <Outlet />
-            </div>
+          <div className="md:w-[85%] w-3/4 lg:w-[85%] flex flex-col">
+            <div className=" sticky w-[100%] top-0 z-10">
+              <Header />
+               <Outlet />
+            </div> 
           </div>
         </div>
       </main>
