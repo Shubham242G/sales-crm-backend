@@ -716,7 +716,7 @@ export default function EnquiryLIst() {
         </div>
       </div>
 
-      <NewTable
+      {/* <NewTable
         data={EnquiryData?.data}
         columns={filteredColumns}
         loading={false}
@@ -736,7 +736,7 @@ export default function EnquiryLIst() {
         RouteName={"Enquiry"}
         AddButtonRouteName={"/add-enquiry"}
         AddButtonName={"New Enquiry"}
-      />
+      /> */}
     </>
   );
 }

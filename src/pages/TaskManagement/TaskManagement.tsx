@@ -12,6 +12,7 @@ import {
   useUpdateTaskManagementById,
   usedeleteTaskManagementById,
   useTaskManagement,
+  useMyTask,
 } from "@/services/tastManagement.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
@@ -19,7 +20,7 @@ import { getAuth } from "@/utils/auth";
 import { io } from "socket.io-client";
 import { Switch } from "@mui/material";
 
-function TaskManagement() {
+function MyTask() {
   const navigate = useNavigate();
 
   // const [loading, setLoading] = useState(false);
@@ -53,7 +54,7 @@ function TaskManagement() {
     [pageIndex, pageSize, query]
   );
 
-  const { data: TaskManagementData } = useTaskManagement(searchObj);
+  const { data: TaskManagementData } = useMyTask(searchObj);
   const { mutateAsync: deleteTaskManagement } = usedeleteTaskManagementById();
   const { mutateAsync: updateTaskManagement } = useUpdateTaskManagementById();
   // const { mutateAsync: convert } = convertToContact();
@@ -68,7 +69,7 @@ function TaskManagement() {
     CurrentUser();
   }, []);
 
-  const handleDelete = async (id: string) => { 
+  const handleDelete = async (id: string) => {
     try {
       if (window.confirm("Are you sure you want to delete this contact?")) {
         const { data: res } = await deleteTaskManagement(id);
@@ -427,24 +428,24 @@ function TaskManagement() {
           </div>
           <div className="-ml-5 -mr-3">
             <ReactTable
-            data={TaskManagementData.data}
-            columns={filteredColumns}
-            loading={false}
-            totalRows={TaskManagementData?.total}
-            onChangeRowsPerPage={setPageSize}
-            onChangePage={setPageIndex}
-            page={pageIndex}
-            rowsPerPageText={pageSize}
-            isServerPropsDisabled={false}
-          />
+              data={TaskManagementData.data}
+              columns={filteredColumns}
+              loading={false}
+              totalRows={TaskManagementData?.total}
+              onChangeRowsPerPage={setPageSize}
+              onChangePage={setPageIndex}
+              page={pageIndex}
+              rowsPerPageText={pageSize}
+              isServerPropsDisabled={false}
+            />
 
           </div>
 
-          
+
         </div>
       </div>
     </>
   );
 }
 
-export default TaskManagement;
+export default MyTask;
