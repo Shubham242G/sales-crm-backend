@@ -4,7 +4,9 @@
 
 
   
-  
+  body{
+    overflow: hidden;
+  }
   :root {
     --primary-color: theme('colors.primarycolor');
     --primarycolor: #687256;

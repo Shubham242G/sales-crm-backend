@@ -451,8 +451,8 @@ function RfpList() {
         filterbuttn={false}
       /> */}
 
-     
-        <div className="bg-white table_container rounded-xl p-6 mt-10  ">
+     <div className="overflow-hidden">
+     <div className="bg-white table_container rounded-xl p-6 mt-10   ">
           <div className="search_boxes flex justify-between items-center  ">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
@@ -516,6 +516,8 @@ function RfpList() {
             />
           </div>
         </div>
+     </div>
+      
      
     </>
   );

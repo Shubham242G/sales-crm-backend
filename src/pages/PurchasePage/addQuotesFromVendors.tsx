@@ -385,7 +385,7 @@ const AddQuotesFromVendors = () => {
   };
 
   return (
-    <div className="min-h-screen m-[60px] bg-white p-8">
+    <div className="h-[90vh] mt-16 p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto bg-gray-50 shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">Add Quotes From Vendors</h1>
         <form onSubmit={handleSubmit}>
@@ -479,20 +479,6 @@ const AddQuotesFromVendors = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
               <label className="block text-sm font-medium text-black mb-1">
-                Amount
-              </label>
-              <input
-                name={"amount"}
-                value={formData.amount}
-                onChange={handleInputChange}
-                type="number"
-                min={0}
-                className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 "
-                placeholder="Enter Amount"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-black mb-1">
                 Received Date
               </label>
               <input
@@ -539,122 +525,159 @@ const AddQuotesFromVendors = () => {
           </div> */}
 
           {/*markup table*/}
-          <div className="col-span-2">
-            <div className="flex justify-between items-center mb-4">
-              <label className="block text-sm font-medium text-black">
-                Markup Details
-              </label>
-              <button
-                type="button"
-                onClick={handleAddMarkupRow}
-                className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
+          {/*markup table*/}
+<div className="col-span-2">
+  <div className="flex justify-between items-center mb-4">
+    <label className="block text-sm font-medium text-black">
+      Markup Details
+    </label>
+    <button
+      type="button"
+      onClick={handleAddMarkupRow}
+      className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
+    >
+      <svg
+        className="w-5 h-5"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+          clipRule="evenodd"
+        />
+      </svg>
+      Add Row
+    </button>
+  </div>
+  <div className="overflow-x-auto">
+    <table className="min-w-full border border-gray-300 rounded-lg">
+      <thead className="bg-stone-200 text-gray-900">
+        <tr>
+          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
+            S.No.
+          </th>
+          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
+            Label
+          </th>
+          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
+            Original Amount
+          </th>
+          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
+            Markup Amount (%)
+          </th>
+          {formData.markupDetails.length > 1 && (
+            <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+              Actions
+            </th>
+          )}
+        </tr>
+      </thead>
+      <tbody>
+        {formData.markupDetails.map((item, index) => (
+          <tr
+            key={index}
+            className="hover:bg-gray-50 transition duration-150"
+          >
+            <td className="px-6 py-4 border-b text-gray-600">
+              {String(index + 1).padStart(2, "0")}
+            </td>
+            <td className="px-6 py-4 border-b">
+              <input
+                type="text"
+                value={item.label}
+                onChange={(e) =>
+                  handleMarkupChange(index, "label", e.target.value)
+                }
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 transition duration-200"
+                placeholder="Enter label"
+              />
+            </td>
+            <td className="px-6 py-4 border-b">
+              <input
+                type="number"
+                min={0}
+                value={item.orignalAmount}
+                onChange={(e) =>
+                  handleOriginalChange(
+                    index,
+                    "orignalAmount",
+                    e.target.value
+                  )
+                }
+                className="w-full border border-gray-300 bg-gray-50 rounded-md p-3 text-gray-600  transition duration-200"
+                placeholder="Enter original amount"
+              />
+            </td>
+            <td className="px-6 py-4 border-b">
+              <input
+                type="number"
+                min={0}
+                value={item.markupAmount}
+                onChange={(e) =>
+                  handleMarkupChange(
+                    index,
+                    "markupAmount",
+                    e.target.value
+                  )
+                }
+                className="w-full border border-gray-300 bg-gray-50 rounded-md p-3 text-gray-600  transition duration-200"
+                placeholder="Enter markup percentage"
+              />
+            </td>
+            {formData.markupDetails.length > 1 && (
+              <td className="px-6 py-4 border-b">
+                <button
+                  type="button"
+                  onClick={() => handleRemoveMarkupRow(index)}
+                  className="text-red-500 hover:text-red-700 transition duration-200"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Add Row
-              </button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full border border-gray-300 rounded-lg">
-                <thead className="bg-stone-200 text-gray-900">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
-                      S.No.
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
-                      Label
-                    </th>
-                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
-                      Original Amount
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 border-b">
-                      Markup Amount
-                    </th>
-                    {formData.markupDetails.length > 1 && (
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
-                        Actions
-                      </th>
-                    )}
-                  </tr>
-                </thead>
-                <tbody>
-                  {formData.markupDetails.map((item, index) => (
-                    <tr
-                      key={index}
-                      className="hover:bg-gray-50 transition duration-150"
-                    >
-                      <td className="px-6 py-4 border-b text-gray-600">
-                        {String(index + 1).padStart(2, "0")}
-                      </td>
-                      <td className="px-6 py-4 border-b">
-                        <input
-                          type="text"
-                          value={item.label}
-                          onChange={(e) =>
-                            handleMarkupChange(index, "label", e.target.value)
-                          }
-                          className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 transition duration-200"
-                          placeholder="Enter label"
-                        />
-                      </td>
-                      <td className="px-6 py-4 border-b">
-                        <input
-                          type="number"
-                          min={0}
-                          value={item.orignalAmount}
-                          onChange={(e) =>
-                            handleOriginalChange(
-                              index,
-                              "orignalAmount",
-                              e.target.value
-                            )
-                          }
-                          className="w-full border border-gray-300 bg-gray-50 rounded-md p-3 text-gray-600  transition duration-200"
-                          placeholder="Enter original amount"
-                        />
-                      </td>
-                      <td className="px-6 py-4 border-b">
-                        <input
-                          type="number"
-                          min={0}
-                          value={item.markupAmount}
-                          onChange={(e) =>
-                            handleMarkupChange(
-                              index,
-                              "markupAmount",
-                              e.target.value
-                            )
-                          }
-                          className="w-full border border-gray-300 bg-gray-50 rounded-md p-3 text-gray-600  transition duration-200"
-                          placeholder="Enter markup amount"
-                        />
-                      </td>
-                      {formData.markupDetails.length > 1 && (
-                        <td className="px-6 py-4 border-b">
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveMarkupRow(index)}
-                            className="text-red-500 hover:text-red-700 transition duration-200"
-                          >
-                            Remove
-                          </button>
-                        </td>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                  Remove
+                </button>
+              </td>
+            )}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {/* Total Calculation Section */}
+
+  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label className="block text-sm font-medium text-black mb-1">
+        Total Original Amount
+      </label>
+      <input
+        type="number"
+        name="amount"
+        value={formData.markupDetails.reduce((total, item) => {
+          const amount = parseFloat(item.orignalAmount) || 0;
+          return total + amount;
+        }, 0)}
+        readOnly
+        className="w-full border bg-gray-100 border-gray-300 rounded-md p-2"
+      />
+    </div>
+    <div>
+      <label className="block text-sm font-medium text-black mb-1">
+        Total Amount (with Markup)
+      </label>
+      <input
+        type="number"
+        value={formData.markupDetails.reduce((total, item) => {
+          const originalAmount = parseFloat(item.orignalAmount) || 0;
+          const markupPercentage = parseFloat(item.markupAmount) || 0;
+          const markupAmount = originalAmount * (markupPercentage / 100);
+          return total + originalAmount + markupAmount;
+        }, 0)}
+        readOnly
+        className="w-full border bg-gray-100 border-gray-300 rounded-md p-2"
+      />
+    </div>
+  </div>
+</div>
 
           {/* File Upload Section */}
           <div className="mb-4 mt-8">

@@ -398,7 +398,7 @@ function VendorList() {
       /> */}
 
       
-           <div className=" table_container rounded-xl p-6 mt-10 ">
+           <div className=" table_container rounded-xl p-6 mt-10 fixed top-0 left-[200px] right-[-20px] ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm  ">
             {/* Heading on the Left */}
             <h2 className="text-lg font-semibold  text-gray-800">
