@@ -125,7 +125,7 @@
 //                     <div className="relative">
 //                         <input
 //                             type="text"
-//                             className="pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+//                             className="pl-8 pr-4 py-2 border border-gray-300 rounded-md  focus:border-blue-500 text-sm"
 //                             placeholder="Search..."
 //                             value={searchTerm}
 //                             onChange={(e) => setSearchTerm(e.target.value)}

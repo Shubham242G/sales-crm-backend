@@ -338,14 +338,14 @@ const NewTable = (props: any) => {
   return (
     <>
      
-        <div className=" table_container rounded-xl px-6 mt-16    ">
+        <div className=" table_container rounded-xl px-6 mt-[85px]    ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
             {/* Heading on the Left */}
             <h2 className="text-lg font-semibold text-gray-800 ">
               {TableName}
             </h2>
             {/* Search Input */}
-            <div className="flex items-center w-full sm:w-auto flex-grow">
+            <div className="flex items-center w-full sm:w-auto flex-grow ">
               <input
                 type="search"
                 className="rounded-md border px-3 py-1.5 w-[200px] border-gray-300 placeholder-gray-500 text-sm focus:outline-none focus:border-orange-500"
@@ -535,7 +535,7 @@ const NewTable = (props: any) => {
             )}
           </div>
           {/* React Table */}
-          <div className="overflow-x-auto -ml-8 -mr-2">
+          <div className="mt-8">
             <ReactTable
               data={TableData.data}
               columns={filteredColumns}

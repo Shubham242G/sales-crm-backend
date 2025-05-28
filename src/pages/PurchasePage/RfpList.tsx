@@ -323,7 +323,7 @@ function RfpList() {
       Status: true,
       Edit: canView || canUpdate || true,
       Delete: canDelete || true,
-      Actions: true,
+      Actions: true ||  canDelete|| canView || canUpdate,
       "Convert to Quotes from Vendor": true,
     }
   );
@@ -432,7 +432,7 @@ function RfpList() {
       Status: true,
       Edit: canView || canUpdate,
       Delete: canDelete,
-       Actions: true,
+      Actions: true ||  canDelete|| canView || canUpdate,
       "Convert to Quotes from Vendor": true,
     });
   };

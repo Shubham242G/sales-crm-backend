@@ -86,7 +86,7 @@ function Header() {
                 </button>
 
                 {/* User Dropdown Button with Name */}
-                <div className="relative">
+                <div className="relative" onClick={(e) => e.stopPropagation()}>
                   <button
                     type="button"
                     onClick={() => setLoginDrop(!loginDrop)}
@@ -124,6 +124,12 @@ function Header() {
                     </div>
                   )}
                 </div>
+                {loginDrop && (
+                  <div
+                    onClick={() => setLoginDrop(false)}
+                    className="fixed inset-0"
+                  />
+                )}
               </div>
             </div>
           </div>

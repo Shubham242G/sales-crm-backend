@@ -477,13 +477,13 @@ function AddRoles() {
   };
 
   return (
-    <div className=" min-h-screen w-[100%] mb-20     ">
-      <div className="container   ">
+    <div className="  w-[100%]  mt-16 relative mb-24 p-6 pt-0  ">
+      <div className="container h-[80vh] overflow-scroll   ">
         <h1 className="text-2xl font-bold mb-4">
           {id ? "Edit Role" : "Add New Role"}
         </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white text-sm rounded-lg">
+      <form onSubmit={handleSubmit} >
           <div className="  bg-white  rounded-md text-sm space-y-4">
 
             {/* Name */}
@@ -546,7 +546,7 @@ function AddRoles() {
 
 
           {/* Permissions Table */}
-          <div className="overflow-x-auto ">
+          <div className="overflow-x-auto mt-4 ">
             <table className="w-full border-collapse border border-gray-300">
               <thead>
                 <tr className="bg-gray-100">
@@ -576,7 +576,8 @@ function AddRoles() {
                     <td className="border border-gray-300 p-2 font-medium">
                       {rp.isEditing ? (
                         <>
-                          <input
+                        <div className="flex justify-around items-center ">
+                           <input
                             type="text"
                             list="routeNameList"
                             value={rp.routeName}
@@ -593,11 +594,14 @@ function AddRoles() {
                               <option key={index} value={rp} />
                             ))}
                           </datalist>
+                        </div>
+                         
                         </>
                       ) : (
                         <div className="flex items-center justify-between">
                           <span>{rp.routeName}</span>
                           <input
+                          className="h-[10px] w-[10px]"
                             type="checkbox"
                             checked={rp.permissions.isRouteShow}
                             onChange={() =>

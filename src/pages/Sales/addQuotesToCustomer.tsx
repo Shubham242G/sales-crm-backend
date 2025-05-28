@@ -213,12 +213,12 @@ const AddQuotesToCustomerForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white p-8">
-      <div className="max-w-6xl mx-auto bg-gray-50 border border-gray-300 shadow-lg rounded-lg p-8">
+    <div className="h-[90vh]  mt-16 p-6 overflow-y-auto ">
+      <div className="max-w-6xl ">
         <h1 className="text-2xl font-bold mb-6">Add Quotes To Customer</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-blackmb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               Quotes ID
             </label>
             <input
@@ -226,13 +226,13 @@ const AddQuotesToCustomerForm = () => {
               value={formData.quotesId}
               onChange={handleInputChange}
               type="text"
-              className="w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+              className="w-full  border border-gray-300 rounded-md p-2"
               placeholder="Enter Quotes ID"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-blackmb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               Customer Name
             </label>
             <input
@@ -240,13 +240,13 @@ const AddQuotesToCustomerForm = () => {
               value={formData.customerName}
               onChange={handleInputChange}
               type="text"
-              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+              className="w-full border  border-gray-300 rounded-md p-2"
               placeholder="Enter Customer Name"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-blackmb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               Service Type
             </label>
             <Select
@@ -256,10 +256,10 @@ const AddQuotesToCustomerForm = () => {
                 formData.serviceType.includes(option.value)
               )}
               onChange={handleServiceTypeChange}
-              className="w-full bg-gray-50 text-md border border-gray-300 rounded-md"
+              className="w-full  text-md rounded-md"
               classNamePrefix="select"
               placeholder="Select service types"
-              styles={customStyles}
+              
             />
           </div>
 
@@ -327,7 +327,7 @@ const AddQuotesToCustomerForm = () => {
                     {formData.markupDetails.map((item, index) => (
                       <tr
                         key={index}
-                        className="hover:bg-gray-50 transition duration-150"
+                        className="hover: transition duration-150"
                       >
                         <td className="px-6 py-4 border-b text-gray-600">
                           {String(index + 1).padStart(2, "0")}
@@ -339,7 +339,7 @@ const AddQuotesToCustomerForm = () => {
                             onChange={(e) =>
                               handleMarkupChange(index, "label", e.target.value)
                             }
-                            className="w-full border border-gray-300 rounded-md p-3 text-black focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 transition duration-200"
+                            className="w-full border border-gray-300 rounded-md p-3 text-black  focus:border-blue-500  transition duration-200"
                             placeholder="Enter label"
                           />
                         </td>
@@ -354,7 +354,7 @@ const AddQuotesToCustomerForm = () => {
                                 e.target.value
                               )
                             }
-                            className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                            className="w-full border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2  focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                             placeholder="Enter markup amount"
                           />
                         </td>
@@ -384,7 +384,7 @@ const AddQuotesToCustomerForm = () => {
                 name="totalAmount"
                 value={formData.totalAmount}
                 type="number"
-                className="w-full border border-gray-300 bg-gray-50 rounded-md p-2"
+                className="w-full border border-gray-300  rounded-md p-2"
                 readOnly
               />
             </div>

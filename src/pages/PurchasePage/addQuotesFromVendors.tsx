@@ -385,8 +385,8 @@ const AddQuotesFromVendors = () => {
   };
 
   return (
-    <div className="h-[90vh] mt-16 p-6 overflow-y-auto">
-      <div className="max-w-6xl mx-auto bg-gray-50 shadow-lg rounded-lg p-8">
+    <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
+     
         <h1 className="text-2xl font-bold mb-6">Add Quotes From Vendors</h1>
         <form onSubmit={handleSubmit}>
           {/* <div className="mb-3">
@@ -402,7 +402,7 @@ const AddQuotesFromVendors = () => {
               placeholder="Enter Quotes Id"
             />
           </div> */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+          <div className="flex  gap-6 mb-4">
             <div className="mb-4">
               <label className="block text-sm font-medium text-black mb-1">
                 Vendor Name:
@@ -412,7 +412,7 @@ const AddQuotesFromVendors = () => {
                 value={formData?.vendorList?.label}
                 onChange={handleInputChange}
                 type="text"
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                className="w-full border  border-gray-300 rounded-md p-2"
                 placeholder="Enter Vendor Name"
               />
             </div>
@@ -426,7 +426,7 @@ const AddQuotesFromVendors = () => {
               value={formData.displayName}
               onChange={handleInputChange}
               type="text"
-              className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+              className="w-full border  border-gray-300 rounded-md p-2"
               placeholder="Enter Display Name"
             />
           </div>
@@ -434,7 +434,7 @@ const AddQuotesFromVendors = () => {
             {/* Service Type and Event Date */}
 
             <div>
-              <label className="block font-satoshi text-black font-sm">
+              <label className="block font-satoshi text-black font-xs">
                 Service Type
               </label>
 
@@ -446,10 +446,10 @@ const AddQuotesFromVendors = () => {
                   formData.serviceType.includes(option.value)
                 )}
                 onChange={handleServiceTypeChange}
-                className="w-full bg-gray-50 border rounded-md"
+                className="w-full  rounded-md"
                 classNamePrefix="select"
                 placeholder="Select service types"
-                styles={customStyles}
+                
               />
             </div>
           </div>
@@ -476,7 +476,21 @@ const AddQuotesFromVendors = () => {
           </div> */}
 
           {/* Event Details and Deadline */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+          <div className="flex gap-6 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-black mb-1">
+                Amount
+              </label>
+              <input
+                name={"amount"}
+                value={formData.amount}
+                onChange={handleInputChange}
+                type="number"
+                min={0}
+                className="w-full  border border-gray-300 rounded-md p-2 "
+                placeholder="Enter Amount"
+              />
+            </div>
             <div>
               <label className="block text-sm font-medium text-black mb-1">
                 Received Date
@@ -487,7 +501,7 @@ const AddQuotesFromVendors = () => {
                 onChange={handleInputChange}
                 type="date"
                 onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
+                className="w-full border  border-gray-300 rounded-md p-2"
               />
             </div>
           </div>
@@ -749,24 +763,24 @@ const AddQuotesFromVendors = () => {
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-end gap-4">
+          <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t border-gray-200 py-3 px-6 flex justify-start gap-4 z-50">
             <button
               type="button"
-              className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
+              className="px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
               onClick={() => navigate(-1)}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
+              className="px-3 py-1.5 bg-orange-500 text-white rounded-md"
             >
               Submit
             </button>
           </div>
         </form>
       </div>
-    </div>
+  
   );
 };
 

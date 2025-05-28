@@ -71,7 +71,7 @@ const Admin = () => {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  className="w-full  px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  className="w-full  px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none  text-sm"
                 />
               </div>
 
@@ -82,7 +82,7 @@ const Admin = () => {
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   required
-                  className="w-full  px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  className="w-full  px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none  text-sm"
                 />
               </div>
 
@@ -91,7 +91,7 @@ const Admin = () => {
                 <select
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full  px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  className="w-full  px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none  text-sm"
                 >
                   <option value="user">User</option>
                   <option value="admin">Admin</option>

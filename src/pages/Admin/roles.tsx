@@ -11,6 +11,7 @@ import { toastError, toastSuccess } from "@/utils/toast";
 import RoleHierarchy from "@/pages/Hierarchy/roleHierarchy";
 import { Switch } from "@mui/material";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import { FiEdit } from "react-icons/fi";
 
 
 
@@ -47,6 +48,9 @@ function Roles() {
     }
   };
 
+   const [isOpenAction, setIsOpenAction] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
+
   const columns = [
     {
       name: "Name",
@@ -64,33 +68,46 @@ function Roles() {
       selector: (row: any) => (row.hierarchy ? <h6>{row.hierarchy}</h6> : <h6>{"N/A"}</h6>),
       width: "240px",
     },
-    {
-      name: "Edit",
-      width: "200px",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => navigate(`/add-role/${row._id}`)}
-          className="text-black-500 text-lg "
-        >
-          <FaEye className=" hover:text-orange-500 text-sm" />
-        </button>
-      ),
-    },
-    {
-      name: "Delete",
-      width: "200px",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => handleDelete(row._id)}
-          className=" text-black-400 text-lg"
-        >
-          <RiDeleteBin6Line className="hover:text-red-600 text-sm" />
 
-        </button>
-      ),
-    },
+ 
+    {
+         name: "Actions",
+         width: "20px",
+         selector: (row: any) => (
+           <div className="">
+             <button
+               type="button"
+               
+               title="More Actions"
+               onClick={(e) =>{ setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),setSelectedRowId(row._id )}}
+             >
+               <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
+             </button>
+             { selectedRowId === row._id   &&  (isOpenAction) && (
+               <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
+   
+                 <Link
+                   to={`/add-vendor/${row?._id}`}
+                   className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                   title="View Vendor"
+                 >
+                   <FiEdit className="text-xs" />
+                   Edit
+                 </Link>
+                 <button
+                   type="button"
+                   onClick={() => handleDelete(row._id)}
+                   className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                   title="Delete Vendor"
+                 >
+                   <RiDeleteBin6Line className="text-xs" />
+                   Delete
+                 </button>
+               </div>
+             )}
+           </div>
+         ),
+       },
   ];
 
 
@@ -103,6 +120,7 @@ function Roles() {
     "Hierarchy": true,
     "Edit": canView || canUpdate,
     "Delete": canDelete,
+    Actions : true
   });
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumnsRoles');
@@ -209,6 +227,7 @@ function Roles() {
       "Hierarchy": true,
       "Edit": true,
       "Delete": true,
+       Actions : true
     });
   };
 

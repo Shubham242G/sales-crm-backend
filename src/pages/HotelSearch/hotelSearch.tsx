@@ -49,7 +49,7 @@ function SearchBar() {
   // };
 
   return (
-    <div className="mr-6">
+    <div className="p-6 ">
       {/* Header */}
       <header className="bg-white p-6 mt-16 shadow-md">
         <h1 className="text-xl font-bold text-gray-800 ml-4">

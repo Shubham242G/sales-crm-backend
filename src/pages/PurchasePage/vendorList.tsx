@@ -347,13 +347,23 @@ function VendorList() {
     </div>
   );
 
-  const calculateFixedWidths = (columnsArray: any[]) => {
-    const totalWidth = window.innerWidth - 100; // Adjust for padding/margins
-    const equalWidth = `${totalWidth / columnsArray.length}px`;
+  // const calculateFixedWidths = (columnsArray: any[]) => {
+  //   const totalWidth = window.innerWidth - 100; // Adjust for padding/margins
 
+  //   const columnsWithFixedWidth = columnsArray.map((column) => ({
+  //     ...column,
+  //     width: `${totalWidth / columnsArray.length}px`,
+  //   }));
+
+  //   console.log(columnsWithFixedWidth, "check the column width");
+
+  //   return columnsWithFixedWidth;
+  // };
+
+  const calculateFixedWidths = (columnsArray: any[]) => {
     const columnsWithFixedWidth = columnsArray.map((column) => ({
       ...column,
-      width: equalWidth,
+      width: `calc(${100 / columnsArray.length}% - 1px)`,
     }));
 
     console.log(columnsWithFixedWidth, "check the column width");
@@ -397,8 +407,9 @@ function VendorList() {
         filterbuttn={false}
       /> */}
 
+
       
-           <div className=" table_container rounded-xl p-6 mt-10 fixed top-0 left-[200px] right-[-20px] ">
+           <div className=" table_container rounded-xl p-6 mt-10 `  ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm  ">
             {/* Heading on the Left */}
             <h2 className="text-lg font-semibold  text-gray-800">

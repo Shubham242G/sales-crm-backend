@@ -68,7 +68,7 @@ const NewRoleModal: React.FC<NewRoleModalProps> = ({
             type="text"
             value={roleName}
             onChange={(e) => setRoleName(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none "
           />
         </div>
         <div className="mb-4">
@@ -76,7 +76,7 @@ const NewRoleModal: React.FC<NewRoleModalProps> = ({
           <select
             value={reportsTo || ""}
             onChange={(e) => setReportsTo(e.target.value || null)}
-            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none "
           >
             <option value="">Select a role</option>
             {flattenedRoles.map((role:any) => (
@@ -100,7 +100,7 @@ const NewRoleModal: React.FC<NewRoleModalProps> = ({
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none "
             rows={3}
           />
         </div>

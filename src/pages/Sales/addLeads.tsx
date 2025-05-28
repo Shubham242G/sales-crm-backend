@@ -297,7 +297,7 @@ const AddNewLead = () => {
     //   </div>
     // </div>
 
-    <div className=" bg-white -ml-5 ">
+    <div className=" h-[90vh] p-6 mt-14">
      <div className="max-w-4xl -mt-10 bg-white rounded-lg p-4">
   <h1 className="text-lg font-semibold mb-6 mt-2 text-[#101828] ">Add New Lead</h1>
   <form onSubmit={handleSubmit}>
@@ -332,7 +332,7 @@ const AddNewLead = () => {
           value={formData.firstName}
           onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
           placeholder="First Name"
-          className="flex-1 border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 placeholder:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 h-[30x]"
+          className="flex-1 border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 placeholder:text-sm focus:outline-none  h-[30x]"
         />
 
         {/* Last Name */}
@@ -341,7 +341,7 @@ const AddNewLead = () => {
           value={formData.lastName}
           onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
           placeholder="Last Name"
-          className="flex-1 border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 placeholder:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 h-[30px]"
+          className="flex-1 border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 placeholder:text-sm focus:outline-none  h-[30px]"
         />
       </div>
         </div>
@@ -354,7 +354,7 @@ const AddNewLead = () => {
                 value={formData.company}
                 onChange={(e) => setFormData({ ...formData, company:  e.target.value.toUpperCase() })}
                 placeholder="Company Name"
-                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[30px] ml-10"
+                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 focus:outline-none  h-[30px] ml-10"
               />
             </div>
 
@@ -368,7 +368,7 @@ const AddNewLead = () => {
                 value={formData.displayName}
                 onChange={(e) => setFormData({ ...formData, displayName:  e.target.value.toUpperCase() })}
                 placeholder="Select or type to add"
-                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[30px] ml-14"
+                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 focus:outline-none  h-[30px] ml-14"
               />
             </div>
 
@@ -378,7 +378,7 @@ const AddNewLead = () => {
               <select
                 onChange={(val) => handleSelectChange("leadOwner", val.target.value)}
                 value={formData.leadOwner}
-                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-sm text-[#30353f] focus:outline-none focus:ring-2 focus:ring-blue-500 h-[30px] ml-20"
+                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-sm text-[#30353f] focus:outline-none  h-[30px] ml-20"
               >
                 <option value="" disabled hidden>Select</option>
                 {userNames.data.map((option: any) => (
@@ -396,7 +396,7 @@ const AddNewLead = () => {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email:  e.target.value.toLowerCase() })}
                 placeholder="Email Address"
-                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[30px] ml-[6%]"
+                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 focus:outline-none  h-[30px] ml-[6%]"
               />
             </div>
 
@@ -411,7 +411,7 @@ const AddNewLead = () => {
                   setFormData({ ...formData, phone: numericValue });
                 }}
                 placeholder="Work Phone"
-                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[30px] ml-[11.5%]"
+                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 focus:outline-none  h-[30px] ml-[11.5%]"
               />
             </div>
           </div>

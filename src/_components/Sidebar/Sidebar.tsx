@@ -312,29 +312,9 @@ function Sidebar() {
 
   return (
     <>
-      <div className="">
-        <img
-          src={logosm}
-          alt="logosm"
-          className="w-12 h-7 -ml-14 mt-3"
-        />
-        <h1 className="mt-4 text-sm text-white">A MICE COMPANY</h1>
-        <button
-          type="button"
-          className="lg:hidden absolute right-4 top-2"
-          onClick={handleToggleMenu}
-        >
-          {showMenu ? (
-            <AiFillCloseSquare className="w-6 h-6 text-white" />
-          ) : (
-            <FaBars className="w-6 h-6 text-white" />
-          )}
-        </button>
-      </div>
+ 
       <div
-        className={`${
-          showMenu ? "" : "hidden"
-        } lg:flex lg:flex-col lg:w-[210px] lg:h-full lg:bg-[#f7f8ff] lg:border-r-2 lg:fixed lg:top-0 lg:left-0 lg:z-10 transition-all duration-200`}
+        className={` lg:flex lg:flex-col lg:h-full lg:bg-[#f7f8ff] lg:border-r-2 lg:top-0 lg:left-0 lg:z-10 transition-all duration-2`}
       >
         <div className="mt-14 p-2 ml-9  w-[130px] h-[120px]    ">
           <img
@@ -363,9 +343,8 @@ function Sidebar() {
                     </h6>
                   </div>
                   <MdChevronRight
-                    className={`transition-transform ${
-                      showdrop === index ? "rotate-90" : ""
-                    }`}
+                    className={`transition-transform ${showdrop === index ? "rotate-90" : ""
+                      }`}
                   />
                 </button>
               ) : (

@@ -66,6 +66,8 @@ function TaskManagement() {
     CurrentUser();
   }, []);
 
+  const [isOpenAction, setIsOpenAction] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const handleDelete = async (id: string) => {
     try {
       if (window.confirm("Are you sure you want to delete this contact?")) {
@@ -157,34 +159,36 @@ function TaskManagement() {
         ),
     },
 
-    {
-      name: "Edit",
-      width: "5%",
-      selector: (row: any) =>
-        (canView || canUpdate) && (
-          <Link
-            to={`/add-TaskManagement/${row._id}`}
-            onClick={() => handleUpdate(row._id, row.data)}
-            className="text-black-500 text-lg p-[6px]"
-          >
-            <FaEye />
-          </Link>
-        ),
-    },
-    {
-      name: "Delete",
-      width: "8%",
-      selector: (row: any) =>
-        canDelete && (
-          <button
-            type="button"
-            onClick={() => handleDelete(row._id)}
-            className="p-[6px] text-black-400 text-lg"
-          >
-            <RiDeleteBin6Line />
-          </button>
-        ),
-    },
+    // {
+    //   name: "Edit",
+    //   width: "5%",
+    //   selector: (row: any) =>
+    //     (canView || canUpdate) && (
+    //       <Link
+    //         to={`/add-TaskManagement/${row._id}`}
+    //         onClick={() => handleUpdate(row._id, row.data)}
+    //         className="text-black-500 text-lg p-[6px]"
+    //       >
+    //         <FaEye />
+    //       </Link>
+    //     ),
+    // },
+    // {
+    //   name: "Delete",
+    //   width: "8%",
+    //   selector: (row: any) =>
+    //     canDelete && (
+    //       <button
+    //         type="button"
+    //         onClick={() => handleDelete(row._id)}
+    //         className="p-[6px] text-black-400 text-lg"
+    //       >
+    //         <RiDeleteBin6Line />
+    //       </button>
+    //     ),
+    // },
+
+    
   ];
 
   const filterColumns = columns.filter((item) => {
@@ -209,6 +213,7 @@ function TaskManagement() {
     "Reassign": true,
     "Edit": canView || canUpdate || true,
     "Delete": canDelete || true,
+    Actions : true || canView || canUpdate || canDelete
   });
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumns');
@@ -315,6 +320,7 @@ function TaskManagement() {
       "Reassign": true,
       "Edit": canView || canUpdate || true,
       "Delete": canDelete || true,
+       Actions : true || canView || canUpdate || canDelete
 
     });
   };

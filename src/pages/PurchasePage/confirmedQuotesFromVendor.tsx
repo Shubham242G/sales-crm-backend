@@ -20,6 +20,7 @@ import { toastError, toastSuccess } from "@/utils/toast";
 import moment from "moment";
 import { Switch } from "@mui/material";
 import { checkPermissionsForButtons } from "@/utils/permission";
+import { FiEdit } from "react-icons/fi";
 
 function ConfirmedQuotesFromVendor() {
   const navigate = useNavigate();
@@ -39,7 +40,8 @@ function ConfirmedQuotesFromVendor() {
     useConfirmedQuotes(searchObj);
   const { mutateAsync: deleteConfirmedQuote } = usedeleteConfirmedQuotesById();
 
-
+ const [isOpenAction, setIsOpenAction] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -129,32 +131,76 @@ function ConfirmedQuotesFromVendor() {
       ),
       width: "130px", 
     },
+    // {
+    //   name: "Edit",
+    //   width: "10%",
+    //   selector: (row: any) => (
+    //     <button
+    //       type="button"
+    //       onClick={() => navigate(`/add-ConfirmedQuotesFromVendor/${row._id}`)}
+    //       className="text-lg  hover:bg-blue-100 rounded-full transition duration-200 "
+    //     >
+    //        <FaEye className=" hover:text-orange-500 text-sm"/>
+    //     </button>
+    //   ),
+    // },
+    // {
+    //   name: "Delete",
+    //   width: "10%",
+    //   selector: (row: any) => (
+    //     <button
+    //       type="button"
+    //       onClick={() => handleDelete(row._id)}
+    //       className=" text-lg  hover:bg-red-100 rounded-full transition duration-200"
+    //     >
+    //      <RiDeleteBin6Line className="hover:text-red-500 text-sm" />
+    //     </button>
+    //   ),
+    // },
+
     {
-      name: "Edit",
-      width: "10%",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => navigate(`/add-ConfirmedQuotesFromVendor/${row._id}`)}
-          className="text-lg  hover:bg-blue-100 rounded-full transition duration-200 "
-        >
-           <FaEye className=" hover:text-orange-500 text-sm"/>
-        </button>
-      ),
-    },
-    {
-      name: "Delete",
-      width: "10%",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => handleDelete(row._id)}
-          className=" text-lg  hover:bg-red-100 rounded-full transition duration-200"
-        >
-         <RiDeleteBin6Line className="hover:text-red-500 text-sm" />
-        </button>
-      ),
-    },
+         name: "Actions",
+         width: "20px",
+         selector: (row: any) => (
+           <div className="">
+             <button
+               type="button"
+               
+               title="More Actions"
+               onClick={(e) =>{ setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),setSelectedRowId(row._id )}}
+             >
+               <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
+             </button>
+             { selectedRowId === row._id   &&  (isOpenAction) && (
+               <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
+   
+                 <Link
+                   to={`/add-vendor/${row?._id}`}
+                   className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                   title="View Vendor"
+                 >
+                   <FiEdit className="text-xs" />
+                   Edit
+                 </Link>
+                 <button
+                   type="button"
+                   onClick={() => handleDelete(row._id)}
+                   className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                   title="Delete Vendor"
+                 >
+                   <RiDeleteBin6Line className="text-xs" />
+                   Delete
+                 </button>
+               </div>
+             )}
+           </div>
+         ),
+       },
+
+
+
+
+
   ];
 
   // Sample data
@@ -256,8 +302,7 @@ function ConfirmedQuotesFromVendor() {
       "Amount": true,
       "Date Received": true,
       "Status": true,
-      "Edit": canView || canUpdate ,
-      "Delete": canDelete , 
+     Actions : true,
     }); 
     useEffect(() => {
       const savedColumns = localStorage.getItem('enquiryTableColumnsConfirmQuotesFromVendor');
@@ -365,8 +410,7 @@ function ConfirmedQuotesFromVendor() {
       "Amount": true,
       "Date Received": true,
       "Status": true,
-      "Edit": canView || canUpdate ,
-      "Delete": canDelete , 
+     Actions : true,
      
       });
     };
@@ -393,7 +437,7 @@ function ConfirmedQuotesFromVendor() {
       /> */}
 
      
-        <div className="bg-white table_container rounded-xl  p-6 mt-10">
+        <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
           <div className="search_boxes flex justify-between items-center ">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">

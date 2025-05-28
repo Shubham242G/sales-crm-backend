@@ -13,7 +13,7 @@ function Layout() {
             <Sidebar />
           </div>
           <div className="md:w-[85%] w-3/4 lg:w-[85%] flex flex-col">
-            <div className=" sticky w-[100%] top-0 z-10">
+            <div className="  w-[100%] top-0 z-10">
               <Header />
                <Outlet />
             </div> 

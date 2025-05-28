@@ -428,8 +428,8 @@ const AddConfirmedQuotesFromVendor = () => {
   }
 
   return (
-    <div className="min-h-screen m-[35px] bg-white p-8">
-      <div className="max-w-6xl mx-auto bg-gray-50 shadow-lg rounded-lg p-8">
+    <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
+      <div className="max-w-6xl ">
         <h1 className="text-2xl font-bold mb-6">
           {id ? "Edit Confirmed Quotes" : "Add Confirmed Quotes"}
         </h1>
@@ -476,7 +476,7 @@ const AddConfirmedQuotesFromVendor = () => {
                     },
                   })
                 }
-                className="w-full bg-gray-50 border border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                className="w-full bg-gray-50 border border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
                 placeholder="Enter RFP Id"
                 disabled
               />
@@ -489,7 +489,7 @@ const AddConfirmedQuotesFromVendor = () => {
               <input
                 type="text"
                 value={formData.banquetEventOrders.vendorList.label}
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
                 placeholder="Vendor Name"
                 disabled
               />
@@ -511,7 +511,7 @@ const AddConfirmedQuotesFromVendor = () => {
                     },
                   })
                 }
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
                 placeholder="Enter amount"
                 disabled
               />
@@ -534,7 +534,7 @@ const AddConfirmedQuotesFromVendor = () => {
                   })
                 }
                 onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
                 disabled
               />
             </div>
@@ -554,7 +554,7 @@ const AddConfirmedQuotesFromVendor = () => {
                     },
                   })
                 }
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
                 disabled
               >
                 <option value="">Select Status</option>

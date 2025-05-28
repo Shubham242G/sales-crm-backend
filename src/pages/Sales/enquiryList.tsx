@@ -33,6 +33,7 @@ import { SiConvertio } from "react-icons/si";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { c } from "vite/dist/node/types.d-aGj9QkWt";
 import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
+import { FiEdit } from "react-icons/fi";
 
 export default function EnquiryLIst() {
   const navigate = useNavigate();
@@ -53,19 +54,7 @@ export default function EnquiryLIst() {
   const { mutateAsync: convertEnquiryToRfp } = useConvertEnquiryToRfp();
 
   // Column visibility state
-  const [visibleColumns, setVisibleColumns] = useState({
-    "Customer Name": true,
-    "Enquiry Type": true,
-    Loaction: true,
-    "Level of Enquiry": true,
-    "Check-In": true,
-    "Check-Out": true,
-    "Number of Rooms": true,
-    Status: true,
-    Edit: canView || canUpdate || true,
-    Delete: canDelete || true,
-    "Convert to Enquiry": true,
-  });
+  // (Removed duplicate declaration of visibleColumns)
   const [isOpen, setIsOpen] = useState(false);
   const [advancedSearchParams, setAdvancedSearchParams] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -201,7 +190,8 @@ export default function EnquiryLIst() {
   };
 
   // Reset column visibility to default
-
+const [isOpenAction, setIsOpenAction] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const columns = [
     {
       name: "Customer Name",
@@ -297,35 +287,35 @@ export default function EnquiryLIst() {
       ),
       width: "150px",
     },
-    {
-      name: "Edit",
-      width: "110px",
-      selector: (row: any) =>
-        (canView || canUpdate) && (
-          <div className="flex items-center gap-3">
-            <Link
-              to={`/addEnquiry/${row?._id}`}
-              className="text-black-400 text-lg flex items-center"
-              onClick={() => handleUpdate(row._id, row.data)}
-            >
-              <FaEye />
-            </Link>
-          </div>
-        ),
-    },
-    {
-      name: "Delete",
-      width: "110px",
-      selector: (row: any) =>
-        canDelete && (
-          <button
-            className="text-black-400 text-lg"
-            onClick={() => handleDelete(row._id)}
-          >
-            <RiDeleteBin6Line />
-          </button>
-        ),
-    },
+    // {
+    //   name: "Edit",
+    //   width: "110px",
+    //   selector: (row: any) =>
+    //     (canView || canUpdate) && (
+    //       <div className="flex items-center gap-3">
+    //         <Link
+    //           to={`/addEnquiry/${row?._id}`}
+    //           className="text-black-400 text-lg flex items-center"
+    //           onClick={() => handleUpdate(row._id, row.data)}
+    //         >
+    //           <FaEye />
+    //         </Link>
+    //       </div>
+    //     ),
+    // },
+    // {
+    //   name: "Delete",
+    //   width: "110px",
+    //   selector: (row: any) =>
+    //     canDelete && (
+    //       <button
+    //         className="text-black-400 text-lg"
+    //         onClick={() => handleDelete(row._id)}
+    //       >
+    //         <RiDeleteBin6Line />
+    //       </button>
+    //     ),
+    // },
     {
       name: "Create an RFP",
       width: "150px",
@@ -344,11 +334,69 @@ export default function EnquiryLIst() {
         </div>
       ),
     },
+     {
+         name: "Actions",
+         width: "20px",
+         selector: (row: any) => (
+           <div className="">
+             <button
+               type="button"
+               
+               title="More Actions"
+               onClick={(e) =>{ setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),setSelectedRowId(row._id )}}
+             >
+               <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
+             </button>
+             { selectedRowId === row._id   &&  (isOpenAction) && (
+               <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
+   
+                 <Link
+                   to={`/add-vendor/${row?._id}`}
+                   className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                   title="View Vendor"
+                 >
+                   <FiEdit className="text-xs" />
+                   Edit
+                 </Link>
+                 <button
+                   type="button"
+                   onClick={() => handleDelete(row._id)}
+                   className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                   title="Delete Vendor"
+                 >
+                   <RiDeleteBin6Line className="text-xs" />
+                   Delete
+                 </button>
+               </div>
+             )}
+           </div>
+         ),
+       },
+
+
+ 
+
   ];
 
   // Column selector
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
+  const [visibleColumns, setVisibleColumns] = useState<{
+    [key: string]: boolean;
+  }>({
+    "Customer Name": true,
+      "Enquiry Type": true,
+      Loaction: true,
+      "Level of Enquiry": true,
+      "Check-In": true,
+      "Check-Out": true,
+      "Number of Rooms": true,
+      Status: true,
+      Edit: canView || canUpdate || true,
+      Delete: canDelete || true,
+      "Convert to Enquiry": true,
+      Actions: true || canDelete || canView || canUpdate,
+  });
   // Removed duplicate declaration of visibleColumns
   useEffect(() => {
     const savedColumns = localStorage.getItem("enquiryTableColumns");
@@ -468,6 +516,7 @@ export default function EnquiryLIst() {
       Edit: canView || canUpdate || true,
       Delete: canDelete || true,
       "Convert to Enquiry": true,
+      Actions: true || canDelete || canView || canUpdate,
     });
   };
 

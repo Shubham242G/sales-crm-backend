@@ -403,10 +403,10 @@ const Dashboard: React.FC = () => {
 
 
   return (
-    <div className=" mt-12  ">
+    <div className=" mt-12 overflow-scroll h-[98vh]  ">
       <div className=" w-[100%] 2xl:w-[100%] 2xl:ml-0 xl:ml-4 mx-auto">
         {/* Header */}
-         <header className="bg-white border-b border-gray-100 px-6 py-8 sticky top-12 z-20 shadow-md">
+         <header className="bg-white border-b border-gray-100 px-6 py-8 sticky top-0 z-20 shadow-md">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-4xl font-light text-gray-800 mb-2">

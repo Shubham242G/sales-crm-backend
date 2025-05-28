@@ -100,7 +100,7 @@ const AddSalesContact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white p-6">
+    <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto">
         <form onSubmit={handleSubmit}>
           <div className="mb-8">

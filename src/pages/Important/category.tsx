@@ -50,7 +50,7 @@ const AddCategory = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">
           {id ? "Edit Category" : "Add Category"}

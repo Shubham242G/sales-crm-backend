@@ -1417,14 +1417,14 @@ const AddEnquiryForm = () => {
 
   console.log(assignTo, "assignTo");
   return (
-    <div className="bg-white min-h-screen">
-      <div className="bg-white text-black py-4 px-6">
+    <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
+      <div className="bg-white text-black ">
         <h1 className="text-xl font-semibold">Enquiry</h1>
       </div>
-      <div className="min-h-screen w-full bg-[#FAFAFA] p-4">
+      <div className="min-h-screen w-full">
         <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
-          <div className=" p-6 rounded bg-[#FAFAFA] shadow-sm mb-6">
+          <div className=" p-6 rounded  shadow-sm mb-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
               {/* Salutation */}
               <div>
@@ -1436,7 +1436,7 @@ const AddEnquiryForm = () => {
                     handleSelectChange("salutation", val.target.value)
                   }
                   value={salutation}
-                  className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                  className="w-full  border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                 >
                   {salutationOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -1457,7 +1457,7 @@ const AddEnquiryForm = () => {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="First Name"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                 />
               </div>
 
@@ -1472,7 +1472,7 @@ const AddEnquiryForm = () => {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Last Name"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -1485,7 +1485,7 @@ const AddEnquiryForm = () => {
                   onChange={(e) => setAssignTo(e.target.value)}
                   value={assignTo}
                   name="assignTo"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                 >
                   {userNames.data.map((option: any) => (
                     <option key={option.value} value={option.label}>
@@ -1505,7 +1505,7 @@ const AddEnquiryForm = () => {
                   onChange={(e) => {
                     setDisplayName(e.target.value);
                   }}
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                 >
                   {Customer.data.map((option: any) => (
                     <option key={option.displayName} value={option.displayName}>
@@ -1526,7 +1526,7 @@ const AddEnquiryForm = () => {
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="Company Name"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -1546,7 +1546,7 @@ const AddEnquiryForm = () => {
                     setPhoneNumber(numericValue);
                   }}
                   placeholder="Phone Number"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -1561,7 +1561,7 @@ const AddEnquiryForm = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -1574,7 +1574,7 @@ const AddEnquiryForm = () => {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="City"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div> */}
 
@@ -1589,7 +1589,7 @@ const AddEnquiryForm = () => {
                     setArea(e.target.value)
                   }}
                   placeholder="Area"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div> */}
 
@@ -1602,7 +1602,7 @@ const AddEnquiryForm = () => {
                   value={noOfRooms}
                   onChange={(e) => setNoOfRooms(e.target.value)}
                   placeholder="Number of Rooms"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div> */}
 
@@ -1615,7 +1615,7 @@ const AddEnquiryForm = () => {
                   name="enquiryType"
                   value={enquiryType}
                   onChange={(e) => setEnquiryType(e.target.value)}
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Select Enquiry Type</option>
                   <option value="room">Room</option>
@@ -1632,7 +1632,7 @@ const AddEnquiryForm = () => {
                   name="checkIn"
                   value={moment(checkIn).format("YYYY-MM-DD")}
                   onChange={(e) => setCheckIn(e.target.value)}
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div> */}
 
@@ -1647,9 +1647,10 @@ const AddEnquiryForm = () => {
                     name="checkIn"
                     value={moment(checkIn).format("YYYY-MM-DD")}
                     onChange={(e) => setCheckIn(e.target.value)}
+                    onFocus={(e) => (e.target as HTMLInputElement).showPicker()}
                     onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     min={moment().format("YYYY-MM-DD")}
-                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               )}
@@ -1670,7 +1671,7 @@ const AddEnquiryForm = () => {
                         (e.target as HTMLInputElement).showPicker()
                       }
                       min={moment(checkIn).format("YYYY-MM-DD")}
-                      className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                 )}
@@ -1684,10 +1685,13 @@ const AddEnquiryForm = () => {
                     type="date"
                     name="banquetDate"
                     value={banquetDate}
+                     onClick={(e) =>
+                        (e.target as HTMLInputElement).showPicker()
+                      }
                     onChange={(e) => setBanquetDate(e.target.value)}
                     min={checkIn ? checkIn : moment().format("YYYY-MM-DD")}
                     max={checkOut}
-                    className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               )}
@@ -1703,7 +1707,7 @@ const AddEnquiryForm = () => {
                       name="banquetTime"
                       value={banquetTime}
                       onChange={(e) => setBanquetTime(e.target.value)}
-                      className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                 )}
@@ -1717,7 +1721,7 @@ const AddEnquiryForm = () => {
                   name="levelOfEnquiry"
                   value={levelOfEnquiry}
                   onChange={(e) => setLevelOfEnquiry(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full  border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Select Enquiry Type</option>
                   <option value="urgent">Urgent</option>
@@ -1737,7 +1741,7 @@ const AddEnquiryForm = () => {
                   value={othersPreference}
                   onChange={(e) => setOthersPreference(e.target.value)}
                   placeholder="Preferences"
-                  className="w-full border bg-gray-50 border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -1777,7 +1781,7 @@ const AddEnquiryForm = () => {
                       value="single occupancy"
                       checked={occupancy.includes("single occupancy")}
                       onChange={() => handleCheckboxChange("single occupancy")}
-                      className="form-checkbox bg-gray-50 h-4 w-4 text-blue-600"
+                      className="form-checkbox  h-4 w-4 text-blue-600"
                     />
                     <span className="text-sm">Single Occupancy</span>
                   </label>
@@ -1787,7 +1791,7 @@ const AddEnquiryForm = () => {
                       value="double occupancy"
                       checked={occupancy.includes("double occupancy")}
                       onChange={() => handleCheckboxChange("double occupancy")}
-                      className="form-checkbox bg-gray-50 h-4 w-4 text-blue-600"
+                      className="form-checkbox  h-4 w-4 text-blue-600"
                     />
                     <span className="text-sm">Double Occupancy</span>
                   </label>
@@ -1797,7 +1801,7 @@ const AddEnquiryForm = () => {
                       value="extra bed"
                       checked={occupancy.includes("extra bed")}
                       onChange={() => handleCheckboxChange("extra bed")}
-                      className="form-checkbox bg-gray-50 h-4 w-4 text-blue-600"
+                      className="form-checkbox  h-4 w-4 text-blue-600"
                     />
                     <span className="text-sm">Extra Bed</span>
                   </label>
@@ -1841,7 +1845,7 @@ const AddEnquiryForm = () => {
                           <tr
                             key={index}
                             className={
-                              index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                              index % 2 === 0 ? "bg-white" : ""
                             }
                           >
                             <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
@@ -2042,7 +2046,7 @@ const AddEnquiryForm = () => {
                         <tr
                           key={index}
                           className={
-                            index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                            index % 2 === 0 ? "bg-white" : ""
                           }
                         >
                           <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
@@ -2262,15 +2266,15 @@ const AddEnquiryForm = () => {
                   </h3>
                   <div className="overflow-x-auto border border-gray-200 rounded">
                     <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
+                      <thead className="">
                         <tr>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-8">
+                          <th className="px-4 py-2  text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-8">
                             Select
                           </th>
                           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
                             Particular
                           </th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                          <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
                             Size
                           </th>
                           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
@@ -2279,7 +2283,7 @@ const AddEnquiryForm = () => {
                           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
                             Rate (₹)
                           </th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                          <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
                             Amount (₹)
                           </th>
                         </tr>
@@ -2311,26 +2315,26 @@ const AddEnquiryForm = () => {
                                 min="0"
                               />
                             </td>
-                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 border-b border-gray-200">
+                            <td className="px-4 py-2 whitespace-nowrap text-sm  text-gray-700 border-b border-gray-200">
                               <input
                                 type="number"
                                 value={item.rate === 0 ? '' : item.rate}
                                 onChange={(e) => handleRateChange(item.id, Number(e.target.value))}
                                 onFocus={(e) => e.target.select()}
-                                className="border border-gray-300 p-1 rounded w-20 text-right"
+                                className="border border-gray-300 p-1 rounded w-20 text-center"
                                 min="0"
                               />
                             </td>
-                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-right border-b border-gray-200">
+                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-center border-b border-gray-200">
                               ₹{(item.rate * item.qty).toLocaleString('en-IN')}
                             </td>
                           </tr>
                         ))}
-                        <tr className="bg-gray-50 font-semibold">
-                          <td colSpan={5} className="px-4 py-2 text-right text-sm border-b border-gray-200">
+                        <tr className=" font-semibold">
+                          <td colSpan={5} className="px-4 py-2 text-center text-sm border-b border-gray-200">
                             Selected Total
                           </td>
-                          <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-right border-b border-gray-200">
+                          <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-center border-b border-gray-200">
                             ₹{calculateSelectedTotal().toLocaleString('en-IN')}
                           </td>
                         </tr>
@@ -2720,7 +2724,7 @@ const AddEnquiryForm = () => {
                           <tr
                             key={index}
                             className={
-                              index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                              index % 2 === 0 ? "bg-white" : ""
                             }
                           >
                             <td className=" px-3 py-1.5 text-sm border-b border-gray-200">

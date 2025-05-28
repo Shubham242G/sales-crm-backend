@@ -1375,9 +1375,9 @@ const AddVendorForm = () => {
 
 
     <>
-      <div className="min-h-screen -mt-4 bg-white">
+      <div className="h-[90vh]  mt-16 p-6 overflow-y-auto ">
 
-        <form onSubmit={handleSubmit}>
+       <form onSubmit={handleSubmit}  >
           <h1 className="text-2xl font-bold mb-6">Add Vendor</h1>
 
           <div className=" -mt-6 -ml-2">

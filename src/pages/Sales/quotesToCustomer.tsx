@@ -9,7 +9,7 @@ import {
   FaEye,
   FaColumns,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import {
@@ -19,6 +19,7 @@ import {
 import { toastError, toastSuccess } from "@/utils/toast";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Switch } from "@mui/material";
+import { FiEdit } from "react-icons/fi";
 
 interface IQuotesToCustomer {
   _id: string;
@@ -73,6 +74,8 @@ function QuotesForCustomer() {
     }
   };
 
+  const [isOpenAction, setIsOpenAction] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const columns = [
     {
       name: "Quotes Id",
@@ -144,32 +147,75 @@ function QuotesForCustomer() {
       ),
       width: "130px",
     },
-    {
-      name: "Edit",
-      width: "100px",
-      selector: (row: IQuotesToCustomer & { _id: string }) => (
-        <button
-          onClick={() => navigate(`/addQuotesToCustomer/${row._id}`)}
-          className="text-black-500 text-lg  hover:bg-black-100 rounded-full transition duration-200 "
-        >
+    // {
+    //   name: "Edit",
+    //   width: "100px",
+    //   selector: (row: IQuotesToCustomer & { _id: string }) => (
+    //     <button
+    //       onClick={() => navigate(`/addQuotesToCustomer/${row._id}`)}
+    //       className="text-black-500 text-lg  hover:bg-black-100 rounded-full transition duration-200 "
+    //     >
 
-          <FaEye className=" hover:text-orange-500" />
-        </button>
-      ),
-    },
-    {
-      name: "Delete",
-      width: "100px",
-      selector: (row: IQuotesToCustomer & { _id: string }) => (
-        <button
-          onClick={() => handleDelete(row._id)}
-          className="text-black-500 text-lg  hover:bg-black-100 rounded-full transition duration-200"
-        >
-          <RiDeleteBin6Line className="hover:text-red-600" />
+    //       <FaEye className=" hover:text-orange-500" />
+    //     </button>
+    //   ),
+    // },
+    // {
+    //   name: "Delete",
+    //   width: "100px",
+    //   selector: (row: IQuotesToCustomer & { _id: string }) => (
+    //     <button
+    //       onClick={() => handleDelete(row._id)}
+    //       className="text-black-500 text-lg  hover:bg-black-100 rounded-full transition duration-200"
+    //     >
+    //       <RiDeleteBin6Line className="hover:text-red-600" />
 
-        </button>
-      ),
-    },
+    //     </button>
+    //   ),
+    // },
+    {
+         name: "Actions",
+         width: "120px",
+         selector: (row:  IQuotesToCustomer) => (
+           <div className="">
+             <button
+               type="button"
+               
+               title="More Actions"
+               onClick={(e) =>{ setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),setSelectedRowId(row._id )}}
+             >
+               <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
+             </button>
+             { selectedRowId === row._id   &&  (isOpenAction) && (
+               <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
+   
+                 <Link
+                   to={`/add-vendor/${row?._id}`}
+                   className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                   title="View Vendor"
+                 >
+                   <FiEdit className="text-xs" />
+                   Edit
+                 </Link>
+                 <button
+                   type="button"
+                   onClick={() => handleDelete(row._id)}
+                   className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                   title="Delete Vendor"
+                 >
+                   <RiDeleteBin6Line className="text-xs" />
+                   Delete
+                 </button>
+               </div>
+             )}
+           </div>
+         ),
+       },
+
+
+ 
+
+      
   ];
 
   const filterColumns = columns.filter((item) => {
@@ -200,7 +246,8 @@ function QuotesForCustomer() {
       "Status": true,
       "Total Amount": true,
       "Edit": canView || canUpdate ,
-      "Delete": canDelete 
+      "Delete": canDelete ,
+      Actions : true || canView || canUpdate || canDelete
   });
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumnsQuotesToCustomer');
@@ -268,7 +315,7 @@ function QuotesForCustomer() {
 
     const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
 
-    const baseWidth = 100 / visibleColumnsCount;
+    const baseWidth = 100 / (visibleColumnsCount > 7 ? 7 : visibleColumnsCount);
 
     const MIN_WIDTH = 8;
     const MAX_WIDTH = 20;
@@ -276,14 +323,7 @@ function QuotesForCustomer() {
     columnsWithDynamicWidth.forEach(column => {
       let allocatedWidth = baseWidth;
 
-      // Columns that typically need less space
-      if (column.name === "Delete" || column.name === "Edit") {
-        allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
-      }
-      // Columns that might need more space
-      else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-        allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
-      }
+   
 
       column.width = `${allocatedWidth}%`;
     });
@@ -311,7 +351,8 @@ function QuotesForCustomer() {
       "Status": true,
       "Total Amount": true,
       "Edit": canView || canUpdate,
-      "Delete": canDelete 
+      "Delete": canDelete ,
+       Actions : true || canView || canUpdate || canDelete
     });
   };
 
