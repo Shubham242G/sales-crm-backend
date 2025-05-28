@@ -190,7 +190,7 @@ export default function EnquiryLIst() {
   };
 
   // Reset column visibility to default
-const [isOpenAction, setIsOpenAction] = useState(false);
+  const [isOpenAction, setIsOpenAction] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const columns = [
     {
@@ -334,48 +334,55 @@ const [isOpenAction, setIsOpenAction] = useState(false);
         </div>
       ),
     },
-     {
-         name: "Actions",
-         width: "20px",
-         selector: (row: any) => (
-           <div className="">
-             <button
-               type="button"
-               
-               title="More Actions"
-               onClick={(e) =>{ setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),setSelectedRowId(row._id )}}
-             >
-               <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
-             </button>
-             { selectedRowId === row._id   &&  (isOpenAction) && (
-               <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
-   
-                 <Link
-                   to={`/add-vendor/${row?._id}`}
-                   className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
-                   title="View Vendor"
-                 >
-                   <FiEdit className="text-xs" />
-                   Edit
-                 </Link>
-                 <button
-                   type="button"
-                   onClick={() => handleDelete(row._id)}
-                   className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
-                   title="Delete Vendor"
-                 >
-                   <RiDeleteBin6Line className="text-xs" />
-                   Delete
-                 </button>
-               </div>
-             )}
-           </div>
-         ),
-       },
-
-
- 
-
+    {
+      name: "Actions",
+      width: "20px",
+      selector: (row: any) => (
+        <div className="">
+          <button
+            type="button"
+            title="More Actions"
+            onClick={(e) => {
+              setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),
+                setSelectedRowId(row._id);
+            }}
+          >
+            <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 ">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="rgba(255,255,255,1)"
+              >
+                <path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path>
+              </svg>
+            </span>
+          </button>
+          {selectedRowId === row._id && isOpenAction && (
+            <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
+              <Link
+                to={`/add-vendor/${row?._id}`}
+                className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                title="View Vendor"
+              >
+                <FiEdit className="text-xs" />
+                Edit
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDelete(row._id)}
+                className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                title="Delete Vendor"
+              >
+                <RiDeleteBin6Line className="text-xs" />
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+      ),
+    },
   ];
 
   // Column selector
@@ -385,17 +392,17 @@ const [isOpenAction, setIsOpenAction] = useState(false);
     [key: string]: boolean;
   }>({
     "Customer Name": true,
-      "Enquiry Type": true,
-      Loaction: true,
-      "Level of Enquiry": true,
-      "Check-In": true,
-      "Check-Out": true,
-      "Number of Rooms": true,
-      Status: true,
-      Edit: canView || canUpdate || true,
-      Delete: canDelete || true,
-      "Convert to Enquiry": true,
-      Actions: true || canDelete || canView || canUpdate,
+    "Enquiry Type": true,
+    Loaction: true,
+    "Level of Enquiry": true,
+    "Check-In": true,
+    "Check-Out": true,
+    "Number of Rooms": true,
+    Status: true,
+    Edit: canView || canUpdate || true,
+    Delete: canDelete || true,
+    "Convert to Enquiry": true,
+    Actions: true || canDelete || canView || canUpdate,
   });
   // Removed duplicate declaration of visibleColumns
   useEffect(() => {
@@ -636,24 +643,21 @@ const [isOpenAction, setIsOpenAction] = useState(false);
 
   return (
     <>
-    
-        <div className=" table_container rounded-xl mt-10 p-6">
-          <div className="search_boxes flex justify-between items-center ml-2 ">
-            <h2 className="text-xl font-semibold text-gray-800">
-              Enquiry List
-            </h2>
+      <div className=" table_container rounded-xl mt-10 p-6">
+        <div className="search_boxes flex justify-between items-center ml-2 ">
+          <h2 className="text-xl font-semibold text-gray-800">Enquiry List</h2>
 
-            <div className="flex items-center justify-start gap-2 ">
-              <div className="">
-                <input
-                  type="search"
-                  className="rounded-md w-full border px-3 text-sm border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                  placeholder="Search by customer name"
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-              </div>
+          <div className="flex items-center justify-start gap-2 ">
+            <div className="">
+              <input
+                type="search"
+                className="rounded-md w-full border px-3 text-sm border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                placeholder="Search by customer name"
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </div>
 
-              {/* <div className="relative">
+            {/* <div className="relative">
               {/* <button
                 className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                 onClick={() => setShowFilters(!showFilters)}
@@ -662,109 +666,109 @@ const [isOpenAction, setIsOpenAction] = useState(false);
               </button> 
               {showFilters && <FilterDropdown />}
             </div> */}
+            <button
+              onClick={handleModalOpen}
+              className="flex items-center  text-sm adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
+            >
+              Advance Search
+            </button>
+
+            <button
+              className=" flex items-center gap-1  px-3 py-1.5  text-sm rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+              onClick={handleAssignTask}
+            >
+              <span className="whitespace-nowrap text-sm">
+                {" "}
+                Assign To Ops Team{" "}
+              </span>
+            </button>
+            <div className="relative">
               <button
-                onClick={handleModalOpen}
-                className="flex items-center  text-sm adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
+                className="flex items-center gap-1  px-3 py-1.5 rounded-md text-sm text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                onClick={() => setShowColumnSelector(!showColumnSelector)}
               >
-                Advance Search
+                <FaColumns /> Columns
               </button>
-
-              <button
-                className=" flex items-center gap-1  px-3 py-1.5  text-sm rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
-                onClick={handleAssignTask}
-              >
-                <span className="whitespace-nowrap text-sm">
-                  {" "}
-                  Assign To Ops Team{" "}
-                </span>
-              </button>
-              <div className="relative">
-                <button
-                  className="flex items-center gap-1  px-3 py-1.5 rounded-md text-sm text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-                  onClick={() => setShowColumnSelector(!showColumnSelector)}
-                >
-                  <FaColumns /> Columns
-                </button>
-                {showColumnSelector && <ColumnSelector />}
-              </div>
-
-              <button
-                className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
-                onClick={handleExportEnquiries}
-              >
-                <FaFileExport /> Export
-              </button>
-
-              <input
-                type="file"
-                ref={fileInputRef}
-                className="hidden text-sm"
-                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                onChange={handleFileChange}
-              />
-
-              <button
-                className="flex items-center gap-1  text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
-                onClick={handleImportClick}
-                disabled={isUploading}
-              >
-                <FaFileImport />
-                {isUploading ? "Importing..." : "Import"}
-              </button>
-
-              {canCreate && (
-                <button
-                  onClick={() => navigate("/addEnquiry")}
-                  className="flex items-center justify-center text-sm gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 border border-gray-300 whitespace-nowrap"
-                >
-                  <FaPlus />
-                  <span>New Enquiry</span>
-                </button>
-              )}
+              {showColumnSelector && <ColumnSelector />}
             </div>
-          </div>
 
-          <div className="mt-5">
-            <ReactTable
-              data={EnquiryData?.data}
-              columns={filteredColumns}
-              loading={false}
-              totalRows={EnquiryData?.total}
-              onChangeRowsPerPage={setPageSize}
-              onChangePage={setPageIndex}
-              page={pageIndex}
-              rowsPerPageText={pageSize}
-              isServerPropsDisabled={false}
+            <button
+              className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+              onClick={handleExportEnquiries}
+            >
+              <FaFileExport /> Export
+            </button>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden text-sm"
+              accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              onChange={handleFileChange}
             />
-          </div>
-          {/* Advanced Search Modal */}
-          {isOpen && (
-            <>
-              <div
-                className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
-                onClick={handleModalOpen}
-              ></div>
 
-              <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-                <AdvancedSearch
-                  fields={searchFields}
-                  onSearch={(values) => {
-                    setAdvancedSearchParams(values);
-                    setIsOpen(false);
-                    refetch();
-                  }}
-                  onClear={() => {
-                    setIsOpen(false);
-                    setAdvancedSearchParams("");
-                    refetch();
-                  }}
-                />
-              </div>
-            </>
-          )}
+            <button
+              className="flex items-center gap-1  text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+              onClick={handleImportClick}
+              disabled={isUploading}
+            >
+              <FaFileImport />
+              {isUploading ? "Importing..." : "Import"}
+            </button>
+
+            {canCreate && (
+              <button
+                onClick={() => navigate("/addEnquiry")}
+                className="flex items-center justify-center text-sm gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 border border-gray-300 whitespace-nowrap"
+              >
+                <FaPlus />
+                <span>New Enquiry</span>
+              </button>
+            )}
+          </div>
         </div>
-     
-   {/* <NewTable
+
+        <div className="mt-5">
+          <ReactTable
+            data={EnquiryData?.data}
+            columns={filteredColumns}
+            loading={false}
+            totalRows={EnquiryData?.total}
+            onChangeRowsPerPage={setPageSize}
+            onChangePage={setPageIndex}
+            page={pageIndex}
+            rowsPerPageText={pageSize}
+            isServerPropsDisabled={false}
+          />
+        </div>
+        {/* Advanced Search Modal */}
+        {isOpen && (
+          <>
+            <div
+              className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
+              onClick={handleModalOpen}
+            ></div>
+
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+              <AdvancedSearch
+                fields={searchFields}
+                onSearch={(values) => {
+                  setAdvancedSearchParams(values);
+                  setIsOpen(false);
+                  refetch();
+                }}
+                onClear={() => {
+                  setIsOpen(false);
+                  setAdvancedSearchParams("");
+                  refetch();
+                }}
+              />
+            </div>
+          </>
+        )}
+      </div>
+
+      {/*<NewTable
         data={EnquiryData?.data}
         columns={filteredColumns}
         loading={false}
@@ -784,7 +788,7 @@ const [isOpenAction, setIsOpenAction] = useState(false);
         RouteName={"Enquiry"}
         AddButtonRouteName={"/add-enquiry"}
         AddButtonName={"New Enquiry"}
-      /> */}
+      />*/}
     </>
   );
 }
