@@ -320,116 +320,9 @@ function ZohoInvoiceView() {
     ];
     const [showColumnSelector, setShowColumnSelector] = useState(false);
     // Toggle column visibility
-       const canUpdate = true; // or false, depending on your logic
+    const canUpdate = true; // or false, depending on your logic
     const canDelete = true; // or false, depending on your logic
     const [visibleColumns, setVisibleColumns] = useState({
-       "Invoice #": true,
-        "Customer": true,
-        "Date": true,
-        "Status": true,
-        "Amount": true,
-        "Balance": true,
-        "View": true,
-        "Download": true
-    }); 
-    useEffect(() => {
-      const savedColumns = localStorage.getItem('enquiryTableColumns');
-      if (savedColumns) {
-        setVisibleColumns(JSON.parse(savedColumns));
-      }
-    }, []);
-  
-    useEffect(() => {
-      localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
-    }, [visibleColumns]);
-    const toggleColumnVisibility = (columnName: string) => {
-      setVisibleColumns(prev => ({
-        ...prev,
-        [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev]
-      }));
-    };
-    const ColumnSelector = () => (
-      <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-10 border border-gray-200 right-0 w-72">
-        <div className="flex flex-col gap-2">
-          <div className="flex justify-between items-center border-b pb-2 mb-2">
-            <h3 className="font-medium">Customize Columns</h3>
-            <button 
-              className="text-xs text-blue-600 hover:underline"
-              onClick={resetColumnVisibility}
-            >
-              Reset to Default
-            </button>
-          </div>
-          
-          <div className="max-h-80 overflow-y-auto">
-            {columns.map((column) => (
-              <div key={column.name} className="flex items-center justify-between py-2 border-b border-gray-100">
-                <span className="text-sm">{column.name}</span>
-                <Switch
-                  checked={visibleColumns[column.name as keyof typeof visibleColumns] || false}
-                  onChange={() => toggleColumnVisibility(column.name)}
-                  size="small"
-                  color="primary"
-                />
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-2 flex justify-end">
-            <button 
-              className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-              onClick={() => setShowColumnSelector(false)}
-            >
-              Apply
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  
-    const calculateDynamicWidths = (columnsArray: any[]) => {
-      const visibleColumnsCount = columnsArray.length;
-      
-      if (visibleColumnsCount === 0) return columnsArray;
-      
-      const columnsWithDynamicWidth = columnsArray.map(column => ({...column}));
-      
-      const baseWidth = 100 / visibleColumnsCount; 
-  
-      const MIN_WIDTH = 8; 
-      const MAX_WIDTH = 20; 
-  
-      columnsWithDynamicWidth.forEach(column => {
-        let allocatedWidth = baseWidth;
-  
-        // Columns that typically need less space
-        if (column.name === "Delete" || column.name === "Edit") {
-          allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
-        }
-        // Columns that might need more space
-        else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-          allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
-        }
-  
-        column.width = `${allocatedWidth}%`;
-      });
-  
-      console.log(columnsWithDynamicWidth, "check the column width")
-      
-      return columnsWithDynamicWidth;
-    };
-  
-    // Filter columns based on visibility
-    const visibleColumnsArray = columns.filter(column => 
-      visibleColumns[column.name as keyof typeof visibleColumns]
-    );
-    
-    // Apply dynamic widths to visible columns
-    const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
-  
- 
-    const resetColumnVisibility = () => {
-      setVisibleColumns({
         "Invoice #": true,
         "Customer": true,
         "Date": true,
@@ -438,72 +331,180 @@ function ZohoInvoiceView() {
         "Balance": true,
         "View": true,
         "Download": true
-      });
+    });
+    useEffect(() => {
+        const savedColumns = localStorage.getItem('enquiryTableColumns');
+        if (savedColumns) {
+            setVisibleColumns(JSON.parse(savedColumns));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('enquiryTableColumns', JSON.stringify(visibleColumns));
+    }, [visibleColumns]);
+    const toggleColumnVisibility = (columnName: string) => {
+        setVisibleColumns(prev => ({
+            ...prev,
+            [columnName as keyof typeof prev]: !prev[columnName as keyof typeof prev]
+        }));
+    };
+    const ColumnSelector = () => (
+        <div className="absolute bg-white shadow-lg p-4 rounded-md mt-2 z-10 border border-gray-200 right-0 w-72">
+            <div className="flex flex-col gap-2">
+                <div className="flex justify-between items-center border-b pb-2 mb-2">
+                    <h3 className="font-medium">Customize Columns</h3>
+                    <button
+                        className="text-xs text-blue-600 hover:underline"
+                        onClick={resetColumnVisibility}
+                    >
+                        Reset to Default
+                    </button>
+                </div>
+
+                <div className="max-h-80 overflow-y-auto">
+                    {columns.map((column) => (
+                        <div key={column.name} className="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span className="text-sm">{column.name}</span>
+                            <Switch
+                                checked={visibleColumns[column.name as keyof typeof visibleColumns] || false}
+                                onChange={() => toggleColumnVisibility(column.name)}
+                                size="small"
+                                color="primary"
+                            />
+                        </div>
+                    ))}
+                </div>
+
+                <div className="mt-2 flex justify-end">
+                    <button
+                        className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+                        onClick={() => setShowColumnSelector(false)}
+                    >
+                        Apply
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+
+    const calculateDynamicWidths = (columnsArray: any[]) => {
+        const visibleColumnsCount = columnsArray.length;
+
+        if (visibleColumnsCount === 0) return columnsArray;
+
+        const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
+
+        const baseWidth = 100 / visibleColumnsCount;
+
+        const MIN_WIDTH = 8;
+        const MAX_WIDTH = 20;
+
+        columnsWithDynamicWidth.forEach(column => {
+            let allocatedWidth = baseWidth;
+
+            // Columns that typically need less space
+            if (column.name === "Delete" || column.name === "Edit") {
+                allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
+            }
+            // Columns that might need more space
+            else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
+                allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
+            }
+
+            column.width = `${allocatedWidth}%`;
+        });
+
+        console.log(columnsWithDynamicWidth, "check the column width")
+
+        return columnsWithDynamicWidth;
+    };
+
+    // Filter columns based on visibility
+    const visibleColumnsArray = columns.filter(column =>
+        visibleColumns[column.name as keyof typeof visibleColumns]
+    );
+
+    // Apply dynamic widths to visible columns
+    const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+
+
+    const resetColumnVisibility = () => {
+        setVisibleColumns({
+            "Invoice #": true,
+            "Customer": true,
+            "Date": true,
+            "Status": true,
+            "Amount": true,
+            "Balance": true,
+            "View": true,
+            "Download": true
+        });
     };
 
 
 
     return (
-        <div className="container -ml-5">
-            <div className=" rounded-xl   -mt-5">
-                <div className="flex justify-between items-center ">
-                    <h2 className="text-xl ml-2 font-semibold text-gray-800">
-                        Zoho Invoice List
-                    </h2>
 
-                    <div className="flex items-center mb-5 gap-2">
-                        <input
-                            type="search"
-                            placeholder="Search customer..."
-                            onChange={(e) => setQuery(e.target.value)}
-                            className=" px-3 py-1.5 text-sm rounded-md text-gray-700 border w[200px] border-gray-300"
-                        />
-                         <div className="relative">
-                            <button
-                              className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-                              onClick={() => setShowColumnSelector(!showColumnSelector)}
-                            >
-                              <FaColumns/> Columns
-                            </button>
-                            {showColumnSelector && <ColumnSelector />}
-                          </div>
+        <div className=" rounded-xl  mt-10 p-6">
+            <div className="flex justify-between items-center ">
+                <h2 className="text-xl  font-semibold text-gray-800">
+                    Zoho Invoice List
+                </h2>
 
-
-
-                        <select
-                            className="flex items-center gap-1 px-3 py-2 rounded-md text-gray-700 border border-gray-300"
-                            value={selectedStatus}
-                            onChange={(e) => setSelectedStatus(e.target.value)}
+                <div className="flex items-center  gap-2">
+                    <input
+                        type="search"
+                        placeholder="Search customer..."
+                        onChange={(e) => setQuery(e.target.value)}
+                        className=" px-3 py-1.5 text-sm rounded-md text-gray-700 border w[200px] border-gray-300"
+                    />
+                    <div className="relative">
+                        <button
+                            className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                            onClick={() => setShowColumnSelector(!showColumnSelector)}
                         >
-                            <option  value="">All Status</option>
-                            <option value="sent">Sent</option>
-                            <option value="paid">Paid</option>
-                            <option value="overdue">Overdue</option>
-                            <option value="draft">Draft</option>
-                            <option value="partially_paid">Partially Paid</option>
-                        </select>
-                        {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+                            <FaColumns /> Columns
+                        </button>
+                        {showColumnSelector && <ColumnSelector />}
+                    </div>
+
+
+
+                    <select
+                        className="flex items-center gap-1 px-3 py-2 rounded-md text-gray-700 border border-gray-300"
+                        value={selectedStatus}
+                        onChange={(e) => setSelectedStatus(e.target.value)}
+                    >
+                        <option value="">All Status</option>
+                        <option value="sent">Sent</option>
+                        <option value="paid">Paid</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="draft">Draft</option>
+                        <option value="partially_paid">Partially Paid</option>
+                    </select>
+                    {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                             <FaFilter /> Filter
                         </button> */}
+                    <button
+                        onClick={handleSyncInvoices}
+                        className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
+                        disabled={syncInvoicesMutation.isPending}
+                    >
+                        <FaSync  /> 
+                        <span className="w-[100px]">{syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}</span>
+                    </button>
+                    <div className="relative flex items-center " id="exportDropdown">
                         <button
-                            onClick={handleSyncInvoices}
-                            className="flex items-center w-[140px] text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
-                            disabled={syncInvoicesMutation.isPending}
+                            className={`flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
+                            onClick={() => !isExporting && setShowExportOptions(!showExportOptions)}
+                            disabled={isExporting}
                         >
-                            <FaSync className="pl-1" /> {syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}
+                            <FaFileExport />
+                            {isExporting ? 'Exporting...' : 'Export'}
+                            <IoMdArrowDropdown className="ml-1 text-sm" />
                         </button>
-                        <div className="relative flex items-center " id="exportDropdown">
-                            <button
-                                className={`flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
-                                onClick={() => !isExporting && setShowExportOptions(!showExportOptions)}
-                                disabled={isExporting}
-                            >
-                                <FaFileExport />
-                                {isExporting ? 'Exporting...' : 'Export'}
-                                <IoMdArrowDropdown className="ml-1 text-sm" />
-                            </button>
 
-                            {/* {showExportOptions && (
+                        {/* {showExportOptions && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
                                     <ul className="py-1">
                                         <li
@@ -566,30 +567,30 @@ function ZohoInvoiceView() {
                                     </ul>
                                 </div>
                             )} */}
-                        </div>
-                        <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border text-sm border-gray-300">
-                            Advance Search
-                        </button>
-
-
                     </div>
+                    {/* <button onClick={handleModalOpen} className="flex items-center adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border text-sm border-gray-300">
+                            Advance Search
+                        </button> */}
+
+
                 </div>
-                <div className=" -mr-4 ">
-                     <ReactTable
+            </div>
+            <div className="mt-5">
+                <ReactTable
                     data={data?.data.slice(0, pageSize) || []}
                     columns={filteredColumns}
                     loading={isLoading || syncInvoicesMutation.isPending}
-                    totalRows={data?.total ||0}
+                    totalRows={data?.total || 0}
                     onChangeRowsPerPage={setPageSize}
                     onChangePage={setPageIndex}
                     page={pageIndex}
                     rowsPerPageText={pageSize}
                     isServerPropsDisabled={false}
                 />
-                </div>
-               
             </div>
+
         </div>
+
     );
 }
 

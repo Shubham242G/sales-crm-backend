@@ -245,8 +245,8 @@ const [pageSize, setPageSize] = useState(10);
         filterbuttn={false}
       /> */}
 
-      <div className="container ">
-        <div className="bg-white table_container rounded-xl mr-4 -mt-5">
+    
+        <div className="bg-white table_container rounded-xl mt-10 p-6">
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
@@ -294,7 +294,7 @@ const [pageSize, setPageSize] = useState(10);
             </div>
           </div>
           {/* React Table */}
-          <div className="mt-4 -ml-5 -mr-3"><ReactTable
+          <div className="mt-10"><ReactTable
             data={categoryData?.data}
             columns={filteredColumns}
             loading={false}
@@ -305,7 +305,7 @@ const [pageSize, setPageSize] = useState(10);
           /></div>
           
         </div>
-      </div>
+     
     </>
   );
 }

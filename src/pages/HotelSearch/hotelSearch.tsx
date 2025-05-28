@@ -49,26 +49,26 @@ function SearchBar() {
   // };
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans">
+    <div className="mr-6">
       {/* Header */}
-      <header className="bg-white p-4 shadow-md">
+      <header className="bg-white p-6 mt-16 shadow-md">
         <h1 className="text-xl font-bold text-gray-800 ml-4">
           Find Meeting Venues, Request Quotes, and Book Event Space
         </h1>
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto p-6">
+      <div className="container  mt-4">
         {/* Search Bar */}
         <div className="bg-white rounded-lg shadow-md p-4 mb-6 flex flex-col md:flex-row items-center gap-4">
-          <div className="flex-1">
+          <div className="flex-1 mt-7">
             <input
               type="text"
               name="location"
               placeholder="Where is your event?"
               value={searchData.location}
               onChange={handleSearchChange}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
           <div className="flex-1">
@@ -81,10 +81,10 @@ function SearchBar() {
               placeholder="Start date"
               value={searchData.startDate}
               onChange={handleSearchChange}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 ">
           <label className="block text-sm font-medium text-gray-700 mb-2">
               End Date
             </label>
@@ -94,10 +94,10 @@ function SearchBar() {
               placeholder="End date"
               value={searchData.endDate}
               onChange={handleSearchChange}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
-          <div className="flex-1">
+          <div className="flex-1  mt-7">
             <input
               type="number"
               name="eventSize"
@@ -105,11 +105,11 @@ function SearchBar() {
               min={0}
               value={searchData.eventSize}
               onChange={handleSearchChange}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
-          <div className="flex-1">
+          <div className="flex-1  mt-7">
             <input
               type="number"
               name="guests"
@@ -117,10 +117,10 @@ function SearchBar() {
               min={0}
               value={searchData.guests}
               onChange={handleSearchChange}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2  mt-7">
             <button
               onClick={() => setShowFilters(!showFilters)}
               className="bg-gray-200 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-300 transition"
@@ -153,14 +153,14 @@ function SearchBar() {
                   placeholder="Where is your event?"
                   value={searchData.location}
                   onChange={handleSearchChange}
-                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
                 <span className="text-gray-500">or</span>
                 <select
                   name="regions"
                   value={filters.regions}
                   onChange={handleFilterChange}
-                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 >
                   <option value="">Select regions</option>
                   <option value="north-america">North America</option>
@@ -178,7 +178,7 @@ function SearchBar() {
                   placeholder="Enter radius"
                   value={filters.maxRadius}
                   onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -194,7 +194,7 @@ function SearchBar() {
                   name="startDate"
                   value={searchData.startDate}
                   onChange={handleSearchChange}
-                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
                 <span className="text-gray-500">-</span>
                 <input
@@ -202,7 +202,7 @@ function SearchBar() {
                   name="endDate"
                   value={searchData.endDate}
                   onChange={handleSearchChange}
-                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
               <div className="mt-2">
@@ -215,7 +215,7 @@ function SearchBar() {
                   placeholder="Enter promotions or need by"
                   value={filters.promotions}
                   onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -235,7 +235,7 @@ function SearchBar() {
                   placeholder="Don't see a chain, brand, venue, or affiliate? Enter its name."
                   value={filters.chains}
                   onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
               <div className="mb-2">
@@ -280,7 +280,7 @@ function SearchBar() {
                   name="amenities"
                   value={filters.amenities}
                   onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 >
                   <option value="">Select amenities</option>
                   <option value="wifi">WiFi</option>
@@ -299,7 +299,7 @@ function SearchBar() {
                 name="venueTypes"
                 value={filters.venueTypes}
                 onChange={handleFilterChange}
-                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
                 <option value="">
                   Boutique hotels, Conference centers, Hotels, Lux...
@@ -419,7 +419,7 @@ function SearchBar() {
                     name="areas"
                     value={filters.areas}
                     onChange={handleFilterChange}
-                    className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="">Select areas</option>
                     <option value="downtown">Downtown</option>
@@ -435,7 +435,7 @@ function SearchBar() {
                     name="distanceFromAirport"
                     value={filters.distanceFromAirport}
                     onChange={handleFilterChange}
-                    className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="">Select distance</option>
                     <option value="5-miles">Within 5 miles</option>

@@ -587,8 +587,8 @@ export default function EnquiryLIst() {
 
   return (
     <>
-      <div className="container   sticky ">
-        <div className=" table_container rounded-xl mt-20  ">
+    
+        <div className=" table_container rounded-xl mt-10 p-6">
           <div className="search_boxes flex justify-between items-center ml-2 ">
             <h2 className="text-xl font-semibold text-gray-800">
               Enquiry List
@@ -675,7 +675,7 @@ export default function EnquiryLIst() {
             </div>
           </div>
 
-          <div className="w-full ">
+          <div className="mt-5">
             <ReactTable
               data={EnquiryData?.data}
               columns={filteredColumns}
@@ -714,8 +714,7 @@ export default function EnquiryLIst() {
             </>
           )}
         </div>
-      </div>
-
+     
    {/* <NewTable
         data={EnquiryData?.data}
         columns={filteredColumns}

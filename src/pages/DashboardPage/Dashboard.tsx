@@ -536,19 +536,19 @@ const Dashboard: React.FC = () => {
         <div className="flex justify-center gap-4 -ml-16 ">
           <button
             onClick={() => setUserRole('sales')}
-            className="bg-blue-500 text-white px-3 py-1.5 rounded-md font-medium shadow-lg" 
+            className="bg-blue-600 text-white px-3 py-1.5 rounded-md font-medium shadow-lg" 
           >
             Sales
           </button>
           <button
             onClick={() => setUserRole('operations')}
-            className="bg-blue-500 text-white  px-3 py-1.5 rounded-md font-medium shadow-lg" 
+            className="bg-blue-600 text-white  px-3 py-1.5 rounded-md font-medium shadow-lg" 
           >
             Operations
           </button>
           <button
             onClick={() => setUserRole('admin')}
-           className="bg-blue-500 text-white px-3 py-1.5 rounded-md font-medium shadow-lg" 
+           className="bg-blue-600 text-white px-3 py-1.5 rounded-md font-medium shadow-lg" 
           >
             Admin
           </button>

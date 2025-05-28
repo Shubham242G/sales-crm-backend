@@ -308,8 +308,8 @@ function CustomerLedger() {
   };
 
   return (
-    <div className="container  top-0  sticky -mt-9  ">
-      <div className="bg-white table_container rounded-xl  p-3 -ml-5 ">
+   
+      <div className="bg-white table_container rounded-xl  p-6 mt-10 ">
         <div className="search_boxes flex justify-between items-center">
           <h2 className="text-xl font-semibold text-gray-800">
             Quotes from Vendor
@@ -353,7 +353,7 @@ function CustomerLedger() {
             </button>
           </div>
         </div>
-        <div className="shadow-lg mt-3 -ml-3 -mr-1 overflow-y-auto">
+        <div className="mt-5">
           <ReactTable
           data={quotesFromVendors.data}
           columns={filteredColumns}
@@ -368,7 +368,7 @@ function CustomerLedger() {
         </div>
         
       </div>
-    </div>
+ 
   );
 }
 

@@ -334,9 +334,9 @@ function CustomerSales() {
 
 
   return (
-    <div className="container top-0 b sticky -mt-5 ">
-      <div className="bg-white table_container rounded-xl shadow-xl -ml-5 -mt-5">
-        <div className="search_boxes flex justify-between items-center ml-4 mr-5 ">
+   
+      <div className="bg-white table_container rounded-xl  p-6 mt-10">
+        <div className="search_boxes flex justify-between items-center  ">
           <h2 className="text-xl font-semibold text-gray-800">Customer List</h2>
           <div className="flex items-center gap-2  w-[70%] ">
             <input
@@ -381,7 +381,7 @@ function CustomerSales() {
             )}
           </div>
         </div>
-        <div className="mt-4">
+        <div className="mt-5">
         <ReactTable
           data={CustomerData?.data}
           columns={filteredColumns}
@@ -397,8 +397,7 @@ function CustomerSales() {
        </div>
 
       </div>
-    </div>
-
+ 
 
 
   );

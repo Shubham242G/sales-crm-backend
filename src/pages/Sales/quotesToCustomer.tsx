@@ -319,9 +319,9 @@ function QuotesForCustomer() {
 
 
   return (
-    <div className="container top-0 b sticky -mt-5 ">
-      <div className="table_container rounded-xl shadow-xl  -mt-5 -ml-6">
-        <div className="search_boxes flex justify-between items-center mr-5 ml-4">
+    
+      <div className="table_container rounded-xl mt-10 p-6">
+        <div className="search_boxes flex justify-between items-center ">
           <h2 className="text-xl font-semibold text-gray-800">
             All Quotes for Customer List
           </h2>
@@ -364,7 +364,7 @@ function QuotesForCustomer() {
             )}
           </div>
         </div>
-      <div className="ml-1 mr-1 mt-4">
+      <div className="mt-5">
         <ReactTable
           data={quotesToCustomerData?.data || []}
           columns={filteredColumns}
@@ -378,7 +378,7 @@ function QuotesForCustomer() {
         />
       </div>
       </div>  
-    </div>
+  
   );
 }
 

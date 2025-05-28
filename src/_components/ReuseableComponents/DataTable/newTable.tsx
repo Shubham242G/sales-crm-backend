@@ -337,9 +337,9 @@ const NewTable = (props: any) => {
   };
   return (
     <>
-      <div className="container top-0 bg-white sticky ">
-        <div className=" table_container rounded-xl px-4    ">
-          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm -ml-4 -mt-5 mb-4">
+     
+        <div className=" table_container rounded-xl px-6 mt-16    ">
+          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
             {/* Heading on the Left */}
             <h2 className="text-lg font-semibold text-gray-800 ">
               {TableName}
@@ -552,8 +552,7 @@ const NewTable = (props: any) => {
             />
           </div>
         </div>
-      </div>
-
+     
       {isOpen && (
         <>
           <div

@@ -322,8 +322,8 @@ function MyTask() {
 
   return (
     <>
-      <div className="container ">
-        <div className="bg-white table_container rounded-xl mr-4 -mt-5">
+      
+        <div className="bg-white table_container rounded-xl mt-10 p-6  ">
           <div className="search_boxes flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-800">
               My Tasks List
@@ -366,8 +366,8 @@ function MyTask() {
             </div>
           </div>
           
-          <div className="-ml-5 -mr-2 mt-5">
-<ReactTable
+          <div className="mt-5">
+       <ReactTable
             data={TaskManagementData.data}
             columns={filteredColumns}
             loading={false}
@@ -381,7 +381,7 @@ function MyTask() {
           </div>
           
         </div>
-      </div>
+      
     </>
   );
 }

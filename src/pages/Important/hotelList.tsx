@@ -285,8 +285,8 @@ function HotelList() {
         filterbuttn={false}
       /> */}
 
-      <div className="container ">
-        <div className="bg-white table_container rounded-xl  -mt-4">
+
+        <div className="bg-white table_container rounded-xl mt-10 p-6">
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
@@ -294,7 +294,7 @@ function HotelList() {
             </h2>
 
             {/* Search and Buttons on the Right */}
-            <div className="flex items-center justify-start gap-2 mr-3">
+            <div className="flex items-center justify-start gap-2 ">
               {/* Search Box */}
               <div className="w-full">
                 <input
@@ -340,7 +340,7 @@ function HotelList() {
             </div>
           </div>
           {/* React Table */}
-         <div className="mt-5 -ml-5"> 
+         <div className="mt-5"> 
           <ReactTable
             data={hotelData?.data}
             columns={filteredColumns}
@@ -353,7 +353,7 @@ function HotelList() {
             isServerPropsDisabled={false}
           /></div>
         </div>
-      </div>
+      
     </>
   );
 }

@@ -451,9 +451,9 @@ function RfpList() {
         filterbuttn={false}
       /> */}
 
-      <div className="container top-0 b sticky  mt-20 ">
-        <div className="bg-white table_container rounded-xl p-8  ">
-          <div className="search_boxes flex justify-between items-center mb-3 mr-6">
+     
+        <div className="bg-white table_container rounded-xl p-6 mt-10  ">
+          <div className="search_boxes flex justify-between items-center  ">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
               All RFPs List
@@ -502,7 +502,7 @@ function RfpList() {
             </div>
           </div>
           {/* React Table */}
-          <div className=" shadow-lg -ml-8 -mr-3 overflow-y-auto ">
+          <div className=" mt-5">
             <ReactTable
               data={RfpData.data}
               columns={filteredColumns}
@@ -516,7 +516,7 @@ function RfpList() {
             />
           </div>
         </div>
-      </div>
+     
     </>
   );
 }

@@ -391,11 +391,11 @@ function ConfirmedQuotestoCustomer() {
         filterbuttn={false}
       /> */}
 
-      <div className="container  -ml-5 -mt-6">
-        <div className=" table_container rounded-xl shadow-xl    -mt-5">
+     
+        <div className=" table_container rounded-xl  mt-10 p-6">
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
-            <h2 className="text-xl font-semibold text-gray-800 ml-3">
+            <h2 className="text-xl font-semibold text-gray-800 ">
               All Quotes for Vendor List
             </h2>
 
@@ -440,7 +440,7 @@ function ConfirmedQuotestoCustomer() {
             </div>
           </div>
           {/* React Table */}
-          <div className="mt-3 -mr-4">
+          <div className="mt-5">
   <ReactTable
             data={data}
             columns={filteredColumns}
@@ -455,7 +455,7 @@ function ConfirmedQuotestoCustomer() {
           </div>
         
         </div>
-      </div>
+    
     </>
   );
 }

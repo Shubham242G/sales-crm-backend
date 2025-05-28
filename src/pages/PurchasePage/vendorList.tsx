@@ -206,7 +206,7 @@ function VendorList() {
     },
     {
       name: "Actions",
-      width: "50px",
+      width: "20px",
       selector: (row: any) => (
         <div className="">
           <button
@@ -348,16 +348,12 @@ function VendorList() {
   );
 
   const calculateFixedWidths = (columnsArray: any[]) => {
-    const totalWidth = columnsArray.length > 0 ? columnsArray.length * 190 : 1;
-    const containerWidth = window.innerWidth - 100; // Adjust for padding/margins
+    const totalWidth = window.innerWidth - 100; // Adjust for padding/margins
+    const equalWidth = `${totalWidth / columnsArray.length}px`;
+
     const columnsWithFixedWidth = columnsArray.map((column) => ({
       ...column,
-      width:
-        column.name === "Actions"
-          ? "120px"
-          : totalWidth > containerWidth
-            ? "200px"
-            : `${98 / columnsArray.length}%`,
+      width: equalWidth,
     }));
 
     console.log(columnsWithFixedWidth, "check the column width");
@@ -401,11 +397,11 @@ function VendorList() {
         filterbuttn={false}
       /> */}
 
-      <div className="container px-6 -mt-7">
-           <div className=" table_container rounded-xl px-3 py-1.5 ">
-          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm  mb-4   ">
+      
+           <div className=" table_container rounded-xl p-6 mt-10 ">
+          <div className="flex flex-wrap items-center container justify-between gap-3 text-sm  ">
             {/* Heading on the Left */}
-            <h2 className="text-lg font-semibold -ml-8 text-gray-800">
+            <h2 className="text-lg font-semibold  text-gray-800">
               All Vendor List
             </h2>
 
@@ -471,7 +467,7 @@ function VendorList() {
             </div>
           </div>
           {/* React Table */}
-           <div className="   -ml-14 -mr-9 shadow-md overflow-y-auto ">
+           <div className="  mt-5 ">
           <ReactTable
             
             data={VendorData?.data}
@@ -486,7 +482,7 @@ function VendorList() {
           />
           </div>
         </div>
-      </div>
+     
 
     </>
   );

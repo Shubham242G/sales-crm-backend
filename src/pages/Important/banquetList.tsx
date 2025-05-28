@@ -262,7 +262,7 @@ function BanquetList() {
       /> */}
 
       <div className="container ">
-        <div className="bg-white table_container rounded-xl  -mt-5">
+        <div className="bg-white table_container rounded-xl mt-10 p-6">
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
@@ -310,7 +310,7 @@ function BanquetList() {
           </div>
 
           {/* React Table */}
-         <div className="-ml-5 mt-5">
+         <div className="mt-5">
           <ReactTable
             data={banquetData?.data}
             columns={filteredColumns}
@@ -324,9 +324,9 @@ function BanquetList() {
           />
          
          </div>
-          
         </div>
-      </div>
+        </div>
+   
     </>
   );
 }

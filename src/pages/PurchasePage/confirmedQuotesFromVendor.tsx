@@ -392,9 +392,9 @@ function ConfirmedQuotesFromVendor() {
         filterbuttn={false}
       /> */}
 
-      <div className="container  top-0  sticky -mt-6 ">
-        <div className="bg-white table_container rounded-xl   -ml-5  ">
-          <div className="search_boxes flex justify-between items-center ml-4">
+     
+        <div className="bg-white table_container rounded-xl  p-6 mt-10">
+          <div className="search_boxes flex justify-between items-center ">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
               All Quotes for Vendor List
@@ -445,7 +445,7 @@ function ConfirmedQuotesFromVendor() {
           </div>
 
           {/* React Table */}
-          <div className=" shadow-lg    overflow-y-auto mt-4">
+          <div className=" mt-5">
             <ReactTable
             data={confirmedQuotesToVendorData.data}
              columns={filteredColumns}
@@ -460,7 +460,7 @@ function ConfirmedQuotesFromVendor() {
           </div>
           
         </div>
-      </div>
+     
     </>
   );
 }
