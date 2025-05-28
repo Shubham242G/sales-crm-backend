@@ -735,7 +735,7 @@ export default function EnquiryLIst() {
         RouteName={"Enquiry"}
         AddButtonRouteName={"/add-enquiry"}
         AddButtonName={"New Enquiry"}
-      />  */}
+      /> */}
     </>
   );
 }

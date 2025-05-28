@@ -81,6 +81,8 @@ const AddNewUser = () => {
     e.preventDefault();
     try {
       const obj = formData;
+
+      console.log(formData.password, "Password",);
       if (id) {
         const { data: res } = await updateUser({ id, ...obj });
         if (res?.message) {
@@ -114,10 +116,10 @@ const AddNewUser = () => {
 
   return (
     <div className="w-[40%]  p-2 bg-white rounded-md-md text-sm">
-     
-        <h1 className="text-2xl font-semibold  mb-6">Add New User</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name */}
+
+      <h1 className="text-2xl font-semibold  mb-6">Add New User</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Name */}
         <div className="flex items-center space-x-4">
           <label className="font-medium w-32">Name<span className="text-red-600">*</span></label>
           <input
@@ -179,21 +181,32 @@ const AddNewUser = () => {
             className="border rounded-md px-3 py-2 text-sm flex-1 w-1/2 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
           >
             <option value="" disabled hidden>Select a Role</option>
-            {roleOptions.map((option:any) => (
+            {roleOptions.map((option: any) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </select>
         </div>
 
         {/* Buttons */}
-     <FixedActionButtons
-  onSave={() => handleSubmit(new Event("submit") as unknown as React.FormEvent)}
-  onCancel={() => navigate("/users")}
-  showSave={Boolean((!id && canCreate) || (id && canUpdate))}
-/>
+        <div className="fixed bottom-0 left-0 w-[84.5%] ml-[15.5%] bg-white border-t  border-gray-200  py-3 px-6 flex justify-start space-x-3 z-50">
 
-        </form>
-      
+          <button
+            onClick={handleSubmit}
+            className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium py-1.5 px-3 rounded"
+          >
+            Save
+          </button>
+
+          <button
+            onClick={() => navigate("/users")}
+            className="border border-gray-300 text-sm text-black font-medium  rounded hover:bg-gray-100 py-1.5 px-3"
+          >
+            Cancel
+          </button>
+        </div>
+
+      </form>
+
     </div>
   );
 };

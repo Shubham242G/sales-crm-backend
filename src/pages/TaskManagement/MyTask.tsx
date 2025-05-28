@@ -12,13 +12,14 @@ import {
   useUpdateTaskManagementById,
   usedeleteTaskManagementById,
   useMyTask,
+  useTaskManagement,
 } from "@/services/tastManagement.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { getAuth } from "@/utils/auth";
 import { Switch } from "@mui/material";
 
-function MyTask() {
+function TaskManagement() {
   const navigate = useNavigate();
 
   // const [loading, setLoading] = useState(false);
@@ -50,7 +51,7 @@ function MyTask() {
     [pageIndex, pageSize, query]
   );
 
-  const { data: TaskManagementData } = useMyTask(searchObj);
+  const { data: TaskManagementData } = useTaskManagement(searchObj);
   const { mutateAsync: deleteTaskManagement } = usedeleteTaskManagementById();
   const { mutateAsync: updateTaskManagement } = useUpdateTaskManagementById();
   // const { mutateAsync: convert } = convertToContact();
@@ -151,7 +152,7 @@ function MyTask() {
             onClick={() => navigate(`/add-TaskManagement/${row._id}`)}
             className="text-blue-500 text-lg p-[6px]"
           >
-             🔁
+            🔁
           </button>
         ),
     },
@@ -201,13 +202,13 @@ function MyTask() {
   // Toggle column visibility
   const [visibleColumns, setVisibleColumns] = useState({
     "Assigned To": true,
-      "Contact Owner": true,
-      "Department": true,
-      "Task Type": true,
-      "Task Title": true,
-      "Reassign": true,
-      "Edit": canView || canUpdate || true,
-      "Delete": canDelete || true,
+    "Contact Owner": true,
+    "Department": true,
+    "Task Type": true,
+    "Task Title": true,
+    "Reassign": true,
+    "Edit": canView || canUpdate || true,
+    "Delete": canDelete || true,
   });
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumns');
@@ -314,7 +315,7 @@ function MyTask() {
       "Reassign": true,
       "Edit": canView || canUpdate || true,
       "Delete": canDelete || true,
-     
+
     });
   };
 
@@ -379,11 +380,11 @@ function MyTask() {
             isServerPropsDisabled={false}
           />
           </div>
-          
+
         </div>
       
     </>
   );
 }
 
-export default MyTask;
+export default TaskManagement;
