@@ -197,12 +197,12 @@ const AddRfpsForm = () => {
       <div className="  rounded-lg">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6 mb-4">
-            <div className="flex flex-row gap-20">
+            <div className="flex flex-row gap-[78px]">
               <label className="  text-black font-500">
                 Service Type
               </label>
               <Select
-                className="w-[20%]"
+                className="w-[20%] text-sm"
                 isMulti
                 value={formData.serviceType.map((el) => ({
                   value: el,
@@ -219,11 +219,30 @@ const AddRfpsForm = () => {
                   formData.serviceType.every((el) => el !== option.value)
                 )}
               />
+               
             </div>
+              <div className="flex flex-row  gap-[98px] -mt-2 ">
+            <label className="block text-sm font-medium text-black mb-1">
+              Vendor List
+            </label>
+            <Select
+              
+              className="w-[20%]  text-sm  rounded-md"
+              isMulti
+              value={formData?.vendorList}
+              options={option}
+              onChange={(val) => {
+                setFormData((prev: any) => ({
+                  ...prev,
+                  vendorList: val,
+                }));
+              }}
+            />
+          </div>
 
             {Array.isArray(formData.eventDates) &&
               formData.eventDates.map((el: any, index: number) => (
-                <div className="flex flex-row gap-[100px]" key={index}>
+                <div className="flex flex-row -mt-2 gap-[100px]" key={index}>
                   <label className="block text-sm font-medium black mb-1">
                     Event Date
                   </label>
@@ -233,14 +252,14 @@ const AddRfpsForm = () => {
                     onChange={(e) => handleInputChangeEventDates(e, index, "start")}
                     onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     type="date"
-                    className="w-[20%] border border-gray-300  rounded-md p-2"
+                    className="w-[20%] border border-gray-300 text-gray-400 text-sm  rounded-md p-1.5"
                   />
                 </div>
               ))}
           </div>
 
 
-          <div className="flex flex-row gap-[82px]">
+          <div className="flex flex-row gap-[82px] ">
             <label className="block text-sm font-medium text-black mb-1">
               Display Name
             </label>
@@ -249,7 +268,7 @@ const AddRfpsForm = () => {
               value={formData.displayName}
               onChange={handleInputChange}
               type="text"
-              className="w-[20%] border border-gray-300  rounded-md p-2"
+              className="w-[20%] border border-gray-300  rounded-md p-1.5"
               placeholder="Enter display name"
             />
           </div>
@@ -264,7 +283,7 @@ const AddRfpsForm = () => {
                 value={formData.eventDetails}
                 onChange={handleInputChange}
                 type="text"
-                className="w-[20%] border border-gray-300  rounded-md p-2"
+                className="w-[20%] border border-gray-300  rounded-md p-1.5"
                 placeholder="Enter event details"
               />
             </div>
@@ -279,29 +298,12 @@ const AddRfpsForm = () => {
                 onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                 onChange={handleInputChange}
                 type="date"
-                className="w-[20%] border border-gray-300  rounded-md p-2"
+                className="w-[20%] border border-gray-300 text-gray-400 text-sm  rounded-md p-1.5"
               />
             </div>
           </div>
 
-          <div className="flex flex-row  gap-[95px] mb-5">
-            <label className="block text-sm font-medium text-black mb-1">
-              Vendor List
-            </label>
-            <Select
-              styles={customReactStyles}
-              className="w-[20%]  border border-gray-300  rounded-md shadow-sm"
-              isMulti
-              value={formData?.vendorList}
-              options={option}
-              onChange={(val) => {
-                setFormData((prev: any) => ({
-                  ...prev,
-                  vendorList: val,
-                }));
-              }}
-            />
-          </div>
+       
 
           <div className="flex flex-row gap-7">
             <label className="block text-sm font-medium text-black mb-1">
@@ -316,18 +318,28 @@ const AddRfpsForm = () => {
                   additionalInstructions: e.target.value,
                 })
               }
-              className="w-[20%] border border-gray-300  rounded-md p-2"
+              className="w-[20%] border border-gray-300  rounded-md p-1.5"
               placeholder="Enter additional instructions"
               rows={4}
             ></textarea>
           </div>
           {/* Buttons */}
-          <FixedActionButtons
-            onSave={() => handleSubmit(new Event("submit") as unknown as React.FormEvent)}
-            onCancel={() => navigate("/rfps")}
-            showSave={Boolean((!id && canCreate) || (id && canUpdate))}
-          />
-
+          <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t border-gray-200 p-4 flex justify-start gap-4">
+            <button
+              type="button"
+              onClick={() => navigate("/rfps")}
+              className=" px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
+              disabled={!(Boolean((!id && canCreate) || (id && canUpdate)))}
+            >
+              Save
+            </button>
+          </div>
 
         </form>
       </div>

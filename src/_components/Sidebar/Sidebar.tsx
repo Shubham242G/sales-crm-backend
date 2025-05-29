@@ -17,6 +17,7 @@ import { useSidebar } from "../../provider/SidebarContext";
 import { Link } from "react-router-dom";
 import mainlogo from "../../assets/mainlogo/favicon-9.png";
 import logosm from "../../assets/header/360solutions_white_text_high_quality.png";
+import report from "../../assets/sidebar/document.png";
 
 
 import { getAuth } from "@/utils/auth";
@@ -162,8 +163,8 @@ function Sidebar() {
     {
       mainlink: "/DailyActivityReport",
       heading: "Daily Activity Report",
-      icon: ledger,
-      activeIcon: ledgerw,
+      icon: report,
+      activeIcon: report,
       isActive: false,
       isArrow: true,
       dropArr: [
@@ -260,7 +261,7 @@ function Sidebar() {
           link: "BanquetList",
         },
         {
-          dropHead: "Add Resturant",
+          dropHead: "Add Restaurant",
           link: "ResturantList",
         },
       ],
@@ -313,18 +314,15 @@ function Sidebar() {
   return (
     <>
  
-      <div
-        className={` lg:flex lg:flex-col lg:h-full lg:bg-[#f7f8ff] lg:border-r-2 lg:top-0 lg:left-0 lg:z-10 transition-all duration-2`}
-      >
-        <div className="mt-14 p-2 ml-9  w-[130px] h-[120px]    ">
+      <div className={` lg:flex lg:flex-col lg:h-full lg:bg-[#f7f8ff] lg:border-r-2 lg:top-0 lg:left-0 lg:z-10 transition-all duration-2`}>
+        <div className="mt-16  items-center  w-full h-[120px] flex justify-center">
           <img
             src={mainlogo}
             alt="mainlogo"
-            className="mx-auto"
+            className="mx-auto max-w-[120px] max-h-[120px] w-full h-full"
           />
         </div>
-
-        <ul className="main-list w-full overflow-auto h-[100vh] mt-2">
+<div><ul className="main-list w-full overflow-y-auto scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-300 h-[100vh] mt-2">
           {filteredSidebarArr.map((el, index) => (
             <li className="relative mt-4 -mb-2 ml-2 text-sm" key={index}>
               {el?.dropArr ? (
@@ -395,7 +393,8 @@ function Sidebar() {
               )}
             </li>
           ))}
-        </ul>
+        </ul></div>
+        
       </div>
     </>
   );

@@ -349,6 +349,7 @@ export interface ICustomer {
   twitter: string;
   skype: string;
   facebook: string;
+  uinNumber: string;
 }
 
 export interface Inew extends ICustomer {

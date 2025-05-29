@@ -44,6 +44,8 @@ const NewTable = (props: any) => {
     AddButtonRouteName,
     AddButtonName,
     placeholderSearch = "Search Here",
+
+    isImport = false,
   } = props;
 
   const navigate = useNavigate();
@@ -426,7 +428,8 @@ const NewTable = (props: any) => {
             </button>
           )}
           {/* Export */}
-          <div className="relative" id="exportDropdown">
+          {ExcelExportFunction && 
+    TableAddExcelFunction && <div className="relative" id="exportDropdown">
             <button
               className={`flex items-center gap-1 px-4 py-1.5 rounded-md text-gray-700 border border-gray-300 ${
                 isExporting ? "opacity-75 cursor-not-allowed" : ""
@@ -528,7 +531,7 @@ const NewTable = (props: any) => {
                 </ul>
               </div>
             )}
-          </div>
+          </div>}
           {/* Import */}
 
             <input
@@ -545,7 +548,7 @@ const NewTable = (props: any) => {
             >
               <FaFileImport />
               {isUploading ? "Importing..." : "Import"}
-            </button>
+            </button> 
             {/* Add New Lead */}
             {canCreate && (
               <button

@@ -96,7 +96,7 @@ const AddDailyActivityReport = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-white p-8">
+    <div className="min-h-screen bg-white mt-16 p-8">
       <div className="max-w-6xl mx-auto bg-gray-50 shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">Add Report</h1>
         <form onSubmit={handleSubmit}>

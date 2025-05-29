@@ -101,7 +101,7 @@ const AddResturant = () => {
     <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-6">
-          {id ? "Edit Resturant" : "Add Resturant"}
+          {id ? "Edit Restaurant" : "Add Restaurant"}
         </h1>
         {isLoading ? (
           <p>Loading...</p>
@@ -109,20 +109,57 @@ const AddResturant = () => {
           <form onSubmit={handleSubmit}>
             {/* Category Details Section */}
             <h2 className="text-lg font-semibold mb-4">Restaurant</h2>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Floor
-              </label>
-              <input
-                onChange={(e) => setFloor(e.target.value)}
-                type="text"
-                value={floor}
-                placeholder="Enter category name"
-                className="w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Floor
+                </label>
+                <input
+                  onChange={(e) => setFloor(e.target.value)}
+                  type="text"
+                  value={floor}
+                  placeholder="Enter floor"
+                  className="w-[200px] border border-gray-300 rounded-md p-2"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Upload Multiple Images
+                </label>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      const filesArray = Array.from(e.target.files);
+                      const validFiles = filesArray.map((file) => {
+                        return new Promise<string>((resolve, reject) => {
+                          const reader = new FileReader();
+                          reader.onload = () => {
+                            if (reader.result) resolve(reader.result as string);
+                          };
+                          reader.onerror = reject;
+                          reader.readAsDataURL(file);
+                        });
+                      });
 
-            {/* Buttons */}
+                      Promise.all(validFiles)
+                        .then((base64Images) => {
+                          setImages(
+                            base64Images.map((base64) => ({ image: base64 }))
+                          );
+                        })
+                        .catch((error) => {
+                          console.error("Error uploading images", error);
+                        });
+                    }
+                  }}
+                  className="w-[200px]"
+                />
+              </div>
+            </div>
+               {/* Buttons */}
             <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t  border-gray-200  py-3 px-6 flex justify-start space-x-3 z-50">
               <button
                 type="button"
@@ -141,21 +178,7 @@ const AddResturant = () => {
                 </button>
               )}
             </div>
-            {/* <Grid item lg={12} className={styles.mb_3}> */}
-            {/* <h2>Upload Multiple Images</h2> */}
 
-            <MultiFileUpload
-              value={
-                images && images.length > 0
-                  ? images
-                      .filter((el) => el.image != "")
-                      .map((el) => ({ value: el.image }))
-                  : []
-              }
-              onFileChange={handleImageUpload}
-              label="Upload Multiple Images"
-              accept="image/*"
-            />
             {/* </Grid> */}
           </form>
         )}
