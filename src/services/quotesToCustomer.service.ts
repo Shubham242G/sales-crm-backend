@@ -23,7 +23,7 @@ export interface IQuotesToCustomer {
       label: string;
       markupAmount: string;
     }[];
-    totalAmount: number;
+    totalMarkupAmount: number;
   }
 // Quotes for Customer
 export const getQuotesForCustomerExcel = async (searchParams?: any) => {

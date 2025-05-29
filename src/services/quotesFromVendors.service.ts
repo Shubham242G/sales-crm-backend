@@ -33,6 +33,7 @@ export interface IQuotesFromVendors {
   markupDetails: {
     label: string;
     markupAmount: string;
+    orginalAmount: String,
   }[];
 }
 [];

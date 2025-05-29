@@ -49,7 +49,7 @@ import QuotesForCustomer from "../pages/Sales/quotesToCustomer";
 import QuotesForCustomerView from "../pages/Sales/quotesToCustomerView";
 import DailyActivityReport from "../pages/DailyActivityReport/DailyActivityProject";
 import AddDailyActivityReport from "../pages/DailyActivityReport/addDailyActivityProject";
-import TaskManagement from "../pages/TaskManagement/TaskManagement";
+import TaskManagement from "../pages/TaskManagement/TaskManagementTable";
 import AddTaskManagement from "../pages/TaskManagement/addTaskManagement";
 import AddCategory from "../pages/Important/category";
 import CategoryList from "../pages/Important/categoryList";

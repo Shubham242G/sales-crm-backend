@@ -18,7 +18,7 @@ interface IQuotesToCustomer {
   customerName: string;
   serviceType: string[];
   amount: number;
-  totalAmount: number;
+  totalMarkupAmount: number;
   leadId: string;
   markupDetails: IMarkupItem[];
 }
@@ -30,7 +30,7 @@ const AddQuotesToCustomerForm = () => {
     leadId: "",
     serviceType: [],
     amount: 0,
-    totalAmount: 0,
+    totalMarkupAmount: 0,
     markupDetails: [
       {
         label: "",
@@ -65,7 +65,7 @@ const AddQuotesToCustomerForm = () => {
         leadId: data.leadId || "",
         serviceType: Array.isArray(data.serviceType) ? data.serviceType : [],
         amount: data.amount || 0,
-        totalAmount: data.totalAmount || 0,
+        totalMarkupAmount: data.totalMarkupAmount || 0,
         markupDetails:
           data?.markupDetails?.length > 0
             ? data?.markupDetails
@@ -96,14 +96,14 @@ const AddQuotesToCustomerForm = () => {
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/quotesToCustomer");
-          console.log("leadId",formData.leadId);
+          console.log("leadId", formData.leadId);
         }
       } else {
         const { data: res } = await addQuotesToCustomer(obj);
         if (res?.message) {
           toastSuccess(res.message);
           navigate("/quotesToCustomer");
-          console.log("leadId",formData.leadId);
+          console.log("leadId", formData.leadId);
         }
       }
     } catch (error) {
@@ -113,44 +113,44 @@ const AddQuotesToCustomerForm = () => {
 
   const customStyles = {
     control: (base: any) => ({
-        ...base,
+      ...base,
+      border: '1px solid #e5e7eb !important',
+      boxShadow: '0 !important',
+      color: "#000",
+      padding: '1px',
+      fontFamily: "inter, sans-serif",
+      backgroundColor: '#fafafa',
+      zindex: '9',
+      minHeight: '30px',
+      '&:hover': {
         border: '1px solid #e5e7eb !important',
-        boxShadow: '0 !important',
-        color:"#000",
-        padding:'1px',
-        fontFamily: "inter, sans-serif", 
-        backgroundColor:'#fafafa',
-        zindex:'9',
-        minHeight:'30px',
-        '&:hover': {
-            border: '1px solid #e5e7eb !important',
-           
-        },
 
-        menu: (provided:any) => ({
-            ...provided,
-            zIndex: 9999, // Increase the z-index here
-          }),
+      },
 
-          menuPortal: (provided:any) => ({ ...provided, zIndex: 5 }),
-      
-        
+      menu: (provided: any) => ({
+        ...provided,
+        zIndex: 9999, // Increase the z-index here
+      }),
+
+      menuPortal: (provided: any) => ({ ...provided, zIndex: 5 }),
+
+
     }),
-    option: (base:any) => ({
-        ...base,
-        cursor: "pointer",
-        background: "white",
-        color:"#000",
-        fontFamily: "'inter', sans-serif", 
-        zindex:'9',   // this was the mistake (I needed to remove this)
-        "&:hover": {
-           backgroundColor: "#687256",
-           color:"#fff",
-           fontFamily: "'inter', sans-serif", 
-         },
-})
+    option: (base: any) => ({
+      ...base,
+      cursor: "pointer",
+      background: "white",
+      color: "#000",
+      fontFamily: "'inter', sans-serif",
+      zindex: '9',   // this was the mistake (I needed to remove this)
+      "&:hover": {
+        backgroundColor: "#687256",
+        color: "#fff",
+        fontFamily: "'inter', sans-serif",
+      },
+    })
 
-}
+  }
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -175,7 +175,7 @@ const AddQuotesToCustomerForm = () => {
   const handleAddMarkupRow = () => {
     setFormData((prev) => ({
       ...prev,
-      markupDetails: [...prev.markupDetails, { label: "", markupAmount: 0}],
+      markupDetails: [...prev.markupDetails, { label: "", markupAmount: 0 }],
     }));
   };
 
@@ -259,7 +259,7 @@ const AddQuotesToCustomerForm = () => {
               className="w-full  text-md rounded-md"
               classNamePrefix="select"
               placeholder="Select service types"
-              
+
             />
           </div>
 
@@ -282,7 +282,7 @@ const AddQuotesToCustomerForm = () => {
             <div className="col-span-2">
               <div className="flex justify-between items-center mb-4">
                 <label className="block text-sm font-medium text-gray-700">
-                 Amount
+                  Amount
                 </label>
                 <button
                   type="button"
@@ -382,7 +382,7 @@ const AddQuotesToCustomerForm = () => {
               </label>
               <input
                 name="totalAmount"
-                value={formData.totalAmount}
+                value={formData.totalMarkupAmount}
                 type="number"
                 className="w-full border border-gray-300  rounded-md p-2"
                 readOnly

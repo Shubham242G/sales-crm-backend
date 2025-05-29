@@ -18,18 +18,18 @@ export interface IReassignment {
     reAssignmentDate: string;
     assignedName: string;
     previousAssigneeName: string
-  }
+}
 
-  export interface AssignedTo {
+export interface AssignedTo {
     label: string;
     value: string;
-  }
+}
 
 export interface ITaskManagement {
     id?: string;
     userId: string;
-    assignedTo:string;
-    assignedToName:string;
+    assignedTo: string;
+    assignedToName: string;
     department: string;
     taskType: string;
     taskTitle: string;
@@ -174,7 +174,7 @@ export const useUpdateTaskManagementById = () => {
 
 export const convertToContact = async (id: any) => {
     return axios.post<GeneralApiResponse<ITaskManagement>>(
-      `${BASE_URL}${prefix}/convert/${id}`
+        `${BASE_URL}${prefix}/convert/${id}`
     );
 };
 
