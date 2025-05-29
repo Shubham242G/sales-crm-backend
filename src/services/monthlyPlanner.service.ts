@@ -21,6 +21,8 @@ export interface ImonthlyPlanner {
     status: string
     date:Date,
     _id: string,
+    isRemark: boolean
+    remark: string
 }
 
 
@@ -32,13 +34,13 @@ export const usemonthlyPlannerApiHook = () => {
         return axios.post<GeneralApiResponse<ImonthlyPlanner>>(`${BASE_URL}${prefix}`, obj);
     };
     const updatemonthlyPlannerById = async ({ id, obj }: { id: string; obj: any }) => {
-        return axios.patch<GeneralApiResponse>(`${BASE_URL}${prefix}/updateById/${id}`, obj);
+        return axios.patch<GeneralApiResponse<ImonthlyPlanner>>(`${BASE_URL}${prefix}/updateById/${id}`, obj);
     };
     const deletemonthlyPlannerById = async (id: any) => {
-        return axios.delete<GeneralApiResponse>(`${BASE_URL}${prefix}/deleteById/${id}`);
+        return axios.delete<GeneralApiResponse<ImonthlyPlanner>>(`${BASE_URL}${prefix}/deleteById/${id}`);
     };
     const getContactById = async (id: any) => {
-        return axios.get<GeneralApiResponse<ImonthlyPlanner>>(`${BASE_URL}${prefix}/getById/${id}`);
+        return axios.get<GeneralApiResponse>(`${BASE_URL}${prefix}/getById/${id}`);
     };
 
     const getAllmonthlyPlanner = async (pagination: PaginationState, searchObj: any) => {
