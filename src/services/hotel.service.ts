@@ -19,7 +19,21 @@ export interface IHotel {
     }[]
 };
 
+// Hotel
+export const getHotelExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getHotelExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
 
+export const addHotelExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadHotel`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 export const useHotelApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addHotel = async (obj: any) => {

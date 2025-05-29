@@ -22,6 +22,21 @@ export interface IBanquet {
 };
 
 
+// Banquet
+export const getBanquetExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getBanquetExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addBanquetExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadBanquet`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 export const usebanquetApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addBanquet = async (obj: any) => {

@@ -37,6 +37,22 @@ export interface IQuotesFromVendors {
 }
 [];
 
+// Quotes from Vendors
+export const getQuotesFromVendorsExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getQuotesFromVendorsExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addQuotesFromVendorsExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadQuotesFromVendors`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
+
 export const useQuotesFromVendorsApiHook = () => {
   // const axiosAuth = useAxiosAuth({});
   const addQuotesFromVendors = async (obj: any) => {

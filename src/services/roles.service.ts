@@ -39,6 +39,22 @@ interface RoutePermission {
   isEditing?: boolean;
 }
 
+// Roles
+export const getRolesExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getRolesExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addRolesExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadRoles`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
+
 export const useRolesApiHook = () => {
   // const axiosAuth = useAxiosAuth({});
   const addRoles = async (obj: any) => {

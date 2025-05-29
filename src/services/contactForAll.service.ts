@@ -65,6 +65,22 @@ export const useAddContact = () => {
     });
 };
 
+// Customer Outstanding
+export const getCustomerOutstandingExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getCustomerOutstandingExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addCustomerOutstandingExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadCustomerOutstanding`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
+
 export const useContactById = (id: string) => {
     const api = usecontactApiHook();
 

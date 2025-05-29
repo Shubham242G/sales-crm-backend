@@ -33,6 +33,22 @@ export interface IRPF {
     
 }
 
+// RFPS
+export const getRFPSExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getRFPSExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addRFPSExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadRFPS`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
+
 
 
 export const useRfpApiHook = () => {
