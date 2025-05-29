@@ -8,13 +8,13 @@ function Layout() {
   return (
     <div className="">
       <main>
+              <Header />
         <div className="flex flex-col md:flex-row w-[100%]">
           <div className="w-[15%] z-10">
             <Sidebar />
           </div>
           <div className="md:w-[85%] w-3/4 lg:w-[85%] flex flex-col">
             <div className="  w-[100%] top-0 z-10">
-              <Header />
                <Outlet />
             </div> 
           </div>

@@ -151,14 +151,14 @@ function ConfirmedQuotestoCustomer() {
              { selectedRowId === row._id   &&  (isOpenAction) && (
                <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
    
-                 <Link
-                   to={`/add-vendor/${row?._id}`}
+                 {/* <Link
+                   to={`/add-/${row?._id}`}
                    className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
                    title="View Vendor"
                  >
                    <FiEdit className="text-xs" />
                    Edit
-                 </Link>
+                 </Link> */}
                  <button
                    type="button"
                    onClick={() => handleDelete(row._id)}

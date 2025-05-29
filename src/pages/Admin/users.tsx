@@ -99,7 +99,7 @@ function Users() {
                   <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
       
                     <Link
-                      to={`/add-vendor/${row?._id}`}
+                      to={`/add-users/${row?._id}`}
                       className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
                       title="View Vendor"
                     >
@@ -248,7 +248,7 @@ function Users() {
   return (
     <>
     
-        <div className=" table_container rounded-xl flex-col center p-6 mt-10  ">
+        <div className=" table_container rounded-xl flex-col center p-6 mt-10   ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
             <h2 className="text-lg ml-1 font-semibold text-[#2a2929]">Users List</h2>
 
