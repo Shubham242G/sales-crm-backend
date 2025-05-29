@@ -364,7 +364,8 @@ function ResturantList() {
          <div className="mt-5">
            <ReactTable
             data={resturantData?.data}
-            columns={filteredColumns}
+            columns={filteredColumns} 
+ selectableRows={true}
             loading={false}
             totalRows={resturantData.total}
             onChangePage={handlePageChange}

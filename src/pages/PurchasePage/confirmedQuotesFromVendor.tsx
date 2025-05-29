@@ -362,46 +362,28 @@ function ConfirmedQuotesFromVendor() {
       </div>
     );
     
-      const calculateDynamicWidths = (columnsArray: any[]) => {
-      const visibleColumnsCount = columnsArray.length;
-      
-      if (visibleColumnsCount === 0) return columnsArray;
-      
-      const columnsWithDynamicWidth = columnsArray.map(column => ({...column}));
-      
-      const baseWidth = 100 / visibleColumnsCount; 
-  
-      const MIN_WIDTH = 8; 
-      const MAX_WIDTH = 20; 
-  
-      columnsWithDynamicWidth.forEach(column => {
-        let allocatedWidth = baseWidth;
-  
-        // Columns that typically need less space
-        if (column.name === "Delete" || column.name === "Edit") {
-          allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
-        }
-        // Columns that might need more space
-        else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-          allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
-        }
-  
-        column.width = `${allocatedWidth}%`;
-      });
-  
-      console.log(columnsWithDynamicWidth, "check the column width")
-      
-      return columnsWithDynamicWidth;
-    };
-  
-    // Filter columns based on visibility
-    const visibleColumnsArray = columns.filter(column => 
-      visibleColumns[column.name as keyof typeof visibleColumns]
-    );
-    
-    // Apply dynamic widths to visible columns
-    const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
-  
+    const calculateDynamicWidths = (columnsArray: any[]) => {
+    const visibleColumnsCount = columnsArray.length;
+
+    if (visibleColumnsCount === 0) return columnsArray;
+
+    const columnsWithDynamicWidth = columnsArray.map(column => ({
+      ...column,
+      width: column.name === "Email" ? "300px" : `${1200 / visibleColumnsCount}px`
+    }));
+
+    console.log(columnsWithDynamicWidth, "check the column width")
+
+    return columnsWithDynamicWidth;
+  };
+ const visibleColumnsArray = columns.filter(column =>
+    visibleColumns[column.name as keyof typeof visibleColumns]
+  );
+
+
+  // Apply dynamic widths to visible columns
+  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+
     const resetColumnVisibility = () => {
       setVisibleColumns({
       "Quotes Id": true,
@@ -437,8 +419,8 @@ function ConfirmedQuotesFromVendor() {
       /> */}
 
      
-        <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
-          <div className="search_boxes flex justify-between items-center ">
+        <div className="overflow-hidden p-6 mt-12">
+          <div className=" flex justify-between items-center ">
             {/* Heading on the Left */}
             <h2 className="text-xl font-semibold text-gray-800">
               All Quotes for Vendor List
@@ -492,7 +474,8 @@ function ConfirmedQuotesFromVendor() {
           <div className=" mt-5">
             <ReactTable
             data={confirmedQuotesToVendorData.data}
-             columns={filteredColumns}
+             columns={filteredColumns} 
+ selectableRows={true}
             loading={false}
             totalRows={confirmedQuotesToVendorData?.total}
             onChangeRowsPerPage={setPageSize}

@@ -344,7 +344,8 @@ const [pageSize, setPageSize] = useState(10);
           {/* React Table */}
           <div className="mt-10"><ReactTable
             data={categoryData?.data}
-            columns={filteredColumns}
+            columns={filteredColumns} 
+ selectableRows={true}
             loading={false}
             totalRows={categoryData?.total}
             onChangePage={setPageIndex}

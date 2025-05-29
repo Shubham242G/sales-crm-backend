@@ -1476,7 +1476,7 @@ const AddConfirmedQuotesFromVendor = () => {
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-end gap-4 mt-8">
+        <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t  border-gray-200  py-3 px-6 flex justify-start space-x-3 z-50">
             <button
               type="button"
               onClick={() => navigate(-1)}

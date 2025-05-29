@@ -429,7 +429,8 @@ function MyTask() {
           <div className="mt-5">
             <ReactTable
               data={TaskManagementData.data}
-              columns={filteredColumns}
+              columns={filteredColumns} 
+
               loading={false}
               totalRows={TaskManagementData?.total}
               onChangeRowsPerPage={setPageSize}
@@ -437,6 +438,7 @@ function MyTask() {
               page={pageIndex}
               rowsPerPageText={pageSize}
               isServerPropsDisabled={false}
+              selectableRows={true}
             />
 
           </div>

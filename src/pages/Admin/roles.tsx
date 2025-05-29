@@ -273,7 +273,8 @@ function Roles() {
          <div className=" mt-5 ">
          <ReactTable
           data={roleData?.data}
-          columns={filteredColumns}
+          columns={filteredColumns} 
+ selectableRows={true}
           loading={false}
           totalRows={roleData?.total}
           onChangePage={setPageIndex}

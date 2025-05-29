@@ -361,7 +361,8 @@ function DepartmentMasterListView() {
          <div className=" mt-5">
            <ReactTable
             data={DepartmentData?.data}
-            columns={filteredColumns}
+            columns={filteredColumns} 
+ selectableRows={true}
             loading={false}
             totalRows={DepartmentData?.total}
             onChangePage={setPageIndex}

@@ -849,7 +849,7 @@ const AddCustomer = () => {
   ];
 
   return (
-    <div className=" h-[90vh]  mt-16 p-6 overflow-y-auto ">
+    <div className=" h-[84vh]  mt-16 p-6 overflow-y-auto ">
       <div className="max-w-6xl mx-auto bg-white   ">
         <h1 className="text-2xl font-bold mb-6  ">Add Customer</h1>
         <form onSubmit={handleSubmit}>
@@ -904,7 +904,7 @@ const AddCustomer = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, salutation: e.target.value })
                       }
-                      className="w-full border border-gray-300 rounded-md p-1 text-gray-400 text-sm"
+                      className="w-full border border-gray-300 rounded-md p-1 pb-1.5 text-gray-400 text-sm"
                     >
                       <option value="">Salutation</option>
                       <option value="Mr.">Mr.</option>
@@ -1179,47 +1179,21 @@ const AddCustomer = () => {
                               GST Treatment:
                             </span>
                             <div className="w-[250px] ">
-                              <Autocomplete
-                                disablePortal
-                                options={gstOptions}
-                                className="text-sm"
-                                value={
-                                  gstOptions.find((option) => option.value === formData.gstTreatment) || null
-                                }
-                                onChange={(event, newValue) => {
-                                  setFormData({
-                                    ...formData,
-                                    gstTreatment: newValue?.value || "",
-                                  });
-                                }}
-                                PopperComponent={StyledPopper}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label="Select GST Treatment"
-                                    InputProps={{
-                                      ...params.InputProps,
-                                      style: { height: "30px", fontSize: "14px", marginBottom: "-4px" },
-                                    }}
-                                    sx={{
-                                      "& .MuiInputBase-root": {
-                                        height: "36px", fontSize: "14px"
-                                      },
-                                      "& .MuiInputLabel-root": {
-                                        fontSize: "14px",
-                                        marginTop: "-2px",
-                                        transform: "translate(14px, 10px) scale(1)",
-                                        "&.MuiInputLabel-shrink": {
-                                          transform: "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      },
-                                      "& .MuiInputLabel-root.Mui-focused": {
-                                        transform: "translate(14px, -9px) scale(0.75)", fontSize: "14px",
-                                      },
-                                    }}
-                                  />
-                                )}
-                              />
+                              <select
+                                className="text-sm w-full border border-gray-300 rounded-md -mb-4 p-2"
+                                value={formData.gstTreatment}
+                                onChange={(e) => setFormData({
+                                  ...formData,
+                                  gstTreatment: e.target.value,
+                                })}
+                              >
+                                <option value="" disabled>Select GST Treatment</option>
+                                {gstOptions.map((option) => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
                             {/* <div className="w-[250px] mt-3">
                               {" "}
@@ -1277,51 +1251,22 @@ const AddCustomer = () => {
                             </span>
                             <div className="w-[250px] mt-3 mb-1">
                               {/* Reduced margin-top here */}
-                              <Autocomplete
-                                disablePortal
-                                options={stateOptions}
-                                value={
-                                  stateOptions.find(
-                                    (option) =>
-                                      option.value === formData.placeOfSupply
-                                  ) || null
-                                }
-                                onChange={(event, newValue) => {
-                                  setFormData({
-                                    ...formData,
-                                    placeOfSupply: newValue?.value || "",
-                                  });
-                                }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label="Select State"
-                                    InputProps={{
-                                      ...params.InputProps,
-                                      style: { height: "30px", marginTop: "-2px" },
-
-                                    }}
-                                    sx={{
-
-                                      "& .MuiInputLabel-root": {
-                                        fontSize: "14px",
-                                        marginTop: "-2px",
-
-                                        transform:
-                                          "translate(14px, 10px) scale(1)",
-                                        "&.MuiInputLabel-shrink": {
-                                          transform:
-                                            "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      },
-                                      "& .MuiInputLabel-root.Mui-focused": {
-                                        transform:
-                                          "translate(14px, -9px) scale(0.75)",
-                                      },
-                                    }}
-                                  />
-                                )}
-                              />
+                              <select
+                                className="text-sm w-full border border-gray-300 rounded-md p-2"
+                                value={formData.placeOfSupply}
+                                onChange={(e) => setFormData({
+                                  ...formData,
+                                  placeOfSupply: e.target.value,
+                                })}
+                              >
+                                <option value="" disabled>Select State</option>
+                                {stateOptions.map((option) => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                              
                             </div>
                           </div>
                         </div>
@@ -3302,7 +3247,7 @@ const AddCustomer = () => {
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-start gap-4 mt-3   ">
+          <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t  border-gray-200  py-3 px-6 flex justify-start space-x-3 z-50">
             <button
               type="button"
               onClick={() => navigate(-1)}

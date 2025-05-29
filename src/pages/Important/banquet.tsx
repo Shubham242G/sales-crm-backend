@@ -105,8 +105,8 @@ const AddHotel = () => {
           <form onSubmit={handleSubmit}>
             {/* Category Details Section */}
             <h2 className="text-lg font-semibold mb-4">Banquet</h2>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="flex items-center space-x-3">
+              <label className="block text-sm font-medium text-gray-700 mb-2 w-[200px]">
                 Banquet Name
               </label>
               <input
@@ -114,12 +114,12 @@ const AddHotel = () => {
                 type="text"
                 value={banquetName}
                 placeholder="Enter category name"
-                className="w-full border border-gray-300 rounded-md p-2"
+                className="border border-gray-300 rounded-md p-2 w-[200px]"
               />
             </div>
 
             {/* Buttons */}
-            <div className="flex justify-end gap-4 mt-6">
+             <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t  border-gray-200  py-3 px-6 flex justify-start space-x-3 z-50">
               <button
                 type="button"
                 onClick={() => navigate("/banquetList")}
@@ -139,18 +139,43 @@ const AddHotel = () => {
             {/* <Grid item lg={12} className={styles.mb_3}> */}
             {/* <h2>Upload Multiple Images</h2> */}
 
-            <MultiFileUpload
-              value={
-                images && images.length > 0
-                  ? images
-                      .filter((el) => el.image != "")
-                      .map((el) => ({ value: el.image }))
-                  : []
-              }
-              onFileChange={handleImageUpload}
-              label="Upload Multiple Images"
-              accept="image/*"
-            />
+            <div className="flex items-center space-x-3 mb-4 mt-6">
+              <label className="block text-sm font-medium text-gray-700  w-[200px]">
+                Upload Multiple Images
+              </label>
+              <input
+            
+                type="file"
+                multiple
+                  className="block text-sm font-medium text-gray-700  w-[200px]"
+                onChange={(e) => {
+                  const files = e.target.files;
+                  if (files) {
+                    const fileReaders: Promise<string>[] = Array.from(files).map(
+                      (file) =>
+                        new Promise((resolve, reject) => {
+                          const reader = new FileReader();
+                          reader.onload = () => {
+                            if (reader.result) resolve(reader.result as string);
+                          };
+                          reader.onerror = reject;
+                          reader.readAsDataURL(file);
+                        })
+                    );
+
+                    Promise.all(fileReaders)
+                      .then((base64Images) => {
+                        setImages(
+                          base64Images.map((image) => ({ image }))
+                        );
+                      })
+                      .catch((error) => {
+                        console.error("Error uploading images:", error);
+                      });
+                  }
+                }}
+              />
+            </div>
             {/* </Grid> */}
           </form>
         )}

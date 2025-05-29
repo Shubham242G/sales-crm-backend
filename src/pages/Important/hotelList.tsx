@@ -389,7 +389,8 @@ function HotelList() {
          <div className="mt-5"> 
           <ReactTable
             data={hotelData?.data}
-            columns={filteredColumns}
+            columns={filteredColumns} 
+ selectableRows={true}
             loading={false}
             totalRows={hotelData?.total}
             onChangeRowsPerPage={handlePerRowsChange}

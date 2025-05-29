@@ -311,7 +311,8 @@ function LeadManagement() {
 
           <ReactTable
             data={LeadManagementData?.data}          
- columns={filteredColumns}
+ columns={filteredColumns} 
+ selectableRows={true}
             loading={false}
             totalRows={LeadManagementData?.total}
             onChangeRowsPerPage={setPageSize}

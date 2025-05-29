@@ -338,7 +338,7 @@ const NewTable = (props: any) => {
   return (
     <>
      
-        <div className=" table_container rounded-xl px-6 mt-[85px]    ">
+        <div className=" table_container rounded-xl px-6 mt-16    ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
             {/* Heading on the Left */}
             <h2 className="text-lg font-semibold text-gray-800 ">
@@ -535,10 +535,11 @@ const NewTable = (props: any) => {
             )}
           </div>
           {/* React Table */}
-          <div className="mt-8">
+          <div className="mt-5">
             <ReactTable
               data={TableData.data}
-              columns={filteredColumns}
+              columns={filteredColumns} 
+
               loading={loading}
               totalRows={TableData.total}
               onChangeRowsPerPage={setPageSize}

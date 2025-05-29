@@ -360,24 +360,27 @@ function VendorList() {
   //   return columnsWithFixedWidth;
   // };
 
-  const calculateFixedWidths = (columnsArray: any[]) => {
-    const columnsWithFixedWidth = columnsArray.map((column) => ({
+ const calculateDynamicWidths = (columnsArray: any[]) => {
+    const visibleColumnsCount = columnsArray.length;
+
+    if (visibleColumnsCount === 0) return columnsArray;
+
+    const columnsWithDynamicWidth = columnsArray.map(column => ({
       ...column,
-      width: `calc(${100 / columnsArray.length}% - 1px)`,
+      width: column.name === "Email" ? "300px" : `${1200 / visibleColumnsCount}px`
     }));
 
-    console.log(columnsWithFixedWidth, "check the column width");
+    console.log(columnsWithDynamicWidth, "check the column width")
 
-    return columnsWithFixedWidth;
+    return columnsWithDynamicWidth;
   };
-
-  // Filter columns based on visibility
-  const visibleColumnsArray = columns.filter(
-    (column) => visibleColumns[column.name as keyof typeof visibleColumns]
+ const visibleColumnsArray = columns.filter(column =>
+    visibleColumns[column.name as keyof typeof visibleColumns]
   );
 
-  // Apply fixed widths to visible columns
-  const filteredColumns = calculateFixedWidths(visibleColumnsArray);
+
+  // Apply dynamic widths to visible columns
+  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
 
   const resetColumnVisibility = () => {
     setVisibleColumns({
@@ -482,7 +485,8 @@ function VendorList() {
           <ReactTable
             
             data={VendorData?.data}
-            columns={filteredColumns}
+            columns={filteredColumns} 
+ selectableRows={true}
             loading={false}
             totalRows={VendorData?.total}
             onChangeRowsPerPage={setPageSize}

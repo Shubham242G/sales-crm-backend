@@ -578,7 +578,8 @@ function ZohoInvoiceView() {
             <div className="mt-5">
                 <ReactTable
                     data={data?.data.slice(0, pageSize) || []}
-                    columns={filteredColumns}
+                    columns={filteredColumns} 
+ selectableRows={true}
                     loading={isLoading || syncInvoicesMutation.isPending}
                     totalRows={data?.total || 0}
                     onChangeRowsPerPage={setPageSize}

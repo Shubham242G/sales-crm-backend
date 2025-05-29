@@ -407,7 +407,7 @@ const Dashboard: React.FC = () => {
       <div className=" w-[100%] 2xl:w-[100%] 2xl:ml-0 xl:ml-4 mx-auto">
         {/* Header */}
          <header className="bg-white border-b border-gray-100 px-6 py-8 sticky top-0 z-20 shadow-md">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between ">
         <div>
           <h1 className="text-4xl font-light text-gray-800 mb-2">
             Hello, <span className="font-semibold text-gray-900">{formData.name}</span>
@@ -418,7 +418,7 @@ const Dashboard: React.FC = () => {
     </header>
 
         {/* Financial Metrics Section */}
-        {/* <div className="bg-white p-6 rounded-lg shadow-lg mb-6 "> */}
+        <div className="bg-white p-6 rounded-lg shadow-lg mb-6 ">
         <div className="bg-white rounded-2xl shadow-md p-6 mt-2">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">Key Financial Metrics</h2>
           {isLoading ? (
@@ -606,6 +606,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
     </div>
+     </div>
   );
 };
 

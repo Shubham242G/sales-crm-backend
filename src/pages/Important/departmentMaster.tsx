@@ -54,45 +54,47 @@ const AddDepartment = () => {
   return (
     <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-2xl font-bold mb-6">
+        <h1 className="text-2xl font-bold mb-8">
           {id ? "Edit Department" : "Add Department"}
         </h1>
         {isLoading ? (
           <p>Loading...</p>
         ) : (
           <form onSubmit={handleSubmit}>
-            {/* Department. Section */}
-            <h2 className="text-lg font-semibold mb-4">Department</h2>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Department Name
-              </label>
-              <input
-                onChange={(e) => setDepartment(e.target.value)}
-                type="text"
-                value={department}
-                placeholder="Enter department name"
-                className="w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
+            <div className="grid grid-cols-2 gap-6">
+              {/* Department. Section */}
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Department</h2>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Department Name
+                </label>
+                <input
+                  onChange={(e) => setDepartment(e.target.value)}
+                  type="text"
+                  value={department}
+                  placeholder="Enter Department name"
+                  className="w-[200px] border border-gray-300 rounded-md p-2"
+                />
+              </div>
 
-            {/* Sub Department Section */}
-            <h2 className="text-lg font-semibold mb-4">Sub Department</h2>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Sub Department Name
-              </label>
-              <input
-                onChange={(e) => setSubDepartment(e.target.value)}
-                type="text"
-                value={subDepartment}
-                placeholder="Enter Sub Department name"
-                className="w-full border border-gray-300 rounded-md p-2"
-              />
+              {/* Sub Department Section */}
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Sub Department</h2>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Sub Department Name
+                </label>
+                <input
+                  onChange={(e) => setSubDepartment(e.target.value)}
+                  type="text"
+                  value={subDepartment}
+                  placeholder="Enter Sub Department name"
+                  className="w-[200px] border border-gray-300 rounded-md p-2"
+                />
+              </div>
             </div>
 
             {/* Buttons */}
-            <div className="flex justify-end gap-4 mt-6">
+            <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t  border-gray-200  py-3 px-6 flex justify-start space-x-3 z-50">
               <button
                 type="button"
                 onClick={() => navigate("/departmentMasterView")}

@@ -736,7 +736,8 @@ function Leads() {
     
        <NewTable
         data={leadData?.data}
-        columns={filteredColumns}
+        columns={filteredColumns} 
+        selectableRows={true}
         loading={false}
         totalRows={leadData?.total}
         onChangeRowsPerPage={setPageSize}
@@ -744,7 +745,7 @@ function Leads() {
         page={pageIndex}
         rowsPerPageText={pageSize}
         isServerPropsDisabled={false}
-        selectableRows={true}
+        
         onSelectedRowsChange={handleChange}
         className={"leadtable"}
         //new fields

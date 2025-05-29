@@ -290,7 +290,8 @@ function Users() {
          <div className=" mt-5  ">
           <ReactTable
             data={UserData?.data}
-            columns={filteredColumns}
+            columns={filteredColumns} 
+ selectableRows={true}
             loading={false}
             totalRows={UserData?.total}
             onChangeRowsPerPage={setPageSize}
@@ -298,6 +299,7 @@ function Users() {
             page={pageIndex}
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
+            
           />
         </div>
         </div>

@@ -190,7 +190,7 @@ const AddNewUser = () => {
         </div>
 
         {/* Buttons */}
-        <div className="fixed bottom-0 left-0 w-[84.5%] ml-[15.5%] bg-white border-t  border-gray-200  py-3 px-6 flex justify-start space-x-3 z-50">
+        <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t  border-gray-200  py-3 px-6 flex justify-start space-x-3 z-50">
 
           <button
             onClick={handleSubmit}

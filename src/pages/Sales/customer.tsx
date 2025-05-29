@@ -322,45 +322,28 @@ function CustomerSales() {
 
  
 
-  const calculateDynamicWidths = (columnsArray: any[]) => {
+const calculateDynamicWidths = (columnsArray: any[]) => {
     const visibleColumnsCount = columnsArray.length;
 
     if (visibleColumnsCount === 0) return columnsArray;
 
-    const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
-
-    const baseWidth = 100 / visibleColumnsCount;
-
-    const MIN_WIDTH = 8;
-    const MAX_WIDTH = 20;
-
-    columnsWithDynamicWidth.forEach(column => {
-      let allocatedWidth = baseWidth;
-
-      // Columns that typically need less space
-      if (column.name === "Delete" || column.name === "Edit") {
-        allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
-      }
-      // Columns that might need more space
-      else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-        allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
-      }
-
-      column.width = `${allocatedWidth}%`;
-    });
+    const columnsWithDynamicWidth = columnsArray.map(column => ({
+      ...column,
+      width: column.name === "Email" ? "300px" : `${1200 / visibleColumnsCount}px`
+    }));
 
     console.log(columnsWithDynamicWidth, "check the column width")
 
     return columnsWithDynamicWidth;
   };
-
-  // Filter columns based on visibility
-  const visibleColumnsArray = columns.filter(column =>
+ const visibleColumnsArray = columns.filter(column =>
     visibleColumns[column.name as keyof typeof visibleColumns]
   );
 
+
   // Apply dynamic widths to visible columns
   const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+
 
   const resetColumnVisibility = () => {
     setVisibleColumns({
@@ -430,7 +413,8 @@ function CustomerSales() {
         <div className="mt-5">
         <ReactTable
           data={CustomerData?.data}
-          columns={filteredColumns}
+          columns={filteredColumns} 
+ selectableRows={true}
           loading={false}
           totalRows={CustomerData?.total}
           onChangeRowsPerPage={setPageSize}

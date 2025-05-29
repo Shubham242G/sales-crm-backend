@@ -329,7 +329,8 @@ function BanquetList() {
          <div className="mt-5">
           <ReactTable
             data={banquetData?.data}
-            columns={filteredColumns}
+            columns={filteredColumns} 
+ selectableRows={true}
             loading={false}
             totalRows={banquetData?.total}
             onChangeRowsPerPage={handlePerRowsChange}

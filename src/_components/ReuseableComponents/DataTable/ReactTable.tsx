@@ -244,6 +244,7 @@ export const ReactTable = ({
        fixedHeader
       fixedHeaderScrollHeight="75vh"
       className={className}
+     
       onSelectedRowsChange={onSelectedRowsChange}
     />
 

@@ -69,7 +69,7 @@ function ConfirmedQuotestoCustomer() {
             {row.service.map((e: any, index: number) => (
               <div
                 key={index}
-                className="bg-purple-100 text-purple-800 text-sm px-3 py-1 mb-1 rounded-full border border-purple-300 shadow-sm"
+                 className="bg-sky-100 text-blue-800 text-xs px-2 py-1 rounded-full border border-sky-300 shadow-sm"
               >
                 {e.name}
               </div>
@@ -444,7 +444,8 @@ function ConfirmedQuotestoCustomer() {
           <div className="mt-5">
   <ReactTable
             data={data}
-            columns={filteredColumns}
+            columns={filteredColumns} 
+ selectableRows={true}
             loading={false}
             totalRows={0}
           // onChangePage={handlePageChange}
