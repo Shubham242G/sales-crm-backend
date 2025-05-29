@@ -81,7 +81,7 @@ import NotificationPage from "@/pages/NotificationPage/notificationPage";
 import AddQuotesToCustomerForm from "@/pages/Sales/addQuotesToCustomer";
 import RoleHierarchy from "@/pages/Hierarchy/roleHierarchy";
 import NewRoleModal from "@/pages/Hierarchy/newRoleModal";
-import SearchBar from "../pages/HotelSearch/hotelSearch";
+
 import Combiner from "@/pages/monthly/combiner";
 import ZohoInvoice from "@/pages/Sales/zoho_invoice_view";
 import InvoiceView from "@/pages/Sales/invoiceView";
@@ -213,7 +213,7 @@ export default function AuthorizedRoutes() {
             element={<QuotesForCustomer />}
           ></Route>
           <Route
-            path="/hotelSearch/"
+            path="/hotelSearch"
             element={<HotelSearch />}
           ></Route>
           <Route
@@ -257,7 +257,7 @@ export default function AuthorizedRoutes() {
           ></Route>
           <Route
             path="/venueSearch"
-            element={<SearchBar />}
+            element={<HotelSearch />}
           ></Route>
           <Route
             path="/quotesFromVendors/:id"

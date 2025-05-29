@@ -324,14 +324,14 @@ function DepartmentMasterListView() {
               <div className="w-full">
                 <input
                   type="search"
-                  className="rounded-md w-full border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  className="rounded-md w-full border px-3 border-gray-300 py-1.5 text-sm text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                   placeholder="Search..."
                 />
               </div>
               
              <div className="relative">
                             <button
-                              className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                              className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
                               onClick={() => setShowColumnSelector(!showColumnSelector)}
                             >
                               <FaColumns /> Columns
@@ -343,13 +343,13 @@ function DepartmentMasterListView() {
               {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */}
-              <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+              <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
               {canCreate && (
                 <button
                   onClick={() => navigate("/departmentMaster")}
-                  className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                  className="flex w-full items-center justify-center gap-1 px-3 py-1.5 text-sm text-white rounded-md bg-orange-500 border border-gray-300"
                 >
                   <FaPlus />
                   <span>New Department</span>

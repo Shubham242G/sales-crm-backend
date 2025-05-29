@@ -101,6 +101,21 @@ export interface Inew extends IEnqiry {
     id: string,
 }
 
+// Enquiry
+export const getEnquiryExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getEnquiryExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addEnquiryExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadEnquiry`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 
 
 export const useEnquiryApiHook = () => {

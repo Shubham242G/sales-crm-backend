@@ -16,6 +16,21 @@ export interface ICategory {
     value: string;
 }
 
+// Category
+export const getCategoryExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getCategoryExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addCategoryExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadCategory`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 
 
 export const useCategoryApiHook = () => {

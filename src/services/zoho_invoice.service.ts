@@ -24,6 +24,22 @@ export interface IZohoInvoice {
   updated_time: string;
 }
 
+
+// Invoices
+export const getInvoicesExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getInvoicesExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addInvoicesExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadInvoices`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 export const useZohoInvoiceApiHook = () => {
   // Get all invoices with filtering and pagination
   const getAllInvoices = async (pagination: PaginationState, searchObj: any) => {

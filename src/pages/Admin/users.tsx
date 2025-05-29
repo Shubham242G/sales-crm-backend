@@ -13,6 +13,7 @@ import { ClassNames } from "@emotion/react";
 import { filter } from "lodash";
 import { Switch } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function Users() {
   const navigate = useNavigate();
@@ -191,47 +192,27 @@ function Users() {
     </div>
   );
 
-  const calculateDynamicWidths = (columnsArray: any[]) => {
+   const calculateDynamicWidths = (columnsArray: any[]) => {
     const visibleColumnsCount = columnsArray.length;
 
     if (visibleColumnsCount === 0) return columnsArray;
 
-    const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
-
-    const baseWidth = 100 / visibleColumnsCount;
-
-    const MIN_WIDTH = 8;
-    const MAX_WIDTH = 20;
-
-    columnsWithDynamicWidth.forEach(column => {
-      let allocatedWidth = baseWidth;
-
-      // Columns that typically need less space
-      if (column.name === "Delete" || column.name === "Edit") {
-        allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
-      }
-      // Columns that might need more space
-      else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-        allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
-      }
-
-      column.width = `${allocatedWidth}%`;
-    });
+    const columnsWithDynamicWidth = columnsArray.map(column => ({
+      ...column,
+      width: column.name === "Email" ? "300px" : `${1200 / visibleColumnsCount}px`
+    }));
 
     console.log(columnsWithDynamicWidth, "check the column width")
 
     return columnsWithDynamicWidth;
   };
-
-  // Filter columns based on visibility
-  const visibleColumnsArray = columns.filter(column =>
+ const visibleColumnsArray = columns.filter(column =>
     visibleColumns[column.name as keyof typeof visibleColumns]
   );
 
-  // Apply dynamic widths to visible columns
-  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
 
-  const resetColumnVisibility = () => {
+  // Apply dynamic widths to visible columns
+  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);  const resetColumnVisibility = () => {
     setVisibleColumns({
     "Name": true,
     "Email": true,
@@ -242,13 +223,17 @@ function Users() {
     });
   };
 
+  const [tickRows, setTickRows] = useState<string[]>([]);
 
-
-
+  const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
   return (
     <>
     
-        <div className=" table_container rounded-xl flex-col center p-6 mt-10   ">
+        {/* <div className=" table_container rounded-xl flex-col center p-6 mt-10   ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
             <h2 className="text-lg ml-1 font-semibold text-[#2a2929]">Users List</h2>
 
@@ -260,9 +245,7 @@ function Users() {
                   placeholder="Search by Username"
                   onChange={(e) => setQuery(e.target.value)}
                 />
-                {/* <div className="relative right-8">
-                  <IoSearchOutline />
-                </div> */}
+           
               </div>
 
 
@@ -302,8 +285,33 @@ function Users() {
             
           />
         </div>
-        </div>
+        </div> */}
       
+
+        <NewTable
+        data={UserData?.data}
+        columns={filteredColumns} 
+        selectableRows={true}
+        loading={false}
+        totalRows={UserData?.total}
+        onChangeRowsPerPage={setPageSize}
+        onChangePage={setPageIndex}
+        page={pageIndex}
+        rowsPerPageText={pageSize}
+        isServerPropsDisabled={false}
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"User List"}
+        TableGetAllFunction={useUser}
+        
+        RouteName={"users"}
+        AddButtonRouteName={"/add-users"}
+        AddButtonName={"New User"}
+        placeholderSearch={"Search in User"}
+      /> 
+   
     </>
   );
 }

@@ -25,7 +25,21 @@ export interface IQuotesToCustomer {
     }[];
     totalAmount: number;
   }
+// Quotes for Customer
+export const getQuotesForCustomerExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getQuotesForCustomerExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
 
+export const addQuotesForCustomerExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadQuotesForCustomer`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 export const useQuotesToCustomerApiHook = () => {
   // const axiosAuth = useAxiosAuth({});
   const addQuotesToCustomer = async (obj: any) => {

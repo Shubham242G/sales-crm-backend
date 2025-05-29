@@ -1553,6 +1553,7 @@ const AddVendorForm = () => {
                         <div className="relative w-full">
                           <input
                             type="tel"
+                            min={0}
                             value={vendor.landLine}
                             onChange={(e) =>
                               setVendor({
@@ -3314,6 +3315,7 @@ const AddVendorForm = () => {
                         <input
                           type="Number"
                           name="phoneNumber"
+                           min={0}
                           value={bankDetails.phoneNumber}
                           onChange={(e) =>
                             setBankDetails({

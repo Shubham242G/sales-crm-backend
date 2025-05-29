@@ -17,7 +17,21 @@ export interface IResturant {
         image: string
     }[]
 };
+// Restaurant
+export const getRestaurantExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getRestaurantExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
 
+export const addRestaurantExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadRestaurant`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 export const useResturantApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addResturant = async (obj: any) => {

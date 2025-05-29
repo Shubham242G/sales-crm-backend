@@ -240,7 +240,7 @@ function ZohoInvoiceView() {
 
     // Format currency display
     const formatCurrency = (amount: number, symbol: string = "$") => {
-        return `${symbol}${amount.toFixed(2)}`;
+        return `${symbol} ${amount.toFixed(2)}`;
     };
 
     // Status badge component
@@ -282,12 +282,12 @@ function ZohoInvoiceView() {
         },
         {
             name: "Amount",
-            selector: (row: any) => formatCurrency(row.total, row.currency_code),
+            selector: (row: any) => <h5>{formatCurrency(row.total, row.currency_code)}</h5> ,
             width: "12%",
         },
         {
             name: "Balance",
-            selector: (row: any) => formatCurrency(row.balance, row.currency_code),
+            selector: (row: any) => formatCurrency(row.balance   ,  row.currency_code),
             width: "12%",
         },
         {

@@ -349,12 +349,29 @@ export interface ICustomer {
   twitter: string;
   skype: string;
   facebook: string;
+  uinNumber: string;
 }
 
 export interface Inew extends ICustomer {
     id: string,
 }
 
+// Customers
+export const getCustomersExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getCustomersExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+export const addCustomersExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadCustomers`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 export const useZohoCustomerApiHook = () => {
   // Get all customers with pagination + search
   const getAllCustomers = async (pagination: PaginationState, searchObj: any) => {

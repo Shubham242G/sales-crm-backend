@@ -14,6 +14,21 @@ export interface IDepartmentMaster {
     subDepartment:string
 };
 
+// Department
+export const getDepartmentExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getDepartmentExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addDepartmentExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadDepartment`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 
 export const useDepartmentMasterApiHook = () => {
     // const axiosAuth = useAxiosAuth({});

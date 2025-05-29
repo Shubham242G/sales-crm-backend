@@ -2139,6 +2139,7 @@ const AddEnquiryForm = () => {
                           <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                             <input
                               type="number"
+                              min={0}
                               value={row?.minPax}
                               onChange={(e) =>
                                 handleTableChange(
@@ -2155,6 +2156,7 @@ const AddEnquiryForm = () => {
                           <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                             <input
                               type="number"
+                                min={0}
                               value={row?.seatingRequired}
                               onChange={(e) =>
                                 handleTableChange(

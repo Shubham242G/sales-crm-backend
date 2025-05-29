@@ -83,7 +83,7 @@ const [pageIndex, setPageIndex] = useState(1);
             width: "10%",
         },
         {
-            name: "Cutomer Visited",
+            name: "Customer Visited",
             selector: (row: any) => (
                 <div className="flex gap-1 flex-col">
                     <h6>{row?.customerName?.label}</h6>
@@ -185,8 +185,8 @@ const [pageIndex, setPageIndex] = useState(1);
         filterbuttn={false}
       /> */}
 
-            <div className="container px-6">
-                <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
+            <div className="container p-6 mt-14">
+                <div className="bg-white table_container rounded-xl ">
                     <div className="search_boxes flex justify-between items-center">
                         {/* Heading on the Left */}
                         <h2 className="text-xl font-semibold text-gray-800">
@@ -199,20 +199,20 @@ const [pageIndex, setPageIndex] = useState(1);
                             <div className="w-full">
                                 <input
                                     type="search"
-                                    className="rounded-md w-full border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                                    className="rounded-md w-full border px-3 text-sm border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
                                     placeholder="Search..."
                                 />
                             </div>
                             {/* Buttons */}
-                            <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+                            <button className="flex items-center gap-1  px-3 py-1.5 rounded-md  text-gray-700 border text-sm border-gray-300">
                                 <FaFilter /> Filter
                             </button>
-                            <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+                            <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-sm text-gray-700 border border-gray-300">
                                 <FaFileExport /> Export
                             </button>
                             <button
                                 onClick={() => navigate("/add-DailyActivityReport")}
-                                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                                className="flex w-full items-center justify-center gap-1 px-3 py-1.5 text-sm text-white rounded-md bg-orange-500 border border-gray-300"
                             >
                                 <FaPlus />
                                 <span>New Report</span>
@@ -220,11 +220,13 @@ const [pageIndex, setPageIndex] = useState(1);
                         </div>
                     </div>
                     {/* React Table */}
-                    <ReactTable
+                    <div className="mt-5">
+                          <ReactTable
                         data={DailyActivityReport.data}
                         columns={columns}
                         loading={false}
                         totalRows={0}
+                        selectableRows={true}
                         onChangePage={setPageIndex}
                         onChangeRowsPerPage={setPageSize}
                         page={pageIndex}
@@ -232,6 +234,8 @@ const [pageIndex, setPageIndex] = useState(1);
                         rowsPerPageText={pageSize}
                         paginationRowsPerPageOptions={[5, 10, 20]}
                     />
+                    </div>
+                  
                 </div>
             </div>
         </>

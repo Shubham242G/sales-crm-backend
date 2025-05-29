@@ -78,6 +78,22 @@ export interface IConfirmedQuotes {
     }[];
   }
 
+  // Confirmed Quotes From Vendors
+export const getConfirmedQuotesFromVendorsExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getConfirmedQuotesFromVendorsExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addConfirmedQuotesFromVendorsExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadConfirmedQuotesFromVendors`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
+
 export const useConfirmedQuotesApiHook = () => {
   // const axiosAuth = useAxiosAuth({});
   const addConfirmedQuotes = async (obj: any) => {
