@@ -478,9 +478,9 @@ function MyTask() {
         TableGetAllFunction={useMyTask}
         ExcelExportFunction={getTaskManagementExcel}
         TableAddExcelFunction={addTaskManagementExcel}
-        RouteName={"Leads"}
-        AddButtonRouteName={"/add-leads"}
-        AddButtonName={"New Lead"}
+        RouteName={"New Task "}
+        AddButtonRouteName={"/addTaskManagement"}
+        AddButtonName={"Add Task "}
         placeholderSearch={"Search in Lead"}
       />
 

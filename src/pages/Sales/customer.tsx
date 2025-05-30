@@ -462,7 +462,7 @@ const calculateDynamicWidths = (columnsArray: any[]) => {
         RouteName={"Customers"}
         AddButtonRouteName={"/add-customer"}
         AddButtonName={"New Customer"}
-        placeholderSearch={"Search Customer"}
+        placeholderSearch={"Search display name"}
       /> 
 
 

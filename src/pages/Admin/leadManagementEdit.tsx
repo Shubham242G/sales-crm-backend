@@ -129,31 +129,24 @@ useEffect(() => {
                 Select Leads
               </label>
               <div className="border border-gray-300 rounded-md p-2 h-96 overflow-y-auto">
-                <div className="flex flex-wrap gap-2">
-                  {leadData?.data?.map((lead: any) => (
-                    <div
-                      key={lead._id}
-                      className="flex items-center"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.leadIds.includes(lead._id)}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            leadIds: e.target.checked
-                              ? [...formData.leadIds, lead._id]
-                              : formData.leadIds.filter(
-                                  (id) => id !== lead._id
-                                ),
-                          })
-                        }
-                      />
-                      <span className="ml-2">{lead.firstName + " " + lead.lastName}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+  <select
+    multiple
+    value={formData.leadIds}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        leadIds: Array.from(e.target.selectedOptions, (option) => option.value),
+      })
+    }
+    className="w-full h-full"
+  >
+    {leadData?.data?.map((lead: any) => (
+      <option key={lead._id} value={lead._id}>
+        {lead.firstName + " " + lead.lastName}
+      </option>
+    ))}
+  </select>
+</div>
             </div>
           </div>
 

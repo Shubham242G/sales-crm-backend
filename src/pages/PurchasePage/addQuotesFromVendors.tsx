@@ -385,7 +385,7 @@ const AddQuotesFromVendors = () => {
   };
 
   return (
-    <div className="h-[90vh]  mt-14 p-6 overflow-y-auto">
+    <div className="h-[85vh]  mt-14 p-6 overflow-y-auto">
      
         <h1 className="text-2xl font-bold mb-6">Add Quotes From Vendors</h1>
         <form onSubmit={handleSubmit}>
@@ -412,7 +412,7 @@ const AddQuotesFromVendors = () => {
                 value={formData?.vendorList?.label}
                 onChange={handleInputChange}
                 type="text"
-                className="w-full border  border-gray-300 rounded-md p-2"
+                className="w-full border  border-gray-300 rounded-md p-1.5"
                 placeholder="Enter Vendor Name"
               />
             </div>
@@ -426,7 +426,7 @@ const AddQuotesFromVendors = () => {
               value={formData.displayName}
               onChange={handleInputChange}
               type="text"
-              className="w-full border  border-gray-300 rounded-md p-2"
+              className="w-full border  border-gray-300 rounded-md p-1.5"
               placeholder="Enter Display Name"
             />
           </div>
@@ -446,7 +446,7 @@ const AddQuotesFromVendors = () => {
                   formData.serviceType.includes(option.value)
                 )}
                 onChange={handleServiceTypeChange}
-                className="w-full  rounded-md"
+                className="w-full text-xs rounded-md"
                 classNamePrefix="select"
                 placeholder="Select service types"
                 
@@ -487,7 +487,7 @@ const AddQuotesFromVendors = () => {
                 onChange={handleInputChange}
                 type="number"
                 min={0}
-                className="w-full  border border-gray-300 rounded-md p-2 "
+                className="w-full  border border-gray-300 rounded-md p-1.5 "
                 placeholder="Enter Amount"
               />
             </div>
@@ -501,7 +501,7 @@ const AddQuotesFromVendors = () => {
                 onChange={handleInputChange}
                 type="date"
                 onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                className="w-full border  border-gray-300 rounded-md p-2"
+                className="w-full border text-xs border-gray-300 rounded-md p-2.5"
               />
             </div>
           </div>
@@ -548,7 +548,7 @@ const AddQuotesFromVendors = () => {
     <button
       type="button"
       onClick={handleAddMarkupRow}
-      className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
+      className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  p-1.5 text-sm rounded-md flex items-center"
     >
       <svg
         className="w-5 h-5"
@@ -581,7 +581,7 @@ const AddQuotesFromVendors = () => {
             Markup Amount (%)
           </th>
           {formData.markupDetails.length > 1 && (
-            <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+            <th className="px-6 py-3 text-left text-sm font-semibold  text-gray-800 border-b">
               Actions
             </th>
           )}
