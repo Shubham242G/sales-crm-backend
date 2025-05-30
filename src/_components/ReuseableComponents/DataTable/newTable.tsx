@@ -72,10 +72,13 @@ const NewTable = (props: any) => {
     setSearchQuery(e.target.value);
   };
 
+  const [exportedRows, setExportedRows] = useState([]);
+
   const handleChange = ({ selectedRows }: any) => {
-    // You can set state or dispatch with something like Redux so we can use the retrieved data
     console.log("Selected Rows: ", selectedRows);
+
     setTickRows(selectedRows.map((row: any) => row._id));
+    setExportedRows(selectedRows);
   };
 
   const [showColumnSelector, setShowColumnSelector] = useState(false);
@@ -235,8 +238,11 @@ const NewTable = (props: any) => {
         ...(searchQuery && { query: searchQuery }),
         ...(advancedSearchParams && { advancedSearch: advancedSearchParams }),
         format,
+        ...(tickRows && { tickRows }),
         ...(fields && { fields }), // Include selected fields if provided
       };
+
+      console.log(onSelectedRowsChange, "onSelectedRowsChange");
 
       const { data: response } = await ExcelExportFunction(exportParams);
 
@@ -342,9 +348,6 @@ const NewTable = (props: any) => {
 
   const [isOpenAssignOps, setIsOpenAssignOps] = useState(false);
 
-  // const handleAssignTaskNameSubmit = async (
-  //   e: React.FormEvent<HTMLFormElement>
-  // ) => {
   //   e.preventDefault();
   //   if (assignTaskName) {
   //     setAssignTaskUsers((prevUsers) => [...prevUsers, assignTaskName]);
@@ -385,17 +388,17 @@ const NewTable = (props: any) => {
   return (
     <>
      
-        <div className=" table_container rounded-xl px-6 mt-[60px]   ">
+        <div className=" table_container rounded-xl px-6 mt-16    ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
             {/* Heading on the Left */}
-            <h2 className="text-lg font-semibold text-gray-800 ml-2">
+            <h2 className="text-lg font-semibold text-gray-800 ">
               {TableName}
             </h2>
             {/* Search Input */}
             <div className="flex items-center w-full sm:w-auto flex-grow ">
               <input
                 type="search"
-                className="rounded-md border p-1.5 w-[200px] border-gray-300 placeholder-gray-500 text-sm focus:outline-none "
+                className="rounded-md border px-3 py-1.5 w-[200px] border-gray-300 placeholder-gray-500 text-sm focus:outline-none focus:border-orange-500"
                 placeholder={placeholderSearch}
                 value={searchQuery}
                 onChange={handleSearchInput}
@@ -451,27 +454,27 @@ const NewTable = (props: any) => {
             </button>
           )}
           {/* Export */}
-          {ExcelExportFunction && 
-    TableAddExcelFunction && <div className="relative" id="exportDropdown">
-            <button
-              className={`flex items-center gap-1 px-4 py-1.5 rounded-md text-gray-700 border border-gray-300 ${
-                isExporting ? "opacity-75 cursor-not-allowed" : ""
-              }`}
-              onClick={() => {
-                if (!isExporting) setShowExportOptions(!showExportOptions);
-              }}
-              disabled={isExporting}
-            >
-              <FaFileExport />
-              {isExporting ? "Exporting..." : "Export"}
-              <IoMdArrowDropdown className="ml-1" />
-            </button>
+          {ExcelExportFunction && TableAddExcelFunction && (
+            <div className="relative" id="exportDropdown">
+              <button
+                className={`flex items-center gap-1 px-4 py-1.5 rounded-md text-gray-700 border border-gray-300 ${
+                  isExporting ? "opacity-75 cursor-not-allowed" : ""
+                }`}
+                onClick={() => {
+                  if (!isExporting) setShowExportOptions(!showExportOptions);
+                }}
+                disabled={isExporting}
+              >
+                <FaFileExport />
+                {isExporting ? "Exporting..." : "Export"}
+                <IoMdArrowDropdown className="ml-1" />
+              </button>
 
             {showExportOptions && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
                 <ul className="py-1">
                   <li
-                    className=" p-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
+                    className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                     onClick={() => {
                       setShowExportOptions(false);
                       handleExportEnquiries("xlsx");
@@ -491,7 +494,7 @@ const NewTable = (props: any) => {
                     Export as Excel
                   </li>
                   <li
-                    className=" p-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
+                    className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                     onClick={() => {
                       setShowExportOptions(false);
                       handleExportEnquiries("csv");
@@ -511,7 +514,7 @@ const NewTable = (props: any) => {
                     Export as CSV
                   </li>
                   <li
-                    className=" p-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
+                    className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                     onClick={() => {
                       setShowExportOptions(false);
                       handleExportEnquiries("pdf");
@@ -532,7 +535,7 @@ const NewTable = (props: any) => {
                     Export as PDF
                   </li>
                   <li
-                    className=" p-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
+                    className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                     onClick={() => {
                       setShowExportOptions(false);
                       setShowExportCustomize(true);
@@ -554,7 +557,7 @@ const NewTable = (props: any) => {
                 </ul>
               </div>
             )}
-          </div>}
+          </div>)}
           {/* Import */}
 
             <input
@@ -565,7 +568,7 @@ const NewTable = (props: any) => {
               onChange={handleFileChange}
             />
             <button
-              className="flex items-center gap-1 p-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
               onClick={handleImportClick}
               disabled={isUploading}
             >
@@ -576,14 +579,14 @@ const NewTable = (props: any) => {
             {canCreate && (
               <button
                 onClick={() => navigate(AddButtonRouteName)}
-                className="flex items-center gap-1 p-1.5 text-white rounded-md bg-orange-500 text-sm"
+                className="flex items-center gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 text-sm"
               >
                 <FaPlus className="text-xs" /> {AddButtonName}
               </button>
             )}
           </div>
           {/* React Table */}
-          <div className="mt-[12px]">
+          <div className="mt-5">
             <ReactTable
               data={TableData.data}
               columns={filteredColumns} 
