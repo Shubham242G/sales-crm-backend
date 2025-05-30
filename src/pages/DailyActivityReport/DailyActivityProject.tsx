@@ -5,8 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
-import { useDailyActivityReport, useDeleteDailyActivityReportById, useUpdateDailyActivityReportById } from "@/services/dailyActivityReport.service";
+import { addDailyActivityReportViewExcel, getDailyActivityReportViewExcel, useDailyActivityReport, useDeleteDailyActivityReportById, useUpdateDailyActivityReportById } from "@/services/dailyActivityReport.service";
 import { toastError, toastSuccess } from "@/utils/toast";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function DailyActivityReport() {
     const navigate = useNavigate();
@@ -16,46 +17,46 @@ function DailyActivityReport() {
 
 
 
-const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [query, setQuery] = useState("");
+    const [pageIndex, setPageIndex] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [query, setQuery] = useState("");
 
-  const searchObj = useMemo(
-    () => ({
-      ...(query && { query }),
-      pageIndex: pageIndex - 1,
-      pageSize,
-    }),
-    [pageIndex, pageSize, query]
-  );
+    const searchObj = useMemo(
+        () => ({
+            ...(query && { query }),
+            pageIndex: pageIndex - 1,
+            pageSize,
+        }),
+        [pageIndex, pageSize, query]
+    );
 
-  const {data: DailyActivityReport, isLoading} = useDailyActivityReport(
-    searchObj
-);
-  const { mutateAsync: deleteDailyActivityReport } = useDeleteDailyActivityReportById();
+    const { data: DailyActivityReport, isLoading } = useDailyActivityReport(
+        searchObj
+    );
+    const { mutateAsync: deleteDailyActivityReport } = useDeleteDailyActivityReportById();
 
 
-  
 
-  const handleDelete = async (id: string) => {
-    try {
-      if (window.confirm("Are you sure you want to delete this contact?")) {
-        const { data: res } = await deleteDailyActivityReport(id);
-        if (res) {
-          toastSuccess(res.message);
-          // Optionally refresh the data
+
+    const handleDelete = async (id: string) => {
+        try {
+            if (window.confirm("Are you sure you want to delete this contact?")) {
+                const { data: res } = await deleteDailyActivityReport(id);
+                if (res) {
+                    toastSuccess(res.message);
+                    // Optionally refresh the data
+                }
+            }
+        } catch (error) {
+            toastError(error);
         }
-      }
-    } catch (error) {
-      toastError(error);
-    }
-  };
+    };
 
 
 
 
 
-   
+
 
     // ledger details modal
     const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
@@ -114,10 +115,10 @@ const [pageIndex, setPageIndex] = useState(1);
             selector: (row: any) => (
                 <div
                     className={`flex gap-1 flex-col p-2 rounded-md text-white ${row.status === "Pending"
-                            ? "bg-yellow-200 text-yellow-500"
-                            : row.status === "Completed"
-                                ? "bg-green-300 text-green-600"
-                                : "bg-red-200 text-red-600"
+                        ? "bg-yellow-200 text-yellow-500"
+                        : row.status === "Completed"
+                            ? "bg-green-300 text-green-600"
+                            : "bg-red-200 text-red-600"
                         }`}
                 >
                     <h6>{row.status}</h6>
@@ -147,7 +148,7 @@ const [pageIndex, setPageIndex] = useState(1);
         {
             name: "Action",
             width: "10%",
-            selector: (row:any) => (
+            selector: (row: any) => (
                 <div className="flex items-center gap-3">
                     <button
                         type='button'
@@ -156,20 +157,27 @@ const [pageIndex, setPageIndex] = useState(1);
                     >
                         <FaEye />
                     </button>
-                    
+
                     {/* </button> */}
                     <Link
                         to="/DailyActivityReport"
                         className=" p-[6px] text-Black-400 text-lg"
                     >
-                        <RiDeleteBin6Line onClick={() => handleDelete(row._id)}/>
+                        <RiDeleteBin6Line onClick={() => handleDelete(row._id)} />
                     </Link>
                 </div>
             ),
         },
     ];
 
-   
+const [tickRows, setTickRows] = useState([]);
+
+ const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
+
 
     return (
         <>
@@ -185,17 +193,17 @@ const [pageIndex, setPageIndex] = useState(1);
         filterbuttn={false}
       /> */}
 
-            <div className="container p-6 mt-14">
+            {/* <div className="container p-6 mt-14">
                 <div className="bg-white table_container rounded-xl ">
                     <div className="search_boxes flex justify-between items-center">
                         {/* Heading on the Left */}
-                        <h2 className="text-xl font-semibold text-gray-800">
+                        {/* <h2 className="text-xl font-semibold text-gray-800">
                             All Daily Activity List
-                        </h2>
+                        </h2> */}
 
                         {/* Search and Buttons on the Right */}
-                        <div className="flex items-center justify-start gap-2">
-                            {/* Search Box */}
+                        {/* <div className="flex items-center justify-start gap-2">
+                            Search Box
                             <div className="w-full">
                                 <input
                                     type="search"
@@ -204,7 +212,7 @@ const [pageIndex, setPageIndex] = useState(1);
                                 />
                             </div>
                             {/* Buttons */}
-                            <button className="flex items-center gap-1  px-3 py-1.5 rounded-md  text-gray-700 border text-sm border-gray-300">
+                            {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md  text-gray-700 border text-sm border-gray-300">
                                 <FaFilter /> Filter
                             </button>
                             <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-sm text-gray-700 border border-gray-300">
@@ -217,27 +225,52 @@ const [pageIndex, setPageIndex] = useState(1);
                                 <FaPlus />
                                 <span>New Report</span>
                             </button>
-                        </div>
-                    </div>
+                        </div> */}
+                    
                     {/* React Table */}
-                    <div className="mt-5">
-                          <ReactTable
-                        data={DailyActivityReport.data}
-                        columns={columns}
-                        loading={false}
-                        totalRows={0}
-                        selectableRows={true}
-                        onChangePage={setPageIndex}
-                        onChangeRowsPerPage={setPageSize}
-                        page={pageIndex}
-                        isServerPropsDisabled={false}
-                        rowsPerPageText={pageSize}
-                        paginationRowsPerPageOptions={[5, 10, 20]}
-                    />
+                    {/* <div className="mt-5"> */}
+                        {/* <ReactTable
+                            data={DailyActivityReport.data}
+                            columns={columns}
+                            loading={false}
+                            totalRows={0}
+                            selectableRows={true}
+                            onChangePage={setPageIndex}
+                            onChangeRowsPerPage={setPageSize}
+                            page={pageIndex}
+                            isServerPropsDisabled={false}
+                            rowsPerPageText={pageSize}
+                            paginationRowsPerPageOptions={[5, 10, 20]}
+                        />
                     </div>
-                  
+
                 </div>
-            </div>
+            </div> */}
+            <NewTable
+
+                data={DailyActivityReport.data}
+                columns={columns}
+                loading={false}
+                totalRows={0}
+                selectableRows={true}
+                onChangePage={setPageIndex}
+                onChangeRowsPerPage={setPageSize}
+                page={pageIndex}
+                isServerPropsDisabled={false}
+                rowsPerPageText={pageSize}
+             
+                onSelectedRowsChange={handleChange}
+                className={"leadtable"}
+                //new fields
+                TableName={" All Daily Activity List"}
+                TableGetAllFunction={useDailyActivityReport}
+                ExcelExportFunction={getDailyActivityReportViewExcel}
+                TableAddExcelFunction={addDailyActivityReportViewExcel}
+                RouteName={"Daily Activity Report View"}
+                AddButtonRouteName={"/DailyActivityReport"}
+                AddButtonName={"New Report"}
+                placeholderSearch={"Search by report"}
+            />
         </>
     );
 }

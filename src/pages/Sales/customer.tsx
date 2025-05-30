@@ -1,5 +1,5 @@
-import { ReactTable } from "../../../_components/ReuseableComponents/DataTable/ReactTable";
-import Breadcrumb from "../../../_components/Breadcrumb/Breadcrumb";
+import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
+import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -10,13 +10,17 @@ import {
   useZohoCustomerById,
   useSyncZohoCustomers,
   updateCustomerById,
-  deleteCustomerById
+  deleteCustomerById,
+  useAddCustomer,
+  getCustomersExcel,
+  addCustomersExcel
 } from "@/services/customer.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { useUpdateQuotesToCustomerById } from "@/services/quotesToCustomer.service";
 import { Switch } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 
 function CustomerSales() {
@@ -359,60 +363,85 @@ const calculateDynamicWidths = (columnsArray: any[]) => {
     });
   };
 
+  const [tickRows, setTickRows] = useState([]);
+
+ const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
+
 
 
 
   return (
    
-      <div className="bg-white table_container rounded-xl  p-6 mt-10">
-        <div className="search_boxes flex justify-between items-center  ">
-          <h2 className="text-xl font-semibold text-gray-800">Customer List</h2>
-          <div className="flex items-center gap-2  w-[70%] ">
-            <input
-              type="search"
-              className="rounded-md border text-sm px-3 py-1.5 placeholder-txtcolor focus:outline-none focus:border-buttnhover w-full md:w-1/4"
-              placeholder="Search..."
-              value={query}
-              onChange={handleSearchInputChange}
-              onKeyDown={handleSearchKeyDown}
-            />
+//       <div className="bg-white table_container rounded-xl  p-6 mt-10">
+//         <div className="search_boxes flex justify-between items-center  ">
+//           <h2 className="text-xl font-semibold text-gray-800">Customer List</h2>
+//           <div className="flex items-center gap-2  w-[70%] ">
+//             <input
+//               type="search"
+//               className="rounded-md border text-sm px-3 py-1.5 placeholder-txtcolor focus:outline-none focus:border-buttnhover w-full md:w-1/4"
+//               placeholder="Search..."
+//               value={query}
+//               onChange={handleSearchInputChange}
+//               onKeyDown={handleSearchKeyDown}
+//             />
 
-            <div className="relative w-full md:w-1/4">
-              <button
-                className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap w-full"
-                onClick={() => setShowColumnSelector(!showColumnSelector)}
-              >
-                <FaColumns /> Columns
-              </button>
-              {showColumnSelector && <ColumnSelector />}
-            </div>
+//             <div className="relative w-full md:w-1/4">
+//               <button
+//                 className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap w-full"
+//                 onClick={() => setShowColumnSelector(!showColumnSelector)}
+//               >
+//                 <FaColumns /> Columns
+//               </button>
+//               {showColumnSelector && <ColumnSelector />}
+//             </div>
 
 
-              <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4">
-              <FaFileExport /> Export
-            </button>
-            <button onClick={handleSyncCustomer} className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4">
-              <FaFileExport /> Sync
-            </button>
-            <button
-              className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4"
-              onClick={handleImportClick}
-            >
-              <FaFileImport /> Import
-            </button>
-            {canCreate && (
-              <button
-                onClick={() => navigate("/add-customer")}
-                className="flex items-center gap-1 px-3 py-2 text-xs text-white rounded-md bg-orange-500 w-full md:w-1/4"
-              >
-                <FaPlus /> <span>New Customer</span>
-              </button>
-            )}
-          </div>
-        </div>
-        <div className="mt-5">
-        <ReactTable
-          data={CustomerData?.data}
+//               <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4">
+//               <FaFileExport /> Export
+//             </button>
+//             <button onClick={handleSyncCustomer} className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4">
+//               <FaFileExport /> Sync
+//             </button>
+//             <button
+//               className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4"
+//               onClick={handleImportClick}
+//             >
+//               <FaFileImport /> Import
+//             </button>
+//             {canCreate && (
+//               <button
+//                 onClick={() => navigate("/add-customer")}
+//                 className="flex items-center gap-1 px-3 py-2 text-xs text-white rounded-md bg-orange-500 w-full md:w-1/4"
+//               >
+//                 <FaPlus /> <span>New Customer</span>
+//               </button>
+//             )}
+//           </div>
+//         </div>
+//         <div className="mt-5">
+//         <ReactTable
+//           data={CustomerData?.data}
+//           columns={filteredColumns} 
+//  selectableRows={true}
+//           loading={false}
+//           totalRows={CustomerData?.total}
+//           onChangeRowsPerPage={setPageSize}
+//           onChangePage={setPageIndex}
+//           page={pageIndex}
+//           rowsPerPageText={pageSize}
+//           isServerPropsDisabled={false}
+
+//         />
+//        </div>
+
+//       </div>
+ 
+  <NewTable
+       data={CustomerData?.data}
           columns={filteredColumns} 
  selectableRows={true}
           loading={false}
@@ -422,12 +451,19 @@ const calculateDynamicWidths = (columnsArray: any[]) => {
           page={pageIndex}
           rowsPerPageText={pageSize}
           isServerPropsDisabled={false}
-
-        />
-       </div>
-
-      </div>
- 
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"Customer List"}
+        TableGetAllFunction={useZohoCustomers}
+        ExcelExportFunction={getCustomersExcel}
+        TableAddExcelFunction={addCustomersExcel}
+        RouteName={"Customers"}
+        AddButtonRouteName={"/add-customer"}
+        AddButtonName={"New Customer"}
+        placeholderSearch={"Search Customer"}
+      /> 
 
 
   );

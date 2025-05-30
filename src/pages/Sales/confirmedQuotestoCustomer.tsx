@@ -1,5 +1,5 @@
-import { ReactTable } from "../../../_components/ReuseableComponents/DataTable/ReactTable";
-import Breadcrumb from "../../../_components/Breadcrumb/Breadcrumb";
+import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
+import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus, FaColumns } from "react-icons/fa";
 import { Switch } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function ConfirmedQuotestoCustomer() {
   const navigate = useNavigate();
@@ -380,6 +381,18 @@ function ConfirmedQuotestoCustomer() {
     });
   };
 
+  const [tickRows, setTickRows] = useState([]);
+
+  // Pagination state for NewTable
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+
+ const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
+
   return (
     <>
       {/* <Breadcrumb
@@ -460,6 +473,30 @@ function ConfirmedQuotestoCustomer() {
         
         </div>
     
+     {/* <NewTable
+        data={data}
+        columns={filteredColumns} 
+        selectableRows={true}
+        loading={false}
+        totalRows={data?.length}
+        onChangeRowsPerPage={setPageSize}
+        onChangePage={setPageIndex}
+        page={pageIndex}
+        rowsPerPageText={pageSize}
+        isServerPropsDisabled={false}
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={" All Confirm Quotes for Customer List"}
+        TableGetAllFunction={data}
+        // ExcelExportFunction={getConfirmedQuotesCustomerExc}
+        // TableAddExcelFunction={addLeadExel}
+        RouteName={"Confirmed Quotes Customer"}
+        AddButtonRouteName={"/confirmedQuotesToCustomer"}
+        AddButtonName={"New Confirmed Quotes"}
+        placeholderSearch={"Search by name"}
+      />  */}
     </>
   );
 }

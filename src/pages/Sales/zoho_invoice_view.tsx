@@ -1,4 +1,4 @@
-import { ReactTable } from "../../../_components/ReuseableComponents/DataTable/ReactTable";
+import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import { FaEye, FaFileDownload, FaFilter, FaFileExport, FaSync, FaColumns } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useState, useMemo, useRef, useEffect } from "react";

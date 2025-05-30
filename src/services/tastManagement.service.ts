@@ -44,8 +44,37 @@ export interface ITaskManagement {
 }
 
 
+// Task Management
+export const getTaskManagementExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getTaskManagementExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
 
+export const addTaskManagementExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadTaskManagement`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 
+// My Tasks
+export const getMyTasksExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getMyTasksExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addMyTasksExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadMyTasks`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 export const useTaskManagementApiHook = () => {
     // const axiosAuth = useAxiosAuth({});
     const addTaskManagement = async (obj: any) => {
