@@ -36,21 +36,7 @@ export const getDailyActivityReportViewExcel = async (searchParams?: any) => {
     }
 };
 
-// Task Management
-export const getTaskManagementExcel = async (searchParams?: any) => {
-    try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getTaskManagementExcel`, searchParams);
-        return response;
-    } catch (error) {
-        throw error;
-    }
-};
 
-export const addTaskManagementExcel = async (obj: any) => {
-    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadTaskManagement`, obj, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-    });
-};
 
 export const addDailyActivityReportViewExcel = async (obj: any) => {
     return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadDailyActivityReportView`, obj, {

@@ -1,5 +1,5 @@
-import { ReactTable } from "../../../_components/ReuseableComponents/DataTable/ReactTable";
-import Breadcrumb from "../../../_components/Breadcrumb/Breadcrumb";
+import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
+import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
 import {
   FaEdit,
   FaTrash,
@@ -13,6 +13,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import {
+  addQuotesForCustomerExcel,
+  getQuotesForCustomerExcel,
   useQuotesToCustomer,
   usedeleteQuotesToCustomerById,
 } from "@/services/quotesToCustomer.service";
@@ -20,6 +22,7 @@ import { toastError, toastSuccess } from "@/utils/toast";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Switch } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 interface IQuotesToCustomer {
   _id: string;
@@ -345,59 +348,81 @@ function QuotesForCustomer() {
   };
 
 
+const [tickRows, setTickRows] = useState([]);
+
+ const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
 
 
   return (
     
-      <div className="table_container rounded-xl mt-10 p-6">
-        <div className="search_boxes flex justify-between items-center ">
-          <h2 className="text-xl font-semibold text-gray-800">
-            All Quotes for Customer List
-          </h2>
+      // <div className="table_container rounded-xl mt-10 p-6">
+      //   <div className="search_boxes flex justify-between items-center ">
+      //     <h2 className="text-xl font-semibold text-gray-800">
+      //       All Quotes for Customer List
+      //     </h2>
 
-          <div className="flex items-center justify-start gap-2">
-            <div className="w-full">
-              <input
-                type="search"
-                className="rounded-md w-full border px-3 text-sm border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                placeholder="Search..."
-                value={query}
-                onChange={handleSearchChange}
-              />
+      //     <div className="flex items-center justify-start gap-2">
+      //       <div className="w-full">
+      //         <input
+      //           type="search"
+      //           className="rounded-md w-full border px-3 text-sm border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+      //           placeholder="Search..."
+      //           value={query}
+      //           onChange={handleSearchChange}
+      //         />
 
-            </div>
-            <div className="relative">
-                <button
-                  className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-                  onClick={() => setShowColumnSelector(!showColumnSelector)}
-                >
-                  <FaColumns /> Columns
-                </button>
-                {showColumnSelector && <ColumnSelector />}
-              </div> 
-              {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
-              <FaFilter /> Filter
-            </button> */}
-            <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
-              <FaFileExport /> Export
-            </button>
+      //       </div>
+      //       <div className="relative">
+      //           <button
+      //             className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+      //             onClick={() => setShowColumnSelector(!showColumnSelector)}
+      //           >
+      //             <FaColumns /> Columns
+      //           </button>
+      //           {showColumnSelector && <ColumnSelector />}
+      //         </div> 
+      //         {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+      //         <FaFilter /> Filter
+      //       </button> */}
+      //       <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+      //         <FaFileExport /> Export
+      //       </button>
 
-            {canCreate && (
-              <button
-                onClick={() => navigate("/addQuotesToCustomer")}
-                className="flex w-full items-center text-sm justify-center gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 border border-gray-300"
-              >
-                <FaPlus />
-                <span>New Quotes</span>
-              </button>
-            )}
-          </div>
-        </div>
-      <div className="mt-5">
-        <ReactTable
-          data={quotesToCustomerData?.data || []}
+      //       {canCreate && (
+      //         <button
+      //           onClick={() => navigate("/addQuotesToCustomer")}
+      //           className="flex w-full items-center text-sm justify-center gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 border border-gray-300"
+      //         >
+      //           <FaPlus />
+      //           <span>New Quotes</span>
+      //         </button>
+      //       )}
+      //     </div>
+      //   </div>
+      // <div className="mt-5">
+      //   <ReactTable
+      //     data={quotesToCustomerData?.data || []}
+      //     columns={filteredColumns} 
+      //     selectableRows={true}
+      //     loading={isLoading}
+      //     totalRows={quotesToCustomerData?.total || 0}
+      //     onChangeRowsPerPage={setPageSize}
+      //     onChangePage={setPageIndex}
+      //     page={pageIndex}
+      //     rowsPerPageText={pageSize}
+      //     isServerPropsDisabled={false}
+      //   />
+      // </div>
+      // </div> 
+      
+       <NewTable
+         data={quotesToCustomerData?.data || []}
           columns={filteredColumns} 
- selectableRows={true}
+          selectableRows={true}
           loading={isLoading}
           totalRows={quotesToCustomerData?.total || 0}
           onChangeRowsPerPage={setPageSize}
@@ -405,9 +430,19 @@ function QuotesForCustomer() {
           page={pageIndex}
           rowsPerPageText={pageSize}
           isServerPropsDisabled={false}
-        />
-      </div>
-      </div>  
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"  All Quotes for Customer List"}
+        TableGetAllFunction={useQuotesToCustomer}
+        ExcelExportFunction={getQuotesForCustomerExcel}
+        TableAddExcelFunction={addQuotesForCustomerExcel}
+        RouteName={"Quotes for Customer"}
+        AddButtonRouteName={"/quotesForCustomerView"}
+        AddButtonName={"New Quotes"}
+        placeholderSearch={"Search by Customer Name"}
+      /> 
   
   );
 }

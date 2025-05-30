@@ -1,4 +1,4 @@
-import { ReactTable } from "../../../_components/ReuseableComponents/DataTable/ReactTable";
+import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef, useEffect } from "react";
@@ -23,6 +23,8 @@ import {
   useUpdateEnquiryById,
   useEnquiryById,
   useConvertEnquiryToRfp,
+  addEnquiryExcel,
+  getEnquiryExcel,
 } from "@/services/enquiry.service";
 import { toastSuccess, toastError } from "@/utils/toast";
 import { generateFilePath } from "@/services/urls.service";
@@ -243,10 +245,10 @@ export default function EnquiryLIst() {
       selector: (row: any) => (
         <div
           className={`flex gap-1 flex-col font-bold p-2 rounded-md  ${row.levelOfEnquiry === "moderate"
-              ? "bg-yellow-300 text-white-100"
-              : row.levelOfEnquiry === "Not Urgent"
-                ? "bg-green-400 text-white-600"
-                : row.levelOfEnquiry === "urgent" && "bg-red-300 text-red-600"
+            ? "bg-yellow-300 text-white-100"
+            : row.levelOfEnquiry === "Not Urgent"
+              ? "bg-green-400 text-white-600"
+              : row.levelOfEnquiry === "urgent" && "bg-red-300 text-red-600"
             }`}
         >
           <h5 className="capitalize">{row.levelOfEnquiry}</h5>
@@ -621,7 +623,7 @@ export default function EnquiryLIst() {
 
   return (
     <>
-      <div className=" table_container rounded-xl mt-10 p-6">
+      {/* <div className=" table_container rounded-xl mt-10 p-6">
         <div className="search_boxes flex justify-between items-center ml-2 ">
           <h2 className="text-xl font-semibold text-gray-800">Enquiry List</h2>
 
@@ -644,7 +646,7 @@ export default function EnquiryLIst() {
               </button> 
               {showFilters && <FilterDropdown />}
             </div> */}
-            <button
+      {/* <button
               onClick={handleModalOpen}
               className="flex items-center  text-sm adv-srch gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
             >
@@ -719,9 +721,9 @@ export default function EnquiryLIst() {
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
           />
-        </div>
-        {/* Advanced Search Modal */}
-        {isOpen && (
+        </div> */}
+      {/* Advanced Search Modal */}
+      {/* {isOpen && (
           <>
             <div
               className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
@@ -744,13 +746,13 @@ export default function EnquiryLIst() {
               />
             </div>
           </>
-        )}
-      </div>
+        )} 
+      </div> */}
 
-      {/*<NewTable
+      <NewTable
         data={EnquiryData?.data}
-        columns={filteredColumns} 
- selectableRows={true}
+        columns={filteredColumns}
+        selectableRows={true}
         loading={false}
         totalRows={EnquiryData?.total}
         onChangeRowsPerPage={setPageSize}
@@ -758,17 +760,17 @@ export default function EnquiryLIst() {
         page={pageIndex}
         rowsPerPageText={pageSize}
         isServerPropsDisabled={false}
-        selectableRows={true}
-        className="enquiry table"
+
+        className="leadtable"
         //new fields
         TableName={"Enquiry List"}
         TableGetAllFunction={useEnquiry}
-        ExcelExportFunction={getExel}
-        TableAddExcelFunction={addEnquiryExel}
+        ExcelExportFunction={getEnquiryExcel}
+        TableAddExcelFunction={addEnquiryExcel}
         RouteName={"Enquiry"}
-        AddButtonRouteName={"/add-enquiry"}
+        AddButtonRouteName={"/addEnquiry"}
         AddButtonName={"New Enquiry"}
-      />*/}
+      />
     </>
   );
 }
