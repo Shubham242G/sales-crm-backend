@@ -183,18 +183,18 @@ export interface IVendor {
   documents?: string;
 }
 
-// Roles
-export const getRolesExcel = async (searchParams?: any) => {
+// Vendors
+export const getVendorsExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getRolesExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getVendorsExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;
     }
 };
 
-export const addRolesExcel = async (obj: any) => {
-    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadRoles`, obj, {
+export const addVendorsExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadVendors`, obj, {
         headers: { 'Content-Type': 'multipart/form-data' }
     });
 };

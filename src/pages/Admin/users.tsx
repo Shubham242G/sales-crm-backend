@@ -6,11 +6,11 @@ import { useState, useMemo, useEffect } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus, FaColumns } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
-import { useUser, useDeleteUser, useUpdateUser } from "@/services/user.service";
+import { useUser, useDeleteUser, useUpdateUser, getUserExcel, addUserExcel } from "@/services/user.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { ClassNames } from "@emotion/react";
-import { filter } from "lodash";
+import { filter, get } from "lodash";
 import { Switch } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
 import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
@@ -299,16 +299,16 @@ function Users() {
         page={pageIndex}
         rowsPerPageText={pageSize}
         isServerPropsDisabled={false}
-        
         onSelectedRowsChange={handleChange}
         className={"leadtable"}
         //new fields
         TableName={"User List"}
         TableGetAllFunction={useUser}
-        
-        RouteName={"users"}
+         ExcelExportFunction={getUserExcel}
+        TableAddExcelFunction={addUserExcel}
+        RouteName={"User"}
         AddButtonRouteName={"/add-users"}
-        AddButtonName={"New User"}
+         AddButtonName={"add user"}
         placeholderSearch={"Search in User"}
       /> 
    

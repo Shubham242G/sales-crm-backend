@@ -7,6 +7,8 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus, FaColumns } from "react-icons/fa";
 import { SiConvertio } from "react-icons/si";
 import {
+  addQuotesFromVendorsExcel,
+  getQuotesFromVendorsExcel,
   useConvertQuotesFromVendorToQuotesToCustomer,
   useQuotesFromVendors,
   useQuotesFromVendorsById,
@@ -16,6 +18,7 @@ import { toastError, toastSuccess } from "@/utils/toast";
 import { Switch } from "@mui/material";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function CustomerLedger() {
   const [loading, setLoading] = useState(false);
@@ -60,7 +63,7 @@ function CustomerLedger() {
       toastError(error);
     }
   };
- const [isOpenAction, setIsOpenAction] = useState(false);
+  const [isOpenAction, setIsOpenAction] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const handleConvertToCustomerQuote = async (id: string) => {
     try {
@@ -106,7 +109,7 @@ function CustomerLedger() {
           {row?.serviceType?.map((e: any, index: number) => (
             <div
               key={index}
-             className="bg-sky-100 text-blue-800 text-xs px-2 py-1 rounded-full border border-sky-300 shadow-sm"
+              className="bg-sky-100 text-blue-800 text-xs px-2 py-1 rounded-full border border-sky-300 shadow-sm"
             >
               {e}
             </div>
@@ -163,43 +166,43 @@ function CustomerLedger() {
     //   ),
     // },
     {
-         name: "Actions",
-         width: "20px",
-         selector: (row: any) => (
-           <div className="">
-             <button
-               type="button"
-               
-               title="More Actions"
-               onClick={(e) =>{ setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),setSelectedRowId(row._id )}}
-             >
-               <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
-             </button>
-             { selectedRowId === row._id   &&  (isOpenAction) && (
-               <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
-   
-                 <Link
-                   to={`/addQuotesFromVendors/${row?._id}`}
-                   className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
-                   title="View Vendor"
-                 >
-                   <FiEdit className="text-xs" />
-                   Edit
-                 </Link>
-                 <button
-                   type="button"
-                   onClick={() => handleDelete(row._id)}
-                   className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
-                   title="Delete Vendor"
-                 >
-                   <RiDeleteBin6Line className="text-xs" />
-                   Delete
-                 </button>
-               </div>
-             )}
-           </div>
-         ),
-       },
+      name: "Actions",
+      width: "20px",
+      selector: (row: any) => (
+        <div className="">
+          <button
+            type="button"
+
+            title="More Actions"
+            onClick={(e) => { setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true), setSelectedRowId(row._id) }}
+          >
+            <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
+          </button>
+          {selectedRowId === row._id && (isOpenAction) && (
+            <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
+
+              <Link
+                to={`/addQuotesFromVendors/${row?._id}`}
+                className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                title="View Vendor"
+              >
+                <FiEdit className="text-xs" />
+                Edit
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDelete(row._id)}
+                className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                title="Delete Vendor"
+              >
+                <RiDeleteBin6Line className="text-xs" />
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+      ),
+    },
 
 
 
@@ -223,7 +226,7 @@ function CustomerLedger() {
   ];
 
 
-  const {canView, canUpdate, canDelete} = checkPermissionsForButtons('Quotes from Vendors');
+  const { canView, canUpdate, canDelete } = checkPermissionsForButtons('Quotes from Vendors');
 
   // Column selector
   const [showColumnSelector, setShowColumnSelector] = useState(false);
@@ -248,8 +251,9 @@ function CustomerLedger() {
   }, []);
 
   useEffect(() => {
-    if(canView !== undefined) {
-    localStorage.setItem('enquiryTableColumnsQuotesFromVendors', JSON.stringify(visibleColumns));}
+    if (canView !== undefined) {
+      localStorage.setItem('enquiryTableColumnsQuotesFromVendors', JSON.stringify(visibleColumns));
+    }
   }, [visibleColumns, canView]);
   const toggleColumnVisibility = (columnName: string) => {
     setVisibleColumns(prev => ({
@@ -296,7 +300,7 @@ function CustomerLedger() {
     </div>
   );
 
-const calculateDynamicWidths = (columnsArray: any[]) => {
+  const calculateDynamicWidths = (columnsArray: any[]) => {
     const visibleColumnsCount = columnsArray.length;
 
     if (visibleColumnsCount === 0) return columnsArray;
@@ -310,7 +314,7 @@ const calculateDynamicWidths = (columnsArray: any[]) => {
 
     return columnsWithDynamicWidth;
   };
- const visibleColumnsArray = columns.filter(column =>
+  const visibleColumnsArray = columns.filter(column =>
     visibleColumns[column.name as keyof typeof visibleColumns]
   );
 
@@ -334,69 +338,101 @@ const calculateDynamicWidths = (columnsArray: any[]) => {
     });
   };
 
+  const [tickRows, setTickRows] = useState([]);
+
+ const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
+
   return (
+
+    // <div className="h-[90vh]  mt-16 p-6 overflow-y-auto ">
+    //   <div className="search_boxes flex justify-between items-center">
+    //     <h2 className="text-xl font-semibold text-gray-800">
+    //       Quotes from Vendor
+    //     </h2>
+    //     <div className="flex items-center justify-start gap-2">
+    //       <div className="w-full">
+    //         <input
+    //           type="search"
+    //           className="rounded-md w-[250px] text-sm border px-3 border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+    //           placeholder="Search by Vendor name"
+    //           value={query}
+    //           onChange={handleSearchInput}
+    //           onKeyPress={(e) => {
+    //             if (e.key === 'Enter') {
+    //               refetch();
+    //             }
+    //           }}
+    //         />
+    //       </div>
+    //       <div className="relative">
+    //         <button
+    //           className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+    //           onClick={() => setShowColumnSelector(!showColumnSelector)}
+    //         >
+    //           <FaColumns /> Columns
+    //         </button>
+    //         {showColumnSelector && <ColumnSelector />}
+    //       </div>
+    //       {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+    //           <FaFilter /> Filter
+    //         </button> */}
+    //       <button className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+    //         <FaFileExport /> Export
+    //       </button>
+    //       <button
+    //         onClick={() => navigate("/addQuotesFromVendors")}
+    //         className="flex w-full items-center justify-center gap-1 px-3 py-1.5 text-sm text-white rounded-md bg-orange-500 border border-gray-300"
+    //       >
+    //         <FaPlus />
+    //         <span>New quotes for vendors</span>
+    //       </button>
+    //     </div>
+    //   </div>
+    //   <div className="mt-5">
+    //     <ReactTable
+    //       data={quotesFromVendors.data}
+    //       columns={filteredColumns}
+    //       selectableRows={true}
+    //       loading={false}
+    //       totalRows={quotesFromVendors.total}
+    //       onChangeRowsPerPage={setPageSize}
+    //       onChangePage={setPageIndex}
+    //       page={pageIndex}
+    //       rowsPerPageText={pageSize}
+    //       isServerPropsDisabled={false}
+    //     />
+    //   </div>
+
+      <NewTable
+        data={quotesFromVendors.data}
+        columns={filteredColumns}
+        selectableRows={true}
+        loading={false}
+        totalRows={quotesFromVendors.total}
+        onChangeRowsPerPage={setPageSize}
+        onChangePage={setPageIndex}
+        page={pageIndex}
+        rowsPerPageText={pageSize}
+        isServerPropsDisabled={false}
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"Quotes from Vendor"}
+        TableGetAllFunction={useQuotesFromVendors}
+        ExcelExportFunction={getQuotesFromVendorsExcel}
+        TableAddExcelFunction={addQuotesFromVendorsExcel}
+        RouteName={"Quotes from Vendors"}
+        AddButtonRouteName={"/addQuotesFromVendors"}
+        AddButtonName={"New quotes for vendors"}
+        placeholderSearch={"Search by Vendor name"}
+      />
+
+
    
-      <div className="h-[90vh]  mt-16 p-6 overflow-y-auto ">
-        <div className="search_boxes flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800">
-            Quotes from Vendor
-          </h2>
-          <div className="flex items-center justify-start gap-2">
-            <div className="w-full">
-              <input
-                type="search"
-                className="rounded-md w-[250px] text-sm border px-3 border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                placeholder="Search by Vendor name"
-                value={query}
-                  onChange={handleSearchInput}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      refetch();
-                    }
-                  }}
-              />
-            </div>
-            <div className="relative">
-              <button
-                className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-                onClick={() => setShowColumnSelector(!showColumnSelector)}
-              >
-                <FaColumns /> Columns
-              </button>
-              {showColumnSelector && <ColumnSelector />}
-            </div>
-             {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
-              <FaFilter /> Filter
-            </button> */}
-            <button className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
-              <FaFileExport /> Export
-            </button>
-            <button
-              onClick={() => navigate("/addQuotesFromVendors")}
-              className="flex w-full items-center justify-center gap-1 px-3 py-1.5 text-sm text-white rounded-md bg-orange-500 border border-gray-300"
-            >
-              <FaPlus />
-              <span>New quotes for vendors</span>
-            </button>
-          </div>
-        </div>
-        <div className="mt-5">
-          <ReactTable
-          data={quotesFromVendors.data}
-          columns={filteredColumns} 
- selectableRows={true}
-          loading={false}
-          totalRows={quotesFromVendors.total}
-          onChangeRowsPerPage={setPageSize}
-          onChangePage={setPageIndex}
-          page={pageIndex}
-          rowsPerPageText={pageSize}
-          isServerPropsDisabled={false}
-        />
-        </div>
-        
-      </div>
- 
   );
 }
 

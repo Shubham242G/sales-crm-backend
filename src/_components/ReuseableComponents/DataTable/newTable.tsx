@@ -48,6 +48,7 @@ const NewTable = (props: any) => {
     isImport = false,
   } = props;
 
+  console.log(  AddButtonName, "AddButtonName");
   const navigate = useNavigate();
 
   const [advancedSearchParams, setAdvancedSearchParams] = useState("");
@@ -103,7 +104,7 @@ const NewTable = (props: any) => {
 
   const ColumnSelector = () => (
     <div className="absolute z-50 bg-white shadow-lg p-4 rounded-md mt-2   border border-gray-200 right-0 w-72">
-      <div className="flex flex-col gap-2 ]">
+      <div className="flex flex-col gap-1.5 ]">
         <div className="flex justify-between items-center border-b pb-2 mb-2">
           <h3 className="font-medium">Customize Columns</h3>
           <button
@@ -147,14 +148,36 @@ const NewTable = (props: any) => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const visibleColumnsArray = columns.filter(
-    (column: any) => visibleColumns[column.name as keyof typeof visibleColumns]
-  );
+  // const visibleColumnsArray = columns.filter(
+  //   (column: any) => visibleColumns[column.name as keyof typeof visibleColumns]
+  // );
 
   const [isOpen, setIsOpen] = useState(false);
+  const calculateDynamicWidths = (columnsArray: any[]) => {
+    const visibleColumnsCount = columnsArray.length;
 
-  // Apply fixed widths to visible columns
-  const filteredColumns = visibleColumnsArray;
+    if (visibleColumnsCount === 0) return columnsArray;
+
+    const columnsWithDynamicWidth = columnsArray.map(column => {
+      const width =
+        visibleColumnsCount <= 6
+          ? `${1050 / visibleColumnsCount}px`
+          : column.name === "Email"
+          ? "300px"
+          : `${1600 / visibleColumnsCount}px`;
+
+      return { ...column, width };
+    });
+
+    console.log(columnsWithDynamicWidth, "check the column width")
+
+    return columnsWithDynamicWidth;
+  };
+  const visibleColumnsArray = columns.filter((column: any) =>
+    visibleColumns[column.name as keyof typeof visibleColumns]
+  );
+  // Apply dynamic widths to visible columns
+  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
 
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -362,17 +385,17 @@ const NewTable = (props: any) => {
   return (
     <>
      
-        <div className=" table_container rounded-xl px-6 mt-16    ">
+        <div className=" table_container rounded-xl px-6 mt-[60px]   ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
             {/* Heading on the Left */}
-            <h2 className="text-lg font-semibold text-gray-800 ">
+            <h2 className="text-lg font-semibold text-gray-800 ml-2">
               {TableName}
             </h2>
             {/* Search Input */}
             <div className="flex items-center w-full sm:w-auto flex-grow ">
               <input
                 type="search"
-                className="rounded-md border px-3 py-1.5 w-[200px] border-gray-300 placeholder-gray-500 text-sm focus:outline-none focus:border-orange-500"
+                className="rounded-md border p-1.5 w-[200px] border-gray-300 placeholder-gray-500 text-sm focus:outline-none "
                 placeholder={placeholderSearch}
                 value={searchQuery}
                 onChange={handleSearchInput}
@@ -391,7 +414,7 @@ const NewTable = (props: any) => {
           {/* Columns Button */}
           <div className="relative">
             <button
-              className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-100 text-sm"
+              className="flex items-center gap-1 p-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-100 text-sm"
               onClick={() => setShowColumnSelector(!showColumnSelector)}
             >
               <FaColumns className="text-xs" /> Columns
@@ -401,7 +424,7 @@ const NewTable = (props: any) => {
           {/* Advanced Search */}
           <button
             onClick={handleModalOpen}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
+            className="flex items-center gap-1 p-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
           >
             Advanced Search
           </button>
@@ -410,7 +433,7 @@ const NewTable = (props: any) => {
           {TableName === "Leads List" && (
             <button
               onClick={() => setIsOpenAssign(true)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
+              className="flex items-center gap-1 p-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
             >
               <FaTasks className="text-xs" /> Assign Lead
             </button>
@@ -418,7 +441,7 @@ const NewTable = (props: any) => {
 
           {TableName === "Enquiry List" && (
             <button
-              className=" flex items-center gap-1  px-3 py-1.5  text-sm rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+              className=" flex items-center gap-1  p-1.5  text-sm rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
               onClick={() => setIsOpenAssignOps(true)}
             >
               <span className="whitespace-nowrap text-sm">
@@ -448,7 +471,7 @@ const NewTable = (props: any) => {
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
                 <ul className="py-1">
                   <li
-                    className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
+                    className=" p-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                     onClick={() => {
                       setShowExportOptions(false);
                       handleExportEnquiries("xlsx");
@@ -468,7 +491,7 @@ const NewTable = (props: any) => {
                     Export as Excel
                   </li>
                   <li
-                    className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
+                    className=" p-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                     onClick={() => {
                       setShowExportOptions(false);
                       handleExportEnquiries("csv");
@@ -488,7 +511,7 @@ const NewTable = (props: any) => {
                     Export as CSV
                   </li>
                   <li
-                    className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
+                    className=" p-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                     onClick={() => {
                       setShowExportOptions(false);
                       handleExportEnquiries("pdf");
@@ -509,7 +532,7 @@ const NewTable = (props: any) => {
                     Export as PDF
                   </li>
                   <li
-                    className=" px-3 py-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
+                    className=" p-1.5 hover:bg-gray-100 cursor-pointer flex items-center"
                     onClick={() => {
                       setShowExportOptions(false);
                       setShowExportCustomize(true);
@@ -542,7 +565,7 @@ const NewTable = (props: any) => {
               onChange={handleFileChange}
             />
             <button
-              className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
+              className="flex items-center gap-1 p-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
               onClick={handleImportClick}
               disabled={isUploading}
             >
@@ -553,14 +576,14 @@ const NewTable = (props: any) => {
             {canCreate && (
               <button
                 onClick={() => navigate(AddButtonRouteName)}
-                className="flex items-center gap-1 px-3 py-1.5 text-white rounded-md bg-orange-500 text-sm"
+                className="flex items-center gap-1 p-1.5 text-white rounded-md bg-orange-500 text-sm"
               >
                 <FaPlus className="text-xs" /> {AddButtonName}
               </button>
             )}
           </div>
           {/* React Table */}
-          <div className="mt-5">
+          <div className="mt-[12px]">
             <ReactTable
               data={TableData.data}
               columns={filteredColumns} 
@@ -694,15 +717,15 @@ const NewTable = (props: any) => {
             </div>
 
             {/* Action buttons */}
-            <div className="flex justify-end mt-4 gap-2">
+            <div className="flex justify-end mt-4 gap-1.5">
               <button
-                className=" px-3 py-1.5 bg-gray-200 rounded-md"
+                className=" p-1.5 bg-gray-200 rounded-md"
                 onClick={() => setShowExportCustomize(false)}
               >
                 Cancel
               </button>
               <button
-                className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
+                className=" p-1.5 bg-orange-500 text-white rounded-md"
                 onClick={() => {
                   setShowExportCustomize(false);
                   // Get selected format
@@ -763,7 +786,7 @@ const NewTable = (props: any) => {
                   className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div> */}
-              {/* <div className="mt-4 flex gap-2">
+              {/* <div className="mt-4 flex gap-1.5">
                 {assignTaskUsers.map((user) => (
                   <div
                     key={user}
@@ -798,7 +821,7 @@ const NewTable = (props: any) => {
               <div className="mt-4">
                 <button
                   type="submit"
-                  className="bg-blue-500  px-3 py-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
+                  className="bg-blue-500  p-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
 
                   // disabled={isLoading}
                 >
@@ -836,7 +859,7 @@ const NewTable = (props: any) => {
                   className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div> */}
-              {/* <div className="mt-4 flex gap-2">
+              {/* <div className="mt-4 flex gap-1.5">
                 {assignTaskUsers.map((user) => (
                   <div
                     key={user}
@@ -871,7 +894,7 @@ const NewTable = (props: any) => {
               <div className="mt-4">
                 <button
                   type="submit"
-                  className="bg-blue-500  px-3 py-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
+                  className="bg-blue-500  p-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
 
                   // disabled={isLoading}
                 >

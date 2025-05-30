@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useZohoInvoiceById, useGenerateInvoicePdf } from '../../services/zoho_invoice.service';
+import { useZohoInvoiceById, useGenerateInvoicePdf } from '../../../services/zoho_invoice.service';
 
 const InvoiceView = () => {
   const { id } = useParams();

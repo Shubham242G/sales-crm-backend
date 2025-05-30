@@ -19,7 +19,20 @@ export interface ILeadManagement {
 
 
 
+export const getleadManagementExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getQuotesFromVendorsExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
 
+export const addleadManagementExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadQuotesFromVendors`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 
 
 

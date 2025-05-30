@@ -1,5 +1,5 @@
-import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
-import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
+import { ReactTable } from "../../../_components/ReuseableComponents/DataTable/ReactTable";
+import Breadcrumb from "../../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef, useEffect } from "react";
@@ -621,31 +621,31 @@ function Leads() {
     </div>
   );
 
-  const calculateFixedWidths = (columnsArray: any[]) => {
-    const totalWidth = columnsArray.length > 0 ? columnsArray.length * 180 : 1;
-    const containerWidth = window.innerWidth - 100; // Adjust for padding/margins
-    const columnsWithFixedWidth = columnsArray.map((column) => ({
-      ...column,
-      width:
-        column.name === "Actions"
-          ? "80px"
-          : totalWidth > containerWidth
-            ? "200px"
-            : `${98 / columnsArray.length}%`,
-    }));
+  // const calculateFixedWidths = (columnsArray: any[]) => {
+  //   const totalWidth = columnsArray.length > 0 ? columnsArray.length * 180 : 1;
+  //   const containerWidth = window.innerWidth - 100; // Adjust for padding/margins
+  //   const columnsWithFixedWidth = columnsArray.map((column) => ({
+  //     ...column,
+  //     width:
+  //       column.name === "Actions"
+  //         ? "80px"
+  //         : totalWidth > containerWidth
+  //           ? "200px"
+  //           : `${98 / columnsArray.length}%`,
+  //   }));
 
-    console.log(columnsWithFixedWidth, "check the column width");
+  //   console.log(columnsWithFixedWidth, "check the column width");
 
-    return columnsWithFixedWidth;
-  };
+  //   return columnsWithFixedWidth;
+  // };
 
-  // Filter columns based on visibility
-  const visibleColumnsArray = columns.filter(
-    (column) => visibleColumns[column.name as keyof typeof visibleColumns]
-  );
+  // // Filter columns based on visibility
+  // const visibleColumnsArray = columns.filter(
+  //   (column) => visibleColumns[column.name as keyof typeof visibleColumns]
+  // );
 
-  // Apply fixed widths to visible columns
-  const filteredColumns = calculateFixedWidths(visibleColumnsArray);
+  // // Apply fixed widths to visible columns
+  // const filteredColumns = calculateFixedWidths(visibleColumnsArray);
 
   const resetColumnVisibility = () => {
     setVisibleColumns({
@@ -736,7 +736,7 @@ function Leads() {
     
        <NewTable
         data={leadData?.data}
-        columns={filteredColumns} 
+        columns={columns} 
         selectableRows={true}
         loading={false}
         totalRows={leadData?.total}

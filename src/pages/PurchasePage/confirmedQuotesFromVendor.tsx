@@ -13,6 +13,8 @@ import {
   FaColumns,
 } from "react-icons/fa";
 import {
+  addConfirmedQuotesFromVendorsExcel,
+  getConfirmedQuotesFromVendorsExcel,
   useConfirmedQuotes,
   usedeleteConfirmedQuotesById,
 } from "@/services/confirmedQuotesFromVendor.service";
@@ -21,6 +23,7 @@ import moment from "moment";
 import { Switch } from "@mui/material";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function ConfirmedQuotesFromVendor() {
   const navigate = useNavigate();
@@ -404,78 +407,20 @@ function ConfirmedQuotesFromVendor() {
   //   setPageIndex(1);
   // };
 
+  const [tickRows, setTickRows] = useState([]);
+
+ const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
+
   return (
     <>
-      {/* <Breadcrumb
-        pageTitle="Customer Ledger"
-        pageCategory="All Ledger"
-        activePage="All Customer Ledger"
-        previouspageurl="/"
-        addbuttn={true}
-        withLink={true}
-        addbuttnurl="/add-ledger"
-        excelbuttn={false}
-        filterbuttn={false}
-      /> */}
-
-     
-        <div className="overflow-hidden p-6 mt-12">
-          <div className=" flex justify-between items-center ">
-            {/* Heading on the Left */}
-            <h2 className="text-xl font-semibold text-gray-800">
-              All Quotes for Vendor List
-            </h2>
-
-            {/* Search and Buttons on the Right */}
-            <div className="flex items-center justify-start gap-2">
-              {/* Search Box */}
-              <div className="w-full">
-                <input
-                  type="search"
-                  className="rounded-md w-full border px-3 border-gray-300 py-1.5 text-sm  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                  placeholder="Search..."
-                  // value={query}
-                  // onChange={handleSearchChange}
-                />
-              </div>
-              <div className="relative">
-                            <button
-                              className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-                              onClick={() => setShowColumnSelector(!showColumnSelector)}
-                            >
-                              <FaColumns /> Columns
-                            </button>
-                            {showColumnSelector && <ColumnSelector />}
-                          </div>
-
-
-              {/* Buttons */}
-              {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
-                <FaFilter /> Filter
-              </button> */}
-              <button className="flex items-center gap-1  px-3 py-1.5 text-sm rounded-md text-gray-700 border border-gray-300">
-                <FaFileExport /> Export
-              </button>
-              <button
-                onClick={() => navigate("/add-ConfirmedQuotesFromVendor")}
-                className="flex w-full items-center justify-center gap-1 px-3 text-sm py-1.5 text-white rounded-md bg-orange-500 border border-gray-300"
-              >
-                <FaPlus />
-                <span className="text-sm">New Confirmed Quotes</span>
-              </button>
-              {/* <button className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300">
-                <FaPlus />
-                <span>New RFPs</span>
-              </button> */}
-            </div>
-          </div>
-
-          {/* React Table */}
-          <div className=" mt-5">
-            <ReactTable
-            data={confirmedQuotesToVendorData.data}
+      <NewTable
+        data={confirmedQuotesToVendorData.data}
              columns={filteredColumns} 
- selectableRows={true}
+             selectableRows={true}
             loading={false}
             totalRows={confirmedQuotesToVendorData?.total}
             onChangeRowsPerPage={setPageSize}
@@ -483,12 +428,25 @@ function ConfirmedQuotesFromVendor() {
             page={pageIndex}
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
-          />
-          </div>
-          
-        </div>
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={" All Quotes for Vendor List"}
+        TableGetAllFunction={useConfirmedQuotes}
+        ExcelExportFunction={getConfirmedQuotesFromVendorsExcel}
+        TableAddExcelFunction={addConfirmedQuotesFromVendorsExcel }
+        RouteName={"Confirmed Quotes From Vendors"}
+        AddButtonRouteName={"/add-ConfirmedQuotesFromVendor"}
+        AddButtonName={"New Confirmed Quotes"}
+        placeholderSearch={"Search by Name"}
+    /> 
      
     </>
+           
+       
+       
+    
   );
 }
 

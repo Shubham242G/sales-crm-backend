@@ -1,5 +1,5 @@
-import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
-import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
+import { ReactTable } from "../../../_components/ReuseableComponents/DataTable/ReactTable";
+import Breadcrumb from "../../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -340,6 +340,8 @@ function ConfirmedQuotestoCustomer() {
       </div>
     </div>
   );
+
+  //service baala width 
 
   const calculateDynamicWidths = (columnsArray: any[]) => {
     const visibleColumnsCount = columnsArray.length;
