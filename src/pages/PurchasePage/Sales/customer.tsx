@@ -1,5 +1,5 @@
-import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
-import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
+import { ReactTable } from "../../../_components/ReuseableComponents/DataTable/ReactTable";
+import Breadcrumb from "../../../_components/Breadcrumb/Breadcrumb";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useMemo, useRef, useState } from "react";

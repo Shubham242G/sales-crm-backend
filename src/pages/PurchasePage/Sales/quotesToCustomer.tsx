@@ -1,5 +1,5 @@
-import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
-import Breadcrumb from "../../_components/Breadcrumb/Breadcrumb";
+import { ReactTable } from "../../../_components/ReuseableComponents/DataTable/ReactTable";
+import Breadcrumb from "../../../_components/Breadcrumb/Breadcrumb";
 import {
   FaEdit,
   FaTrash,

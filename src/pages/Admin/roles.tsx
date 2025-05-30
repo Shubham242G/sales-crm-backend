@@ -6,12 +6,13 @@ import { useState, useMemo, useEffect } from "react";
 import { RiDeleteBin6Line, RiH6 } from "react-icons/ri";
 import { FaColumns, FaPlus } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
-import { usedeleteRolesById, useRoles } from "@/services/roles.service";
+import { addRolesExcel, getRolesExcel, usedeleteRolesById, useRoles } from "@/services/roles.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import RoleHierarchy from "@/pages/Hierarchy/roleHierarchy";
 import { Switch } from "@mui/material";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 
 
@@ -212,10 +213,17 @@ function Roles() {
     });
   };
 
+  const [tickRows, setTickRows] = useState([]);
+  const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
+
   return (
     <>
    
-         <div className=" table_container rounded-xl p-6 mt-10   ">
+         {/* <div className=" table_container rounded-xl p-6 mt-10   ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm ">
           <h2 className="text-lg font-semibold text-gray-800">Roles List</h2>
           <div className="flex items-center justify-start gap-2">
@@ -267,9 +275,35 @@ function Roles() {
       
         </div>
           
-      </div>
+      </div> */}
       
- 
+  
+
+
+       <NewTable
+       data={roleData?.data}
+          columns={filteredColumns} 
+          selectableRows={true}
+          loading={false}
+          totalRows={roleData?.total}
+          onChangePage={setPageIndex}
+          onChangeRowsPerPage={setPageSize}
+          page={pageIndex}
+          rowsPerPageText={pageSize}
+          isServerPropsDisabled={false}
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"Roles List"}
+        TableGetAllFunction={useRoles}
+        ExcelExportFunction={getRolesExcel}
+        TableAddExcelFunction={addRolesExcel}
+        RouteName={"Leads"}
+        AddButtonRouteName={"/add-role"}
+        AddButtonName={"New Role"}
+        placeholderSearch={"Search by Name"}
+      /> 
     </>
   );
 }

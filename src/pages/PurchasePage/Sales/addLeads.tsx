@@ -314,7 +314,7 @@ const AddNewLead = () => {
         <select
           onChange={(val) => handleSelectChange("salutation", val.target.value)}
           value={formData.salutation}
-          className={`w-32 border border-[#D0D5DD] bg-white rounded-md px-2 text-sm placeholder:text-sm focus:outline-none text-[#344054] focus:ring-2 focus:ring-blue-400 h-[30px]`}
+          className={`w-32 border border-[#D0D5DD] bg-white rounded-md px-2 pt-1 text-sm placeholder:text-sm focus:outline-none text-[#344054] focus:ring-2 focus:ring-blue-400 h-[30px]`}
         >
           <option value="" disabled hidden className="text-sm text-gray-400">Salutation</option>
           <option value="Mr." className="text-xs text-[#344054]">Mr.</option>
@@ -330,16 +330,16 @@ const AddNewLead = () => {
           type="text"
           name="firstName"
           value={formData.firstName}
-          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+          onChange={(e) => setFormData({ ...formData, firstName: e.target.value.toUpperCase() })}
           placeholder="First Name"
-          className="flex-1 border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 placeholder:text-sm focus:outline-none  h-[30x]"
+          className="flex-1 border border-[#D0D5DD] bg-white rounded-md p-1 px-2 text-xs text-[#344054] placeholder-gray-400 placeholder:text-sm focus:outline-none  h-[30x]"
         />
 
         {/* Last Name */}
         <input
           name="lastName"
           value={formData.lastName}
-          onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+          onChange={(e) => setFormData({ ...formData, lastName: e.target.value.toUpperCase() })}
           placeholder="Last Name"
           className="flex-1 border border-[#D0D5DD] bg-white rounded-md px-2 text-xs text-[#344054] placeholder-gray-400 placeholder:text-sm focus:outline-none  h-[30px]"
         />
@@ -378,7 +378,7 @@ const AddNewLead = () => {
               <select
                 onChange={(val) => handleSelectChange("leadOwner", val.target.value)}
                 value={formData.leadOwner}
-                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2 text-sm text-[#30353f] focus:outline-none  h-[30px] ml-20"
+                className="w-[35%] border border-[#D0D5DD] bg-white rounded-md px-2  pt-1 text-sm text-[#30353f] focus:outline-none  h-[30px] ml-20"
               >
                 <option value="" disabled hidden>Select</option>
                 {userNames.data.map((option: any) => (

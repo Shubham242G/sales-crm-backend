@@ -1,4 +1,4 @@
-import { ReactTable } from "../../_components/ReuseableComponents/DataTable/ReactTable";
+import { ReactTable } from "../../../_components/ReuseableComponents/DataTable/ReactTable";
 import { FaEye, FaMobileScreenButton } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef, useEffect } from "react";
@@ -242,13 +242,12 @@ export default function EnquiryLIst() {
       name: "Level of Enquiry",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col font-bold p-2 rounded-md  ${
-            row.levelOfEnquiry === "moderate"
+          className={`flex gap-1 flex-col font-bold p-2 rounded-md  ${row.levelOfEnquiry === "moderate"
               ? "bg-yellow-300 text-white-100"
               : row.levelOfEnquiry === "Not Urgent"
-              ? "bg-green-400 text-white-600"
-              : row.levelOfEnquiry === "urgent" && "bg-red-300 text-red-600"
-          }`}
+                ? "bg-green-400 text-white-600"
+                : row.levelOfEnquiry === "urgent" && "bg-red-300 text-red-600"
+            }`}
         >
           <h5 className="capitalize">{row.levelOfEnquiry}</h5>
         </div>
@@ -466,7 +465,7 @@ export default function EnquiryLIst() {
     </div>
   );
 
- const calculateDynamicWidths = (columnsArray: any[]) => {
+  const calculateDynamicWidths = (columnsArray: any[]) => {
     const visibleColumnsCount = columnsArray.length;
 
     if (visibleColumnsCount === 0) return columnsArray;
@@ -480,7 +479,7 @@ export default function EnquiryLIst() {
 
     return columnsWithDynamicWidth;
   };
- const visibleColumnsArray = columns.filter(column =>
+  const visibleColumnsArray = columns.filter(column =>
     visibleColumns[column.name as keyof typeof visibleColumns]
   );
 
@@ -707,27 +706,27 @@ export default function EnquiryLIst() {
           </div>
         </div>
 
-          <div className="mt-5">
-            <ReactTable
-              data={EnquiryData?.data}
-              columns={filteredColumns} 
- selectableRows={true}
-              loading={false}
-              totalRows={EnquiryData?.total}
-              onChangeRowsPerPage={setPageSize}
-              onChangePage={setPageIndex}
-              page={pageIndex}
-              rowsPerPageText={pageSize}
-              isServerPropsDisabled={false}
-            />
-          </div>
-          {/* Advanced Search Modal */}
-          {isOpen && (
-            <>
-              <div
-                className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
-                onClick={handleModalOpen}
-              ></div>
+        <div className="mt-5">
+          <ReactTable
+            data={EnquiryData?.data}
+            columns={filteredColumns}
+            selectableRows={true}
+            loading={false}
+            totalRows={EnquiryData?.total}
+            onChangeRowsPerPage={setPageSize}
+            onChangePage={setPageIndex}
+            page={pageIndex}
+            rowsPerPageText={pageSize}
+            isServerPropsDisabled={false}
+          />
+        </div>
+        {/* Advanced Search Modal */}
+        {isOpen && (
+          <>
+            <div
+              className="fixed inset-0 z-[2] bg-[rgba(0,0,0,0.5)]"
+              onClick={handleModalOpen}
+            ></div>
 
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
               <AdvancedSearch

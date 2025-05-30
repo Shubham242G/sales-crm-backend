@@ -1457,7 +1457,7 @@ const AddEnquiryForm = () => {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="First Name"
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                  className="w-full border  border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                 />
               </div>
 
@@ -1472,13 +1472,13 @@ const AddEnquiryForm = () => {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Last Name"
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               {/* Assign To */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Assign To
                 </label>
                 <select
@@ -1497,7 +1497,7 @@ const AddEnquiryForm = () => {
 
               {/* Display Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Display Name
                 </label>
                 <select
@@ -1526,7 +1526,7 @@ const AddEnquiryForm = () => {
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="Company Name"
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -1546,7 +1546,7 @@ const AddEnquiryForm = () => {
                     setPhoneNumber(numericValue);
                   }}
                   placeholder="Phone Number"
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -1561,7 +1561,7 @@ const AddEnquiryForm = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border  border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -1762,10 +1762,10 @@ const AddEnquiryForm = () => {
                       : [];
                     setCategoryOfHotel(values);
                   }}
-                  className="basic-multi-select"
+                  className="basic-multi-select text-xs text-gray-600"
                   classNamePrefix="select"
                   placeholder="Select Categories..."
-                  styles={customStyles}
+                  
                 />
               </div>
 
@@ -2214,6 +2214,20 @@ const AddEnquiryForm = () => {
               />
               <span className="ml-2 text-sm">Air Ticket</span>
             </label>
+
+                 {/* Need Cab Checkbox */}
+      
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 ml-4">
+              <input
+                type="checkbox"
+                checked={needCab}
+                onChange={(e) => setNeedCab(e.target.checked)}
+                className="form-checkbox h-4 w-4 text-blue-600"
+              />
+              Need Cab?
+            </label>
+       
+
           </div>
 
           {/* Event Setup */}
@@ -2624,6 +2638,9 @@ const AddEnquiryForm = () => {
                           className="border border-gray-300 p-2 rounded w-full text-sm"
                         />
                       </div>
+
+                      
+         
                     </>
                   )}
                 </div>
@@ -2632,7 +2649,7 @@ const AddEnquiryForm = () => {
           )}
 
           {/* Need Cab Checkbox */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700 ml-4">
               <input
                 type="checkbox"
@@ -2642,7 +2659,7 @@ const AddEnquiryForm = () => {
               />
               Need Cab?
             </label>
-          </div>
+          </div> */}
 
           {/* Cab Table */}
 

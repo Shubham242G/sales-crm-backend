@@ -12,7 +12,9 @@ import {
   useUpdateVendorById,
   useConvertVendorToSalesContact,
   useBulkUpload,
-  useSyncZohoVendors
+  useSyncZohoVendors,
+  getVendorsExcel,
+  addVendorsExcel
 } from "@/services/vendor.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
@@ -21,6 +23,8 @@ import { useSyncZohoInvoices } from "@/services/zoho_invoice.service";
 import { Modal, Switch } from "@mui/material";
 import { Box } from "lucide-react";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
+import { get } from "lodash";
 
 function VendorList() {
   const navigate = useNavigate();
@@ -54,7 +58,7 @@ function VendorList() {
   const { mutateAsync: convertVendorToSalesContact } =
     useConvertVendorToSalesContact();
 
-    const syncVendorsMutation = useSyncZohoVendors();
+  const syncVendorsMutation = useSyncZohoVendors();
 
   const { canCreate, canDelete, canUpdate, canView } =
     checkPermissionsForButtons("Vendors");
@@ -68,14 +72,14 @@ function VendorList() {
     fileInputRef.current?.click();
   };
 
-   const handleSyncVendors = async () => {
-          try {
-              const result = await syncVendorsMutation.mutateAsync();
-              toastSuccess(`Successfully synced! Created: ${result.data.data.createdCount}, Updated: ${result.data.data.updatedCount}`);
-              refetch(); // Refresh the data after sync
-          } catch (error) {
-              toastError("Failed to sync invoices");
-          }
+  const handleSyncVendors = async () => {
+    try {
+      const result = await syncVendorsMutation.mutateAsync();
+      toastSuccess(`Successfully synced! Created: ${result.data.data.createdCount}, Updated: ${result.data.data.updatedCount}`);
+      refetch(); // Refresh the data after sync
+    } catch (error) {
+      toastError("Failed to sync invoices");
+    }
   };
 
   const handleFileChange = async (
@@ -149,7 +153,7 @@ function VendorList() {
   const [isOpenAction, setIsOpenAction] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
 
-  
+
   const columns = [
     {
       name: "Vendor Name",
@@ -175,7 +179,7 @@ function VendorList() {
       selector: (row: any) => (
         <div className="flex gap-1 ">
           <h6>{row.vendor?.companyName}</h6>
-          
+
         </div>
       ),
       width: "20px",
@@ -194,14 +198,14 @@ function VendorList() {
       selector: (row: any) => (
         <h6 className="flex gap-1"> <FaMobileScreenButton className="text-[#938d8d]" />
           {row.vendor?.phoneNumber}
-          </h6>
-         
+        </h6>
+
       ),
       width: "20px"
     },
     {
       name: "Email",
-      selector: (row: any) => ( <h6>{row.vendor?.email}</h6> ),
+      selector: (row: any) => (<h6>{row.vendor?.email}</h6>),
       width: "20px",
     },
     {
@@ -211,13 +215,13 @@ function VendorList() {
         <div className="">
           <button
             type="button"
-            
+
             title="More Actions"
-            onClick={(e) =>{ setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),setSelectedRowId(row._id )}}
+            onClick={(e) => { setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true), setSelectedRowId(row._id) }}
           >
             <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
           </button>
-          { selectedRowId === row._id   &&  (isOpenAction) && (
+          {selectedRowId === row._id && (isOpenAction) && (
             <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
 
               <Link
@@ -242,7 +246,7 @@ function VendorList() {
         </div>
       ),
     },
-    
+
     // {
     //   name: "Convert to Sales Contact",
     //   width: "14%",
@@ -275,10 +279,10 @@ function VendorList() {
     refetch();
   }, [searchObj, refetch]);
 
-// Column selector
+  // Column selector
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
-  const [visibleColumns, setVisibleColumns] = useState< Record<string, boolean>>({
+  const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>({
     "Vendor Name": true,
     "Display Name": true,
     "Company": true,
@@ -288,7 +292,7 @@ function VendorList() {
     // "Update": canView || canUpdate ,
     // "Delete": canDelete ,
     "Actions": true,
-  }); 
+  });
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumnsVendor');
     if (savedColumns) {
@@ -297,10 +301,10 @@ function VendorList() {
   }, []);
 
   useEffect(() => {
-    if(canView !==undefined){
- localStorage.setItem('enquiryTableColumnsVendor', JSON.stringify(visibleColumns));
+    if (canView !== undefined) {
+      localStorage.setItem('enquiryTableColumnsVendor', JSON.stringify(visibleColumns));
     }
-   
+
   }, [visibleColumns, canView]);
   const toggleColumnVisibility = (columnName: string) => {
     setVisibleColumns(prev => ({
@@ -313,14 +317,14 @@ function VendorList() {
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center border-b pb-2 mb-2">
           <h3 className="font-medium">Customize Columns</h3>
-          <button 
+          <button
             className="text-xs text-blue-600 hover:underline"
             onClick={resetColumnVisibility}
           >
             Reset to Default
           </button>
         </div>
-        
+
         <div className="max-h-80 overflow-y-auto">
           {columns.map((column) => (
             <div key={column.name} className="flex items-center justify-between py-2 border-b border-gray-100">
@@ -334,9 +338,9 @@ function VendorList() {
             </div>
           ))}
         </div>
-        
+
         <div className="mt-2 flex justify-end">
-          <button 
+          <button
             className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
             onClick={() => setShowColumnSelector(false)}
           >
@@ -360,7 +364,7 @@ function VendorList() {
   //   return columnsWithFixedWidth;
   // };
 
- const calculateDynamicWidths = (columnsArray: any[]) => {
+  const calculateDynamicWidths = (columnsArray: any[]) => {
     const visibleColumnsCount = columnsArray.length;
 
     if (visibleColumnsCount === 0) return columnsArray;
@@ -374,7 +378,7 @@ function VendorList() {
 
     return columnsWithDynamicWidth;
   };
- const visibleColumnsArray = columns.filter(column =>
+  const visibleColumnsArray = columns.filter(column =>
     visibleColumns[column.name as keyof typeof visibleColumns]
   );
 
@@ -384,16 +388,24 @@ function VendorList() {
 
   const resetColumnVisibility = () => {
     setVisibleColumns({
-    "Vendor Name": true,
-    "Display Name": true,
-    "Company": true,
-    "Location": true,
-    "Phone": true,
-    "Email": true,
-    "Actions": true,
-    // "Update": canView || canUpdate,
-    // "Delete": canDelete 
+      "Vendor Name": true,
+      "Display Name": true,
+      "Company": true,
+      "Location": true,
+      "Phone": true,
+      "Email": true,
+      "Actions": true,
+      // "Update": canView || canUpdate,
+      // "Delete": canDelete 
     });
+  };
+
+  const [tickRows, setTickRows] = useState([]);
+
+  const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
   };
 
   return (
@@ -411,32 +423,32 @@ function VendorList() {
       /> */}
 
 
-      
-           <div className=" table_container rounded-xl p-6 mt-10 `  ">
+      {/*       
+           {/* <div className=" table_container rounded-xl p-6 mt-10 `  ">
           <div className="flex flex-wrap items-center container justify-between gap-3 text-sm  ">
             {/* Heading on the Left */}
-            <h2 className="text-lg font-semibold  text-gray-800">
+      {/* <h2 className="text-lg font-semibold  text-gray-800">
               All Vendor List
-            </h2>
+            </h2> */}
 
-            {/* Search and Buttons on the Right */}
-            <div className="flex items-center justify-start gap-2 ">
-              {/* Search Box (updated to filter by location.state) */}
-              <div className="w-full">
+      {/* Search and Buttons on the Right */}
+      {/* <div className="flex items-center justify-start gap-2 "> */}
+      {/* Search Box (updated to filter by location.state) */}
+      {/* <div className="w-full">
                 <input
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   className="rounded-md w-[250px] border px-3  border-gray-300 py-1.5 text-center placeholder-txtcolor focus:outline-none focus:border-orange-500"
                   placeholder="Search by Vendor Name "
-                />
-              </div>
-              {/* Buttons */}
-             {/* {/* <button className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+                /> */}
+      {/* </div> */}
+      {/* Buttons */}
+      {/* {/* <button className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
-              </button> */} 
-              {/* Import Button */}
-              <button
+              </button> */}
+      {/* Import Button */}
+      {/* <button
                 className="flex items-center gap-1 px-3 py-1.5  rounded-md text-gray-700 border border-gray-300"
                 onClick={handleImportClick}
               >
@@ -452,11 +464,11 @@ function VendorList() {
                 <FaColumns /> Columns
               </button>
               {showColumnSelector && <ColumnSelector />}
-            </div>
+            </div> */}
 
 
-              {/* Hidden File Input for Import */}
-              <input
+      {/* Hidden File Input for Import */}
+      {/* <input
                 type="file"
                 ref={fileInputRef}
                 className="hidden"
@@ -478,26 +490,37 @@ function VendorList() {
                   <span>New Vendor</span>
                 </button>
               )}
-            </div>
-          </div>
-          {/* React Table */}
-           <div className="  mt-5 ">
-          <ReactTable
-            
-            data={VendorData?.data}
-            columns={filteredColumns} 
- selectableRows={true}
-            loading={false}
-            totalRows={VendorData?.total}
-            onChangeRowsPerPage={setPageSize}
-            onChangePage={setPageIndex}
-            page={pageIndex}
-            rowsPerPageText={pageSize}
-            isServerPropsDisabled={false}
-          />
-          </div>
-        </div>
-     
+            </div> */}
+
+
+
+      <NewTable
+
+        data={VendorData?.data}
+        columns={filteredColumns}
+        selectableRows={true}
+        loading={false}
+        totalRows={VendorData?.total}
+        onChangeRowsPerPage={setPageSize}
+        onChangePage={setPageIndex}
+        page={pageIndex}
+        rowsPerPageText={pageSize}
+        isServerPropsDisabled={false}
+
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"Vendor List"}
+        TableGetAllFunction={useVendor}
+        ExcelExportFunction={getVendorsExcel}
+        TableAddExcelFunction={addVendorsExcel}
+        RouteName={"Vendors"}
+        AddButtonRouteName={"/add-vendor"}
+        AddButtonName={"New Vendor"}
+        placeholderSearch={"Search by Vendor Name"}
+
+      />
+
 
     </>
   );

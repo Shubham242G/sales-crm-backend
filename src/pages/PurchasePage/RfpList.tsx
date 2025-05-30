@@ -12,6 +12,8 @@ import {
   useAddRfp,
   useUpdateRfpById,
   useConvertRfpToQuotesFromVendor,
+  getRFPSExcel,
+  addRFPSExcel,
 } from "@/services/rfp.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
@@ -20,6 +22,7 @@ import { Margin } from "@mui/icons-material";
 import { l } from "vite/dist/node/types.d-aGj9QkWt";
 import { Switch } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function RfpList() {
   const navigate = useNavigate();
@@ -149,8 +152,8 @@ function RfpList() {
     }
   };
   const [isOpenAction, setIsOpenAction] = useState(false);
-    const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
-  
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
+
 
   const columns = [
     {
@@ -179,7 +182,9 @@ function RfpList() {
 
           <h6>
             {row.eventDates?.length > 0
-              ? new Date(row.eventDates[0].startDate).toDateString()
+              ? new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(new Date(row.eventDates[0].startDate))
+              + ', ' +
+              new Date(row.eventDates[0].startDate).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
               : "No Dates"}
           </h6>
         </div>
@@ -190,9 +195,11 @@ function RfpList() {
       name: "Deadline for proposal",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{new Date(row?.
-            deadlineOfProposal).toDateString()}</h6>
-          {/* {row.fullName} */}
+          <h6> {row.eventDates?.length > 0
+            ? new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(new Date(row.eventDates[0].startDate))
+            + ', ' +
+            new Date(row.eventDates[0].startDate).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+            : "No Dates"}</h6>
         </div>
       ),
       width: "12%",
@@ -323,7 +330,7 @@ function RfpList() {
       Status: true,
       Edit: canView || canUpdate || true,
       Delete: canDelete || true,
-      Actions: true ||  canDelete|| canView || canUpdate,
+      Actions: true || canDelete || canView || canUpdate,
       "Convert to Quotes from Vendor": true,
     }
   );
@@ -396,7 +403,7 @@ function RfpList() {
 
     return columnsWithDynamicWidth;
   };
- const visibleColumnsArray = columns.filter(column =>
+  const visibleColumnsArray = columns.filter(column =>
     visibleColumns[column.name as keyof typeof visibleColumns]
   );
 
@@ -414,9 +421,17 @@ function RfpList() {
       Status: true,
       Edit: canView || canUpdate,
       Delete: canDelete,
-      Actions: true ||  canDelete|| canView || canUpdate,
+      Actions: true || canDelete || canView || canUpdate,
       "Convert to Quotes from Vendor": true,
     });
+  };
+
+  const [tickRows, setTickRows] = useState([]);
+
+  const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
   };
 
   return (
@@ -433,17 +448,17 @@ function RfpList() {
         filterbuttn={false}
       /> */}
 
-     <div className="overflow-hidden">
+      {/* <div className="overflow-hidden">
      <div className="bg-white table_container rounded-xl p-6 mt-10   ">
           <div className="search_boxes flex justify-between items-center  ">
             {/* Heading on the Left */}
-            <h2 className="text-xl font-semibold text-gray-800">
+      {/* <h2 className="text-xl font-semibold text-gray-800">
               All RFPs List
-            </h2>
+            </h2> */}
 
-            {/* Search and Buttons on the Right */}
-            <div className="flex items-center justify-start gap-2">
-              {/* Search Box */}
+      {/* Search and Buttons on the Right */}
+      {/* <div className="flex items-center justify-start gap-2">
+              
               <div className="w-full">
                 <input
                   type="search"
@@ -466,12 +481,12 @@ function RfpList() {
                   <FaColumns /> Columns
                 </button>
                 {showColumnSelector && <ColumnSelector />}
-              </div>
-              {/* Buttons */}
-              {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+              </div> */}
+      {/* Buttons */}
+      {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */}
-              <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+      {/* <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
               <button
@@ -482,26 +497,42 @@ function RfpList() {
                 <span>New RFPs</span>
               </button>
             </div>
-          </div>
-          {/* React Table */}
-          <div className=" mt-5">
+          </div> */}
+      {/* React Table */}
+      {/* <div className=" mt-5">
             <ReactTable
               data={RfpData.data}
               columns={filteredColumns} 
- selectableRows={true}
+              selectableRows={true}
               loading={false}
               totalRows={RfpData?.total}
               onChangePage={setPageIndex}
-              onChangeRowsPerPage={setPageSize}
-            // pagination
-            // paginationPerPage={rowsPerPage}
-            // paginationRowsPerPageOptions={[5, 10, 20]}
-            />
-          </div>
-        </div>
-     </div>
-      
-     
+              onChangeRowsPerPage={setPageSize} */}
+
+        <NewTable
+        data={RfpData?.data}
+        columns={filteredColumns}
+        selectableRows={true}
+        loading={false}
+        totalRows={RfpData?.total}
+        onChangePage={setPageIndex}
+        onChangeRowsPerPage={setPageSize}
+        isServerPropsDisabled={false}
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"RFPS List"}
+        TableGetAllFunction={useRfp}
+        ExcelExportFunction={getRFPSExcel}
+        TableAddExcelFunction={addRFPSExcel}
+        RouteName={"RFPS"}
+        AddButtonRouteName={"/add-rfps"}
+        AddButtonName={"New RFPs"}
+        placeholderSearch={"Search by RFPID"}
+      />
+
+
+
     </>
   );
 }

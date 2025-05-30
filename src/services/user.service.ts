@@ -137,6 +137,20 @@ export const useUserApiHook = () => {
   };
 };
 
+export const getUserExcel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getEnquiryExcel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addUserExcel = async (obj: any) => {
+    return axios.post<GeneralApiResponse>(`${BASE_URL}${prefix}/bulkUploadEnquiry`, obj, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 export const useAddExcelData = () => {
   const queryClient = useQueryClient();
   const api = useUserApiHook();

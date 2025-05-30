@@ -126,3 +126,12 @@ export const useUpdateResturantById = () => {
         },
     });
 };
+
+export const getExel = async (searchParams?: any) => {
+    try {
+        const response = await axios.post(`${BASE_URL}${prefix}/getExel`, searchParams);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};

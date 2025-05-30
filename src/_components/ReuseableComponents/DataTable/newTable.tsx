@@ -48,6 +48,7 @@ const NewTable = (props: any) => {
     isImport = false,
   } = props;
 
+  console.log(  AddButtonName, "AddButtonName");
   const navigate = useNavigate();
 
   const [advancedSearchParams, setAdvancedSearchParams] = useState("");
@@ -71,10 +72,13 @@ const NewTable = (props: any) => {
     setSearchQuery(e.target.value);
   };
 
+  const [exportedRows, setExportedRows] = useState([]);
+
   const handleChange = ({ selectedRows }: any) => {
-    // You can set state or dispatch with something like Redux so we can use the retrieved data
     console.log("Selected Rows: ", selectedRows);
+
     setTickRows(selectedRows.map((row: any) => row._id));
+    setExportedRows(selectedRows);
   };
 
   const [showColumnSelector, setShowColumnSelector] = useState(false);
@@ -103,7 +107,7 @@ const NewTable = (props: any) => {
 
   const ColumnSelector = () => (
     <div className="absolute z-50 bg-white shadow-lg p-4 rounded-md mt-2   border border-gray-200 right-0 w-72">
-      <div className="flex flex-col gap-2 ]">
+      <div className="flex flex-col gap-1.5 ]">
         <div className="flex justify-between items-center border-b pb-2 mb-2">
           <h3 className="font-medium">Customize Columns</h3>
           <button
@@ -147,14 +151,36 @@ const NewTable = (props: any) => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const visibleColumnsArray = columns.filter(
-    (column: any) => visibleColumns[column.name as keyof typeof visibleColumns]
-  );
+  // const visibleColumnsArray = columns.filter(
+  //   (column: any) => visibleColumns[column.name as keyof typeof visibleColumns]
+  // );
 
   const [isOpen, setIsOpen] = useState(false);
+  const calculateDynamicWidths = (columnsArray: any[]) => {
+    const visibleColumnsCount = columnsArray.length;
 
-  // Apply fixed widths to visible columns
-  const filteredColumns = visibleColumnsArray;
+    if (visibleColumnsCount === 0) return columnsArray;
+
+    const columnsWithDynamicWidth = columnsArray.map(column => {
+      const width =
+        visibleColumnsCount <= 6
+          ? `${1050 / visibleColumnsCount}px`
+          : column.name === "Email"
+          ? "300px"
+          : `${1600 / visibleColumnsCount}px`;
+
+      return { ...column, width };
+    });
+
+    console.log(columnsWithDynamicWidth, "check the column width")
+
+    return columnsWithDynamicWidth;
+  };
+  const visibleColumnsArray = columns.filter((column: any) =>
+    visibleColumns[column.name as keyof typeof visibleColumns]
+  );
+  // Apply dynamic widths to visible columns
+  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
 
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -212,8 +238,11 @@ const NewTable = (props: any) => {
         ...(searchQuery && { query: searchQuery }),
         ...(advancedSearchParams && { advancedSearch: advancedSearchParams }),
         format,
+        ...(tickRows && { tickRows }),
         ...(fields && { fields }), // Include selected fields if provided
       };
+
+      console.log(onSelectedRowsChange, "onSelectedRowsChange");
 
       const { data: response } = await ExcelExportFunction(exportParams);
 
@@ -319,9 +348,6 @@ const NewTable = (props: any) => {
 
   const [isOpenAssignOps, setIsOpenAssignOps] = useState(false);
 
-  // const handleAssignTaskNameSubmit = async (
-  //   e: React.FormEvent<HTMLFormElement>
-  // ) => {
   //   e.preventDefault();
   //   if (assignTaskName) {
   //     setAssignTaskUsers((prevUsers) => [...prevUsers, assignTaskName]);
@@ -391,7 +417,7 @@ const NewTable = (props: any) => {
           {/* Columns Button */}
           <div className="relative">
             <button
-              className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-100 text-sm"
+              className="flex items-center gap-1 p-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-100 text-sm"
               onClick={() => setShowColumnSelector(!showColumnSelector)}
             >
               <FaColumns className="text-xs" /> Columns
@@ -401,7 +427,7 @@ const NewTable = (props: any) => {
           {/* Advanced Search */}
           <button
             onClick={handleModalOpen}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
+            className="flex items-center gap-1 p-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
           >
             Advanced Search
           </button>
@@ -410,7 +436,7 @@ const NewTable = (props: any) => {
           {TableName === "Leads List" && (
             <button
               onClick={() => setIsOpenAssign(true)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
+              className="flex items-center gap-1 p-1.5 rounded-md text-gray-700 border border-gray-300 text-sm"
             >
               <FaTasks className="text-xs" /> Assign Lead
             </button>
@@ -418,7 +444,7 @@ const NewTable = (props: any) => {
 
           {TableName === "Enquiry List" && (
             <button
-              className=" flex items-center gap-1  px-3 py-1.5  text-sm rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
+              className=" flex items-center gap-1  p-1.5  text-sm rounded-md text-gray-700 border border-gray-300 whitespace-nowrap"
               onClick={() => setIsOpenAssignOps(true)}
             >
               <span className="whitespace-nowrap text-sm">
@@ -428,21 +454,21 @@ const NewTable = (props: any) => {
             </button>
           )}
           {/* Export */}
-          {ExcelExportFunction && 
-    TableAddExcelFunction && <div className="relative" id="exportDropdown">
-            <button
-              className={`flex items-center gap-1 px-4 py-1.5 rounded-md text-gray-700 border border-gray-300 ${
-                isExporting ? "opacity-75 cursor-not-allowed" : ""
-              }`}
-              onClick={() => {
-                if (!isExporting) setShowExportOptions(!showExportOptions);
-              }}
-              disabled={isExporting}
-            >
-              <FaFileExport />
-              {isExporting ? "Exporting..." : "Export"}
-              <IoMdArrowDropdown className="ml-1" />
-            </button>
+          {ExcelExportFunction && TableAddExcelFunction && (
+            <div className="relative" id="exportDropdown">
+              <button
+                className={`flex items-center gap-1 px-4 py-1.5 rounded-md text-gray-700 border border-gray-300 ${
+                  isExporting ? "opacity-75 cursor-not-allowed" : ""
+                }`}
+                onClick={() => {
+                  if (!isExporting) setShowExportOptions(!showExportOptions);
+                }}
+                disabled={isExporting}
+              >
+                <FaFileExport />
+                {isExporting ? "Exporting..." : "Export"}
+                <IoMdArrowDropdown className="ml-1" />
+              </button>
 
             {showExportOptions && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
@@ -531,7 +557,7 @@ const NewTable = (props: any) => {
                 </ul>
               </div>
             )}
-          </div>}
+          </div>)}
           {/* Import */}
 
             <input
@@ -694,15 +720,15 @@ const NewTable = (props: any) => {
             </div>
 
             {/* Action buttons */}
-            <div className="flex justify-end mt-4 gap-2">
+            <div className="flex justify-end mt-4 gap-1.5">
               <button
-                className=" px-3 py-1.5 bg-gray-200 rounded-md"
+                className=" p-1.5 bg-gray-200 rounded-md"
                 onClick={() => setShowExportCustomize(false)}
               >
                 Cancel
               </button>
               <button
-                className=" px-3 py-1.5 bg-orange-500 text-white rounded-md"
+                className=" p-1.5 bg-orange-500 text-white rounded-md"
                 onClick={() => {
                   setShowExportCustomize(false);
                   // Get selected format
@@ -763,7 +789,7 @@ const NewTable = (props: any) => {
                   className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div> */}
-              {/* <div className="mt-4 flex gap-2">
+              {/* <div className="mt-4 flex gap-1.5">
                 {assignTaskUsers.map((user) => (
                   <div
                     key={user}
@@ -798,7 +824,7 @@ const NewTable = (props: any) => {
               <div className="mt-4">
                 <button
                   type="submit"
-                  className="bg-blue-500  px-3 py-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
+                  className="bg-blue-500  p-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
 
                   // disabled={isLoading}
                 >
@@ -836,7 +862,7 @@ const NewTable = (props: any) => {
                   className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div> */}
-              {/* <div className="mt-4 flex gap-2">
+              {/* <div className="mt-4 flex gap-1.5">
                 {assignTaskUsers.map((user) => (
                   <div
                     key={user}
@@ -871,7 +897,7 @@ const NewTable = (props: any) => {
               <div className="mt-4">
                 <button
                   type="submit"
-                  className="bg-blue-500  px-3 py-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
+                  className="bg-blue-500  p-1.5 rounded-md text-white hover:bg-blue-700 disabled:bg-gray-300"
 
                   // disabled={isLoading}
                 >
