@@ -594,7 +594,7 @@ const [exportFields, setExportFields] = useState<string[]>([
 
   <NewTable
   data={invoiceData} // Use the extracted array data
-  columns={filteredColumns}
+  columns={columns}
   selectableRows={true}
   loading={isLoading} // Use the actual loading state
   totalRows={totalRows} // Use the extracted total count
