@@ -390,7 +390,7 @@ function ResturantList() {
 
       <NewTable
         data={resturantData?.data}
-        columns={filteredColumns}
+        columns={columns}
         selectableRows={true}
         loading={false}
         totalRows={resturantData.total}

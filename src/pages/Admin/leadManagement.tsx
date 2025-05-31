@@ -320,7 +320,7 @@ function LeadManagement() {
 
         <NewTable
             data={LeadManagementData?.data}
-            columns={filteredColumns}
+            columns={columns}
             selectableRows={true}
             loading={false}
             totalRows={LeadManagementData?.total}

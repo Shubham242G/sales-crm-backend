@@ -442,7 +442,7 @@ const calculateDynamicWidths = (columnsArray: any[]) => {
  
   <NewTable
        data={CustomerData?.data}
-          columns={filteredColumns} 
+          columns={columns} 
  selectableRows={true}
           loading={false}
           totalRows={CustomerData?.total}

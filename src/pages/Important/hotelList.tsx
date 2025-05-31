@@ -412,7 +412,7 @@ const [tickRows, setTickRows] = useState([]);
 
          <NewTable
           data={hotelData?.data}
-            columns={filteredColumns} 
+            columns={columns} 
  selectableRows={true}
             loading={false}
             totalRows={hotelData?.total}

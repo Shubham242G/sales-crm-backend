@@ -426,7 +426,7 @@ const [tickRows, setTickRows] = useState([]);
       
        <NewTable
          data={quotesToCustomerData?.data || []}
-          columns={filteredColumns} 
+          columns={columns} 
           selectableRows={true}
           loading={isLoading}
           totalRows={quotesToCustomerData?.total || 0}

@@ -409,7 +409,7 @@ function CustomerLedger() {
 
       <NewTable
         data={quotesFromVendors.data}
-        columns={filteredColumns}
+        columns={columns}
         selectableRows={true}
         loading={false}
         totalRows={quotesFromVendors.total}

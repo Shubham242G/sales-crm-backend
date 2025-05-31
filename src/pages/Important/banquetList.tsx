@@ -357,7 +357,7 @@ function BanquetList() {
       </div> */}
         <NewTable
           data={banquetData?.data}
-              columns={filteredColumns}
+              columns={columns}
               selectableRows={true}
               loading={false}
               totalRows={banquetData?.total}

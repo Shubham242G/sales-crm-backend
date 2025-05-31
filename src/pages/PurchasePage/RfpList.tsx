@@ -511,7 +511,7 @@ function RfpList() {
 
         <NewTable
         data={RfpData?.data}
-        columns={filteredColumns}
+        columns={columns}
         selectableRows={true}
         loading={false}
         totalRows={RfpData?.total}
