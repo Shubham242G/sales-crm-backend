@@ -487,6 +487,7 @@ const [exportFields, setExportFields] = useState<string[]>([
                             onClick={() => !isExporting && setShowExportOptions(!showExportOptions)}
                             disabled={isExporting}
                         >
+                            Export
                             <FaFileExport />
                             {showExportOptions && (
   <div className="absolute z-50 bg-white shadow-lg p-4 rounded-md mt-2 border border-gray-200 right-0 w-72">

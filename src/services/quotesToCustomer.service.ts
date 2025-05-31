@@ -28,7 +28,7 @@ export interface IQuotesToCustomer {
 // Quotes for Customer
 export const getQuotesForCustomerExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getQuotesForCustomerExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;
