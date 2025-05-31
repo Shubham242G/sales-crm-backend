@@ -234,7 +234,7 @@ export const ReactTable = ({
       pagination
       paginationDefaultPage={page}
       paginationServer={!isServerPropsDisabled}
-      paginationRowsPerPageOptions={[10, 20, 30, 40, 50, 100, 200, 500]}
+      paginationRowsPerPageOptions={[1, 5, 10, 20, 30, 40, 50, 100, 200, 500]}
       onChangePage={onChangePage}
       onChangeRowsPerPage={onChangeRowsPerPage}
       paginationTotalRows={totalRows}

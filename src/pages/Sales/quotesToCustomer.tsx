@@ -444,7 +444,7 @@ const [tickRows, setTickRows] = useState([]);
         ExcelExportFunction={getQuotesForCustomerExcel}
         TableAddExcelFunction={addQuotesForCustomerExcel}
         RouteName={"Quotes for Customer"}
-        AddButtonRouteName={"/quotesForCustomerView"}
+        AddButtonRouteName={"/addQuotesToCustomer"}
         AddButtonName={"New Quotes"}
         placeholderSearch={"Search by Customer Name"}
       /> 

@@ -617,6 +617,12 @@ const AddEnquiryForm = () => {
 
 
   const handleRateChange = (itemId: number, newRate: number) => {
+    console.log(
+      "handleRateChange",
+      itemId,
+      newRate,
+      productsArray.find(item => item.id === itemId)
+    );
     setProductsArray(prev =>
       prev.map(item =>
         item.id === itemId
@@ -624,6 +630,7 @@ const AddEnquiryForm = () => {
           : item
       )
     );
+    console.log("productsArray after handleRateChange", productsArray);
   };
 
   const handleQtyChange = (itemId: number, newQty: number) => {
@@ -1417,7 +1424,7 @@ const AddEnquiryForm = () => {
 
   console.log(assignTo, "assignTo");
   return (
-    <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
+    <div className="h-[85vh]  mt-16 p-6 overflow-y-auto">
       <div className="bg-white text-black ">
         <h1 className="text-xl font-semibold">Enquiry</h1>
       </div>
