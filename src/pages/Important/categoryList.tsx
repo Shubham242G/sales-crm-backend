@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFilter, FaFileExport, FaPlus, FaColumns } from "react-icons/fa";
 import {
+  addCategoryExcel,
+  getCategoryExcel,
   ICategory,
   useCategory,
   usedeleteCategoryById,
@@ -15,6 +17,7 @@ import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { Switch } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function CategoryList() {
   const navigate = useNavigate();
@@ -278,6 +281,15 @@ const [pageSize, setPageSize] = useState(10);
       });
     };
 
+    const [tickRows, setTickRows] = useState([]);
+
+ const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
+
+
   
   return (
     <>
@@ -294,16 +306,16 @@ const [pageSize, setPageSize] = useState(10);
       /> */}
 
     
-        <div className="bg-white table_container rounded-xl mt-10 p-6">
+        {/* <div className="bg-white table_container rounded-xl mt-10 p-6">
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
-            <h2 className="text-xl font-semibold text-gray-800">
+            {/* <h2 className="text-xl font-semibold text-gray-800">
               All Category List
-            </h2>
+            </h2> */}
 
-            {/* Search and Buttons on the Right */}
+            {/* Search and Buttons on the Right
             <div className="flex items-center justify-start gap-2">
-              {/* Search Box */}
+              {/* Search Box *
               <div className="w-full">
                 <input
                   type="search"
@@ -327,7 +339,7 @@ const [pageSize, setPageSize] = useState(10);
               {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */}
-              <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+              {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
               {canCreate && (
@@ -340,9 +352,23 @@ const [pageSize, setPageSize] = useState(10);
                 </button>
               )}
             </div>
-          </div>
-          {/* React Table */}
-          <div className="mt-10"><ReactTable
+          </div> */}
+          {/* React Table 
+//           <div className="mt-10"><ReactTable
+//             data={categoryData?.data}
+//             columns={filteredColumns} 
+//  selectableRows={true}
+//             loading={false}
+//             totalRows={categoryData?.total}
+//             onChangePage={setPageIndex}
+//             onChangeRowsPerPage={setPageSize}
+//             paginationRowsPerPageOptions={[5, 10, 20]}
+//           /></div>
+          
+        </div> */}
+
+         <NewTable
+     
             data={categoryData?.data}
             columns={filteredColumns} 
  selectableRows={true}
@@ -351,9 +377,19 @@ const [pageSize, setPageSize] = useState(10);
             onChangePage={setPageIndex}
             onChangeRowsPerPage={setPageSize}
             paginationRowsPerPageOptions={[5, 10, 20]}
-          /></div>
-          
-        </div>
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={" All Category List"}
+        TableGetAllFunction={useCategory}
+        ExcelExportFunction={ getCategoryExcel}
+        TableAddExcelFunction={addCategoryExcel}
+        RouteName={"Add Category"}
+        AddButtonRouteName={"category2"}
+        AddButtonName={"New Category"}
+        placeholderSearch={"Search category name..."}
+      /> 
      
     </>
   );

@@ -11,11 +11,14 @@ import {
   useDepartmentMaster,
   usedeleteDepartmentMasterById,
   IDepartmentMaster,
+  getDepartmentExcel,
+  addDepartmentExcel,
 } from "@/services/departmentMaster.service";
 import { pageIndex, pageSize } from "@/common/constant.common";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { Switch } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function DepartmentMasterListView() {
   const navigate = useNavigate();
@@ -293,6 +296,14 @@ function DepartmentMasterListView() {
       });
     };
 
+const [tickRows, setTickRows] = useState([]);
+
+ const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
+
 
 
 
@@ -310,17 +321,17 @@ function DepartmentMasterListView() {
         filterbuttn={false}
       /> */}
 
-  
+{/*   
         <div className="bg-white table_container rounded-xl mt-10 p-6">
           <div className="search_boxes flex justify-between items-center">
-            {/* Heading on the Left */}
+            {/* Heading on the Left 
             <h2 className="text-xl font-semibold text-gray-800">
               All Department List
             </h2>
 
-            {/* Search and Buttons on the Right */}
+            {/* Search and Buttons on the Right *
             <div className="flex items-center justify-start gap-2 -ml-4">
-              {/* Search Box */}
+              {/* Search Box *
               <div className="w-full">
                 <input
                   type="search"
@@ -342,7 +353,7 @@ function DepartmentMasterListView() {
               {/* Buttons */}
               {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
-              </button> */}
+              </button> *
               <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
@@ -357,7 +368,7 @@ function DepartmentMasterListView() {
               )}
             </div>
           </div>
-          {/* React Table */}
+          {/* React Table 
          <div className=" mt-5">
            <ReactTable
             data={DepartmentData?.data}
@@ -373,7 +384,34 @@ function DepartmentMasterListView() {
             isServerPropsDisabled={false}
           />
          </div>
-        </div>
+        </div> */}
+
+
+         <NewTable
+            data={DepartmentData?.data}
+            columns={filteredColumns} 
+            selectableRows={true}
+            loading={false}
+            totalRows={DepartmentData?.total}
+            onChangePage={setPageIndex}
+            onChangeRowsPerPage={setPageSize}
+            paginationRowsPerPageOptions={[5, 10, 20]}
+            page={pageIndex}
+            rowsPerPageText={pageSize}
+            isServerPropsDisabled={false}
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"All Department List"}
+        TableGetAllFunction={useDepartmentMaster}
+        ExcelExportFunction={getDepartmentExcel}
+        TableAddExcelFunction={addDepartmentExcel}
+        RouteName={"Add Department"}
+        AddButtonRouteName={"departmentMaster"}
+        AddButtonName={"New  Department"}
+        placeholderSearch={"Search name of Department"}
+      /> 
     
     </>
   );

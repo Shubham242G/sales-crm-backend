@@ -8,6 +8,7 @@ import { FaFilter, FaFileExport, FaPlus } from "react-icons/fa";
 import { addDailyActivityReportViewExcel, getDailyActivityReportViewExcel, useDailyActivityReport, useDeleteDailyActivityReportById, useUpdateDailyActivityReportById } from "@/services/dailyActivityReport.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
+import { FiEdit } from "react-icons/fi";
 
 function DailyActivityReport() {
     const navigate = useNavigate();
@@ -52,11 +53,9 @@ function DailyActivityReport() {
         }
     };
 
-
-
-
-
-
+    // State for action dropdown
+    const [isOpenAction, setIsOpenAction] = useState(false);
+    const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
 
     // ledger details modal
     const [showLedgerDetailsModal, setShowLedgerDetailsModal] = useState(false);
@@ -117,7 +116,7 @@ function DailyActivityReport() {
                     className={`flex gap-1 flex-col p-2 rounded-md text-white ${row.status === "Pending"
                         ? "bg-yellow-200 text-yellow-500"
                         : row.status === "Completed"
-                            ? "bg-green-300 text-green-600"
+                            ? "bg-green-400 text-green-600"
                             : "bg-red-200 text-red-600"
                         }`}
                 >
@@ -145,29 +144,68 @@ function DailyActivityReport() {
         //   ),
         //   width: "30%",
         // },
-        {
-            name: "Action",
-            width: "10%",
-            selector: (row: any) => (
-                <div className="flex items-center gap-3">
-                    <button
-                        type='button'
-                        className="p-[6px] text-black-400 text-lg flex items-center"
-                        onClick={() => navigate(`/add-DailyActivityReport/${row._id}`)}
-                    >
-                        <FaEye />
-                    </button>
 
-                    {/* </button> */}
-                    <Link
-                        to="/DailyActivityReport"
-                        className=" p-[6px] text-Black-400 text-lg"
-                    >
-                        <RiDeleteBin6Line onClick={() => handleDelete(row._id)} />
-                    </Link>
+          {
+              name: "Actions",
+              width: "20px",
+              selector: (row: any) => (
+                <div className="">
+                  <button
+                    type="button"
+        
+                    title="More Actions"
+                    onClick={(e) => { setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true), setSelectedRowId(row._id) }}
+                  >
+                    <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
+                  </button>
+                  {selectedRowId === row._id && (isOpenAction) && (
+                    <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
+        
+                       <Link
+                           to={(`/add-DailyActivityReport/${row._id}`)}
+                           className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                           title="View Vendor"
+                         >
+                           <FiEdit className="text-xs" />
+                           Edit
+                         </Link> 
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(row._id)}
+                        className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                        title="Delete Vendor"
+                      >
+                        <RiDeleteBin6Line className="text-xs" />
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </div>
-            ),
-        },
+              ),
+            },
+        // {
+        //     name: "Action",
+        //     width: "10%",
+        //     selector: (row: any) => (
+        //         <div className="flex items-center gap-3">
+        //             <button
+        //                 type='button'
+        //                 className="p-[6px] text-black-400 text-lg flex items-center"
+        //                 onClick={() => navigate(`/add-DailyActivityReport/${row._id}`)}
+        //             >
+        //                 <FaEye />
+        //             </button>
+
+        //             {/* </button> */}
+        //             <Link
+        //                 to="/DailyActivityReport"
+        //                 className=" p-[6px] text-Black-400 text-lg"
+        //             >
+        //                 <RiDeleteBin6Line onClick={() => handleDelete(row._id)} />
+        //             </Link>
+        //         </div>
+        //     ),
+        // },
     ];
 
 const [tickRows, setTickRows] = useState([]);

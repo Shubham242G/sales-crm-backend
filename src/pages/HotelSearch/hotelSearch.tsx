@@ -192,7 +192,7 @@ const SearchBar = () => {
                   onChange={handleSearchChange}
                   className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
-                <span className="text-gray-500">or</span>
+                <span className="text-gray-500 mt-2">or</span>
                 <select
                   name="regions"
                   value={filters.regions}
@@ -212,6 +212,7 @@ const SearchBar = () => {
                 <input
                   type="number"
                   name="maxRadius"
+                  min={0} 
                   placeholder="Enter radius"
                   value={filters.maxRadius}
                   onChange={handleFilterChange}
@@ -231,14 +232,17 @@ const SearchBar = () => {
                   name="startDate"
                   value={searchData.startDate}
                   onChange={handleSearchChange}
+                   onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                  
                   className="flex-1 p-2 border text-sm rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
-                <span className="text-gray-500">-</span>
+                <span className="text-gray-500 mt-2">-</span>
                 <input
                   type="date"
                   name="endDate"
                   value={searchData.endDate}
                   onChange={handleSearchChange}
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                   className="flex-1 p-2 border rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
@@ -384,7 +388,7 @@ const SearchBar = () => {
                           parseInt(e.target.value),
                         ])
                       }
-                      className="flex-1"
+                      className="flex-1 w-[80%]"
                     />
                     <span>{filters.totalMeetingSpace[1]} sq.ft.</span>
                   </div>

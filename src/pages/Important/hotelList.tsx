@@ -12,12 +12,13 @@ import {
 } from "@/services/category.service";
 import { format } from "date-fns";
 import { toastError, toastSuccess } from "@/utils/toast";
-import { usedeleteHotelById, useHotel } from "@/services/hotel.service";
+import { addHotelExcel, getHotelExcel, usedeleteHotelById, useHotel } from "@/services/hotel.service";
 import { pageIndex, pageSize } from "@/common/constant.common";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { filter } from "lodash";
 import { Switch } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function HotelList() {
   const navigate = useNavigate();
@@ -315,6 +316,14 @@ function HotelList() {
     };
 
 
+const [tickRows, setTickRows] = useState([]);
+
+ const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
+
 
 
   return (
@@ -331,18 +340,18 @@ function HotelList() {
         filterbuttn={false}
       /> */}
 
-
+{/* 
         <div className="bg-white table_container rounded-xl mt-10 p-6">
           <div className="search_boxes flex justify-between items-center">
             {/* Heading on the Left */}
-            <h2 className="text-xl font-semibold text-gray-800">
+            {/* <h2 className="text-xl font-semibold text-gray-800">
               All Hotel List
-            </h2>
+            </h2> */}
 
             {/* Search and Buttons on the Right */}
-            <div className="flex items-center justify-start gap-2 ">
+            {/* <div className="flex items-center justify-start gap-2 "> */}
               {/* Search Box */}
-              <div className="w-full">
+              {/* <div className="w-full">
                 <input
                   type="search"
                   className="rounded-md w-full border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
@@ -365,13 +374,13 @@ function HotelList() {
                             </button>
                             {showColumnSelector && <ColumnSelector />}
                           </div>
-
+ */}
 
               {/* Buttons */}
               {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */}
-              <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+              {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFileExport /> Export
               </button>
               {canCreate && (
@@ -384,9 +393,9 @@ function HotelList() {
                 </button>
               )}
             </div>
-          </div>
+          </div> */}
           {/* React Table */}
-         <div className="mt-5"> 
+         {/* <div className="mt-5"> 
           <ReactTable
             data={hotelData?.data}
             columns={filteredColumns} 
@@ -399,7 +408,32 @@ function HotelList() {
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
           /></div>
-        </div>
+        </div> */} 
+
+         <NewTable
+          data={hotelData?.data}
+            columns={filteredColumns} 
+ selectableRows={true}
+            loading={false}
+            totalRows={hotelData?.total}
+            onChangeRowsPerPage={handlePerRowsChange}
+            onChangePage={handlePageChange}
+            page={pageIndex}
+            rowsPerPageText={pageSize}
+            isServerPropsDisabled={false}
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"Leads List"}
+        TableGetAllFunction={useHotel}
+        ExcelExportFunction={getHotelExcel}
+        TableAddExcelFunction={addHotelExcel}
+        RouteName={"Add Hotel"}
+        AddButtonRouteName={"hotel"}
+        AddButtonName={"New hotel"}
+        placeholderSearch={"Search Hotel Name"}
+      /> 
       
     </>
   );
