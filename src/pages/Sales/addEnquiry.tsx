@@ -2954,7 +2954,7 @@ const AddEnquiryForm = () => {
           )}
 
           {/* Billing Address and Submit Button */}
-          <div className="bg-white rounded shadow-sm mb-6">
+          {/* <div className="bg-white rounded shadow-sm mb-6">
             <div className="p-4 border-b border-gray-200">
               <h2 className="font-bold text-base">Billing Instructions</h2>
             </div>
@@ -2968,7 +2968,7 @@ const AddEnquiryForm = () => {
                 rows={4}
               ></textarea>
             </div>
-          </div>
+          </div> */}
 
          <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t  border-gray-200  py-3 px-6 flex justify-start space-x-3 z-50">
             <button

@@ -23,12 +23,12 @@ export interface IQuotesToCustomer {
       label: string;
       markupAmount: string;
     }[];
-    totalAmount: number;
+    totalMarkupAmount: number;
   }
 // Quotes for Customer
 export const getQuotesForCustomerExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getQuotesForCustomerExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;

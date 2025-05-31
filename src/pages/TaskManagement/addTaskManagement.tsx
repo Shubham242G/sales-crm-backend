@@ -39,7 +39,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
 
   const [value, setValue] = useState(Boolean);
 
-  let { canView, canUpdate, canCreate } = checkPermissionsForButtons("Task");
+  let { canView, canUpdate, canCreate } = checkPermissionsForButtons("Task Management");
 
   let {
     canView: canVieweMyTask,

@@ -84,7 +84,7 @@ interface IBanquet {
   banquetNonVegPrice: string;
   banquetFloor: string;
   banquetLocation: string;
-  
+
   prefuntionAreaSize: string;
 }
 
@@ -233,7 +233,7 @@ const AddVendorForm = () => {
     lastName: "",
     contactName: "",
     contactOwner: "",
-  
+
     panNumber: "",
     gst: "",
     vendorType: [],
@@ -1377,7 +1377,7 @@ const AddVendorForm = () => {
     <>
       <div className="h-[90vh]  mt-14 p-6 overflow-y-auto ">
 
-       <form onSubmit={handleSubmit}  >
+        <form onSubmit={handleSubmit}  >
           <h1 className="text-2xl font-bold mb-6">Add Vendor</h1>
 
           <div className=" -mt-6 -ml-2">
@@ -1614,9 +1614,11 @@ const AddVendorForm = () => {
                         <input
                           type="text"
                           value={vendor.panNumber}
-                          onChange={(e) =>
-                            setVendor({ ...vendor, panNumber: e.target.value })
-                          }
+                          onChange={(e) => {
+                            const value = e.target.value.toUpperCase();
+                            const filtered = value.replace(/[^A-Z0-9]/gi, '').slice(0, 10);
+                            setVendor({ ...vendor, panNumber: filtered });
+                          }}
                           placeholder="Enter PAN number"
                           className="w-full border border-gray-300 rounded-md p-2 text-sm"
                         />
@@ -1631,9 +1633,11 @@ const AddVendorForm = () => {
                         <input
                           type="text"
                           value={vendor.gst}
-                          onChange={(e) =>
-                            setVendor({ ...vendor, gst: e.target.value })
-                          }
+                          onChange={(e) => {
+                            const value = e.target.value.toUpperCase();
+                            const filtered = value.replace(/[^A-Z0-9]/g, '').slice(0, 15);
+                            setVendor({ ...vendor, gst: filtered });
+                          }}
                           placeholder="Enter GST number"
                           className="w-full border border-gray-300 rounded-md p-2 text-sm"
                         />
@@ -1785,314 +1789,314 @@ const AddVendorForm = () => {
                                 <>
                                   {/* Number of Rooms Dropdown */}
                                   <div className="-ml-6">
-                                  <div className="mb-6 ">
-                                    <label className="block text-sm font-medium text-black mb-2">
-                                      Number Of Rooms
-                                    </label>
-                                    <select
-                                      value={rooms.length}
-                                      onChange={(e) => {
-                                        const count = parseInt(e.target.value, 10);
-                                        if (isNaN(count)) return;
+                                    <div className="mb-6 ">
+                                      <label className="block text-sm font-medium text-black mb-2">
+                                        Number Of Rooms
+                                      </label>
+                                      <select
+                                        value={rooms.length}
+                                        onChange={(e) => {
+                                          const count = parseInt(e.target.value, 10);
+                                          if (isNaN(count)) return;
 
-                                        if (count > rooms.length) {
-                                          setRooms(
-                                            rooms.concat(
-                                              Array.from({ length: count - rooms.length }, () => ({
-                                                roomCategory: "",
-                                                numberOfRooms: 0,
-                                                roomSize: "",
-                                                roomImageUpload: [],
-                                                prices: [{ roomType: "", roomPrice: "" }],
-                                              }))
-                                            )
-                                          );
-                                        } else if (count < rooms.length) {
-                                          setRooms(rooms.slice(0, count));
-                                        }
-                                      }}
-                                      className="border border-gray-300 p-2 rounded-md w-full"
-                                    >
-                                      {[1, 2, 3, 4, 5].map((num) => (
-                                        <option key={num} value={num}>{num}</option>
-                                      ))}
-                                    </select>
-                                  </div>
+                                          if (count > rooms.length) {
+                                            setRooms(
+                                              rooms.concat(
+                                                Array.from({ length: count - rooms.length }, () => ({
+                                                  roomCategory: "",
+                                                  numberOfRooms: 0,
+                                                  roomSize: "",
+                                                  roomImageUpload: [],
+                                                  prices: [{ roomType: "", roomPrice: "" }],
+                                                }))
+                                              )
+                                            );
+                                          } else if (count < rooms.length) {
+                                            setRooms(rooms.slice(0, count));
+                                          }
+                                        }}
+                                        className="border border-gray-300 p-2 rounded-md w-full"
+                                      >
+                                        {[1, 2, 3, 4, 5].map((num) => (
+                                          <option key={num} value={num}>{num}</option>
+                                        ))}
+                                      </select>
+                                    </div>
 
-                                  {rooms.map((room, index) => (
-                                    <div
-                                      key={index}
-                                      className="mb-8 pb-6 border-b border-gray-200"
-                                    >
-                                      <div className="flex justify-between items-center mb-4">
-                                        <h3 className="font-medium text-lg">{index + 1}. Room</h3>
-                                        {index > 0 && (
-                                          <button
-                                            type="button"
-                                            onClick={() => {
-                                              const newRooms = rooms.filter((_, i) => i !== index);
-                                              setRooms(newRooms);
-                                            }}
-                                            className="text-red-500 hover:text-red-700 text-sm"
-                                          >
-                                            Remove
-                                          </button>
-                                        )}
-                                      </div>
+                                    {rooms.map((room, index) => (
+                                      <div
+                                        key={index}
+                                        className="mb-8 pb-6 border-b border-gray-200"
+                                      >
+                                        <div className="flex justify-between items-center mb-4">
+                                          <h3 className="font-medium text-lg">{index + 1}. Room</h3>
+                                          {index > 0 && (
+                                            <button
+                                              type="button"
+                                              onClick={() => {
+                                                const newRooms = rooms.filter((_, i) => i !== index);
+                                                setRooms(newRooms);
+                                              }}
+                                              className="text-red-500 hover:text-red-700 text-sm"
+                                            >
+                                              Remove
+                                            </button>
+                                          )}
+                                        </div>
 
-                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        {/* Left column - Room details */}
-                                        <div >
-                                          <div className="grid grid-cols-2 gap-4 mb-4">
-                                            <div>
-                                              <label className="block text-sm font-medium text-black mb-2">
-                                                Room Category
-                                              </label>
-                                              <select
-                                                value={room.roomCategory}
-                                                onChange={(e) => {
-                                                  const newRooms = [...rooms];
-                                                  newRooms[index].roomCategory = e.target.value;
-                                                  setRooms(newRooms);
-                                                }}
-                                                className="border border-gray-300 p-2 rounded-md w-full"
-                                              >
-                                                <option value="">Select Category</option>
-                                                {categoryOptions.map((option) => (
-                                                  <option key={option} value={option.toLowerCase()}>
-                                                    {option}
-                                                  </option>
-                                                ))}
-                                              </select>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                          {/* Left column - Room details */}
+                                          <div >
+                                            <div className="grid grid-cols-2 gap-4 mb-4">
+                                              <div>
+                                                <label className="block text-sm font-medium text-black mb-2">
+                                                  Room Category
+                                                </label>
+                                                <select
+                                                  value={room.roomCategory}
+                                                  onChange={(e) => {
+                                                    const newRooms = [...rooms];
+                                                    newRooms[index].roomCategory = e.target.value;
+                                                    setRooms(newRooms);
+                                                  }}
+                                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                                >
+                                                  <option value="">Select Category</option>
+                                                  {categoryOptions.map((option) => (
+                                                    <option key={option} value={option.toLowerCase()}>
+                                                      {option}
+                                                    </option>
+                                                  ))}
+                                                </select>
+                                              </div>
+
+                                              <div>
+                                                <label className="block text-sm font-medium text-black mb-2">
+                                                  Number of Rooms
+                                                </label>
+                                                <input
+                                                  type="number"
+                                                  min={0}
+                                                  placeholder="Enter number of rooms"
+                                                  value={room.numberOfRooms}
+                                                  onChange={(e) => {
+                                                    const newRooms = [...rooms];
+                                                    newRooms[index].numberOfRooms =
+                                                      parseInt(e.target.value) || 0;
+                                                    setRooms(newRooms);
+                                                  }}
+                                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                                />
+                                              </div>
                                             </div>
 
-                                            <div>
+                                            <div className="mb-4">
                                               <label className="block text-sm font-medium text-black mb-2">
-                                                Number of Rooms
+                                                Size (LXBXH)
                                               </label>
                                               <input
                                                 type="number"
                                                 min={0}
-                                                placeholder="Enter number of rooms"
-                                                value={room.numberOfRooms}
+                                                placeholder="Enter size"
+                                                value={room.roomSize}
                                                 onChange={(e) => {
                                                   const newRooms = [...rooms];
-                                                  newRooms[index].numberOfRooms =
-                                                    parseInt(e.target.value) || 0;
+                                                  newRooms[index].roomSize = e.target.value;
                                                   setRooms(newRooms);
                                                 }}
                                                 className="border border-gray-300 p-2 rounded-md w-full"
                                               />
                                             </div>
-                                          </div>
 
-                                          <div className="mb-4">
-                                            <label className="block text-sm font-medium text-black mb-2">
-                                              Size (LXBXH)
-                                            </label>
-                                            <input
-                                              type="number"
-                                              min={0}
-                                              placeholder="Enter size"
-                                              value={room.roomSize}
-                                              onChange={(e) => {
-                                                const newRooms = [...rooms];
-                                                newRooms[index].roomSize = e.target.value;
-                                                setRooms(newRooms);
-                                              }}
-                                              className="border border-gray-300 p-2 rounded-md w-full"
-                                            />
-                                          </div>
+                                            {/* Price Details Section */}
+                                            <div className="mt-6">
+                                              <h3 className="text-sm font-medium text-black mb-3">
+                                                Price Details
+                                              </h3>
+                                              {room.prices.map((price, priceIndex) => (
+                                                <div
+                                                  key={priceIndex}
+                                                  className="grid grid-cols-2 gap-4 mb-4"
+                                                >
+                                                  <div>
+                                                    <select
+                                                      value={price.roomType}
+                                                      onChange={(e) => {
+                                                        const newRooms = [...rooms];
+                                                        newRooms[index].prices[priceIndex].roomType =
+                                                          e.target.value;
+                                                        setRooms(newRooms);
+                                                      }}
+                                                      className="border border-gray-300 p-2 rounded-md w-full"
+                                                    >
+                                                      <option value="">Select Room Type</option>
+                                                      {roomCategoryOptions.map((option) => (
+                                                        <option key={option} value={option.toLowerCase()}>
+                                                          {option}
+                                                        </option>
+                                                      ))}
+                                                    </select>
+                                                  </div>
 
-                                          {/* Price Details Section */}
-                                          <div className="mt-6">
-                                            <h3 className="text-sm font-medium text-black mb-3">
-                                              Price Details
-                                            </h3>
-                                            {room.prices.map((price, priceIndex) => (
-                                              <div
-                                                key={priceIndex}
-                                                className="grid grid-cols-2 gap-4 mb-4"
-                                              >
-                                                <div>
-                                                  <select
-                                                    value={price.roomType}
-                                                    onChange={(e) => {
-                                                      const newRooms = [...rooms];
-                                                      newRooms[index].prices[priceIndex].roomType =
-                                                        e.target.value;
-                                                      setRooms(newRooms);
-                                                    }}
-                                                    className="border border-gray-300 p-2 rounded-md w-full"
+                                                  <div className="flex">
+                                                    <input
+                                                      type="number"
+                                                      min={0}
+                                                      placeholder="Enter price"
+                                                      value={price.roomPrice}
+                                                      onChange={(e) => {
+                                                        const newRooms = [...rooms];
+                                                        newRooms[index].prices[priceIndex].roomPrice =
+                                                          e.target.value;
+                                                        setRooms(newRooms);
+                                                      }}
+                                                      className="border border-gray-300 p-2 rounded-l-md w-full"
+                                                    />
+                                                    <span className="inline-flex items-center border border-l-0 border-gray-300 bg-gray-100 px-3 rounded-r-md text-sm text-gray-500">
+                                                      per night
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              ))}
+
+                                              <div className="flex items-center mt-2">
+                                                {room.prices.length > 1 && (
+                                                  <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                      handleRemovePrice(index, room.prices.length - 1)
+                                                    }
+                                                    className="text-red-500 hover:text-red-700 text-sm mr-4"
                                                   >
-                                                    <option value="">Select Room Type</option>
-                                                    {roomCategoryOptions.map((option) => (
-                                                      <option key={option} value={option.toLowerCase()}>
-                                                        {option}
-                                                      </option>
-                                                    ))}
-                                                  </select>
-                                                </div>
-
-                                                <div className="flex">
-                                                  <input
-                                                    type="number"
-                                                    min={0}
-                                                    placeholder="Enter price"
-                                                    value={price.roomPrice}
-                                                    onChange={(e) => {
-                                                      const newRooms = [...rooms];
-                                                      newRooms[index].prices[priceIndex].roomPrice =
-                                                        e.target.value;
-                                                      setRooms(newRooms);
-                                                    }}
-                                                    className="border border-gray-300 p-2 rounded-l-md w-full"
-                                                  />
-                                                  <span className="inline-flex items-center border border-l-0 border-gray-300 bg-gray-100 px-3 rounded-r-md text-sm text-gray-500">
-                                                    per night
-                                                  </span>
-                                                </div>
-                                              </div>
-                                            ))}
-
-                                            <div className="flex items-center mt-2">
-                                              {room.prices.length > 1 && (
+                                                    Remove Price
+                                                  </button>
+                                                )}
                                                 <button
                                                   type="button"
-                                                  onClick={() =>
-                                                    handleRemovePrice(index, room.prices.length - 1)
-                                                  }
-                                                  className="text-red-500 hover:text-red-700 text-sm mr-4"
+                                                  onClick={() => handleAddPrice(index)}
+                                                  className="text-blue-500 hover:text-blue-700 text-sm"
                                                 >
-                                                  Remove Price
+                                                  Add Price
                                                 </button>
-                                              )}
-                                              <button
-                                                type="button"
-                                                onClick={() => handleAddPrice(index)}
-                                                className="text-blue-500 hover:text-blue-700 text-sm"
-                                              >
-                                                Add Price
-                                              </button>
+                                              </div>
                                             </div>
                                           </div>
-                                        </div>
 
-                                        {/* Right column - Image upload */}
-                                        <div >
-                                          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 h-full">
-                                            <label className="block text-sm font-medium text-black mb-4">
-                                              Upload image
-                                            </label>
-
-                                            <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-8 mb-4">
-                                              <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="h-10 w-10 text-gray-400 mb-2"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                              >
-                                                <path
-                                                  strokeLinecap="round"
-                                                  strokeLinejoin="round"
-                                                  strokeWidth={2}
-                                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                                                />
-                                              </svg>
-                                              <p className="text-sm text-gray-500 mb-2">
-                                                Maximum upload file size 25 MB, allowed files XLS,JPG,PNG *
-                                              </p>
-
-                                              <input
-                                                type="file"
-                                                accept=".xls,.jpg,.png"
-                                                multiple
-                                                onChange={(e) =>
-                                                  ImageUpload(e, index, rooms, setRooms, "roomImageUpload")
-                                                }
-                                                className="hidden"
-                                                id={`room-image-upload-${index}`}
-                                              />
-                                              <label
-                                                htmlFor={`room-image-upload-${index}`}
-                                                className="bg-white border border-gray-300 text-gray-700  px-3 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
-                                              >
-                                                Upload Images
+                                          {/* Right column - Image upload */}
+                                          <div >
+                                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 h-full">
+                                              <label className="block text-sm font-medium text-black mb-4">
+                                                Upload image
                                               </label>
-                                            </div>
 
-                                            {/* Display uploaded images */}
-                                            {room.roomImageUpload.length > 0 && (
-                                              <div className="grid grid-cols-2 gap-4">
-                                                {room.roomImageUpload.map((image, imgIndex) => (
-                                                  <div key={imgIndex} className="relative">
-                                                    <img
-                                                      src={
-                                                        image.includes("base64")
-                                                          ? image
-                                                          : generateFilePath(image)
-                                                      }
-                                                      alt={`Room Image ${imgIndex + 1}`}
-                                                      className="h-24 w-full object-cover rounded-md border border-gray-200"
-                                                      onError={(e) => {
-                                                        (e.target as HTMLImageElement).src =
-                                                          "path/to/placeholder-image.jpg"; // Fallback image
-                                                      }}
-                                                    />
-                                                    <button
-                                                      type="button"
-                                                      onClick={() =>
-                                                        RemoveImage(
-                                                          index,
-                                                          imgIndex,
-                                                          rooms,
-                                                          setRooms,
-                                                          "roomImageUpload"
-                                                        )
-                                                      }
-                                                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
-                                                    >
-                                                      X
-                                                    </button>
-                                                  </div>
-                                                ))}
+                                              <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-8 mb-4">
+                                                <svg
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  className="h-10 w-10 text-gray-400 mb-2"
+                                                  fill="none"
+                                                  viewBox="0 0 24 24"
+                                                  stroke="currentColor"
+                                                >
+                                                  <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                                                  />
+                                                </svg>
+                                                <p className="text-sm text-gray-500 mb-2">
+                                                  Maximum upload file size 25 MB, allowed files XLS,JPG,PNG *
+                                                </p>
+
+                                                <input
+                                                  type="file"
+                                                  accept=".xls,.jpg,.png"
+                                                  multiple
+                                                  onChange={(e) =>
+                                                    ImageUpload(e, index, rooms, setRooms, "roomImageUpload")
+                                                  }
+                                                  className="hidden"
+                                                  id={`room-image-upload-${index}`}
+                                                />
+                                                <label
+                                                  htmlFor={`room-image-upload-${index}`}
+                                                  className="bg-white border border-gray-300 text-gray-700  px-3 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 text-sm"
+                                                >
+                                                  Upload Images
+                                                </label>
                                               </div>
-                                            )}
+
+                                              {/* Display uploaded images */}
+                                              {room.roomImageUpload.length > 0 && (
+                                                <div className="grid grid-cols-2 gap-4">
+                                                  {room.roomImageUpload.map((image, imgIndex) => (
+                                                    <div key={imgIndex} className="relative">
+                                                      <img
+                                                        src={
+                                                          image.includes("base64")
+                                                            ? image
+                                                            : generateFilePath(image)
+                                                        }
+                                                        alt={`Room Image ${imgIndex + 1}`}
+                                                        className="h-24 w-full object-cover rounded-md border border-gray-200"
+                                                        onError={(e) => {
+                                                          (e.target as HTMLImageElement).src =
+                                                            "path/to/placeholder-image.jpg"; // Fallback image
+                                                        }}
+                                                      />
+                                                      <button
+                                                        type="button"
+                                                        onClick={() =>
+                                                          RemoveImage(
+                                                            index,
+                                                            imgIndex,
+                                                            rooms,
+                                                            setRooms,
+                                                            "roomImageUpload"
+                                                          )
+                                                        }
+                                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                                                      >
+                                                        X
+                                                      </button>
+                                                    </div>
+                                                  ))}
+                                                </div>
+                                              )}
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  ))}
+                                    ))}
 
-                                  <div className="flex justify-end mt-4">
-                                    <button
-                                      type="button"
-                                      onClick={handleAddRoom}
-                                      className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 mr-2"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
+                                    <div className="flex justify-end mt-4">
+                                      <button
+                                        type="button"
+                                        onClick={handleAddRoom}
+                                        className="bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  px-3 py-1.5 rounded-md flex items-center"
                                       >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M12 4v16m8-8H4"
-                                        />
-                                      </svg>
-                                      Add Room
-                                    </button>
-                                  </div>
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          className="h-5 w-5 mr-2"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 4v16m8-8H4"
+                                          />
+                                        </svg>
+                                        Add Room
+                                      </button>
+                                    </div>
                                   </div>
                                 </>
                               )}
                             </div>
-                            
+
 
                             {/* Number of Rooms Dropdown */}
 
@@ -3313,21 +3317,21 @@ const AddVendorForm = () => {
                           Phone Number
                         </label>
                         <input
-                          type="Number"
+                          type="number"
                           name="phoneNumber"
-                           min={0}
+                          min={0}
                           value={bankDetails.phoneNumber}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, '').slice(0, 10); // Remove non-digits and cap at 10
                             setBankDetails({
                               ...bankDetails,
-                              phoneNumber: e.target.value,
-                            })
-                          }
+                              phoneNumber: value,
+                            });
+                          }}
                           placeholder="Phone Number"
                           className="w-full border border-gray-300 rounded-md p-2"
                         />
                       </div>
-
                       <div className="col-span-3">
                         <label className="block text-sm font-medium text-black mb-2">
                           Billing Address
@@ -3485,12 +3489,11 @@ const AddVendorForm = () => {
                                 <input
                                   type="text"
                                   value={otherDetails.pan}
-                                  onChange={(e) =>
-                                    setOtherDetails({
-                                      ...otherDetails,
-                                      pan: e.target.value,
-                                    })
-                                  }
+                                  onChange={(e) => {
+                                    const value = e.target.value.toUpperCase();
+                                    const filtered = value.replace(/[^A-Z0-9]/gi, '').slice(0, 10);
+                                    setOtherDetails({ ...otherDetails, pan: filtered });
+                                  }}
                                   className="w-full border border-gray-300 rounded-md p-2 text-sm"
                                 />
                               </div>

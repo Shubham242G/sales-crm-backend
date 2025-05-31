@@ -28,7 +28,7 @@ export interface IZohoInvoice {
 // Invoices
 export const getInvoicesExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getInvoicesExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;

@@ -359,7 +359,7 @@ export interface Inew extends ICustomer {
 // Customers
 export const getCustomersExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getCustomersExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;

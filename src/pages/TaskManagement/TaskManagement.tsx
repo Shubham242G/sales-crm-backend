@@ -12,18 +12,14 @@ import {
   useUpdateTaskManagementById,
   usedeleteTaskManagementById,
   useTaskManagement,
-  useMyTask,
-  getTaskManagementExcel,
-  addTaskManagementExcel,
 } from "@/services/tastManagement.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { getAuth } from "@/utils/auth";
 import { io } from "socket.io-client";
 import { Switch } from "@mui/material";
-import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
-function MyTask() {
+function TaskManagement() {
   const navigate = useNavigate();
 
   // const [loading, setLoading] = useState(false);
@@ -57,7 +53,7 @@ function MyTask() {
     [pageIndex, pageSize, query]
   );
 
-  const { data: TaskManagementData } = useMyTask(searchObj);
+  const { data: TaskManagementData } = useTaskManagement(searchObj);
   const { mutateAsync: deleteTaskManagement } = usedeleteTaskManagementById();
   const { mutateAsync: updateTaskManagement } = useUpdateTaskManagementById();
   // const { mutateAsync: convert } = convertToContact();
@@ -72,7 +68,7 @@ function MyTask() {
     CurrentUser();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string) => { 
     try {
       if (window.confirm("Are you sure you want to delete this contact?")) {
         const { data: res } = await deleteTaskManagement(id);
@@ -382,66 +378,57 @@ function MyTask() {
     });
   };
 
-  const [tickRows, setTickRows] = useState([]);
-
-  const handleChange = ({ selectedRows }: any) => {
-    // You can set state or dispatch with something like Redux so we can use the retrieved data
-    console.log("Selected Rows: ", selectedRows);
-    setTickRows(selectedRows.map((row: any) => row._id));
-  };
-
 
   return (
     <>
+      <div className="container px-6">
+        <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
+          <div className="search_boxes flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-gray-800">
+              Task Management List
+            </h2>
 
-      {/* <div className="bg-white table_container rounded-xl p-6 mt-10">
-        <div className="search_boxes flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800">
-            Task Management List
-          </h2>
+            <div className="flex items-center justify-start gap-2">
+              {/* Search Box */}
+              <div className="w-full flex items-center ">
+                <input
+                  type="search"
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="rounded-md w-[250px] border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
+                  placeholder="Search by Assigned To"
+                />
 
-          <div className="flex items-center justify-start gap-2">
-            {/* Search Box */}
-            {/* <div className="w-full flex items-center ">
-              <input
-                type="search"
-                onChange={(e) => setQuery(e.target.value)}
-                className="rounded-md w-[250px] border px-4 border-gray-300 py-2  text-center placeholder-txtcolor focus:outline-none focus:border-buttnhover"
-                placeholder="Search by Assigned To"
-              />
+              </div>
 
-            </div>
+              <div className="relative">
+                <button
+                  className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+                  onClick={() => setShowColumnSelector(!showColumnSelector)}
+                >
+                  <FaColumns /> Columns
+                </button>
+                {showColumnSelector && <ColumnSelector />}
+              </div>
 
-            <div className="relative">
-              <button
-                className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-                onClick={() => setShowColumnSelector(!showColumnSelector)}
-              >
-                <FaColumns /> Columns
-              </button>
-              {showColumnSelector && <ColumnSelector />}
-            </div> */}
-
-            {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
+              {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */}
-{/* 
-            {canCreate && (
-              <button
-                onClick={() => navigate("/add-TaskManagement")}
-                className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
-              >
-                <FaPlus />
-                <span>New TaskManagement</span>
-              </button>
-            )}
+
+              {canCreate && (
+                <button
+                  onClick={() => navigate("/add-TaskManagement")}
+                  className="flex w-full items-center justify-center gap-1 px-3 py-2 text-white rounded-md bg-orange-500 border border-gray-300"
+                >
+                  <FaPlus />
+                  <span>New TaskManagement</span>
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="mt-5">
+
           <ReactTable
             data={TaskManagementData.data}
             columns={filteredColumns}
-
             loading={false}
             totalRows={TaskManagementData?.total}
             onChangeRowsPerPage={setPageSize}
@@ -449,43 +436,11 @@ function MyTask() {
             page={pageIndex}
             rowsPerPageText={pageSize}
             isServerPropsDisabled={false}
-            selectableRows={true}
           />
-
         </div>
-
-
-      </div> */}
-
-
-      <NewTable
-        data={TaskManagementData.data}
-        columns={filteredColumns}
-
-        loading={false}
-        totalRows={TaskManagementData?.total}
-        onChangeRowsPerPage={setPageSize}
-        onChangePage={setPageIndex}
-        page={pageIndex}
-        rowsPerPageText={pageSize}
-        isServerPropsDisabled={false}
-        selectableRows={true}
-
-        onSelectedRowsChange={handleChange}
-        className={"leadtable"}
-        //new fields
-        TableName={"Task Management List"}
-        TableGetAllFunction={useMyTask}
-        ExcelExportFunction={getTaskManagementExcel}
-        TableAddExcelFunction={addTaskManagementExcel}
-        RouteName={"New Task "}
-        AddButtonRouteName={"/addTaskManagement"}
-        AddButtonName={"Add Task "}
-        placeholderSearch={"Search in Lead"}
-      />
-
+      </div>
     </>
   );
 }
 
-export default MyTask;
+export default TaskManagement;

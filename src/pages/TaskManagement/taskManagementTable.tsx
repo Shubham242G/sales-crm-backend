@@ -11,17 +11,13 @@ import {
   useAddTaskManagement,
   useUpdateTaskManagementById,
   usedeleteTaskManagementById,
-  useTaskManagement,
-  getMyTasksExcel,
-  addMyTasksExcel,
   useMyTask,
+  useTaskManagement,
 } from "@/services/tastManagement.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { getAuth } from "@/utils/auth";
-import { io } from "socket.io-client";
 import { Switch } from "@mui/material";
-import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function TaskManagement() {
   const navigate = useNavigate();
@@ -37,11 +33,9 @@ function TaskManagement() {
   };
 
   const { canCreate, canDelete, canUpdate, canView } =
-    checkPermissionsForButtons("Task");
+    checkPermissionsForButtons("Task Management");
 
-
-  const [userId, setUserId] = useState<string | null>(null);
-  const [socket, setSocket] = useState<any>(null);
+  const [userId, setUserId] = useState("");
   const [role, setRole] = useState("");
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -57,7 +51,7 @@ function TaskManagement() {
     [pageIndex, pageSize, query]
   );
 
-  const { data: TaskManagementData } = useMyTask(searchObj);
+  const { data: TaskManagementData } = useTaskManagement(searchObj);
   const { mutateAsync: deleteTaskManagement } = usedeleteTaskManagementById();
   const { mutateAsync: updateTaskManagement } = useUpdateTaskManagementById();
   // const { mutateAsync: convert } = convertToContact();
@@ -72,6 +66,8 @@ function TaskManagement() {
     CurrentUser();
   }, []);
 
+  const [isOpenAction, setIsOpenAction] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const handleDelete = async (id: string) => {
     try {
       if (window.confirm("Are you sure you want to delete this contact?")) {
@@ -86,67 +82,6 @@ function TaskManagement() {
     }
   };
 
-  const getUserId = async () => {
-    const decodedToken = await getAuth();
-    if (decodedToken?.token) {
-      setUserId(decodedToken.userId);
-    }
-  };
-
-
-
-
-
-  useEffect(() => {
-    getUserId();
-  }, [getAuth]);
-
-
-  useEffect(() => {
-    if (!userId) return; // Wait until userId is available
-
-
-    const newSocket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
-      query: { userId }, // Send userId to the server
-      transports: ["websocket"],
-    });
-
-    newSocket.on("connect", () => {
-    });
-
-    newSocket.emit("playerConnected", newSocket.id);
-
-    setSocket(newSocket); // Store socket in state
-
-    return () => {
-      newSocket.disconnect(); // Cleanup on unmount
-    };
-  }, [userId]);
-
-  // const socket = useMemo(
-  //   () =>
-  //     io(`${process.env.NEXT_PUBLIC_API_URL}`, {
-  //       query: { userId }, // Send userId to the server
-  //       transports: ["websocket"],
-  //     }),
-  //   []
-  // );
-
-  // useEffect(() => {
-  //   socket.on("connect", () => {
-  //     console.log("Connected to server");
-  //   });
-  //   socket.emit("playerConnected", socket.id);
-  //   socket.on("check", (msg) => console.log(msg, "check msg"));
-  // }, [socket, getAuth]);
-
-  // const getUserId = async () => {
-  //   const decodedToken = await getAuth();
-  //   if (decodedToken?.token) {
-  //     setUserId(decodedToken.userId);
-  //   }
-  // };
-
   const handleUpdate = async (id: string, data: any) => {
     try {
       const { data: res } = await updateTaskManagement({ id, ...data });
@@ -158,10 +93,6 @@ function TaskManagement() {
       toastError(error);
     }
   };
-
-  useEffect(() => {
-    getUserId();
-  }, [getAuth]);
 
   // useEffect(() => {
   //   if (TaskManagementData?.data) {
@@ -185,45 +116,47 @@ function TaskManagement() {
           <h6>{row.assignedToName ?? "NA"}</h6>
         </div>
       ),
-      width: "25%",
+      width: "18%",
     },
-    // {
-    //   name: "Contact Owner",
-    //   selector: (row: any) => <div className="flex gap-1">{row.ownerName}</div>,
-    //   width: "12%",
-    // },
+    {
+      name: "Contact Owner",
+      selector: (row: any) => <div className="flex gap-1">{row.ownerName}</div>,
+      width: "12%",
+    },
     {
       name: "Department",
       selector: (row: any) => (
         <div className="flex gap-1">
-          <h6>{row.department}</h6>
+          <FaMobileScreenButton className="text-[#938d8d]" />
+          {row.department}
         </div>
       ),
-      width: "20%",
+      width: "15%",
     },
     {
       name: "Task Type",
       selector: (row: any) => <div className="flex gap-1">{row.taskType}</div>,
-      width: "20%",
+      width: "18%",
     },
     {
       name: "Task Title",
       selector: (row: any) => row.taskTitle,
-      width: "20%",
+      width: "15%",
     },
 
     {
       name: "Reassign",
-      width: "15%",
-      selector: (row: any) => (
-        <button
-          type="button"
-          onClick={() => navigate(`/add-TaskManagement/${row._id}`)}
-          className=" font-bold text-lg rounded-md "
-        >
-          🔁
-        </button>
-      ),
+      width: "10%",
+      selector: (row: any) =>
+        (canView || canUpdate) && (
+          <button
+            type="button"
+            onClick={() => navigate(`/add-TaskManagement/${row._id}`)}
+            className="text-blue-500 text-lg p-[6px]"
+          >
+            🔁
+          </button>
+        ),
     },
 
     // {
@@ -261,19 +194,19 @@ function TaskManagement() {
   const filterColumns = columns.filter((item) => {
     if (item.name === "Delete") {
       return canDelete;
-    } else if (item.name === "Edit") {
+    } else if (item.name === "Reassign") {
       return canView || (canView && canUpdate);
     } else {
       return true;
     }
   });
 
-
   // Column selector
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
   const [visibleColumns, setVisibleColumns] = useState({
     "Assigned To": true,
+    "Contact Owner": true,
     "Department": true,
     "Task Type": true,
     "Task Title": true,
@@ -380,6 +313,7 @@ function TaskManagement() {
   const resetColumnVisibility = () => {
     setVisibleColumns({
       "Assigned To": true,
+      "Contact Owner": true,
       "Department": true,
       "Task Type": true,
       "Task Title": true,
@@ -391,22 +325,15 @@ function TaskManagement() {
     });
   };
 
-  const [tickRows, setTickRows] = useState([]);
-
-  const handleChange = ({ selectedRows }: any) => {
-    // You can set state or dispatch with something like Redux so we can use the retrieved data
-    console.log("Selected Rows: ", selectedRows);
-    setTickRows(selectedRows.map((row: any) => row._id));
-  };
 
 
   return (
     <>
-{/* 
+
       <div className="bg-white table_container rounded-xl mt-10 p-6  ">
         <div className="search_boxes flex justify-between items-center">
           <h2 className="text-xl font-semibold text-gray-800">
-            My Tasks List
+            Task Management List
           </h2>
 
           <div className="flex items-center justify-start gap-2 ">
@@ -434,7 +361,7 @@ function TaskManagement() {
                 <FaFilter /> Filter
               </button> */}
 
-            {/* {canCreate && (
+            {canCreate && (
               <button
                 onClick={() => navigate("/add-TaskManagement")}
                 className="flex w-full items-center justify-center gap-1 px-3 py-1.5 text-sm text-white rounded-md bg-orange-500 border border-gray-300"
@@ -462,31 +389,7 @@ function TaskManagement() {
           />
         </div>
 
-      </div> */}
-
-      <NewTable
-        data={TaskManagementData.data}
-        columns={filteredColumns}
-        loading={false}
-        totalRows={TaskManagementData?.total}
-        onChangeRowsPerPage={setPageSize}
-        onChangePage={setPageIndex}
-        page={pageIndex}
-        rowsPerPageText={pageSize}
-        isServerPropsDisabled={false}
-        selectableRows={true}
-        onSelectedRowsChange={handleChange}
-        className={"leadtable"}
-        //new fields
-        TableName={" My Tasks List"}
-        TableGetAllFunction={useTaskManagement}
-        ExcelExportFunction={getMyTasksExcel}
-        TableAddExcelFunction={addMyTasksExcel}
-        RouteName={"My Tasks"}
-        AddButtonRouteName={"/add-TaskManagement"}
-        AddButtonName={"New TaskManagement"}
-        placeholderSearch={"Search"}
-      />
+      </div>
 
     </>
   );

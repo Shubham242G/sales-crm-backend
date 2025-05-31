@@ -33,6 +33,7 @@ export interface IQuotesFromVendors {
   markupDetails: {
     label: string;
     markupAmount: string;
+    orginalAmount: String,
   }[];
 }
 [];
@@ -40,7 +41,7 @@ export interface IQuotesFromVendors {
 // Quotes from Vendors
 export const getQuotesFromVendorsExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getQuotesFromVendorsExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;

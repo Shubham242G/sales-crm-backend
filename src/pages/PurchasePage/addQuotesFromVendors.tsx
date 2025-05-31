@@ -16,8 +16,8 @@ import { S } from "vite/dist/node/types.d-aGj9QkWt";
 
 interface IMarkupItem {
   label: string;
-  markupAmount: string;
-  orignalAmount: string;
+  markupAmount: number;
+  orignalAmount: number;
 }
 
 interface IShipppingAddress {
@@ -29,7 +29,7 @@ interface IShipppingAddress {
   };
   serviceType: string[];
   rfpId: string;
-  amount: string;
+  amount: number;
   leadId: string;
   displayName: string;
   receivedDate: string;
@@ -38,6 +38,7 @@ interface IShipppingAddress {
     startDate: string;
   }[];
   markupDetails: IMarkupItem[];
+  totalMarkupAmount: Number;
 }
 
 const AddQuotesFromVendors = () => {
@@ -50,10 +51,10 @@ const AddQuotesFromVendors = () => {
     },
     serviceType: [] as string[],
     rfpId: "",
-    amount: "",
+    amount: 0,
     leadId: "",
     receivedDate: "",
-    displayName:"",
+    displayName: "",
     attachment: [] as string[],
     eventDates: [
       {
@@ -63,10 +64,13 @@ const AddQuotesFromVendors = () => {
     markupDetails: [
       {
         label: "",
-        markupAmount: "",
-        orignalAmount: "",
+        markupAmount: 0,
+        orignalAmount: 0,
       },
     ],
+
+    totalMarkupAmount: 0,
+
   });
 
   const serviceTypeOptions = [
@@ -158,11 +162,49 @@ const AddQuotesFromVendors = () => {
         displayName: quotesFromVendorsDataById?.data?.displayName || "",
         markupDetails:
           quotesFromVendorsDataById?.data?.markupDetails?.length > 0
-            ? quotesFromVendorsDataById?.data?.markupDetails
-            : [{ label: "", markupAmount: "" }],
+            ? [...quotesFromVendorsDataById.data.markupDetails]
+            : [
+              {
+                label: "",
+                markupAmount: 0,
+                orignalAmount: 0,
+              },
+            ],
+
+        totalMarkupAmount: quotesFromVendorsDataById?.data?.totalMarkupAmount || "",
+
+
       });
     }
   }, [quotesFromVendorsDataById]);
+
+
+  useEffect(() => {
+
+    const amount = formData.markupDetails.reduce((total: number, item: any) => {
+      const amount = Number(item?.orignalAmount) || 0;
+      return total + amount;
+    }, 0)
+
+
+    setFormData((prev) => ({
+      ...prev,
+      amount: amount,
+    }));
+
+    const value = formData.markupDetails.reduce((total, item) => {
+      const originalAmount = Number(item.orignalAmount) || 0;
+      const markupPercentage = Number(item.markupAmount) || 0;
+      const markupAmount = originalAmount * (markupPercentage / 100);
+      return total + originalAmount + markupAmount;
+    }, 0)
+
+
+    setFormData((prev) => ({
+      ...prev,
+      totalMarkupAmount: value,
+    }));
+  }, [formData.markupDetails]);
 
   // console.log("vendorList", formData.vendorList);
 
@@ -177,9 +219,12 @@ const AddQuotesFromVendors = () => {
     //   toastError("Markup Amount must be a percentage between 0 and 100.");
     //   return;
     // }
+
+
+
+
     try {
       const obj = { ...formData };
-
       if (id) {
         const { data: res } = await updateQuotesFromVendors({ id, obj });
         console.log("leadID===>", formData.leadId)
@@ -288,13 +333,13 @@ const AddQuotesFromVendors = () => {
     toastSuccess("File removed successfully!");
   };
 
-  
+
   const handleAddMarkupRow = () => {
     setFormData((prev) => ({
       ...prev,
       markupDetails: [
         ...prev.markupDetails,
-        { label: "", markupAmount: "0", orignalAmount: "" },
+        { label: "", markupAmount: 0, orignalAmount: 0 },
       ],
     }));
   };
@@ -306,6 +351,9 @@ const AddQuotesFromVendors = () => {
     }));
   };
 
+
+
+  console.log("formData", formData.markupDetails);
   const handleMarkupChange = (
     index: number,
     field: keyof IMarkupItem,
@@ -321,10 +369,13 @@ const AddQuotesFromVendors = () => {
 
     setFormData((prev) => {
       const updatedMarkupDetails = [...prev.markupDetails];
-      updatedMarkupDetails[index] = {
-        ...updatedMarkupDetails[index],
-        [field]: value,
-      };
+      const updatedItem = { ...updatedMarkupDetails[index], [field]: value };
+
+      // Convert fields to strings
+      updatedItem.markupAmount = updatedItem.markupAmount;
+      updatedItem.label = updatedItem.label.toString();
+
+      updatedMarkupDetails[index] = updatedItem;
       return {
         ...prev,
         markupDetails: updatedMarkupDetails,
@@ -334,14 +385,13 @@ const AddQuotesFromVendors = () => {
   const handleOriginalChange = (
     index: number,
     field: keyof IMarkupItem,
-    value: string
+    value: number
   ) => {
+    console.log(`Changing ${field} at index ${index} to ${value}`);
     setFormData((prev) => {
-      const updatedMarkupDetails = [...prev.markupDetails];
-      updatedMarkupDetails[index] = {
-        ...updatedMarkupDetails[index],
-        [field]: value,
-      };
+      const updatedMarkupDetails = prev.markupDetails.map((item, i) =>
+        i === index ? { ...item, [field]: Number(value) } : item
+      );
       return {
         ...prev,
         markupDetails: updatedMarkupDetails,
@@ -417,7 +467,7 @@ const AddQuotesFromVendors = () => {
               />
             </div>
 
-            <div className="mb-3">
+          <div className="mb-3">
             <label className="block text-sm font-medium text-black mb-1">
               Display Name
             </label>
@@ -431,12 +481,12 @@ const AddQuotesFromVendors = () => {
             />
           </div>
 
-            {/* Service Type and Event Date */}
+          {/* Service Type and Event Date */}
 
-            <div>
-              <label className="block font-satoshi text-black font-xs">
-                Service Types
-              </label>
+          <div>
+            <label className="block font-satoshi text-black font-xs">
+              Service Type
+            </label>
 
               {/* Multi-Select Dropdown for Service Type */}
               <Select
@@ -455,7 +505,7 @@ const AddQuotesFromVendors = () => {
           </div>
 
 
-          {/* <div className="mb-3">
+        {/* <div className="mb-3">
             <label className="block text-sm font-medium text-black mb-2">
               RFP ID
             </label>
@@ -475,39 +525,39 @@ const AddQuotesFromVendors = () => {
             />
           </div> */}
 
-          {/* Event Details and Deadline */}
-          <div className="flex gap-6 mb-4">
-            <div>
-              <label className="block text-sm font-medium text-black mb-1">
-                Amount
-              </label>
-              <input
-                name={"amount"}
-                value={formData.amount}
-                onChange={handleInputChange}
-                type="number"
-                min={0}
-                className="w-full  border border-gray-300 rounded-md p-1.5 "
-                placeholder="Enter Amount"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-black mb-1">
-                Received Date
-              </label>
-              <input
-                name={"receivedDate"}
-                value={formData.receivedDate}
-                onChange={handleInputChange}
-                type="date"
-                onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                className="w-full border text-xs border-gray-300 rounded-md p-2.5"
-              />
-            </div>
+        {/* Event Details and Deadline */}
+        <div className="flex gap-6 mb-4">
+          {/* <div>
+            <label className="block text-sm font-medium text-black mb-1">
+              Amount
+            </label>
+            <input
+              name={"amount"}
+              value={formData.amount}
+              onChange={handleInputChange}
+              type="number"
+              min={0}
+              className="w-full  border border-gray-300 rounded-md p-2 "
+              placeholder="Enter Amount"
+            />
+          </div> */}
+          <div>
+            <label className="block text-sm font-medium text-black mb-1">
+              Received Date
+            </label>
+            <input
+              name={"receivedDate"}
+              value={formData.receivedDate}
+              onChange={handleInputChange}
+              type="date"
+              onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+              className="w-full border  border-gray-300 rounded-md p-2"
+            />
           </div>
+        </div>
 
-          {/* Vendor List */}
-          {/* <div className="w-96">
+        {/* Vendor List */}
+        {/* <div className="w-96">
 
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Vendor Name
@@ -523,8 +573,8 @@ const AddQuotesFromVendors = () => {
             />
           </div> */}
 
-          {/* Additional Instructions */}
-          {/* <div className="mb-4">
+        {/* Additional Instructions */}
+        {/* <div className="mb-4">
             <label className="block text-sm font-medium text-black mb-1">
               Status
             </label>
@@ -616,7 +666,7 @@ const AddQuotesFromVendors = () => {
                   handleOriginalChange(
                     index,
                     "orignalAmount",
-                    e.target.value
+                    Number(e.target.value)
                   )
                 }
                 className="w-full border border-gray-300 bg-gray-50 rounded-md p-3 text-gray-600  transition duration-200"
@@ -656,131 +706,129 @@ const AddQuotesFromVendors = () => {
     </table>
   </div>
 
-  {/* Total Calculation Section */}
+          {/* Total Calculation Section */}
 
-  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div>
-      <label className="block text-sm font-medium text-black mb-1">
-        Total Original Amount
-      </label>
-      <input
-        type="number"
-        name="amount"
-        value={formData.markupDetails.reduce((total, item) => {
-          const amount = parseFloat(item.orignalAmount) || 0;
-          return total + amount;
-        }, 0)}
-        readOnly
-        className="w-full border bg-gray-100 border-gray-300 rounded-md p-2"
-      />
-    </div>
-    <div>
-      <label className="block text-sm font-medium text-black mb-1">
-        Total Amount (with Markup)
-      </label>
-      <input
-        type="number"
-        value={formData.markupDetails.reduce((total, item) => {
-          const originalAmount = parseFloat(item.orignalAmount) || 0;
-          const markupPercentage = parseFloat(item.markupAmount) || 0;
-          const markupAmount = originalAmount * (markupPercentage / 100);
-          return total + originalAmount + markupAmount;
-        }, 0)}
-        readOnly
-        className="w-full border bg-gray-100 border-gray-300 rounded-md p-2"
-      />
-    </div>
-  </div>
-</div>
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-black mb-1">
+                Total Original Amount
+              </label>
+              <input
+                type="number"
+                name="amount"
+                value={formData.amount}
 
-          {/* File Upload Section */}
-          <div className="mb-4 mt-8">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Upload Files (PDF, Excel, JPEG)
-            </label>
-            <input
-              type="file"
-              ref={fileInputRef}
-              multiple
-              accept=".pdf,.xlsx,.xls,.jpeg,.jpg"
-              onChange={handleFileChange}
-              className="hidden"
-            />
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className=" px-3 py-1.5 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
-            >
-              Upload Files
-            </button>
 
-            {/* Display Uploaded Files */}
-            {formData.attachment.length > 0 && (
-              <div className="mt-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">
-                  Selected Files:
-                </h4>
-                <div className="space-y-2">
-                  {formData.attachment.map((file, index) => {
-                    const fileName = file.split(";base64")[0].split("data:")[1]
-                      ? // .includes("pdf")
-                      `File_${index + 1}.pdf`
-                      : file.split(";base64")[0].split("data:")[1]
-                        ? // .includes("excel")
-                        `File_${index + 1}.xlsx`
-                        : `File_${index + 1}.jpg`;
-                    return (
-                      <div
-                        key={index}
-                        className="flex items-center bg-gray-50 p-2 rounded"
+                readOnly
+                className="w-full border bg-gray-100 border-gray-300 rounded-md p-2"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-black mb-1">
+                Total Amount (with Markup)
+              </label>
+              <input
+                type="number"
+                value={
+                  Number(formData.totalMarkupAmount)
+
+                }
+                name="totalMarkupAmount"
+                readOnly
+                className="w-full border bg-gray-100 border-gray-300 rounded-md p-2"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* File Upload Section */}
+        <div className="mb-4 mt-8">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Upload Files (PDF, Excel, JPEG)
+          </label>
+          <input
+            type="file"
+            ref={fileInputRef}
+            multiple
+            accept=".pdf,.xlsx,.xls,.jpeg,.jpg"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className=" px-3 py-1.5 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+          >
+            Upload Files
+          </button>
+
+          {/* Display Uploaded Files */}
+          {formData.attachment.length > 0 && (
+            <div className="mt-4">
+              <h4 className="text-sm font-medium text-gray-700 mb-2">
+                Selected Files:
+              </h4>
+              <div className="space-y-2">
+                {formData.attachment.map((file, index) => {
+                  const fileName = file.split(";base64")[0].split("data:")[1]
+                    ? // .includes("pdf")
+                    `File_${index + 1}.pdf`
+                    : file.split(";base64")[0].split("data:")[1]
+                      ? // .includes("excel")
+                      `File_${index + 1}.xlsx`
+                      : `File_${index + 1}.jpg`;
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center bg-gray-50 p-2 rounded"
+                    >
+                      <span className="text-sm text-gray-600 truncate max-w-xs">
+                        {fileName}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveFile(index)}
+                        className="text-red-500 hover:text-red-700 mr-[10px]"
                       >
-                        <span className="text-sm text-gray-600 truncate max-w-xs">
-                          {fileName}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveFile(index)}
-                          className="text-red-500 hover:text-red-700 mr-[10px]"
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
                         >
-                          <svg
-                            className="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
-            )}
-          </div>
+            </div>
+          )}
+        </div>
 
-          {/* Buttons */}
-          <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t border-gray-200 py-3 px-6 flex justify-start gap-4 z-50">
-            <button
-              type="button"
-              className="px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
-              onClick={() => navigate(-1)}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-3 py-1.5 bg-orange-500 text-white rounded-md"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
-  
+        {/* Buttons */}
+        <div className="fixed bottom-0 left-0 w-[85%] ml-[15%] bg-white border-t border-gray-200 py-3 px-6 flex justify-start gap-4 z-50">
+          <button
+            type="button"
+            className="px-3 py-1.5 border border-gray-300 rounded-md text-gray-700"
+            onClick={() => navigate(-1)}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-3 py-1.5 bg-orange-500 text-white rounded-md"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+
   );
 };
 
