@@ -479,7 +479,7 @@ function TaskManagement() {
         className={"leadtable"}
         //new fields
         TableName={" My Tasks List"}
-        TableGetAllFunction={useTaskManagement}
+        TableGetAllFunction={useMyTask}
         ExcelExportFunction={getMyTasksExcel}
         TableAddExcelFunction={addMyTasksExcel}
         RouteName={"My Tasks"}

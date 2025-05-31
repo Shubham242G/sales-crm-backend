@@ -769,14 +769,16 @@ function Leads() {
   const commentFalse = false;
   return (
     <>
-      
- 
-      
-   
-    
-       <NewTable
+
+
+
+
+
+
+
+      <NewTable
         data={leadData?.data}
-        columns={columns} 
+        columns={columns}
         selectableRows={true}
         loading={false}
         totalRows={leadData?.total}
@@ -785,7 +787,7 @@ function Leads() {
         page={pageIndex}
         rowsPerPageText={pageSize}
         isServerPropsDisabled={false}
-        
+
         onSelectedRowsChange={handleChange}
         className={"leadtable"}
         //new fields
@@ -797,10 +799,10 @@ function Leads() {
         AddButtonRouteName={"/add-leads"}
         AddButtonName={"New Lead"}
         placeholderSearch={"Search in Lead"}
-      /> 
-   
+      />
 
-     
+
+
     </>
   );
 }

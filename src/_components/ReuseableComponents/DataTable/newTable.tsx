@@ -8,6 +8,7 @@ import {
   FaFileExport,
   FaFileImport,
   FaPlus,
+  FaSync,
   FaTasks,
 } from "react-icons/fa";
 import { Table } from "lucide-react";
@@ -22,6 +23,7 @@ import { camelCase } from "lodash";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { useAddLeadManagement } from "@/services/leadManagement.service";
 import { useUser } from "@/services/user.service";
+import { useSyncZohoInvoices } from "@/services/zoho_invoice.service";
 
 const NewTable = (props: any) => {
   const {
@@ -48,8 +50,11 @@ const NewTable = (props: any) => {
     placeholderSearch = "Search Here",
 
     isImport = false,
+    isSync = false,
+    syncFunction
   } = props;
 
+  console.log(AddButtonName, "AddButtonName");
   console.log(AddButtonName, "AddButtonName");
   const navigate = useNavigate();
 
@@ -409,6 +414,25 @@ const NewTable = (props: any) => {
   //     toastError("An error occurred while assigning task. Please try again.");
   //   }
   // };
+
+  const { mutateAsync: sync } = isSync ? syncFunction() : { mutateAsync: async () => { } };
+
+
+  const handleSyncInvoices = async () => {
+    try {
+      const { data: res } = await sync();
+      if (res) {
+        toastSuccess(res.message);
+        refetch();
+      }
+    } catch (error) {
+      toastError("Failed to sync invoices");
+    }
+  };
+
+
+
+
   return (
     <>
 
@@ -812,6 +836,16 @@ const NewTable = (props: any) => {
           </div>
         </div>
       )}
+
+
+      {isSync && <button
+        onClick={handleSyncInvoices}
+        className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
+
+      >
+        <FaSync />
+        <span className="w-[100px]">{"Sync Invoices"}</span>
+      </button>}
 
       {isOpenAssignOps && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex z-[100] justify-center items-center ">

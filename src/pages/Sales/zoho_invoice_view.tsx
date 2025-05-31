@@ -6,7 +6,8 @@ import {
     useZohoInvoices,
     useSyncZohoInvoices,
     useGenerateInvoicePdf,
-    downloadZohoInvoicePdf
+    downloadZohoInvoicePdf,
+    addInvoicesExcel
 } from "@/services/zoho_invoice.service";
 import { toastSuccess, toastError } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
@@ -15,6 +16,7 @@ import { generateFilePath } from "@/services/urls.service";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Switch } from "@mui/material";
 import { getInvoicesExcel } from "@/services/zoho_invoice.service";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 
 interface DateRange {
@@ -423,163 +425,198 @@ const [exportFields, setExportFields] = useState<string[]>([
         });
     };
 
+    const [tickRows, setTickRows] = useState([]);
+    
+      const handleChange = ({ selectedRows }: any) => {
+        // You can set state or dispatch with something like Redux so we can use the retrieved data
+        console.log("Selected Rows: ", selectedRows);
+        setTickRows(selectedRows.map((row: any) => row._id));
+      };
+    
     return (
-        <div className=" rounded-xl  mt-10 p-6">
-            <div className="flex justify-between items-center ">
-                <h2 className="text-xl  font-semibold text-gray-800">
-                    Zoho Invoice List
-                </h2>
+//         <div className=" rounded-xl  mt-10 p-6">
+//             <div className="flex justify-between items-center ">
+//                 <h2 className="text-xl  font-semibold text-gray-800">
+//                     Zoho Invoice List
+//                 </h2>
 
-                <div className="flex items-center  gap-2">
-                    <input
-                        type="search"
-                        placeholder="Search customer..."
-                        onChange={(e) => setQuery(e.target.value)}
-                        className=" px-3 py-1.5 text-sm rounded-md text-gray-700 border w-[200px] border-gray-300"
-                    />
-                    <div className="relative">
-                        <button
-                            className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-                            onClick={() => setShowColumnSelector(!showColumnSelector)}
-                        >
-                            <FaColumns /> Columns
-                        </button>
-                        {showColumnSelector && <ColumnSelector />}
-                    </div>
+//                 <div className="flex items-center  gap-2">
+//                     <input
+//                         type="search"
+//                         placeholder="Search customer..."
+//                         onChange={(e) => setQuery(e.target.value)}
+//                         className=" px-3 py-1.5 text-sm rounded-md text-gray-700 border w-[200px] border-gray-300"
+//                     />
+//                     <div className="relative">
+//                         <button
+//                             className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+//                             onClick={() => setShowColumnSelector(!showColumnSelector)}
+//                         >
+//                             <FaColumns /> Columns
+//                         </button>
+//                         {showColumnSelector && <ColumnSelector />}
+//                     </div>
 
-                    <select
-                        className="flex items-center gap-1 px-3 py-2 rounded-md text-gray-700 border  border-gray-300"
-                        value={selectedStatus}
-                        onChange={(e) => setSelectedStatus(e.target.value)}
-                    >
-                        <option value="">All Status</option>
-                        <option value="sent">Sent</option>
-                        <option value="paid">Paid</option>
-                        <option value="overdue">Overdue</option>
-                        <option value="draft">Draft</option>
-                        <option value="partially_paid">Partially Paid</option>
-                    </select>
+//                     <select
+//                         className="flex items-center gap-1 px-3 py-2 rounded-md text-gray-700 border border-gray-300"
+//                         value={selectedStatus}
+//                         onChange={(e) => setSelectedStatus(e.target.value)}
+//                     >
+//                         <option value="">All Status</option>
+//                         <option value="sent">Sent</option>
+//                         <option value="paid">Paid</option>
+//                         <option value="overdue">Overdue</option>
+//                         <option value="draft">Draft</option>
+//                         <option value="partially_paid">Partially Paid</option>
+//                     </select>
 
-                    <button
-                        onClick={handleSyncInvoices}
-                        className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
-                        disabled={syncInvoicesMutation.isPending}
-                    >
-                        <FaSync/>
-                        <span className="w-[100px]">{syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}</span>
-                    </button>
+                    // <button
+                    //     onClick={handleSyncInvoices}
+                    //     className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
+                    //     disabled={syncInvoicesMutation.isPending}
+                    // >
+                    //     <FaSync/>
+                    //     <span className="w-[100px]">{syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}</span>
+                    // </button>
 
-                    <div className="relative flex items-center " id="exportDropdown">
-                        <button
-                            className={`flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
-                            onClick={() => !isExporting && setShowExportOptions(!showExportOptions)}
-                            disabled={isExporting}
-                        >
-                            Export
-                            <FaFileExport />
-                            {showExportOptions && (
-  <div className="absolute z-50 bg-white shadow-lg p-4 rounded-md mt-2 border border-gray-200 right-0 w-72">
-    <div className="flex flex-col gap-2">
-      <h3 className="font-medium mb-2">Export Options</h3>
+//                     <div className="relative flex items-center " id="exportDropdown">
+//                         <button
+//                             className={`flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
+//                             onClick={() => !isExporting && setShowExportOptions(!showExportOptions)}
+//                             disabled={isExporting}
+//                         >
+//                             Export
+//                             <FaFileExport />
+//                             {showExportOptions && (
+//   <div className="absolute z-50 bg-white shadow-lg p-4 rounded-md mt-2 border border-gray-200 right-0 w-72">
+//     <div className="flex flex-col gap-2">
+//       <h3 className="font-medium mb-2">Export Options</h3>
       
-      <div className="flex gap-2 mb-3">
-        <button
-          onClick={() => handleExportInvoices("xlsx")}
-          className="flex-1 bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-        >
-          Excel
-        </button>
-        <button
-          onClick={() => handleExportInvoices("csv")}
-          className="flex-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-        >
-          CSV
-        </button>
-        <button
-          onClick={() => handleExportInvoices("pdf")}
-          className="flex-1 bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
-        >
-          PDF
-        </button>
-      </div>
+//       <div className="flex gap-2 mb-3">
+//         <button
+//           onClick={() => handleExportInvoices("xlsx")}
+//           className="flex-1 bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+//         >
+//           Excel
+//         </button>
+//         <button
+//           onClick={() => handleExportInvoices("csv")}
+//           className="flex-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
+//         >
+//           CSV
+//         </button>
+//         <button
+//           onClick={() => handleExportInvoices("pdf")}
+//           className="flex-1 bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+//         >
+//           PDF
+//         </button>
+//       </div>
 
-      <button
-        onClick={() => setShowExportCustomize(!showExportCustomize)}
-        className="text-sm text-blue-600 hover:underline flex items-center gap-1"
-      >
-        <FaColumns className="text-sm" />
-        Customize Fields
-      </button>
+//       <button
+//         onClick={() => setShowExportCustomize(!showExportCustomize)}
+//         className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+//       >
+//         <FaColumns className="text-sm" />
+//         Customize Fields
+//       </button>
 
-      {showExportCustomize && (
-        <div className="mt-2 border-t pt-2">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm">Select All</span>
-            <Switch
-              checked={exportFields.length === searchFields.length}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  setExportFields(searchFields.map(field => field.key));
-                } else {
-                  setExportFields([]);
-                }
-              }}
-              size="small"
-            />
-          </div>
+//       {showExportCustomize && (
+//         <div className="mt-2 border-t pt-2">
+//           <div className="flex items-center justify-between mb-2">
+//             <span className="text-sm">Select All</span>
+//             <Switch
+//               checked={exportFields.length === searchFields.length}
+//               onChange={(e) => {
+//                 if (e.target.checked) {
+//                   setExportFields(searchFields.map(field => field.key));
+//                 } else {
+//                   setExportFields([]);
+//                 }
+//               }}
+//               size="small"
+//             />
+//           </div>
           
-          <div className="max-h-40 overflow-y-auto">
-            {searchFields.map((field) => (
-              <div key={field.key} className="flex items-center justify-between py-1">
-                <span className="text-sm">{field.label}</span>
-                <Switch
-                  checked={exportFields.includes(field.key)}
-                  onChange={() => {
-                    if (exportFields.includes(field.key)) {
-                      setExportFields(exportFields.filter(f => f !== field.key));
-                    } else {
-                      setExportFields([...exportFields, field.key]);
-                    }
-                  }}
-                  size="small"
-                />
-              </div>
-            ))}
-          </div>
+//           <div className="max-h-40 overflow-y-auto">
+//             {searchFields.map((field) => (
+//               <div key={field.key} className="flex items-center justify-between py-1">
+//                 <span className="text-sm">{field.label}</span>
+//                 <Switch
+//                   checked={exportFields.includes(field.key)}
+//                   onChange={() => {
+//                     if (exportFields.includes(field.key)) {
+//                       setExportFields(exportFields.filter(f => f !== field.key));
+//                     } else {
+//                       setExportFields([...exportFields, field.key]);
+//                     }
+//                   }}
+//                   size="small"
+//                 />
+//               </div>
+//             ))}
+//           </div>
 
-          <button
-            onClick={() => handleExportInvoices("xlsx", exportFields)}
-            className="mt-2 w-full bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-          >
-            Export Selected Fields
-          </button>
-        </div>
-      )}
-    </div>
-  </div>
-)}
+//           <button
+//             onClick={() => handleExportInvoices("xlsx", exportFields)}
+//             className="mt-2 w-full bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+//           >
+//             Export Selected Fields
+//           </button>
+//         </div>
+//       )}
+//     </div>
+//   </div>
+// )}
 
-                            <IoMdArrowDropdown className="ml-1 text-sm" />
-                        </button>
-                    </div>
-                </div>
-            </div>
+//                             <IoMdArrowDropdown className="ml-1 text-sm" />
+//                         </button>
+//                     </div>
+//                 </div>
+//             </div>
 
-            <div className="mt-4">
-                <ReactTable
-                    data={invoiceData} // Use the extracted array data
-                    columns={filteredColumns}
-                    selectableRows={true}
-                    loading={isLoading} // Use the actual loading state
-                    totalRows={totalRows} // Use the extracted total count
-                    onChangeRowsPerPage={setPageSize}
-                    onChangePage={setPageIndex}
-                    page={pageIndex}
-                    rowsPerPageText={pageSize}
-                    isServerPropsDisabled={false}
-                />
-            </div>
-        </div>
+//             {/* <div className="mt-5">
+//                 <ReactTable
+//                     data={invoiceData} // Use the extracted array data
+//                     columns={filteredColumns}
+//                     selectableRows={true}
+//                     loading={isLoading} // Use the actual loading state
+//                     totalRows={totalRows} // Use the extracted total count
+//                     onChangeRowsPerPage={setPageSize}
+//                     onChangePage={setPageIndex}
+//                     page={pageIndex}
+//                     rowsPerPageText={pageSize}
+//                     isServerPropsDisabled={false}
+//                 />
+//             </div> */}
+//         </div>
+
+
+  <NewTable
+  data={invoiceData} // Use the extracted array data
+  columns={filteredColumns}
+  selectableRows={true}
+  loading={isLoading} // Use the actual loading state
+  totalRows={totalRows} // Use the extracted total count
+  onChangeRowsPerPage={setPageSize}
+  onChangePage={setPageIndex}
+  page={pageIndex}
+  rowsPerPageText={pageSize}
+  isServerPropsDisabled={false}
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"Zoho Invoices"}
+        TableGetAllFunction={useZohoInvoices}
+        ExcelExportFunction={getInvoicesExcel}
+        TableAddExcelFunction={addInvoicesExcel}
+        RouteName={"Invoices"}
+        syncFunction={useSyncZohoInvoices}
+       
+        placeholderSearch={"Search in invoice"}
+      /> 
+   
     );
 }
 

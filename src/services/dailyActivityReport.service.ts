@@ -29,7 +29,7 @@ export interface IDailyActivityReport {
 // Daily Activity Report View
 export const getDailyActivityReportViewExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getDailyActivityReportViewExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;
