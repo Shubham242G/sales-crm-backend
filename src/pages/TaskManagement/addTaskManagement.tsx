@@ -332,10 +332,13 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
                 className="w-full border border-gray-300 rounded-md p-2"
                 disabled={!value}
                 value={formData.startDate}
+                  onClick={(e) =>
+                          (e.target as HTMLInputElement).showPicker()
+                        }
                 onChange={handleChange("startDate")}
               />
             </div>
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Start Time
               </label>
@@ -346,7 +349,7 @@ const AddTaskManagement = ({ taskData }: { taskData?: any }) => {
                 value={formData.startTime}
                 onChange={handleChange("startTime")}
               />
-            </div>
+            </div> */}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">

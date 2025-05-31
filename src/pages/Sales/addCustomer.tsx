@@ -19,6 +19,7 @@ import { FaBuilding, FaChevronDown, FaFacebook, FaGlobe, FaTwitter, FaUserCircle
 import { UserRoundIcon } from "lucide-react";
 import { IoChevronDownSharp, IoChevronUpSharp } from "react-icons/io5";
 import { FiMessageCircle } from "react-icons/fi";
+import { slice } from "lodash";
 
 //comment
 
@@ -797,11 +798,12 @@ const AddCustomer = () => {
   ];
 
   const countryOptions = [
+    {value: "IN - India", label: "IN - India"},
     { value: "US - United States", label: "US - United States" },
     { value: "CA - Canada", label: "CA - Canada" },
     { value: "GB - United Kingdom", label: "GB - United Kingdom" },
     { value: "AU - Australia", label: "AU - Australia" },
-    { value: "IN - India", label: "IN - India" },
+    
     { value: "CN - China", label: "CN - China" },
     { value: "JP - Japan", label: "JP - Japan" },
     { value: "DE - Germany", label: "DE - Germany" },
@@ -1256,8 +1258,8 @@ const AddCustomer = () => {
                             type="text"
                             value={formData.uinNumber}
                             onChange={(e) => {
-                              const value = e.target.value;
-                              if (value.length <= 10) {
+                              const value = e.target.value.toUpperCase();
+                              if (value.length <= 15) {
                                 setFormData({
                                   ...formData,
                                   uinNumber: value,
@@ -1266,6 +1268,7 @@ const AddCustomer = () => {
                             }}
                             className="w-full border border-gray-300 rounded-md p-1.5 text-sm"
                             placeholder="Enter UIN Number"
+                            pattern="[A-Z]{0,15}"
                           />
                           </div>
                         </div>
@@ -1315,14 +1318,17 @@ const AddCustomer = () => {
                                 id="panNumber"
                                 type="text"
                                 value={formData.panNumber}
-                                onChange={(e) =>
-                                  setFormData({
-                                    ...formData,
-                                    panNumber: e.target.value,
-                                  })
-                                }
+                                onChange={(e) => {
+                                  const value = e.target.value.toUpperCase();
+                                  if (value.length <= 10) {
+                                    setFormData({
+                                      ...formData,
+                                      panNumber: value,
+                                    });
+                                  }
+                                }}
                                 placeholder="Enter PAN Number"
-                                className="w-full  border border-gray-300 rounded-md p-1 pl-4 text-[14px] leading-14px focus:outline-none focus:ring-2 focus:ring-blue-400 mt-3"
+                                className="w-full border border-gray-300 rounded-md p-1 pl-4 text-[14px] leading-14px focus:outline-none focus:ring-2 focus:ring-blue-400 mt-3"
                               />
                             </div>
                           </div>
@@ -2026,9 +2032,10 @@ const AddCustomer = () => {
                             />
                           </div> */}
                           {/* Country / Region */}
-                          <div className="">
-                            <div className="flex items-center gap-6 mt-3">
-                              <span className="min-w-32 text-sm font-medium text-gray-700">
+                             {/* Shipping Country / Region */}
+                          <div className="col-span-2">
+                            <div className="flex items-center  ">
+                              <span className="min-w-32 mr-6 text-sm font-medium text-gray-700">
                                 Country / Region:
                               </span>
                               {/* <select
@@ -2155,52 +2162,22 @@ const AddCustomer = () => {
                                 </option>
                                 <option value="CL - Chile">CL - Chile</option>
                               </select> */}
-                              <Autocomplete
-                                disablePortal
-                                options={countryOptions}
-                                defaultValue={{ value: "IN - India", label: "IN - India" }}
-                                sx={{ width: 600 }}
-                                value={
-                                  countryOptions.find(
-                                    (option) =>
-                                      option.value === formData.countryRegion
-                                  ) || { value: "IN - India", label: "IN - India" }
-                                }
-                                onChange={(event, newValue) => {
+                              <select
+                                className="flex-1 rounded-md p-2 text-sm "
+                                value={formData.countryRegion}
+                                onChange={(e) =>
                                   setFormData({
                                     ...formData,
-                                    countryRegion: newValue?.value || "",
-                                  });
-                                }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label="Select Payment Terms"
-                                    InputProps={{
-                                      ...params.InputProps,
-                                      style: { height: "32px" },
-                                    }}
-                                    sx={{
-                                      "& .MuiInputBase-root": {
-                                        height: "40px",
-                                      },
-                                      "& .MuiInputLabel-root": {
-                                        transform:
-                                          "translate(14px, 10px) scale(1)",
-                                        "&.MuiInputLabel-shrink": {
-                                          transform:
-                                            "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      },
-                                      "& .MuiInputLabel-root.Mui-focused": {
-                                        transform:
-                                          "translate(14px, -9px) scale(0.75)",
-                                      },
-                                    }}
-                                  />
-                                )}
-                                className="flex-1 rounded-md p-1 text-sm"
-                              />
+                                    countryRegion: e.target.value,
+                                  })
+                                }
+                              >
+                                {countryOptions.map((option) => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
                           </div>
                           {/* Address */}
@@ -2263,111 +2240,7 @@ const AddCustomer = () => {
                               <span className="min-w-32 -mr-1 text-sm font-medium text-gray-700">
                                 State:
                               </span>
-                              {/* <select
-                                value={formData.state}
-                                onChange={(e) =>
-                                  setFormData({
-                                    ...formData,
-                                    state: e.target.value,
-                                  })
-                                }
-                                className="flex-1 border border-gray-300 rounded-md p-1 text-sm"
-                              >
-                                <option value="">Select State</option>
-                                <option value="AP - Andhra Pradesh">
-                                  AP - Andhra Pradesh
-                                </option>
-                                <option value="AR - Arunachal Pradesh">
-                                  AR - Arunachal Pradesh
-                                </option>
-                                <option value="AS - Assam">AS - Assam</option>
-                                <option value="BR - Bihar">BR - Bihar</option>
-                                <option value="CT - Chhattisgarh">
-                                  CT - Chhattisgarh
-                                </option>
-                                <option value="GA - Goa">GA - Goa</option>
-                                <option value="GJ - Gujarat">
-                                  GJ - Gujarat
-                                </option>
-                                <option value="HR - Haryana">
-                                  HR - Haryana
-                                </option>
-                                <option value="HP - Himachal Pradesh">
-                                  HP - Himachal Pradesh
-                                </option>
-                                <option value="JK - Jammu and Kashmir">
-                                  JK - Jammu and Kashmir
-                                </option>
-                                <option value="JH - Jharkhand">
-                                  JH - Jharkhand
-                                </option>
-                                <option value="KA - Karnataka">
-                                  KA - Karnataka
-                                </option>
-                                <option value="KL - Kerala">KL - Kerala</option>
-                                <option value="MP - Madhya Pradesh">
-                                  MP - Madhya Pradesh
-                                </option>
-                                <option value="MH - Maharashtra">
-                                  MH - Maharashtra
-                                </option>
-                                <option value="MN - Manipur">
-                                  MN - Manipur
-                                </option>
-                                <option value="ML - Meghalaya">
-                                  ML - Meghalaya
-                                </option>
-                                <option value="MZ - Mizoram">
-                                  MZ - Mizoram
-                                </option>
-                                <option value="NL - Nagaland">
-                                  NL - Nagaland
-                                </option>
-                                <option value="OD - Odisha">OD - Odisha</option>
-                                <option value="PB - Punjab">PB - Punjab</option>
-                                <option value="RJ - Rajasthan">
-                                  RJ - Rajasthan
-                                </option>
-                                <option value="SK - Sikkim">SK - Sikkim</option>
-                                <option value="TN - Tamil Nadu">
-                                  TN - Tamil Nadu
-                                </option>
-                                <option value="TS - Telangana">
-                                  TS - Telangana
-                                </option>
-                                <option value="UP - Uttar Pradesh">
-                                  UP - Uttar Pradesh
-                                </option>
-                                <option value="UK - Uttarakhand">
-                                  UK - Uttarakhand
-                                </option>
-                                <option value="WB - West Bengal">
-                                  WB - West Bengal
-                                </option>
-                                <option value="AN - Andaman and Nicobar Islands">
-                                  AN - Andaman and Nicobar Islands
-                                </option>
-                                <option value="CH - Chandigarh">
-                                  CH - Chandigarh
-                                </option>
-                                <option value="DN - Dadra and Nagar Haveli and Daman and Diu">
-                                  DN - Dadra and Nagar Haveli and Daman and Diu
-                                </option>
-                                <option value="DD - Lakshadweep">
-                                  DD - Lakshadweep
-                                </option>
-                                <option value="DL - Delhi">DL - Delhi</option>
-                                <option value="PY - Puducherry">
-                                  PY - Puducherry
-                                </option>
-                                <option value="LD - Ladakh">LD - Ladakh</option>
-                                <option value="LC - Lakshadweep">
-                                  LC - Lakshadweep
-                                </option>
-                                <option value="TN - Tamil Nadu">
-                                  TN - Tamil Nadu
-                                </option>
-                              </select> */}
+                            
                               <Autocomplete
                                 disablePortal
                                 options={stateOptions}
@@ -2421,14 +2294,17 @@ const AddCustomer = () => {
                                 Pin Code:
                               </span>
                               <input
-                                type="text"
+                                type="number"
+                                min={0}
+                                 maxLength={6}
                                 value={formData.pinCode}
-                                onChange={(e) =>
+                                onChange={(e) => {
+                                  const value = e.target.value.slice(0, 6);
                                   setFormData({
                                     ...formData,
-                                    pinCode: e.target.value,
-                                  })
-                                }
+                                    pinCode: value,
+                                  });
+                                }}
                                 className="w-full border border-gray-300 rounded-md p-1 text-sm"
                               />
                             </div>
@@ -2440,12 +2316,14 @@ const AddCustomer = () => {
                                 Phone:
                               </span>
                               <input
-                                type="text"
+                                type="number"
+                                min={0}
+                                maxLength={10}
                                 value={formData.phoneNumber}
                                 onChange={(e) =>
                                   setFormData({
                                     ...formData,
-                                    phoneNumber: e.target.value,
+                                    phoneNumber: e.target.value.slice(0, 10),
                                   })
                                 }
                                 className="w-full border border-gray-300 rounded-md p-1 text-sm"
@@ -2459,12 +2337,16 @@ const AddCustomer = () => {
                                 Fax Number:
                               </span>
                               <input
-                                type="text"
+                                type="number"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                                maxLength={10}
+                                min={0}
                                 value={formData.faxNumber}
                                 onChange={(e) =>
                                   setFormData({
                                     ...formData,
-                                    faxNumber: e.target.value,
+                                    faxNumber: e.target.value.slice(0, 10),
                                   })
                                 }
                                 className="w-full border border-gray-300 rounded-md p-1 text-sm"
@@ -2636,53 +2518,22 @@ const AddCustomer = () => {
                                 </option>
                                 <option value="CL - Chile">CL - Chile</option>
                               </select> */}
-                              <Autocomplete
-                                disablePortal
-                                options={countryOptions}
-                                sx={{ width: 600 }}
-                                defaultValue={{ value: "IN - India", label: "IN - India" }}
-                                value={
-                                  countryOptions.find(
-                                    (option) =>
-                                      option.value ===
-                                      formData.shippingCountryRegion
-                                  ) || { value: "IN - India", label: "IN - India" }
-                                }
-                                onChange={(event, newValue) => {
+                              <select
+                                className="rounded-md text-sm"
+                                value={formData.shippingCountryRegion}
+                                onChange={(e) =>
                                   setFormData({
                                     ...formData,
-                                    countryRegion: newValue?.value || "",
-                                  });
-                                }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label="State"
-                                    InputProps={{
-                                      ...params.InputProps,
-                                      style: { height: "32px" },
-                                    }}
-                                    sx={{
-                                      "& .MuiInputBase-root": {
-                                        height: "40px",
-                                      },
-                                      "& .MuiInputLabel-root": {
-                                        transform:
-                                          "translate(14px, 10px) scale(1)",
-                                        "&.MuiInputLabel-shrink": {
-                                          transform:
-                                            "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      },
-                                      "& .MuiInputLabel-root.Mui-focused": {
-                                        transform:
-                                          "translate(14px, -9px) scale(0.75)",
-                                      },
-                                    }}
-                                  />
-                                )}
-                                className="flex-1 rounded-md  text-sm"
-                              />
+                                    shippingCountryRegion: e.target.value,
+                                  })
+                                }
+                              >
+                                {countryOptions.map((option) => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
                           </div>
                           {/* Shipping Address */}
@@ -2904,12 +2755,14 @@ const AddCustomer = () => {
                                 Pin Code:
                               </span>
                               <input
-                                type="text"
+                                type="number"
+                                min={0}
+                                maxLength={6}
                                 value={formData.shippingPinCode}
                                 onChange={(e) =>
                                   setFormData({
                                     ...formData,
-                                    shippingPinCode: e.target.value,
+                                    shippingPinCode:e.target.value.slice(0, 6),
                                   })
                                 }
                                 className="w-full border border-gray-300 rounded-md p-1 text-sm"
@@ -2923,12 +2776,14 @@ const AddCustomer = () => {
                                 Phone:
                               </span>
                               <input
-                                type="text"
+                                type="number"
+                                min={0}
+                                maxLength={10}
                                 value={formData.shippingPhoneNumber}
                                 onChange={(e) =>
                                   setFormData({
                                     ...formData,
-                                    shippingPhoneNumber: e.target.value,
+                                    shippingPhoneNumber: e.target.value.slice(0, 10),
                                   })
                                 }
                                 className="w-full border border-gray-300 rounded-md p-1 text-sm"
@@ -2942,12 +2797,14 @@ const AddCustomer = () => {
                                 Fax Number:
                               </span>
                               <input
-                                type="text"
+                                type="number"
+                                min={0}
+                                maxLength={10}
                                 value={formData.shippingFaxNumber}
                                 onChange={(e) =>
                                   setFormData({
                                     ...formData,
-                                    shippingFaxNumber: e.target.value,
+                                    shippingFaxNumber: e.target.value.slice(0, 10),
                                   })
                                 }
                                 className="w-full border border-gray-300 rounded-md p-1 text-sm"
@@ -3039,7 +2896,7 @@ const AddCustomer = () => {
                                             e.target.value
                                           )
                                         }
-                                        className="w-full border rounded p-1 text-sm"
+                                        className="w-[120px] border rounded p-1 text-sm"
                                       />
                                     </td>
 
@@ -3055,7 +2912,7 @@ const AddCustomer = () => {
                                             e.target.value
                                           )
                                         }
-                                        className="w-full border rounded p-1 text-sm"
+                                        className="w-[120px] border rounded p-1 text-sm"
                                       />
                                     </td>
 
@@ -3071,39 +2928,43 @@ const AddCustomer = () => {
                                             e.target.value
                                           )
                                         }
-                                        className="w-full border rounded p-1 text-sm"
+                                        className="w-[120px] border rounded p-1 text-sm"
                                       />
                                     </td>
 
                                     {/* Work Phone */}
                                     <td className="px-4 py-2 border-b">
                                       <input
-                                        type="tel"
+                                        type="number"
+                                        maxLength={10}
+                                        min={0}
                                         value={person.workPhone}
                                         onChange={(e) =>
                                           handleContactPersonChange(
                                             index,
                                             "workPhone",
-                                            e.target.value
+                                            e.target.value.slice(0, 10)
                                           )
                                         }
-                                        className="w-full border rounded p-1 text-sm"
+                                        className="w-[120px] border rounded p-1 text-sm"
                                       />
                                     </td>
 
                                     {/* Mobile Phone */}
                                     <td className="px-4 py-2 border-b">
                                       <input
-                                        type="tel"
+                                       type="number"
+                                        maxLength={10}
+                                        min={0}
                                         value={person.mobilePhone}
                                         onChange={(e) =>
                                           handleContactPersonChange(
                                             index,
                                             "mobilePhone",
-                                            e.target.value
+                                            e.target.value.slice(0, 10)
                                           )
                                         }
-                                        className="w-full border rounded p-1 text-sm"
+                                        className="w-[120px] border rounded p-1 text-sm"
                                       />
                                     </td>
 
@@ -3260,7 +3121,7 @@ const AddCustomer = () => {
                             <button
                               type="button"
                               onClick={handleAddContactPerson}
-                              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
+                              className="p-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 text-sm"
                             >
                               Add Row
                             </button>

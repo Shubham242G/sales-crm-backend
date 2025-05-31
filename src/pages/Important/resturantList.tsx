@@ -408,6 +408,8 @@ function ResturantList() {
         ExcelExportFunction={getRestaurantExcel}
         TableAddExcelFunction={addRestaurantExcel}
         RouteName={"Add Restaurant"}
+         AddButtonRouteName={"/resturant"}
+         AddButtonName={"Add Restaurant"}
         placeholderSearch={"Search restaurant"}
       />
 

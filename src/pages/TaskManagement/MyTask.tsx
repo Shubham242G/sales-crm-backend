@@ -483,7 +483,7 @@ function TaskManagement() {
         ExcelExportFunction={getMyTasksExcel}
         TableAddExcelFunction={addMyTasksExcel}
         RouteName={"My Tasks"}
-        AddButtonRouteName={"/add-TaskManagements"}
+        AddButtonRouteName={"/add-TaskManagement"}
         AddButtonName={"New TaskManagement"}
         placeholderSearch={"Search"}
       />

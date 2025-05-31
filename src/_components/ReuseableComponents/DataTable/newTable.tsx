@@ -105,49 +105,54 @@ const NewTable = (props: any) => {
     }));
   };
 
-  const ColumnSelector = () => (
-    <div className="absolute z-50 bg-white shadow-lg p-4 rounded-md mt-2   border border-gray-200 right-0 w-72">
-      <div className="flex flex-col gap-1.5 ]">
-        <div className="flex justify-between items-center border-b pb-2 mb-2">
-          <h3 className="font-medium">Customize Columns</h3>
-          <button
-            className="text-xs text-blue-600 hover:underline"
-            onClick={resetColumnVisibility}
-          >
-            Reset to Default
-          </button>
-        </div>
+const ColumnSelector = () => (
+  <div className="absolute right-0 z-50 mt-2 w-72 rounded-xl border border-gray-200 bg-white p-4 shadow-xl animate-fade-in">
+    <div className="flex flex-col gap-2">
+      
+      {/* Header */}
+      <div className="flex justify-between items-center border-b pb-2 mb-2">
+        <h3 className="text-sm font-semibold text-gray-800">Customize Columns</h3>
+        <button
+          className="text-xs text-blue-600 hover:underline"
+          onClick={resetColumnVisibility}
+        >
+          Reset
+        </button>
+      </div>
 
-        <div className="max-h-80 overflow-y-auto">
-          {columns.map((column: any, index: number) => (
-            <div
-              key={index}
-              className="flex items-center justify-between py-2 border-b border-gray-100"
-            >
-              <span className="text-sm">{column.name}</span>
-              <Switch
-                checked={
-                  visibleColumns[column.name as keyof typeof visibleColumns]
-                }
-                onChange={() => toggleColumnVisibility(column.name)}
-                size="small"
-                color="primary"
-              />
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-2 flex justify-end">
-          <button
-            className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-            onClick={() => setShowColumnSelector(false)}
+      {/* Column List */}
+      <div className="max-h-64 overflow-y-auto space-y-2 pr-1">
+        {columns.map((column: any, index: number) => (
+          <div
+            key={index}
+            className="flex items-center justify-between border-b border-gray-100 py-1"
           >
-            Apply
-          </button>
-        </div>
+            <span className="text-sm text-gray-700">{column.name}</span>
+            <Switch
+              checked={
+                visibleColumns[column.name as keyof typeof visibleColumns]
+              }
+              onChange={() => toggleColumnVisibility(column.name)}
+              size="small"
+              color="primary"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div className="mt-4 flex justify-end">
+        <button
+          className="rounded-md bg-blue-600 px-4 py-1.5 text-sm text-white shadow hover:bg-blue-700 transition"
+          onClick={() => setShowColumnSelector(false)}
+        >
+          Apply
+        </button>
       </div>
     </div>
-  );
+  </div>
+);
+
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
