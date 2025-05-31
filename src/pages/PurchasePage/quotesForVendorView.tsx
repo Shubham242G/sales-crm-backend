@@ -2,7 +2,7 @@ import React from "react";
 import logo from "@/assets/mainlogo/logo.png";
 function QuotesForVendorsView() {
   return (
-    <div className="bg-gray-100 min-h-screen w-full ">
+    <div className="bg-gray-100 min-h-screen w-full mt-16 ">
       <header className="text-left mb-8 relative bg-[#0B2F46] p-8 rounded-t-md">
         {/* <img
           src={logo}

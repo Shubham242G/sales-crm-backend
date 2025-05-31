@@ -1959,6 +1959,7 @@ const AddEnquiryForm = () => {
                             </td>
                             <td>
                               <button
+                             type="button"
                                 onClick={() => handleDeleteRow(index, setRoom)}
                                 className="text-red-500 font-bold"
                               >
@@ -2065,13 +2066,9 @@ const AddEnquiryForm = () => {
                                   selected.map((opt) => opt.value)
                                 )
                               }
-                              className="text-sm z-99"
+                              className="text-xs p-2 z-99"
                               classNamePrefix="react-select"
-                              styles={{
-                                menu: (provided) => ({
-                                  ...provided,
-                                }),
-                              }}
+                           
                             />
                           </td>
                           <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
@@ -2086,7 +2083,7 @@ const AddEnquiryForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                              className="border border-gray-300 p-2.5 rounded w-full text-sm"
                             >
                               <option value="">Select</option>
                               <option value="Theater">Theater</option>
@@ -2109,7 +2106,7 @@ const AddEnquiryForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                              className="border border-gray-300 p-2.5 rounded w-full text-sm"
                             >
                               <option value="">Select</option>
                               <option value="Yes">Yes</option>
@@ -2128,7 +2125,7 @@ const AddEnquiryForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                              className="border border-gray-300 p-2.5 rounded w-full text-sm"
                             >
                               <option value="">Select</option>
                               <option value="Veg">Veg</option>
@@ -2150,7 +2147,7 @@ const AddEnquiryForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                              className="border border-gray-300 p-2.5 rounded w-full text-sm"
                             />
                           </td>
                           <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
@@ -2167,11 +2164,13 @@ const AddEnquiryForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                              className="border border-gray-300 p-2.5 rounded w-full text-sm"
                             />
                           </td>
                           <td>
                             <button
+
+                              type="button"
                               onClick={() => handleDeleteRow(index, setBanquet)}
                               className="text-red-500 font-bold"
                             >
@@ -2929,6 +2928,7 @@ const AddEnquiryForm = () => {
                             </td>
                             <td>
                               <button
+                              type="button"
                                 onClick={() => handleDeleteRow(index, setCab)}
                                 className="text-red-500 font-bold"
                               >

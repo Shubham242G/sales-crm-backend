@@ -66,7 +66,7 @@ function ConfirmedQuotestoCustomer() {
       name: "Service",
       selector: (row: any) => (
         <>
-          <div className="flex flex-wrap justify-around">
+          <div className="flex flex-wrap justify-around gap-1">
             {row.service.map((e: any, index: number) => (
               <div
                 key={index}
@@ -102,7 +102,7 @@ function ConfirmedQuotestoCustomer() {
       name: "Status",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col p-2 rounded-md text-white ${row.status === "Pending"
+          className={`flex gap-1 flex-col p-1  rounded-md text-white ${row.status === "Pending"
               ? "bg-yellow-300 text-yellow-900"
               : row.status === "Reviewed"
                 ? "bg-green-500 text-green-600"

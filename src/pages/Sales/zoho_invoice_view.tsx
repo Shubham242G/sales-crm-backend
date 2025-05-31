@@ -293,7 +293,7 @@ const [exportFields, setExportFields] = useState<string[]>([
             name: "View",
             selector: (row: any) => (
                 <Link to={`/invoicesById/${row.invoice_id}`} className="text-lg text-black-400 p-1">
-                    <FaEye className=" hover:text-orange-500" />
+                    <FaEye className=" hover:text-orange-500 text-sm" />
                 </Link>
             ),
             width: "8%",
@@ -305,7 +305,7 @@ const [exportFields, setExportFields] = useState<string[]>([
                     className="text-lg text-black-400 p-1"
                     onClick={() => handleDownloadPDF(row.invoice_id)}
                 >
-                    <FaFileDownload />
+                    <FaFileDownload className="text-sm" />
                 </button>
             ),
             width: "10%",
@@ -382,36 +382,24 @@ const [exportFields, setExportFields] = useState<string[]>([
         </div>
     );
 
-    const calculateDynamicWidths = (columnsArray: any[]) => {
+    const calculateEqualWidths = (columnsArray: any[]) => {
         const visibleColumnsCount = columnsArray.length;
 
         if (visibleColumnsCount === 0) return columnsArray;
 
-        const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
+        const columnsWithEqualWidth = columnsArray.map(column => {
+            let width = `${1190 / visibleColumnsCount}px`;
 
-        const baseWidth = 100 / visibleColumnsCount;
-
-        const MIN_WIDTH = 8;
-        const MAX_WIDTH = 20;
-
-        columnsWithDynamicWidth.forEach(column => {
-            let allocatedWidth = baseWidth;
-
-            // Columns that typically need less space
-            if (column.name === "Delete" || column.name === "Edit") {
-                allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
-            }
-            // Columns that might need more space
-            else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-                allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
+            if (column.name === "Customer") {
+                width = "300px";
             }
 
-            column.width = `${allocatedWidth}%`;
+            return { ...column, width };
         });
 
-        console.log(columnsWithDynamicWidth, "check the column width")
+        console.log(columnsWithEqualWidth, "check the column width");
 
-        return columnsWithDynamicWidth;
+        return columnsWithEqualWidth;
     };
 
     // Filter columns based on visibility
@@ -419,8 +407,8 @@ const [exportFields, setExportFields] = useState<string[]>([
         visibleColumns[column.name as keyof typeof visibleColumns]
     );
 
-    // Apply dynamic widths to visible columns
-    const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+    // Apply equal widths to visible columns
+    const filteredColumns = calculateEqualWidths(visibleColumnsArray);
 
     const resetColumnVisibility = () => {
         setVisibleColumns({
@@ -460,7 +448,7 @@ const [exportFields, setExportFields] = useState<string[]>([
                     </div>
 
                     <select
-                        className="flex items-center gap-1 px-3 py-2 rounded-md text-gray-700 border border-gray-300"
+                        className="flex items-center gap-1 px-3 py-2 rounded-md text-gray-700 border  border-gray-300"
                         value={selectedStatus}
                         onChange={(e) => setSelectedStatus(e.target.value)}
                     >
@@ -477,7 +465,7 @@ const [exportFields, setExportFields] = useState<string[]>([
                         className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
                         disabled={syncInvoicesMutation.isPending}
                     >
-                        <FaSync />
+                        <FaSync/>
                         <span className="w-[100px]">{syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}</span>
                     </button>
 
@@ -577,7 +565,7 @@ const [exportFields, setExportFields] = useState<string[]>([
                 </div>
             </div>
 
-            <div className="mt-5">
+            <div className="mt-4">
                 <ReactTable
                     data={invoiceData} // Use the extracted array data
                     columns={filteredColumns}

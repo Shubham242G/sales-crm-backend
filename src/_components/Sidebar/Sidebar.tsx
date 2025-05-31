@@ -142,7 +142,7 @@ function Sidebar() {
           plusLink: "/addEnquiry",
         },
         {
-          dropHead: "Confirmed Quotes Customer",
+          dropHead: "Confirmed Quotes To Customer",
           link: "/confirmedQuotesToCustomer",
 
         },
@@ -180,22 +180,37 @@ function Sidebar() {
         },
       ],
     },
-    {
-      mainlink: "/hotelSearch",
-      heading: "Hotel Search",
-      icon: search,
-      activeIcon: search,
+   
+   {
+      mainlink: "/Important",
+      heading: "Important",
+      icon: important,
+      activeIcon: important,
       isActive: false,
       isArrow: true,
       dropArr: [
         {
-          dropHead: "Venue Search",
-          link: "venueSearch",
-          plusLink: "/venueSearch",
+          dropHead: "Add Department",
+          link: "departmentMasterView",
+        },
+        {
+          dropHead: "Add Category",
+          link: "CategoryList",
+        },
+        {
+          dropHead: "Add Hotel",
+          link: "HotelList",
+        },
+        {
+          dropHead: "Add Banquet",
+          link: "BanquetList",
+        },
+        {
+          dropHead: "Add Restaurant",
+          link: "ResturantList",
         },
       ],
     },
-
     {
       mainlink: "/LeadManagement",
       heading: "Lead Management",
@@ -236,33 +251,18 @@ function Sidebar() {
         },
       ],
     },
-    {
-      mainlink: "/Important",
-      heading: "Important",
-      icon: important,
-      activeIcon: important,
+  {
+      mainlink: "/hotelSearch",
+      heading: "Hotel Search",
+      icon: search,
+      activeIcon: search,
       isActive: false,
       isArrow: true,
       dropArr: [
         {
-          dropHead: "Add Department",
-          link: "departmentMasterView",
-        },
-        {
-          dropHead: "Add Category",
-          link: "CategoryList",
-        },
-        {
-          dropHead: "Add Hotel",
-          link: "HotelList",
-        },
-        {
-          dropHead: "Add Banquet",
-          link: "BanquetList",
-        },
-        {
-          dropHead: "Add Restaurant",
-          link: "ResturantList",
+          dropHead: "Venue Search",
+          link: "venueSearch",
+          plusLink: "/venueSearch",
         },
       ],
     },
@@ -313,89 +313,78 @@ function Sidebar() {
 
   return (
     <>
- 
-      <div className={` lg:flex lg:flex-col lg:h-full lg:bg-[#f7f8ff] lg:border-r-2 lg:top-0 lg:left-0 lg:z-10 transition-all duration-2`}>
-        <div className="mt-16  items-center  w-full h-[120px] flex justify-center">
-          <img
-            src={mainlogo}
-            alt="mainlogo"
-            className="mx-auto max-w-[120px] max-h-[120px] w-full h-full"
-          />
-        </div>
-<div><ul className="main-list w-full overflow-y-auto scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-300 h-[100vh] mt-2">
-          {filteredSidebarArr.map((el, index) => (
-            <li className="relative mt-4 -mb-2 ml-2 text-sm" key={index}>
-              {el?.dropArr ? (
-                <button
-                  type="button"
-                  className="flex text-gray-850 items-center p-3 w-full bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors justify-between"
-                  onClick={() => handleDropShow(index)}
-                >
-                  <div className="icon w-5 h-3 mr-4   flex flex-row items-center gap-2">
-                    <img
-                      src={showdrop === index ? el.activeIcon : el.icon}
-                      alt={el.heading}
-                    />
-                    <h6 className="flex-1 group-hover:text-white ml-1 whitespace-nowrap">
-                      {el.heading}
-                    </h6>
-                  </div>
-                  <MdChevronRight
-                    className={`transition-transform ${showdrop === index ? "rotate-90" : ""
-                      }`}
-                  />
-                </button>
-              ) : (
-                <Link
-                  to={el?.mainlink ? el.mainlink : ""}
-                  className="flex items-center p-3 w-full  bg-transparent hover:bg-orange-400 hover:text-white hover:rounded-lg transition-colors"
-                >
-                  <div className="icon w-5 h-3 mr-2">
-                    <img src={el?.icon} alt={el?.heading} />
-                  </div>
-                  <h6 className="flex-1 whitespace-nowrap ml-1 -mb-2">
-                    {el?.heading}
-                  </h6>
-                </Link>
-              )}
+<div className="lg:flex lg:flex-col lg:h-full mb-10 lg:bg-[#f7f8ff] lg:border-r lg:top-0 lg:left-0 lg:z-10 transition-all duration-300 ease-in-out">
+  {/* Logo Section */}
+  <div className="mt-16 flex items-center justify-center h-[120px] shrink-0">
+    <img
+      src={mainlogo}
+      alt="Main Logo"
+      className="w-[100px] h-[100px] object-contain"
+    />
+  </div>
 
-              {el?.dropArr && showdrop === index && (
-                <div className="dropdown_list max-h-40 ml-6 overflow-y-auto">
-                  <ul className="pl-6">
-                    {el.dropArr.map((ele, idx) => (
-                      <li key={idx} className="py-1">
-                        <div className="flex justify-between items-center group">
-                          {ele && (
-                            <>
-                              <Link
-                                to={ele.link}
-                                className="text-sm text-grey-850 hover:text-orange-500 hover:rounded-lg "
-                              >
-                                {ele.dropHead}
-                              </Link>
-                              {ele.plusLink && (
-                                <Link
-                                  to={ele.plusLink}
-                                  className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
-                                >
-                                  <span className="bg-white rounded-full w-5 h-5 -ml-5 flex items-center justify-center text-xs font-medium leading-none">
-                                    +
-                                  </span>
-                                </Link>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul></div>
-        
-      </div>
+  {/* Sidebar List */}
+  <ul className="main-list flex-1 overflow-y-auto  max-h-[calc(90vh-140px)] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 mt-2 pr-2 mb-10">
+    {filteredSidebarArr.map((el, index) => (
+      <li className="relative mt-2 ml-3 text-sm" key={index}>
+        {el?.dropArr ? (
+          <button
+            type="button"
+            className="flex items-center justify-between w-full p-2.5 text-gray-800 hover:bg-orange-400 hover:text-white rounded-md transition-colors"
+            onClick={() => handleDropShow(index)}
+          >
+            <div className="flex items-center gap-2">
+              <img
+                src={showdrop === index ? el.activeIcon : el.icon}
+                alt={el.heading}
+                className="w-5 h-5"
+              />
+              <span className="whitespace-nowrap">{el.heading}</span>
+            </div>
+            <MdChevronRight
+              className={`transform transition-transform duration-200 ${showdrop === index ? "rotate-90" : ""}`}
+            />
+          </button>
+        ) : (
+          <Link
+            to={el?.mainlink || ""}
+            className="flex items-center gap-2 p-2.5 w-full text-gray-800 hover:bg-orange-400 hover:text-white rounded-md transition-colors"
+          >
+            <img src={el?.icon} alt={el?.heading} className="w-5 h-5" />
+            <span className="whitespace-nowrap">{el?.heading}</span>
+          </Link>
+        )}
+
+        {/* Dropdown */}
+        {el?.dropArr && showdrop === index && (
+          <ul className="ml-8 mt-1 space-y-1 max-h-48 overflow-y-auto transition-all duration-200 pr-1">
+            {el.dropArr.map((ele, idx) => (
+              <li key={idx} className="flex justify-between items-center group">
+                <Link
+                  to={ele.link}
+                  className="text-sm text-gray-700 hover:text-orange-500 transition-colors"
+                >
+                  {ele.dropHead}
+                </Link>
+                {ele.plusLink && (
+                  <Link
+                    to={ele.plusLink}
+                    className="ml-2 p-1 rounded-full hover:bg-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  >
+                    <span className="bg-white w-5 h-5 flex items-center justify-center text-xs font-medium rounded-full border">
+                      +
+                    </span>
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ))}
+  </ul>
+</div>
+
     </>
   );
 }
