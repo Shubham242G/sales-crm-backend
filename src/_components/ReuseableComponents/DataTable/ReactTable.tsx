@@ -6,7 +6,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { colors } from "@mui/material";
 import { spacing } from "react-select/dist/declarations/src/theme";
 import { BorderRight, Margin, Padding, WidthFull } from "@mui/icons-material";
-import { max } from "lodash";
+import { max, pad } from "lodash";
 import { i, s } from "vite/dist/node/types.d-aGj9QkWt";
 import { left } from "@popperjs/core";
 import { grey } from "@mui/material/colors";
@@ -161,9 +161,8 @@ const customStyles: any = {
     style: {
       fontSize: "13px",
       color: "#000000",
-      padding: "2px",
+      height: "40px", 
       textAlign: 'center',
-    
       h6: {
         whiteSpace: "normal",
       },
@@ -235,7 +234,7 @@ export const ReactTable = ({
       pagination
       paginationDefaultPage={page}
       paginationServer={!isServerPropsDisabled}
-      paginationRowsPerPageOptions={[10, 20, 30, 40, 50, 100, 200, 500]}
+      paginationRowsPerPageOptions={[1, 5, 10, 20, 30, 40, 50, 100, 200, 500]}
       onChangePage={onChangePage}
       onChangeRowsPerPage={onChangeRowsPerPage}
       paginationTotalRows={totalRows}

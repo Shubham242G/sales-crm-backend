@@ -419,7 +419,7 @@ function ConfirmedQuotesFromVendor() {
     <>
       <NewTable
         data={confirmedQuotesToVendorData.data}
-             columns={filteredColumns} 
+             columns={columns} 
              selectableRows={true}
             loading={false}
             totalRows={confirmedQuotesToVendorData?.total}

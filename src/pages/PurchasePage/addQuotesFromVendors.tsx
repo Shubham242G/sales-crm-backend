@@ -551,7 +551,7 @@ const AddQuotesFromVendors = () => {
               onChange={handleInputChange}
               type="date"
               onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-              className="w-full border  border-gray-300 rounded-md p-2"
+              className="w-full border text-xs  border-gray-300 rounded-md p-2"
             />
           </div>
         </div>

@@ -370,7 +370,7 @@ const [pageSize, setPageSize] = useState(10);
          <NewTable
      
             data={categoryData?.data}
-            columns={filteredColumns} 
+            columns={columns} 
  selectableRows={true}
             loading={false}
             totalRows={categoryData?.total}

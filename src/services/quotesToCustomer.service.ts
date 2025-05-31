@@ -75,17 +75,28 @@ export const useQuotesToCustomerApiHook = () => {
     );
   };
 
-  const getAllQuotesToCustomer = async (
-    pagination: PaginationState,
-    searchObj: any
-  ) => {
-    // const query = new URLSearchParams({
-    //     pageIndex: String(pagination.pageIndex),
-    //     pageSize: String(pagination.pageSize),
-    //     ...searchObj,
-    // }).toString();
-    return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}`);
-  };
+
+    const getAllQuotesToCustomer = async (pagination: PaginationState, searchObj: any) => {
+      const query = new URLSearchParams({
+        pageIndex: String(pagination.pageIndex),
+        pageSize: String(pagination.pageSize),
+        ...searchObj,
+      }).toString();
+      return axios.get<GeneralApiResponsePagination<any>>(
+        `${BASE_URL}${prefix}/?${query}`
+      );
+    };
+  // const getAllQuotesToCustomer = async (
+  //   pagination: PaginationState,
+  //   searchObj: any
+  // ) => {
+  //   // const query = new URLSearchParams({
+  //   //     pageIndex: String(pagination.pageIndex),
+  //   //     pageSize: String(pagination.pageSize),
+  //   //     ...searchObj,
+  //   // }).toString();
+  //   return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}`);
+  // };
 
   return {
     addQuotesToCustomer,

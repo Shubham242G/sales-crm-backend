@@ -466,7 +466,7 @@ function TaskManagement() {
 
       <NewTable
         data={TaskManagementData.data}
-        columns={filteredColumns}
+        columns={columns}
         loading={false}
         totalRows={TaskManagementData?.total}
         onChangeRowsPerPage={setPageSize}

@@ -751,7 +751,7 @@ export default function EnquiryLIst() {
 
       <NewTable
         data={EnquiryData?.data}
-        columns={filteredColumns}
+        columns={columns}
         selectableRows={true}
         loading={false}
         totalRows={EnquiryData?.total}

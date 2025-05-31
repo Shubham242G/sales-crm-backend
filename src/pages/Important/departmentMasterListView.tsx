@@ -389,7 +389,7 @@ const [tickRows, setTickRows] = useState([]);
 
          <NewTable
             data={DepartmentData?.data}
-            columns={filteredColumns} 
+            columns={columns} 
             selectableRows={true}
             loading={false}
             totalRows={DepartmentData?.total}

@@ -617,6 +617,12 @@ const AddEnquiryForm = () => {
 
 
   const handleRateChange = (itemId: number, newRate: number) => {
+    console.log(
+      "handleRateChange",
+      itemId,
+      newRate,
+      productsArray.find(item => item.id === itemId)
+    );
     setProductsArray(prev =>
       prev.map(item =>
         item.id === itemId
@@ -624,6 +630,7 @@ const AddEnquiryForm = () => {
           : item
       )
     );
+    console.log("productsArray after handleRateChange", productsArray);
   };
 
   const handleQtyChange = (itemId: number, newQty: number) => {
@@ -1417,7 +1424,7 @@ const AddEnquiryForm = () => {
 
   console.log(assignTo, "assignTo");
   return (
-    <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
+    <div className="h-[85vh]  mt-16 p-6 overflow-y-auto">
       <div className="bg-white text-black ">
         <h1 className="text-xl font-semibold">Enquiry</h1>
       </div>
@@ -1959,6 +1966,7 @@ const AddEnquiryForm = () => {
                             </td>
                             <td>
                               <button
+                             type="button"
                                 onClick={() => handleDeleteRow(index, setRoom)}
                                 className="text-red-500 font-bold"
                               >
@@ -2065,13 +2073,9 @@ const AddEnquiryForm = () => {
                                   selected.map((opt) => opt.value)
                                 )
                               }
-                              className="text-sm z-99"
+                              className="text-xs p-2 z-99"
                               classNamePrefix="react-select"
-                              styles={{
-                                menu: (provided) => ({
-                                  ...provided,
-                                }),
-                              }}
+                           
                             />
                           </td>
                           <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
@@ -2086,7 +2090,7 @@ const AddEnquiryForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                              className="border border-gray-300 p-2.5 rounded w-full text-sm"
                             >
                               <option value="">Select</option>
                               <option value="Theater">Theater</option>
@@ -2109,7 +2113,7 @@ const AddEnquiryForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                              className="border border-gray-300 p-2.5 rounded w-full text-sm"
                             >
                               <option value="">Select</option>
                               <option value="Yes">Yes</option>
@@ -2128,7 +2132,7 @@ const AddEnquiryForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                              className="border border-gray-300 p-2.5 rounded w-full text-sm"
                             >
                               <option value="">Select</option>
                               <option value="Veg">Veg</option>
@@ -2150,7 +2154,7 @@ const AddEnquiryForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                              className="border border-gray-300 p-2.5 rounded w-full text-sm"
                             />
                           </td>
                           <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
@@ -2167,11 +2171,13 @@ const AddEnquiryForm = () => {
                                   e.target.value
                                 )
                               }
-                              className="border border-gray-300 p-1 rounded w-full text-sm"
+                              className="border border-gray-300 p-2.5 rounded w-full text-sm"
                             />
                           </td>
                           <td>
                             <button
+
+                              type="button"
                               onClick={() => handleDeleteRow(index, setBanquet)}
                               className="text-red-500 font-bold"
                             >
@@ -2929,6 +2935,7 @@ const AddEnquiryForm = () => {
                             </td>
                             <td>
                               <button
+                              type="button"
                                 onClick={() => handleDeleteRow(index, setCab)}
                                 className="text-red-500 font-bold"
                               >

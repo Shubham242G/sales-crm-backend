@@ -497,7 +497,7 @@ function VendorList() {
       <NewTable
 
         data={VendorData?.data}
-        columns={filteredColumns}
+        columns={columns}
         selectableRows={true}
         loading={false}
         totalRows={VendorData?.total}

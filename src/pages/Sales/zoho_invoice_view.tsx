@@ -295,7 +295,7 @@ function ZohoInvoiceView() {
             name: "View",
             selector: (row: any) => (
                 <Link to={`/invoicesById/${row.invoice_id}`} className="text-lg text-black-400 p-1">
-                    <FaEye className=" hover:text-orange-500" />
+                    <FaEye className=" hover:text-orange-500 text-sm" />
                 </Link>
             ),
             width: "8%",
@@ -307,7 +307,7 @@ function ZohoInvoiceView() {
                     className="text-lg text-black-400 p-1"
                     onClick={() => handleDownloadPDF(row.invoice_id)}
                 >
-                    <FaFileDownload />
+                    <FaFileDownload className="text-sm" />
                 </button>
             ),
             width: "10%",
@@ -384,36 +384,24 @@ function ZohoInvoiceView() {
         </div>
     );
 
-    const calculateDynamicWidths = (columnsArray: any[]) => {
+    const calculateEqualWidths = (columnsArray: any[]) => {
         const visibleColumnsCount = columnsArray.length;
 
         if (visibleColumnsCount === 0) return columnsArray;
 
-        const columnsWithDynamicWidth = columnsArray.map(column => ({ ...column }));
+        const columnsWithEqualWidth = columnsArray.map(column => {
+            let width = `${1190 / visibleColumnsCount}px`;
 
-        const baseWidth = 100 / visibleColumnsCount;
-
-        const MIN_WIDTH = 8;
-        const MAX_WIDTH = 20;
-
-        columnsWithDynamicWidth.forEach(column => {
-            let allocatedWidth = baseWidth;
-
-            // Columns that typically need less space
-            if (column.name === "Delete" || column.name === "Edit") {
-                allocatedWidth = Math.max(MIN_WIDTH, baseWidth);
-            }
-            // Columns that might need more space
-            else if (column.name === "Customer Name" || column.name === "Level of Enquiry") {
-                allocatedWidth = Math.min(MAX_WIDTH, baseWidth);
+            if (column.name === "Customer") {
+                width = "300px";
             }
 
-            column.width = `${allocatedWidth}%`;
+            return { ...column, width };
         });
 
-        console.log(columnsWithDynamicWidth, "check the column width")
+        console.log(columnsWithEqualWidth, "check the column width");
 
-        return columnsWithDynamicWidth;
+        return columnsWithEqualWidth;
     };
 
     // Filter columns based on visibility
@@ -421,8 +409,8 @@ function ZohoInvoiceView() {
         visibleColumns[column.name as keyof typeof visibleColumns]
     );
 
-    // Apply dynamic widths to visible columns
-    const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+    // Apply equal widths to visible columns
+    const filteredColumns = calculateEqualWidths(visibleColumnsArray);
 
     const resetColumnVisibility = () => {
         setVisibleColumns({
@@ -482,14 +470,14 @@ function ZohoInvoiceView() {
         //                         <option value="partially_paid">Partially Paid</option>
         //                     </select>
 
-        //                     <button
-        //                         onClick={handleSyncInvoices}
-        //                         className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
-        //                         disabled={syncInvoicesMutation.isPending}
-        //                     >
-        //                         <FaSync />
-        //                         <span className="w-[100px]">{syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}</span>
-        //                     </button>
+//                     <button
+//                         onClick={handleSyncInvoices}
+//                         className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
+//                         disabled={syncInvoicesMutation.isPending}
+//                     >
+//                         <FaSync />
+//                         <span className="w-[100px]">{syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}</span>
+//                     </button>
 
         //                     <div className="relative flex items-center " id="exportDropdown">
         //                         <button
@@ -604,31 +592,31 @@ function ZohoInvoiceView() {
         //         </div>
 
 
-        <NewTable
-            data={invoiceData} // Use the extracted array data
-            columns={filteredColumns}
-            selectableRows={true}
-            loading={isLoading} // Use the actual loading state
-            totalRows={totalRows} // Use the extracted total count
-            onChangeRowsPerPage={setPageSize}
-            onChangePage={setPageIndex}
-            page={pageIndex}
-            rowsPerPageText={pageSize}
-            isServerPropsDisabled={false}
-
-            onSelectedRowsChange={handleChange}
-            className={"leadtable"}
-            //new fields
-            TableName={"Zoho Invoices"}
-            TableGetAllFunction={useZohoInvoices}
-            ExcelExportFunction={getInvoicesExcel}
-            TableAddExcelFunction={addInvoicesExcel}
-            RouteName={"Invoices"}
-
-            syncFunction={useSyncZohoInvoices}
-            placeholderSearch={"Search in invoice"}
-        />
-
+  <NewTable
+  data={invoiceData} // Use the extracted array data
+  columns={columns}
+  selectableRows={true}
+  loading={isLoading} // Use the actual loading state
+  totalRows={totalRows} // Use the extracted total count
+  onChangeRowsPerPage={setPageSize}
+  onChangePage={setPageIndex}
+  page={pageIndex}
+  rowsPerPageText={pageSize}
+  isServerPropsDisabled={false}
+        
+        onSelectedRowsChange={handleChange}
+        className={"leadtable"}
+        //new fields
+        TableName={"Zoho Invoices"}
+        TableGetAllFunction={useZohoInvoices}
+        ExcelExportFunction={getInvoicesExcel}
+        TableAddExcelFunction={addInvoicesExcel}
+        RouteName={"Invoices"}
+        syncFunction={useSyncZohoInvoices}
+       
+        placeholderSearch={"Search in invoice"}
+      /> 
+   
     );
 }
 

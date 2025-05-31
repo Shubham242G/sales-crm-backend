@@ -282,7 +282,7 @@ function Roles() {
 
        <NewTable
        data={roleData?.data}
-          columns={filteredColumns} 
+          columns={columns} 
           selectableRows={true}
           loading={false}
           totalRows={roleData?.total}

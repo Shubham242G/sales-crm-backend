@@ -153,8 +153,8 @@ function LeadManagement() {
   const [showColumnSelector, setShowColumnSelector] = useState(false);
   // Toggle column visibility
   const [visibleColumns, setVisibleColumns] = useState({
-    "Name": true,
-    "Email": true,
+    "User Id": true,
+    "lead Assigned": true,
     "Role": true,
     "Edit": canView || canUpdate || true,
     "Delete": canDelete || true,
@@ -257,8 +257,8 @@ function LeadManagement() {
 
   const resetColumnVisibility = () => {
     setVisibleColumns({
-      "Name": true,
-      "Email": true,
+      "User Id": true,
+      "lead Assigned": true,
       "Role": true,
       "Edit": canView || canUpdate || true,
       "Delete": canDelete || true,
@@ -320,7 +320,7 @@ function LeadManagement() {
 
         <NewTable
             data={LeadManagementData?.data}
-            columns={filteredColumns}
+            columns={columns}
             selectableRows={true}
             loading={false}
             totalRows={LeadManagementData?.total}

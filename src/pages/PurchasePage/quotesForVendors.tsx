@@ -109,7 +109,7 @@ function CustomerLedger() {
           {row?.serviceType?.map((e: any, index: number) => (
             <div
               key={index}
-              className="bg-sky-100 text-blue-800 text-xs px-2 py-1 rounded-full border border-sky-300 shadow-sm"
+              className="bg-sky-100 text-blue-800 text-xs px-2 py-1 ml-1 rounded-full border border-sky-300 shadow-sm"
             >
               {e}
             </div>
@@ -409,7 +409,7 @@ function CustomerLedger() {
 
       <NewTable
         data={quotesFromVendors.data}
-        columns={filteredColumns}
+        columns={columns}
         selectableRows={true}
         loading={false}
         totalRows={quotesFromVendors.total}

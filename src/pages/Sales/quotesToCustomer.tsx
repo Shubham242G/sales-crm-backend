@@ -99,20 +99,25 @@ function QuotesForCustomer() {
       width: "160px",
     },
     {
+    
       name: "Service",
-      selector: (row: IQuotesToCustomer) => (
-        <div className="flex flex-wrap justify-around">
-          {(row.serviceType || []).map((service: string, index: number) => (
-            <div
-              key={index}
-              className="bg-sky-100 text-blue-800 text-xs px-2 py-1 ml-1 rounded-full border border-sky-300 shadow-sm"
-            >
-              {service}
-            </div>
-          ))}
+      selector: (row: any) => (
+        <div className="flex flex-wrap justify-around gap-1">
+          {row.serviceType.length > 0 &&
+            row.serviceType.map((item: any, index: number) => (
+              <div
+                key={index}
+                className="bg-sky-100 text-blue-800 text-xs px-2 py-1 rounded-full border border-sky-300 shadow-sm"
+              >
+                {item}
+              </div>
+            ))}
         </div>
       ),
-      width: "180px",
+      width: "16%",
+
+
+    
     },
     {
       name: "Amount",
@@ -421,7 +426,7 @@ const [tickRows, setTickRows] = useState([]);
       
        <NewTable
          data={quotesToCustomerData?.data || []}
-          columns={filteredColumns} 
+          columns={columns} 
           selectableRows={true}
           loading={isLoading}
           totalRows={quotesToCustomerData?.total || 0}

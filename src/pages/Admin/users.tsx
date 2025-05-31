@@ -290,7 +290,7 @@ function Users() {
 
         <NewTable
         data={UserData?.data}
-        columns={filteredColumns} 
+        columns={columns} 
         selectableRows={true}
         loading={false}
         totalRows={UserData?.total}
