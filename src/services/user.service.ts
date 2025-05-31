@@ -139,7 +139,7 @@ export const useUserApiHook = () => {
 
 export const getUserExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getEnquiryExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;
@@ -251,6 +251,7 @@ export const useUpdateUser = () => {
     },
   });
 };
+
 
 // export const useChangePassword = ( obj: any) => {
 //     const queryClient = useQueryClient();

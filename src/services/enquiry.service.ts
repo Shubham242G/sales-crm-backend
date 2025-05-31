@@ -104,7 +104,7 @@ export interface Inew extends IEnqiry {
 // Enquiry
 export const getEnquiryExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getEnquiryExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;

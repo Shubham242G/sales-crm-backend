@@ -99,7 +99,7 @@ function CustomerSales() {
       setPageIndex(1); // reset to first page when searching
     }
   };
- const [isOpenAction, setIsOpenAction] = useState(false);
+  const [isOpenAction, setIsOpenAction] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
 
   const columns = [
@@ -206,44 +206,44 @@ function CustomerSales() {
     //       </div>
     //     ),
     // },
-     {
-         name: "Actions",
-         width: "20px",
-         selector: (row: any) => (
-           <div className="">
-             <button
-               type="button"
-               
-               title="More Actions"
-               onClick={(e) =>{ setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true),setSelectedRowId(row._id )}}
-             >
-               <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
-             </button>
-             { selectedRowId === row._id   &&  (isOpenAction) && (
-               <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
-   
-                 <Link
-                   to={`/add-customer/${row?._id}`}
-                   className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
-                   title="View Vendor"
-                 >
-                   <FiEdit className="text-xs" />
-                   Edit
-                 </Link>
-                 <button
-                   type="button"
-                   onClick={() => handleDelete(row._id)}
-                   className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
-                   title="Delete Vendor"
-                 >
-                   <RiDeleteBin6Line className="text-xs" />
-                   Delete
-                 </button>
-               </div>
-             )}
-           </div>
-         ),
-       },
+    {
+      name: "Actions",
+      width: "20px",
+      selector: (row: any) => (
+        <div className="">
+          <button
+            type="button"
+
+            title="More Actions"
+            onClick={(e) => { setIsOpenAction(selectedRowId === row._id ? !isOpenAction : true), setSelectedRowId(row._id) }}
+          >
+            <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
+          </button>
+          {selectedRowId === row._id && (isOpenAction) && (
+            <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
+
+              <Link
+                to={`/add-customer/${row?._id}`}
+                className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                title="View Vendor"
+              >
+                <FiEdit className="text-xs" />
+                Edit
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDelete(row._id)}
+                className="flex items-center  text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"
+                title="Delete Vendor"
+              >
+                <RiDeleteBin6Line className="text-xs" />
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+      ),
+    },
 
 
 
@@ -267,7 +267,7 @@ function CustomerSales() {
     "Phone": true,
     "Edit": canView || canUpdate || true,
     "Delete": canDelete || true,
-    Actions : true || canView || canUpdate || canDelete 
+    Actions: true || canView || canUpdate || canDelete
   });
   useEffect(() => {
     const savedColumns = localStorage.getItem('enquiryTableColumns');
@@ -324,9 +324,9 @@ function CustomerSales() {
     </div>
   );
 
- 
 
-const calculateDynamicWidths = (columnsArray: any[]) => {
+
+  const calculateDynamicWidths = (columnsArray: any[]) => {
     const visibleColumnsCount = columnsArray.length;
 
     if (visibleColumnsCount === 0) return columnsArray;
@@ -340,7 +340,7 @@ const calculateDynamicWidths = (columnsArray: any[]) => {
 
     return columnsWithDynamicWidth;
   };
- const visibleColumnsArray = columns.filter(column =>
+  const visibleColumnsArray = columns.filter(column =>
     visibleColumns[column.name as keyof typeof visibleColumns]
   );
 
@@ -359,13 +359,13 @@ const calculateDynamicWidths = (columnsArray: any[]) => {
       "Phone": true,
       "Edit": canView || canUpdate || true,
       "Delete": canDelete || true,
-      Actions : true || canView || canUpdate || canDelete 
+      Actions: true || canView || canUpdate || canDelete
     });
   };
 
   const [tickRows, setTickRows] = useState([]);
 
- const handleChange = ({ selectedRows }: any) => {
+  const handleChange = ({ selectedRows }: any) => {
     // You can set state or dispatch with something like Redux so we can use the retrieved data
     console.log("Selected Rows: ", selectedRows);
     setTickRows(selectedRows.map((row: any) => row._id));
@@ -375,95 +375,96 @@ const calculateDynamicWidths = (columnsArray: any[]) => {
 
 
   return (
-   
-//       <div className="bg-white table_container rounded-xl  p-6 mt-10">
-//         <div className="search_boxes flex justify-between items-center  ">
-//           <h2 className="text-xl font-semibold text-gray-800">Customer List</h2>
-//           <div className="flex items-center gap-2  w-[70%] ">
-//             <input
-//               type="search"
-//               className="rounded-md border text-sm px-3 py-1.5 placeholder-txtcolor focus:outline-none focus:border-buttnhover w-full md:w-1/4"
-//               placeholder="Search..."
-//               value={query}
-//               onChange={handleSearchInputChange}
-//               onKeyDown={handleSearchKeyDown}
-//             />
 
-//             <div className="relative w-full md:w-1/4">
-//               <button
-//                 className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap w-full"
-//                 onClick={() => setShowColumnSelector(!showColumnSelector)}
-//               >
-//                 <FaColumns /> Columns
-//               </button>
-//               {showColumnSelector && <ColumnSelector />}
-//             </div>
+    //       <div className="bg-white table_container rounded-xl  p-6 mt-10">
+    //         <div className="search_boxes flex justify-between items-center  ">
+    //           <h2 className="text-xl font-semibold text-gray-800">Customer List</h2>
+    //           <div className="flex items-center gap-2  w-[70%] ">
+    //             <input
+    //               type="search"
+    //               className="rounded-md border text-sm px-3 py-1.5 placeholder-txtcolor focus:outline-none focus:border-buttnhover w-full md:w-1/4"
+    //               placeholder="Search..."
+    //               value={query}
+    //               onChange={handleSearchInputChange}
+    //               onKeyDown={handleSearchKeyDown}
+    //             />
+
+    //             <div className="relative w-full md:w-1/4">
+    //               <button
+    //                 className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap w-full"
+    //                 onClick={() => setShowColumnSelector(!showColumnSelector)}
+    //               >
+    //                 <FaColumns /> Columns
+    //               </button>
+    //               {showColumnSelector && <ColumnSelector />}
+    //             </div>
 
 
-//               <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4">
-//               <FaFileExport /> Export
-//             </button>
-//             <button onClick={handleSyncCustomer} className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4">
-//               <FaFileExport /> Sync
-//             </button>
-//             <button
-//               className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4"
-//               onClick={handleImportClick}
-//             >
-//               <FaFileImport /> Import
-//             </button>
-//             {canCreate && (
-//               <button
-//                 onClick={() => navigate("/add-customer")}
-//                 className="flex items-center gap-1 px-3 py-2 text-xs text-white rounded-md bg-orange-500 w-full md:w-1/4"
-//               >
-//                 <FaPlus /> <span>New Customer</span>
-//               </button>
-//             )}
-//           </div>
-//         </div>
-//         <div className="mt-5">
-//         <ReactTable
-//           data={CustomerData?.data}
-//           columns={filteredColumns} 
-//  selectableRows={true}
-//           loading={false}
-//           totalRows={CustomerData?.total}
-//           onChangeRowsPerPage={setPageSize}
-//           onChangePage={setPageIndex}
-//           page={pageIndex}
-//           rowsPerPageText={pageSize}
-//           isServerPropsDisabled={false}
+    //               <button className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4">
+    //               <FaFileExport /> Export
+    //             </button>
+    //             <button onClick={handleSyncCustomer} className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4">
+    //               <FaFileExport /> Sync
+    //             </button>
+    //             <button
+    //               className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 w-full md:w-1/4"
+    //               onClick={handleImportClick}
+    //             >
+    //               <FaFileImport /> Import
+    //             </button>
+    //             {canCreate && (
+    //               <button
+    //                 onClick={() => navigate("/add-customer")}
+    //                 className="flex items-center gap-1 px-3 py-2 text-xs text-white rounded-md bg-orange-500 w-full md:w-1/4"
+    //               >
+    //                 <FaPlus /> <span>New Customer</span>
+    //               </button>
+    //             )}
+    //           </div>
+    //         </div>
+    //         <div className="mt-5">
+    //         <ReactTable
+    //           data={CustomerData?.data}
+    //           columns={filteredColumns} 
+    //  selectableRows={true}
+    //           loading={false}
+    //           totalRows={CustomerData?.total}
+    //           onChangeRowsPerPage={setPageSize}
+    //           onChangePage={setPageIndex}
+    //           page={pageIndex}
+    //           rowsPerPageText={pageSize}
+    //           isServerPropsDisabled={false}
 
-//         />
-//        </div>
+    //         />
+    //        </div>
 
-//       </div>
- 
-  <NewTable
-       data={CustomerData?.data}
-          columns={filteredColumns} 
- selectableRows={true}
-          loading={false}
-          totalRows={CustomerData?.total}
-          onChangeRowsPerPage={setPageSize}
-          onChangePage={setPageIndex}
-          page={pageIndex}
-          rowsPerPageText={pageSize}
-          isServerPropsDisabled={false}
-        
-        onSelectedRowsChange={handleChange}
-        className={"leadtable"}
-        //new fields
-        TableName={"Customer List"}
-        TableGetAllFunction={useZohoCustomers}
-        ExcelExportFunction={getCustomersExcel}
-        TableAddExcelFunction={addCustomersExcel}
-        RouteName={"Customers"}
-        AddButtonRouteName={"/add-customer"}
-        AddButtonName={"New Customer"}
-        placeholderSearch={"Search display name"}
-      /> 
+    //       </div>
+
+    <NewTable
+      data={CustomerData?.data}
+      columns={filteredColumns}
+      selectableRows={true}
+      loading={false}
+      totalRows={CustomerData?.total}
+      onChangeRowsPerPage={setPageSize}
+      onChangePage={setPageIndex}
+      page={pageIndex}
+      rowsPerPageText={pageSize}
+      isServerPropsDisabled={false}
+
+      onSelectedRowsChange={handleChange}
+      className={"leadtable"}
+      //new fiel
+      TableName={"Customer List"}
+      TableGetAllFunction={useZohoCustomers}
+      syncFunctiono={useSyncZohoCustomers}
+      ExcelExportFunction={getCustomersExcel}
+      TableAddExcelFunction={addCustomersExcel}
+      RouteName={"Customers"}
+      AddButtonRouteName={"/add-customer"}
+      AddButtonName={"New Customer"}
+      placeholderSearch={"Search display name"}
+    />
 
 
   );
