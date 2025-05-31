@@ -47,7 +47,7 @@ export interface ITaskManagement {
 // Task Management
 export const getTaskManagementExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getTaskManagementExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;

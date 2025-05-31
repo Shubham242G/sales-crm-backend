@@ -12,12 +12,15 @@ import {
   useUpdateTaskManagementById,
   usedeleteTaskManagementById,
   useTaskManagement,
+  getTaskManagementExcel,
+  addTaskManagementExcel,
 } from "@/services/tastManagement.service";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { getAuth } from "@/utils/auth";
 import { io } from "socket.io-client";
 import { Switch } from "@mui/material";
+import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
 
 function TaskManagement() {
   const navigate = useNavigate();
@@ -377,11 +380,18 @@ function TaskManagement() {
       "Reassign": true,
     });
   };
+  const [tickRows, setTickRows] = useState([]);
+
+  const handleChange = ({ selectedRows }: any) => {
+    // You can set state or dispatch with something like Redux so we can use the retrieved data
+    console.log("Selected Rows: ", selectedRows);
+    setTickRows(selectedRows.map((row: any) => row._id));
+  };
 
 
   return (
     <>
-      <div className="container px-6">
+      {/* <div className="container px-6">
         <div className="bg-white table_container rounded-xl shadow-xl p-6 -mt-5">
           <div className="search_boxes flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-800">
@@ -390,7 +400,7 @@ function TaskManagement() {
 
             <div className="flex items-center justify-start gap-2">
               {/* Search Box */}
-              <div className="w-full flex items-center ">
+              {/* <div className="w-full flex items-center ">
                 <input
                   type="search"
                   onChange={(e) => setQuery(e.target.value)}
@@ -408,12 +418,12 @@ function TaskManagement() {
                   <FaColumns /> Columns
                 </button>
                 {showColumnSelector && <ColumnSelector />}
-              </div>
+              </div> */}
 
               {/* <button className="flex items-center gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300">
                 <FaFilter /> Filter
               </button> */}
-
+{/* 
               {canCreate && (
                 <button
                   onClick={() => navigate("/add-TaskManagement")}
@@ -438,7 +448,29 @@ function TaskManagement() {
             isServerPropsDisabled={false}
           />
         </div>
-      </div>
+      </div> */} 
+
+        <NewTable
+                data={TaskManagementData.data}
+                columns={filteredColumns}
+                loading={false}
+                totalRows={TaskManagementData?.total}
+                onChangeRowsPerPage={setPageSize}
+                onChangePage={setPageIndex}
+                page={pageIndex}
+                rowsPerPageText={pageSize}
+                isServerPropsDisabled={false}
+              //new fields
+              TableName={" My Tasks List"}
+              TableGetAllFunction={useTaskManagement}
+              ExcelExportFunction={getTaskManagementExcel }
+              TableAddExcelFunction={addTaskManagementExcel}
+              RouteName={"Task Management"}
+              AddButtonRouteName={"/add-TaskManagement"}
+              AddButtonName={"New TaskManagement"}
+              placeholderSearch={"Search Task"}
+            />
+      
     </>
   );
 }

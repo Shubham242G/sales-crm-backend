@@ -90,6 +90,9 @@ import VendorPurchaseBillView from "@/pages/Sales/vendorPurchaseBillView";
 import VendorPurchaseBillSingle from "@/pages/Sales/vendorPurchaseBillSingle";
 import LeadManagement from "@/pages/Admin/leadManagement";
 import LeadManagementEdit from "@/pages/Admin/leadManagementEdit";
+import TaskManagement from "@/pages/TaskManagement/TaskManagement";
+
+
 // import CalendarView from "@/pages/Calendar/CalendarView";
 
 export default function AuthorizedRoutes() {
@@ -228,7 +231,7 @@ export default function AuthorizedRoutes() {
             path="/DailyActivityReport"
             element={<DailyActivityReport />}
           ></Route>
-          {/* <Route path="/TaskManagement" element={<TaskManagement />}></Route> */}
+          <Route path="/TaskManagement" element={<TaskManagement />}></Route>
           <Route path="/MyTask" element={<MyTask />}></Route>
           <Route
             path="/add-TaskManagement"
