@@ -798,12 +798,12 @@ const AddCustomer = () => {
   ];
 
   const countryOptions = [
-    {value: "IN - India", label: "IN - India"},
+    { value: "IN - India", label: "IN - India" },
     { value: "US - United States", label: "US - United States" },
     { value: "CA - Canada", label: "CA - Canada" },
     { value: "GB - United Kingdom", label: "GB - United Kingdom" },
     { value: "AU - Australia", label: "AU - Australia" },
-    
+
     { value: "CN - China", label: "CN - China" },
     { value: "JP - Japan", label: "JP - Japan" },
     { value: "DE - Germany", label: "DE - Germany" },
@@ -1073,7 +1073,7 @@ const AddCustomer = () => {
                           onChange={(e) =>
                             setFormData({
                               ...formData,
-                              phone:e.target.value.slice(0, 10),
+                              phone: e.target.value.slice(0, 10),
                             })
                           }
                           placeholder="Work Phone"
@@ -1257,22 +1257,22 @@ const AddCustomer = () => {
                             UIN Number:
                           </label>
                           <div className="w-[250px] ">
-                          <input
-                            type="text"
-                            value={formData.uinNumber}
-                            onChange={(e) => {
-                              const value = e.target.value.toUpperCase();
-                              if (value.length <= 15) {
-                                setFormData({
-                                  ...formData,
-                                  uinNumber: value,
-                                });
-                              }
-                            }}
-                            className="w-full border border-gray-300 rounded-md p-1.5 text-sm"
-                            placeholder="Enter UIN Number"
-                            pattern="[A-Z]{0,15}"
-                          />
+                            <input
+                              type="text"
+                              value={formData.uinNumber}
+                              onChange={(e) => {
+                                const value = e.target.value.toUpperCase();
+                                if (value.length <= 15) {
+                                  setFormData({
+                                    ...formData,
+                                    uinNumber: value,
+                                  });
+                                }
+                              }}
+                              className="w-full border border-gray-300 rounded-md p-1.5 text-sm"
+                              placeholder="Enter UIN Number"
+                              pattern="[A-Z]{0,15}"
+                            />
                           </div>
                         </div>
 
@@ -1300,7 +1300,7 @@ const AddCustomer = () => {
                                   </option>
                                 ))}
                               </select>
-                              
+
                             </div>
                           </div>
                         </div>
@@ -2011,9 +2011,9 @@ const AddCustomer = () => {
                     )}
 
                     {activeTab === "Address" && (
-                      <div className=" w-[400px] flex">
+                      <div className=" w-[full] flex">
                         {/* Billing Address */}
-                        <div className="w-[400px] ">
+                        <div className="w-[full] ">
                           <h2 className="text-2xl font-bold mb-6">
                             Billing Address
                           </h2>
@@ -2035,7 +2035,7 @@ const AddCustomer = () => {
                             />
                           </div> */}
                           {/* Country / Region */}
-                             {/* Shipping Country / Region */}
+                          {/* Shipping Country / Region */}
                           <div className="col-span-2">
                             <div className="flex items-center  ">
                               <span className="min-w-32 mr-6 text-sm font-medium text-gray-700">
@@ -2243,51 +2243,24 @@ const AddCustomer = () => {
                               <span className="min-w-32 -mr-1 text-sm font-medium text-gray-700">
                                 State:
                               </span>
-                            
-                              <Autocomplete
-                                disablePortal
-                                options={stateOptions}
-                                sx={{ width: 600 }}
-                                value={
-                                  stateOptions.find(
-                                    (option) => option.value === formData.state
-                                  ) || null
-                                }
-                                onChange={(event, newValue) => {
+
+                              <select
+                                value={formData.state}
+                                onChange={(event: any) => {
                                   setFormData({
                                     ...formData,
-                                    state: newValue?.value || "",
+                                    state: event.target.value,
                                   });
                                 }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label="State"
-                                    InputProps={{
-                                      ...params.InputProps,
-                                      style: { height: "32px" },
-                                    }}
-                                    sx={{
-                                      "& .MuiInputBase-root": {
-                                        height: "40px",
-                                      },
-                                      "& .MuiInputLabel-root": {
-                                        transform:
-                                          "translate(14px, 10px) scale(1)",
-                                        "&.MuiInputLabel-shrink": {
-                                          transform:
-                                            "translate(14px, -9px) scale(0.75)",
-                                        },
-                                      },
-                                      "& .MuiInputLabel-root.Mui-focused": {
-                                        transform:
-                                          "translate(14px, -9px) scale(0.75)",
-                                      },
-                                    }}
-                                  />
-                                )}
-                                className="flex-1 rounded-md p-1 text-sm"
-                              />
+                                className="flex-1 rounded-md  text-sm h-8 ml-1 p-1 border border-gray-300 "
+                              >
+                                <option value="" >Select State</option>
+                                {stateOptions.map((option) => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
                           </div>
                           {/* Pin Code */}
@@ -2299,7 +2272,7 @@ const AddCustomer = () => {
                               <input
                                 type="number"
                                 min={0}
-                                 maxLength={6}
+                                maxLength={6}
                                 value={formData.pinCode}
                                 onChange={(e) => {
                                   const value = e.target.value.slice(0, 6);
@@ -2359,8 +2332,8 @@ const AddCustomer = () => {
                         </div>
 
                         {/* Shipping Address */}
-                        <div className="w-[400px] ml-40">
-                          <div className=" mb-6  w-[400px] flex justify-between">
+                        <div className="w-[450px] ml-40">
+                          <div className=" mb-6  w-[450px] flex justify-between">
                             <h2 className="text-2xl font-bold">
                               Shipping Address
                             </h2>
@@ -2704,7 +2677,7 @@ const AddCustomer = () => {
                                   TN - Tamil Nadu
                                 </option>
                               </select> */}
-                              <Autocomplete
+                              {/* <Autocomplete
                                 disablePortal
                                 options={stateOptions}
                                 sx={{ width: 600 }}
@@ -2748,7 +2721,23 @@ const AddCustomer = () => {
                                   />
                                 )}
                                 className="flex-1 rounded-md p-1 text-sm"
-                              />
+                              /> */}<select
+                                value={formData.shippingState}
+                                onChange={(event) => {
+                                  setFormData({
+                                    ...formData,
+                                    state: event.target.value,
+                                  });
+                                }}
+                                className="flex-1 rounded-md p-1 text-sm h-8 ml-1 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              >
+                                <option value="">Select State</option>
+                                {stateOptions.map((option) => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
                           </div>
                           {/* Shipping Pin Code */}
@@ -2765,7 +2754,7 @@ const AddCustomer = () => {
                                 onChange={(e) =>
                                   setFormData({
                                     ...formData,
-                                    shippingPinCode:e.target.value.slice(0, 6),
+                                    shippingPinCode: e.target.value.slice(0, 6),
                                   })
                                 }
                                 className="w-full border border-gray-300 rounded-md p-1 text-sm"
@@ -2956,7 +2945,7 @@ const AddCustomer = () => {
                                     {/* Mobile Phone */}
                                     <td className="px-4 py-2 border-b">
                                       <input
-                                       type="number"
+                                        type="number"
                                         maxLength={10}
                                         min={0}
                                         value={person.mobilePhone}

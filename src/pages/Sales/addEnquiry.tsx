@@ -1714,6 +1714,8 @@ const AddEnquiryForm = () => {
                       name="banquetTime"
                       value={banquetTime}
                       onChange={(e) => setBanquetTime(e.target.value)}
+                      min={moment(banquetDate).format("HH:mm:ss")}
+                      onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                       className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>

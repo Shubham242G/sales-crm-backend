@@ -306,7 +306,7 @@ const AddNewLead = () => {
       <div className="flex items-center gap-6 mb-4">
      <label className=" text-sm font-medium text-[#344054] mb-2 flex items-center gap-1">
         Primary Contact
-        <span className="text-gray-400 text-xs">ⓘ</span>
+       
       </label>
 
       <div className="flex gap-4">

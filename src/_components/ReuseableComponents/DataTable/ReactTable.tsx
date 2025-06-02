@@ -174,17 +174,30 @@ const customStyles: any = {
   },
 
   pagination: {
+     pagination: {
     style: {
-      color: '#475467',
-      borderTop: '1px solid #EAECF0',
-      borderBottomLeftRadius: "8px",
-      borderBottomRightRadius: "8px",
-      backgroundColor: "#FFFFFF",
-      boxShadow: "0px -1px 8px rgba(16, 24, 40, 0.10)",
-      fontFamily: "'Inter', sans-serif",
-     
+      borderTop: '1px solid #e5e7eb',
+      // padding: '10px 15px',
+      justifyContent: 'center',
+    },
+    pageButtonsStyle: {
+      borderRadius: '5px',
+      cursor: 'pointer',
+      padding: '5px 10px',
+      margin: '0 4px',
+      fontSize: '14px',
+      color: '#fff',
+      backgroundColor: '#f97316', // Tailwind orange-500
+      '&:disabled': {
+        cursor: 'not-allowed',
+        opacity: 0.5,
+      },
+      '&:hover:not(:disabled)': {
+        backgroundColor: '#ea580c', // Tailwind orange-600
+      },
     },
   },
+  },  
 };
 
 export const ReactTable = ({

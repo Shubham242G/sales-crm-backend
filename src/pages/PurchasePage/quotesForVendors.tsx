@@ -19,6 +19,7 @@ import { Switch } from "@mui/material";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { FiEdit } from "react-icons/fi";
 import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
+import moment from "moment";
 
 function CustomerLedger() {
   const [loading, setLoading] = useState(false);
@@ -125,7 +126,7 @@ function CustomerLedger() {
     },
     {
       name: "Date Received",
-      selector: (row: any) => <h6>{row?.receivedDate}</h6>,
+      selector: (row: any) => <h6>{moment(row?.receivedDate).format("YYYY, MMMM, DD")}</h6>,
       width: "150px",
     },
     // {

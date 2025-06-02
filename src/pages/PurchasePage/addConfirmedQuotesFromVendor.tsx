@@ -1446,11 +1446,11 @@ const AddConfirmedQuotesFromVendor = () => {
                   <th className=" px-3 py-1.5 text-left text-sm font-semibold text-stone-800 border-b">
                     Checks
                   </th>
-                  <th className=" px-3 py-1.5 text-left text-sm font-semibold text-stone-800 border-b">
+                  <th className=" px-3 py-1.5 text-center text-sm font-semibold text-stone-800 border-b">
                     Checkbox
                   </th>
                   {formData.checklist.length > 1 && (
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-stone-800 border-b">
                         Actions
                       </th>
                     )}

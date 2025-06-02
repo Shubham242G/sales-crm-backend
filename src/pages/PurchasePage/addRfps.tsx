@@ -250,9 +250,11 @@ const AddRfpsForm = () => {
                     name="eventDates"
                     value={moment(el.startDate).format("YYYY-MM-DD") || el.startDate || ""}
                     onChange={(e) => handleInputChangeEventDates(e, index, "start")}
-                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                    // onClick={(e) => (e.target as HTMLInputElement).showPicker()}
                     type="date"
                     className="w-[20%] border border-gray-300 text-gray-400 text-sm  rounded-md p-1.5"
+                    disabled
+
                   />
                 </div>
               ))}

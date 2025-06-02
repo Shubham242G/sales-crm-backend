@@ -232,7 +232,7 @@ export default function EnquiryLIst() {
       width: "150px",
     },
     {
-      name: "Loaction",
+      name: "Location",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
           <h6>{row.city}</h6>
@@ -244,8 +244,8 @@ export default function EnquiryLIst() {
       name: "Level of Enquiry",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col font-bold p-2 rounded-md  ${row.levelOfEnquiry === "moderate"
-            ? "bg-yellow-300 text-white-100"
+          className={`flex gap-1 flex-col font-bold p-1.5 rounded-md  ${row.levelOfEnquiry === "moderate"
+            ? "bg-yellow-300 text-white-100  "
             : row.levelOfEnquiry === "Not Urgent"
               ? "bg-green-400 text-white-600"
               : row.levelOfEnquiry === "urgent" && "bg-red-300 text-red-600"
@@ -260,7 +260,7 @@ export default function EnquiryLIst() {
       name: "Check-In",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{moment(row.checkIn).format("YYYY, MMMM, DD")}</h6>
+          <h6>{moment(row.checkIn).format("YYYY, MMMM DD")}</h6>
         </div>
       ),
       width: "150px",
@@ -269,7 +269,7 @@ export default function EnquiryLIst() {
       name: "Check-Out",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{moment(row.checkOut).format("YYYY, MMMM, DD")}</h6>
+          <h6>{moment(row.checkOut).format("YYYY, MMMM DD")}</h6>
         </div>
       ),
       width: "150px",
@@ -394,7 +394,7 @@ export default function EnquiryLIst() {
   }>({
     "Customer Name": true,
     "Enquiry Type": true,
-    Loaction: true,
+    Location: true,
     "Level of Enquiry": true,
     "Check-In": true,
     "Check-Out": true,
@@ -494,7 +494,7 @@ export default function EnquiryLIst() {
     setVisibleColumns({
       "Customer Name": true,
       "Enquiry Type": true,
-      Loaction: true,
+      Location: true,
       "Level of Enquiry": true,
       "Check-In": true,
       "Check-Out": true,

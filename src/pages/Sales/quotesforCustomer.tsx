@@ -114,7 +114,7 @@ function QuotesForCustomer() {
             ))}
         </div>
       ),
-      width: "16%",
+      width: "120px",
 
 
     

@@ -408,7 +408,7 @@ const [tickRows, setTickRows] = useState([]);
         ExcelExportFunction={getDepartmentExcel}
         TableAddExcelFunction={addDepartmentExcel}
         RouteName={"Add Department"}
-        AddButtonRouteName={"departmentMaster"}
+        AddButtonRouteName={"/departmentMaster"}
         AddButtonName={"New  Department"}
         placeholderSearch={"Search name of Department"}
       /> 

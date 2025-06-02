@@ -284,8 +284,13 @@ input::placeholder, select::placeholder,select, textarea::placeholder {
 
 .rdt_Pagination{
   min-height: 50px !important;
+  
 }
 
+.sc-bMTdWJ svg{
+  margin-top: 6px !important;
+  width: 16px !important;
+}
 input:-webkit-autofill {
   box-shadow: 0 0 0px 1000px white inset !important;
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;

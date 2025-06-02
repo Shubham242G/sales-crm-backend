@@ -430,7 +430,7 @@ const [tickRows, setTickRows] = useState([]);
         ExcelExportFunction={getHotelExcel}
         TableAddExcelFunction={addHotelExcel}
         RouteName={"Add Hotel"}
-        AddButtonRouteName={"hotel"}
+        AddButtonRouteName={"/hotel"}
         AddButtonName={"New hotel"}
         placeholderSearch={"Search Hotel Name"}
       /> 
