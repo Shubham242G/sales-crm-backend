@@ -327,7 +327,7 @@ export default function EnquiryLIst() {
             className="text-black-400 text-lg flex items-center"
           ></Link>
           <button
-            className="text-black-400 text-lg"
+            className="text-black-400 text-sm"
             onClick={() => handleConvertToRfp(row._id)}
           >
             <SiConvertio />

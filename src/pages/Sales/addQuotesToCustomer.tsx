@@ -89,7 +89,7 @@ const AddQuotesToCustomerForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const obj = { ...formData };
+      const obj = { ...formData, leadId: formData.leadId };
 
       if (id) {
         const { data: res } = await updateQuotesToCustomer({ id, obj });

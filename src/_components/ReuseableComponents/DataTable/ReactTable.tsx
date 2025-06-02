@@ -163,6 +163,9 @@ const customStyles: any = {
       color: "#000000",
       height: "40px", 
       textAlign: 'center',
+        whiteSpace: 'nowrap',
+        // overflow: 'hidden',
+        textOverflow: 'ellipsis',
       h6: {
         whiteSpace: "normal",
       },

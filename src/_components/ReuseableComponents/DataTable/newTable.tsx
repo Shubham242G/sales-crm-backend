@@ -175,27 +175,33 @@ const NewTable = (props: any) => {
 
     const columnsWithDynamicWidth = columnsArray.map(column => {
       const width =
-        visibleColumnsCount < 7
-          ? `${1200 / visibleColumnsCount}px`
-          : column.name === "Email" || column.name === "Company Name"
-            ? "260px"
-            : column.name === "Vendor Name"
-              ? "180px"
-              : column.name === "Mobile Number"
+        visibleColumnsCount < 10
+          ? `${1800 / visibleColumnsCount}px`
+          : visibleColumnsCount >= 7
+            ? `${1200 / visibleColumnsCount}px`
+            : visibleColumnsCount < 7 || visibleColumnsCount <= 10
+            ? `${2000 / visibleColumnsCount}px`
+            : column.name === "Email" || column.name === "Company Name"
+              ? "260px"
+              : column.name === "Vendor Name"
                 ? "180px"
-                : column.name === "Services"
-                  ? "280px"
-                  : column.name === "Actions"
-                    ? "100px"
-                    : column.name === "Status" || column.name === "Service"
-                      ? "210px"
-                      : column.name === "Display Name"
-                        ? "150px"
-                        : column.name === "Service"
-                          ? "380px"
-                          : column.name === "Name"
-                            ? "120px"
-                            : `${1200 / visibleColumnsCount}px`;
+                : column.name === "Mobile Number"
+                  ? "180px"
+                  : column.name === "Services"
+                    ? "280px"
+                    : column.name === "Actions"
+                      ? "120px"
+                      : column.name === "Status" 
+                        ? "210px"
+                        :column.name === "Service"
+                          ? "min(310px, 100%)"
+                          : column.name === "Display Name"
+                            ? "150px"
+                              : column.name === "Name"
+                                ? "120px"
+                                : column.name === "Quotes Id"
+                                  ? "120px"
+                                : `${1200 / visibleColumnsCount}px`;
 
 
       return { ...column, width };

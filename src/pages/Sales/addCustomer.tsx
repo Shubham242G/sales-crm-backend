@@ -1067,12 +1067,13 @@ const AddCustomer = () => {
                       </div>
                       <div className="w-44">
                         <input
-                          type="tel"
+                          type="number"
+                          min={0}
                           value={formData?.phone}
                           onChange={(e) =>
                             setFormData({
                               ...formData,
-                              phone: e.target.value,
+                              phone:e.target.value.slice(0, 10),
                             })
                           }
                           placeholder="Work Phone"
@@ -1098,10 +1099,12 @@ const AddCustomer = () => {
                       </div>
                       <div className="w-48">
                         <input
-                          type="tel"
+                          type="number"
+                          min={0}
+                          maxLength={10}
                           value={formData.mobile}
                           onChange={(e) =>
-                            setFormData({ ...formData, mobile: e.target.value })
+                            setFormData({ ...formData, mobile: e.target.value.slice(0, 10) })
                           }
                           placeholder="Mobile"
                           className="w-full border border-gray-300 rounded-md p-1 pl-10 text-sm"
