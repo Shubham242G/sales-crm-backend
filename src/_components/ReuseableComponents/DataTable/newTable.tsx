@@ -163,59 +163,70 @@ const NewTable = (props: any) => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // const visibleColumnsArray = columns.filter(
-  //   (column: any) => visibleColumns[column.name as keyof typeof visibleColumns]
-  // );
+  const visibleColumnsArray = columns.filter(
+    (column: any) => visibleColumns[column.name as keyof typeof visibleColumns]
+  );
 
   const [isOpen, setIsOpen] = useState(false);
   const calculateDynamicWidths = (columnsArray: any[]) => {
-    const visibleColumnsCount = columnsArray.length;
+    const visibleColumnsCount = visibleColumnsArray;
 
-    if (visibleColumnsCount === 0) return columnsArray;
+    if (visibleColumnsCount === 0) return visibleColumnsArray;
 
-    const columnsWithDynamicWidth = columnsArray.map(column => {
+    interface TableColumn {
+      name: string;
+      type?: string;
+      [key: string]: any;
+    }
+
+    type TableColumnWithWidth = TableColumn & { width: string };
+
+    const columnsWithDynamicWidth: TableColumnWithWidth[] = visibleColumnsArray.map((column: TableColumn): TableColumnWithWidth => {
+      console.log(column, "column");
       const width =
-        visibleColumnsCount < 10
-          ? `${1800 / visibleColumnsCount}px`
-          : visibleColumnsCount >= 7
-            ? `${1200 / visibleColumnsCount}px`
-            : visibleColumnsCount < 7 || visibleColumnsCount <= 10
-            ? `${2000 / visibleColumnsCount}px`
-            : column.name === "Email" || column.name === "Company Name"
-              ? "260px"
-              : column.name === "Vendor Name"
-                ? "180px"
-                : column.name === "Mobile Number"
+      column.name === "Contact Name" ? "180px"
+        : column.name === "Email" || column.name === "Company Name"
+        ? "260px"
+        : column.name === "Vendor Name"
+          ? "180px"
+          : column.name === "Mobile Number"
+          ? "180px"
+          : column.name === "Services"
+            ? "280px"
+            : column.name === "Actions"
+            ? "120px"
+            : column.name === "Status"
+              ? "210px"
+              : column.name === "Service"
+              ? "min(310px, 100%)"
+              : column.name === "Display Name"
+                ? "150px"
+                : column.name === "Name"
+                ? "120px"
+                : column.name === "Quotes Id"
+                  ? "120px"
+                  : column.name === "Loaction"
                   ? "180px"
-                  : column.name === "Services"
-                    ? "280px"
-                    : column.name === "Actions"
-                      ? "120px"
-                      : column.name === "Status" 
-                        ? "210px"
-                        :column.name === "Service"
-                          ? "min(310px, 100%)"
-                          : column.name === "Display Name"
-                            ? "150px"
-                              : column.name === "Name"
-                                ? "120px"
-                                : column.name === "Quotes Id"
-                                  ? "120px"
-                                : `${1200 / visibleColumnsCount}px`;
-
-
+                  : visibleColumnsArray.length < 10
+                    ? `${1800 / visibleColumnsArray.length}px`
+                    : visibleColumnsArray.length >= 7
+                    ? `${1200 / visibleColumnsArray.length}px`
+                    : visibleColumnsArray.length < 7 || visibleColumnsArray.length <= 10
+                      ? `${2000 / visibleColumnsArray.length}px`
+                      : `${1200 / visibleColumnsArray.length}px`;
       return { ...column, width };
     });
 
     console.log(columnsWithDynamicWidth, "check the column width")
 
     return columnsWithDynamicWidth;
+
   };
-  const visibleColumnsArray = columns.filter((column: any) =>
-    visibleColumns[column.name as keyof typeof visibleColumns]
-  );
+  // const visibleColumnsArray = columns.filter((column: any) =>
+  //   visibleColumns[column.name as keyof typeof visibleColumns]
+  // );
   // Apply dynamic widths to visible columns
-  const filteredColumns = calculateDynamicWidths(visibleColumnsArray);
+  const filteredColumns = calculateDynamicWidths(columns);
 
   const handleModalOpen = () => {
     setIsOpen(true);
