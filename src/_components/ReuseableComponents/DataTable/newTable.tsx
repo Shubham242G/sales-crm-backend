@@ -50,7 +50,7 @@ const NewTable = (props: any) => {
     placeholderSearch = "Search Here",
 
     isImport = false,
-    isSync = false,
+
     syncFunction
   } = props;
 
@@ -421,7 +421,7 @@ const NewTable = (props: any) => {
   //   }
   // };
 
-  const { mutateAsync: sync } = isSync ? syncFunction() : { mutateAsync: async () => { } };
+  const { mutateAsync: sync } = syncFunction ? syncFunction() : "";
 
 
   const handleSyncInvoices = async () => {
@@ -485,6 +485,16 @@ const NewTable = (props: any) => {
           >
             Advanced Search
           </button>
+
+
+          {syncFunction && <button
+            onClick={handleSyncInvoices}
+            className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
+
+          >
+            <FaSync />
+            <span className="w-[100px]">{"Sync Invoices"}</span>
+          </button>}
 
           {/* Assign Lead */}
           {TableName === "Leads List" && (
@@ -761,6 +771,7 @@ const NewTable = (props: any) => {
           </div>
         </>
       )}
+
       {/* Loading Overlay for Export */}
       {isExporting && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -844,14 +855,7 @@ const NewTable = (props: any) => {
       )}
 
 
-      {isSync && <button
-        onClick={handleSyncInvoices}
-        className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
 
-      >
-        <FaSync />
-        <span className="w-[100px]">{"Sync Invoices"}</span>
-      </button>}
 
       {isOpenAssignOps && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex z-[100] justify-center items-center ">

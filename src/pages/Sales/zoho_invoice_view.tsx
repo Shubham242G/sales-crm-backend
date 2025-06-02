@@ -34,25 +34,25 @@ function ZohoInvoiceView() {
     const [dateRange, setDateRange] = useState<DateRange>({ fromDate: "", toDate: "" });
     const [selectedStatus, setSelectedStatus] = useState("");
     const [tableData, setTableData] = useState<any[]>([]);
-    
-const [showExportCustomize, setShowExportCustomize] = useState(false);
-const [exportFields, setExportFields] = useState<string[]>([
-    "invoice_number",
-    "customer_name",
-    "date",
-    "status",
-    "total",
-    "balance",
-    "currency_code"
-  ]);
- 
+
+    const [showExportCustomize, setShowExportCustomize] = useState(false);
+    const [exportFields, setExportFields] = useState<string[]>([
+        "invoice_number",
+        "customer_name",
+        "date",
+        "status",
+        "total",
+        "balance",
+        "currency_code"
+    ]);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [isExporting, setIsExporting] = useState(false);
 
     // Export related states
     const [showExportOptions, setShowExportOptions] = useState(false);
-   
+
     const [searchQuery, setSearchQuery] = useState("");
     const [advancedSearchParams, setAdvancedSearchParams] = useState("");
     const [isOpen, setIsOpen] = useState(false);
@@ -77,25 +77,25 @@ const [exportFields, setExportFields] = useState<string[]>([
     // Extract the actual data array from the API response
     const invoiceData = useMemo(() => {
         if (!syncDataGetAll) return [];
-        
+
         // Handle different possible response structures
         if (Array.isArray(syncDataGetAll)) {
             return syncDataGetAll;
         }
-        
+
         // Check for common API response patterns
         if (syncDataGetAll.data && Array.isArray(syncDataGetAll.data)) {
             return syncDataGetAll.data;
         }
-        
+
         if (syncDataGetAll.data && Array.isArray(syncDataGetAll.data)) {
             return syncDataGetAll.data;
         }
-        
+
         if (syncDataGetAll.data && Array.isArray(syncDataGetAll.data)) {
             return syncDataGetAll.data;
         }
-        
+
         // If none of the above, return empty array to prevent errors
         console.warn('Unexpected data structure:', syncDataGetAll);
         return [];
@@ -103,20 +103,20 @@ const [exportFields, setExportFields] = useState<string[]>([
 
     const totalRows = useMemo(() => {
         if (!syncDataGetAll) return 0;
-        
+
         // Handle different possible response structures for total count
         if (typeof syncDataGetAll.total === 'number') {
             return syncDataGetAll.total;
         }
-        
+
         if (typeof syncDataGetAll.total === 'number') {
             return syncDataGetAll.total;
         }
-        
+
         if (typeof syncDataGetAll.total === 'number') {
             return syncDataGetAll.total;
         }
-        
+
         // Fallback to array length
         return invoiceData.length;
     }, [syncDataGetAll, invoiceData]);
@@ -190,46 +190,46 @@ const [exportFields, setExportFields] = useState<string[]>([
     // Handle export functionality
     const handleExportInvoices = async (format: string = "xlsx", fields?: string[]) => {
         try {
-          setIsExporting(true);
-          
-          // Prepare export parameters
-          const exportParams = {
-            ...(searchQuery && { query: searchQuery }),
-            ...(advancedSearchParams && { advancedSearch: advancedSearchParams }),
-            ...(selectedStatus && { status: selectedStatus }),
-            format,
-            ...(fields && { fields }), // Include selected fields if provided
-          };
-      
-          const { data: response } = await getInvoicesExcel(exportParams);
-      
-          // Create download link
-          const url = generateFilePath("/" + response.filename);
-          const link = document.createElement("a");
-          link.href = url;
-      
-          // Set file name with appropriate extension
-          const fileExtension = 
-            format === "csv" ? "csv" : 
-            format === "pdf" ? "pdf" : "xlsx";
-          const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-          link.setAttribute(
-            "download",
-            `invoices_export_${timestamp}.${fileExtension}`
-          );
-      
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-      
-          toastSuccess("Invoices exported successfully!");
+            setIsExporting(true);
+
+            // Prepare export parameters
+            const exportParams = {
+                ...(searchQuery && { query: searchQuery }),
+                ...(advancedSearchParams && { advancedSearch: advancedSearchParams }),
+                ...(selectedStatus && { status: selectedStatus }),
+                format,
+                ...(fields && { fields }), // Include selected fields if provided
+            };
+
+            const { data: response } = await getInvoicesExcel(exportParams);
+
+            // Create download link
+            const url = generateFilePath("/" + response.filename);
+            const link = document.createElement("a");
+            link.href = url;
+
+            // Set file name with appropriate extension
+            const fileExtension =
+                format === "csv" ? "csv" :
+                    format === "pdf" ? "pdf" : "xlsx";
+            const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+            link.setAttribute(
+                "download",
+                `invoices_export_${timestamp}.${fileExtension}`
+            );
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            toastSuccess("Invoices exported successfully!");
         } catch (error) {
-          toastError("Failed to export invoices. Please try again.");
+            toastError("Failed to export invoices. Please try again.");
         } finally {
-          setIsExporting(false);
-          setShowExportOptions(false);
+            setIsExporting(false);
+            setShowExportOptions(false);
         }
-      };
+    };
 
     const handleModalOpen = () => {
         setIsOpen(true);
@@ -315,7 +315,7 @@ const [exportFields, setExportFields] = useState<string[]>([
     ];
 
     const [showColumnSelector, setShowColumnSelector] = useState(false);
-    
+
     const [visibleColumns, setVisibleColumns] = useState({
         "Invoice #": true,
         "Customer": true,
@@ -426,170 +426,170 @@ const [exportFields, setExportFields] = useState<string[]>([
     };
 
     const [tickRows, setTickRows] = useState([]);
-    
-      const handleChange = ({ selectedRows }: any) => {
+
+    const handleChange = ({ selectedRows }: any) => {
         // You can set state or dispatch with something like Redux so we can use the retrieved data
         console.log("Selected Rows: ", selectedRows);
         setTickRows(selectedRows.map((row: any) => row._id));
-      };
-    
+    };
+
     return (
-//         <div className=" rounded-xl  mt-10 p-6">
-//             <div className="flex justify-between items-center ">
-//                 <h2 className="text-xl  font-semibold text-gray-800">
-//                     Zoho Invoice List
-//                 </h2>
+        //         <div className=" rounded-xl  mt-10 p-6">
+        //             <div className="flex justify-between items-center ">
+        //                 <h2 className="text-xl  font-semibold text-gray-800">
+        //                     Zoho Invoice List
+        //                 </h2>
 
-//                 <div className="flex items-center  gap-2">
-//                     <input
-//                         type="search"
-//                         placeholder="Search customer..."
-//                         onChange={(e) => setQuery(e.target.value)}
-//                         className=" px-3 py-1.5 text-sm rounded-md text-gray-700 border w-[200px] border-gray-300"
-//                     />
-//                     <div className="relative">
-//                         <button
-//                             className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-//                             onClick={() => setShowColumnSelector(!showColumnSelector)}
-//                         >
-//                             <FaColumns /> Columns
-//                         </button>
-//                         {showColumnSelector && <ColumnSelector />}
-//                     </div>
+        //                 <div className="flex items-center  gap-2">
+        //                     <input
+        //                         type="search"
+        //                         placeholder="Search customer..."
+        //                         onChange={(e) => setQuery(e.target.value)}
+        //                         className=" px-3 py-1.5 text-sm rounded-md text-gray-700 border w-[200px] border-gray-300"
+        //                     />
+        //                     <div className="relative">
+        //                         <button
+        //                             className="flex items-center gap-1 text-sm  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+        //                             onClick={() => setShowColumnSelector(!showColumnSelector)}
+        //                         >
+        //                             <FaColumns /> Columns
+        //                         </button>
+        //                         {showColumnSelector && <ColumnSelector />}
+        //                     </div>
 
-//                     <select
-//                         className="flex items-center gap-1 px-3 py-2 rounded-md text-gray-700 border border-gray-300"
-//                         value={selectedStatus}
-//                         onChange={(e) => setSelectedStatus(e.target.value)}
+        //                     <select
+        //                         className="flex items-center gap-1 px-3 py-2 rounded-md text-gray-700 border border-gray-300"
+        //                         value={selectedStatus}
+        //                         onChange={(e) => setSelectedStatus(e.target.value)}
+        //                     >
+        //                         <option value="">All Status</option>
+        //                         <option value="sent">Sent</option>
+        //                         <option value="paid">Paid</option>
+        //                         <option value="overdue">Overdue</option>
+        //                         <option value="draft">Draft</option>
+        //                         <option value="partially_paid">Partially Paid</option>
+        //                     </select>
+
+//                     <button
+//                         onClick={handleSyncInvoices}
+//                         className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
+//                         disabled={syncInvoicesMutation.isPending}
 //                     >
-//                         <option value="">All Status</option>
-//                         <option value="sent">Sent</option>
-//                         <option value="paid">Paid</option>
-//                         <option value="overdue">Overdue</option>
-//                         <option value="draft">Draft</option>
-//                         <option value="partially_paid">Partially Paid</option>
-//                     </select>
+//                         <FaSync />
+//                         <span className="w-[100px]">{syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}</span>
+//                     </button>
 
-                    // <button
-                    //     onClick={handleSyncInvoices}
-                    //     className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
-                    //     disabled={syncInvoicesMutation.isPending}
-                    // >
-                    //     <FaSync/>
-                    //     <span className="w-[100px]">{syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}</span>
-                    // </button>
+        //                     <div className="relative flex items-center " id="exportDropdown">
+        //                         <button
+        //                             className={`flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
+        //                             onClick={() => !isExporting && setShowExportOptions(!showExportOptions)}
+        //                             disabled={isExporting}
+        //                         >
+        //                             Export
+        //                             <FaFileExport />
+        //                             {showExportOptions && (
+        //   <div className="absolute z-50 bg-white shadow-lg p-4 rounded-md mt-2 border border-gray-200 right-0 w-72">
+        //     <div className="flex flex-col gap-2">
+        //       <h3 className="font-medium mb-2">Export Options</h3>
 
-//                     <div className="relative flex items-center " id="exportDropdown">
-//                         <button
-//                             className={`flex items-center gap-1 text-sm px-3 py-1.5 rounded-md text-gray-700 border border-gray-300 ${isExporting ? 'opacity-75 cursor-not-allowed' : ''}`}
-//                             onClick={() => !isExporting && setShowExportOptions(!showExportOptions)}
-//                             disabled={isExporting}
-//                         >
-//                             Export
-//                             <FaFileExport />
-//                             {showExportOptions && (
-//   <div className="absolute z-50 bg-white shadow-lg p-4 rounded-md mt-2 border border-gray-200 right-0 w-72">
-//     <div className="flex flex-col gap-2">
-//       <h3 className="font-medium mb-2">Export Options</h3>
-      
-//       <div className="flex gap-2 mb-3">
-//         <button
-//           onClick={() => handleExportInvoices("xlsx")}
-//           className="flex-1 bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-//         >
-//           Excel
-//         </button>
-//         <button
-//           onClick={() => handleExportInvoices("csv")}
-//           className="flex-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-//         >
-//           CSV
-//         </button>
-//         <button
-//           onClick={() => handleExportInvoices("pdf")}
-//           className="flex-1 bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
-//         >
-//           PDF
-//         </button>
-//       </div>
+        //       <div className="flex gap-2 mb-3">
+        //         <button
+        //           onClick={() => handleExportInvoices("xlsx")}
+        //           className="flex-1 bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+        //         >
+        //           Excel
+        //         </button>
+        //         <button
+        //           onClick={() => handleExportInvoices("csv")}
+        //           className="flex-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
+        //         >
+        //           CSV
+        //         </button>
+        //         <button
+        //           onClick={() => handleExportInvoices("pdf")}
+        //           className="flex-1 bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+        //         >
+        //           PDF
+        //         </button>
+        //       </div>
 
-//       <button
-//         onClick={() => setShowExportCustomize(!showExportCustomize)}
-//         className="text-sm text-blue-600 hover:underline flex items-center gap-1"
-//       >
-//         <FaColumns className="text-sm" />
-//         Customize Fields
-//       </button>
+        //       <button
+        //         onClick={() => setShowExportCustomize(!showExportCustomize)}
+        //         className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+        //       >
+        //         <FaColumns className="text-sm" />
+        //         Customize Fields
+        //       </button>
 
-//       {showExportCustomize && (
-//         <div className="mt-2 border-t pt-2">
-//           <div className="flex items-center justify-between mb-2">
-//             <span className="text-sm">Select All</span>
-//             <Switch
-//               checked={exportFields.length === searchFields.length}
-//               onChange={(e) => {
-//                 if (e.target.checked) {
-//                   setExportFields(searchFields.map(field => field.key));
-//                 } else {
-//                   setExportFields([]);
-//                 }
-//               }}
-//               size="small"
-//             />
-//           </div>
-          
-//           <div className="max-h-40 overflow-y-auto">
-//             {searchFields.map((field) => (
-//               <div key={field.key} className="flex items-center justify-between py-1">
-//                 <span className="text-sm">{field.label}</span>
-//                 <Switch
-//                   checked={exportFields.includes(field.key)}
-//                   onChange={() => {
-//                     if (exportFields.includes(field.key)) {
-//                       setExportFields(exportFields.filter(f => f !== field.key));
-//                     } else {
-//                       setExportFields([...exportFields, field.key]);
-//                     }
-//                   }}
-//                   size="small"
-//                 />
-//               </div>
-//             ))}
-//           </div>
+        //       {showExportCustomize && (
+        //         <div className="mt-2 border-t pt-2">
+        //           <div className="flex items-center justify-between mb-2">
+        //             <span className="text-sm">Select All</span>
+        //             <Switch
+        //               checked={exportFields.length === searchFields.length}
+        //               onChange={(e) => {
+        //                 if (e.target.checked) {
+        //                   setExportFields(searchFields.map(field => field.key));
+        //                 } else {
+        //                   setExportFields([]);
+        //                 }
+        //               }}
+        //               size="small"
+        //             />
+        //           </div>
 
-//           <button
-//             onClick={() => handleExportInvoices("xlsx", exportFields)}
-//             className="mt-2 w-full bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-//           >
-//             Export Selected Fields
-//           </button>
-//         </div>
-//       )}
-//     </div>
-//   </div>
-// )}
+        //           <div className="max-h-40 overflow-y-auto">
+        //             {searchFields.map((field) => (
+        //               <div key={field.key} className="flex items-center justify-between py-1">
+        //                 <span className="text-sm">{field.label}</span>
+        //                 <Switch
+        //                   checked={exportFields.includes(field.key)}
+        //                   onChange={() => {
+        //                     if (exportFields.includes(field.key)) {
+        //                       setExportFields(exportFields.filter(f => f !== field.key));
+        //                     } else {
+        //                       setExportFields([...exportFields, field.key]);
+        //                     }
+        //                   }}
+        //                   size="small"
+        //                 />
+        //               </div>
+        //             ))}
+        //           </div>
 
-//                             <IoMdArrowDropdown className="ml-1 text-sm" />
-//                         </button>
-//                     </div>
-//                 </div>
-//             </div>
+        //           <button
+        //             onClick={() => handleExportInvoices("xlsx", exportFields)}
+        //             className="mt-2 w-full bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+        //           >
+        //             Export Selected Fields
+        //           </button>
+        //         </div>
+        //       )}
+        //     </div>
+        //   </div>
+        // )}
 
-//             {/* <div className="mt-5">
-//                 <ReactTable
-//                     data={invoiceData} // Use the extracted array data
-//                     columns={filteredColumns}
-//                     selectableRows={true}
-//                     loading={isLoading} // Use the actual loading state
-//                     totalRows={totalRows} // Use the extracted total count
-//                     onChangeRowsPerPage={setPageSize}
-//                     onChangePage={setPageIndex}
-//                     page={pageIndex}
-//                     rowsPerPageText={pageSize}
-//                     isServerPropsDisabled={false}
-//                 />
-//             </div> */}
-//         </div>
+        //                             <IoMdArrowDropdown className="ml-1 text-sm" />
+        //                         </button>
+        //                     </div>
+        //                 </div>
+        //             </div>
+
+        //             {/* <div className="mt-5">
+        //                 <ReactTable
+        //                     data={invoiceData} // Use the extracted array data
+        //                     columns={filteredColumns}
+        //                     selectableRows={true}
+        //                     loading={isLoading} // Use the actual loading state
+        //                     totalRows={totalRows} // Use the extracted total count
+        //                     onChangeRowsPerPage={setPageSize}
+        //                     onChangePage={setPageIndex}
+        //                     page={pageIndex}
+        //                     rowsPerPageText={pageSize}
+        //                     isServerPropsDisabled={false}
+        //                 />
+        //             </div> */}
+        //         </div>
 
 
   <NewTable
