@@ -207,12 +207,12 @@ const NewTable = (props: any) => {
                   ? "120px"
                   : column.name === "Loaction"
                   ? "180px"
-                  : visibleColumnsArray.length < 10
-                    ? `${1800 / visibleColumnsArray.length}px`
-                    : visibleColumnsArray.length >= 7
-                    ? `${1200 / visibleColumnsArray.length}px`
-                    : visibleColumnsArray.length < 7 || visibleColumnsArray.length <= 10
-                      ? `${2000 / visibleColumnsArray.length}px`
+                  // : visibleColumnsArray.length < 10
+                  //   ? `${1800 / visibleColumnsArray.length}px`
+                  //   : visibleColumnsArray.length >= 7
+                  //   ? `${1200 / visibleColumnsArray.length}px`
+                  //   : visibleColumnsArray.length < 7 || visibleColumnsArray.length <= 10
+                  //     ? `${2000 / visibleColumnsArray.length}px`
                       : `${1200 / visibleColumnsArray.length}px`;
       return { ...column, width };
     });

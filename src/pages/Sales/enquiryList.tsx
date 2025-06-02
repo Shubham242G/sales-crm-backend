@@ -260,7 +260,7 @@ export default function EnquiryLIst() {
       name: "Check-In",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h5>{moment(row.checkIn).format("YYYY-MM-DD")}</h5>
+          <h6>{moment(row.checkIn).format("YYYY, MMMM, DD")}</h6>
         </div>
       ),
       width: "150px",
@@ -269,7 +269,7 @@ export default function EnquiryLIst() {
       name: "Check-Out",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{moment(row.checkOut).format("YYYY-MM-DD")}</h6>
+          <h6>{moment(row.checkOut).format("YYYY, MMMM, DD")}</h6>
         </div>
       ),
       width: "150px",

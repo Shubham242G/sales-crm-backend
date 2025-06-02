@@ -16,6 +16,7 @@ import {
   addConfirmedQuotesFromVendorsExcel,
   getConfirmedQuotesFromVendorsExcel,
   useConfirmedQuotes,
+  useConvertConfirmedQuotesToQuotesToCustomer,
   usedeleteConfirmedQuotesById,
 } from "@/services/confirmedQuotesFromVendor.service";
 import { toastError, toastSuccess } from "@/utils/toast";
@@ -24,6 +25,7 @@ import { Switch } from "@mui/material";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { FiEdit } from "react-icons/fi";
 import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
+import { SiConvertio } from "react-icons/si";
 
 function ConfirmedQuotesFromVendor() {
   const navigate = useNavigate();
@@ -54,6 +56,8 @@ function ConfirmedQuotesFromVendor() {
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
+
+  const {mutateAsync: handleConvert} = useConvertConfirmedQuotesToQuotesToCustomer()
 
   const handleDelete = async (id: string) => {
     try {
@@ -199,6 +203,22 @@ function ConfirmedQuotesFromVendor() {
            </div>
          ),
        },
+
+
+       {
+  name: "Convert",
+  width: "10%",
+  selector: (row: any) => (
+    <button
+      type="button"
+      onClick={() => handleConvert(row._id)}
+      className="text-lg hover:bg-green-100 rounded-full transition duration-200"
+      title="Convert"
+    >
+      <SiConvertio className="hover:text-green-500 text-sm" />
+    </button>
+  ),
+}
 
 
 
