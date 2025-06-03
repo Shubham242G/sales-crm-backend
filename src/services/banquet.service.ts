@@ -25,7 +25,7 @@ export interface IBanquet {
 // Banquet
 export const getBanquetExcel = async (searchParams?: any) => {
     try {
-        const response = await axios.post(`${BASE_URL}${prefix}/getBanquetExcel`, searchParams);
+        const response = await axios.post(`${BASE_URL}${prefix}/getExcel`, searchParams);
         return response;
     } catch (error) {
         throw error;

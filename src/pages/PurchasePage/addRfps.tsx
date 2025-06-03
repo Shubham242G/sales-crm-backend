@@ -36,6 +36,7 @@ const AddRfpsForm = () => {
     deadlineOfProposal: "",
     vendorList: [] as IVendorList[],
     additionalInstructions: "",
+    markupPercentage:0,
   });
 
   const serviceTypeOptions = [
@@ -82,6 +83,7 @@ const AddRfpsForm = () => {
         deadlineOfProposal: rfpDataById.data.deadlineOfProposal || "",
         vendorList: [...rfpDataById.data.vendorList],
         additionalInstructions: rfpDataById.data.additionalInstructions || "",
+        markupPercentage:rfpDataById.data.markupPercentage||0
       });
 
       setSelectedVendors(rfpDataById?.data?.vendorList);
@@ -270,6 +272,22 @@ const AddRfpsForm = () => {
               type="text"
               className="w-[20%] border border-gray-300  rounded-md p-1.5"
               placeholder="Enter display name"
+            />
+          </div>
+
+          <div className="flex flex-row gap-[82px] ">
+            <label className="block text-sm font-medium text-black mb-1">
+              Markup Percentage
+            </label>
+            <input
+              name="markupPercentage"
+              value={formData.markupPercentage}
+              onChange={handleInputChange}
+              type="number"
+              min={0}
+              max={100}
+              className="w-[20%] border border-gray-300  rounded-md p-1.5"
+              placeholder="Enter markup percentage"
             />
           </div>
 

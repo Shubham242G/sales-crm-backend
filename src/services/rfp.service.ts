@@ -30,6 +30,7 @@ export interface IRPF {
     deadlineOfProposal: string,
     vendorList: IvendorList[],
     additionalInstructions: string,
+    markupPercentage: number,
     
 }
 
