@@ -1452,13 +1452,13 @@ const AddVendorForm = () => {
                             setVendor({ ...vendor, companyName: e.target.value })
                           }
                           placeholder="Enter company name"
-                          className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                          className="w-full border border-gray-300 rounded-md p-2 mt-0.5 text-sm"
                         />
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-[8px] lg:items-start md:items-center">
-                      <span className="text-[14px] font-medium text-black ">
+                      <span className="text-[14px] font-medium text-black">
                         Contact Name:
                       </span>
                       <div className="w-full">
@@ -1469,7 +1469,7 @@ const AddVendorForm = () => {
                             setVendor({ ...vendor, contactName: e.target.value })
                           }
                           placeholder="Enter contact name"
-                          className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                          className="w-full border border-gray-300 rounded-md mt-1 p-2 text-sm"
                         />
                       </div>
                     </div>
@@ -1493,7 +1493,7 @@ const AddVendorForm = () => {
 
                     {/* Display Name */}
                     <div>
-                      <label className="block text-sm font-medium text-black mb-1">
+                      <label className="block text-sm font-medium text-black mb-1 ">
                         Display Name
                       </label>
                       <input
@@ -1503,7 +1503,7 @@ const AddVendorForm = () => {
                           setVendor({ ...vendor, displayName: e.target.value })
                         }
                         type="text"
-                        className="w-full border border-gray-300 rounded-md p-2"
+                        className="w-full border border-gray-300 rounded-md mt-1 p-1.5"
                         placeholder="Enter display name"
                       />
                     </div>
