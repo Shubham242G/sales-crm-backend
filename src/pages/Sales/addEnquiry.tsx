@@ -633,6 +633,16 @@ const AddEnquiryForm = () => {
     console.log("productsArray after handleRateChange", productsArray);
   };
 
+  const handleParticularChange = (itemId: number, newParticular: string) => {
+    setProductsArray(prev =>
+      prev.map(item =>
+        item.id === itemId
+          ? { ...item, particular: newParticular }
+          : item
+      )
+    );
+  };
+
   const handleQtyChange = (itemId: number, newQty: number) => {
     setProductsArray(prev =>
       prev.map(item =>
@@ -643,10 +653,61 @@ const AddEnquiryForm = () => {
     );
   };
 
+  const handleHeightChange = (itemId: number, newHeight: number) => {
+    setProductsArray(prev =>
+      prev.map(item =>
+        item.id === itemId
+          ? { ...item, height: isNaN(newHeight) ? 0 : newHeight }
+          : item
+      )
+    );
+  };
+
+  const handleWidthChange = (itemId: number, newWidth: number) => {
+    setProductsArray(prev =>
+      prev.map(item =>
+        item.id === itemId
+          ? { ...item, width: isNaN(newWidth) ? 0 : newWidth }
+          : item
+      )
+    );
+  };
+
   const calculateSelectedTotal = () => {
     return productsArray
       .filter(item => selectedItems.includes(item.id))
-      .reduce((sum, item) => sum + (item.rate * item.qty), 0);
+      .reduce((sum, item) => sum + ( item.rate * item.qty ), 0);
+  };
+
+  const handleAddNewRow = () => {
+    const newId = productsArray.length + 1;
+    const newRow = {
+      id: newId,
+      particular: "",
+      area: 0,
+      qty: 0,
+      days: 0,
+      rate: 0,
+      amount: 0,
+      height: 0,
+      width: 0,
+      size: ""
+    };
+    setProductsArray([...productsArray, newRow]);
+  };
+
+  const handleRemoveRow = (id: number) => {
+    setProductsArray(prev => prev.filter(item => item.id !== id));
+  };
+
+  const handleSizeChange = (itemId: number, newSize: string) => {
+    setProductsArray(prev =>
+      prev.map(item =>
+        item.id === itemId
+          ? { ...item, size: newSize }
+          : item
+      )
+    );
   };
 
   const [companyName, setCompanyName] = useState("");
@@ -1425,246 +1486,200 @@ const AddEnquiryForm = () => {
   console.log(assignTo, "assignTo");
   return (
     <div className="h-[85vh]  mt-16 p-6 overflow-y-auto">
-      <div className="bg-white text-black ">
-        <h1 className="text-xl font-semibold">Enquiry</h1>
+      <div className=" shadow-md rounded-md  p-4 ">
+      <div className=" text-black  ">
+        <h1 className="text-xl font-semibold ml-6">Enquiry</h1>
       </div>
-      <div className="min-h-screen w-full">
-        <form onSubmit={handleSubmit}>
+      <div className="min-h-screen    ">
+      <form onSubmit={handleSubmit}>
           {/* Grid Layout for Form Fields */}
-          <div className=" p-6 rounded  shadow-sm mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-              {/* Salutation */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Salutation
-                </label>
-                <select
-                  onChange={(val) =>
-                    handleSelectChange("salutation", val.target.value)
-                  }
-                  value={salutation}
-                  className="w-full  border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-                >
-                  {salutationOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+          <div className="p-6 rounded shadow-sm mb-6 w-[60%]  ">
+            <div className="space-y-4">
+              {/* Salutation, First Name, Last Name in a single row */}
+              <div className="grid grid-cols-3 gap-4">
+                {/* Salutation */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Salutation
+                  </label>
+                  <select
+                    onChange={(val) =>
+                      handleSelectChange("salutation", val.target.value)
+                    }
+                    value={salutation}
+                    className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                  >
+                    {salutationOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              {/* FirstName */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="First Name"
-                  className="w-full border  border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-                />
-              </div>
+                {/* FirstName */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={firstName}
+                    maxLength={24}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="First Name"
+                    className="w-full border border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                  />
+                </div>
 
-              {/* LastName */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Last Name"
-                  className="w-full border  border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
+                {/* LastName */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    maxLength={20}
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Last Name"
+                    className="w-full border border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
               </div>
 
               {/* Assign To */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Assign To
-                </label>
-                <select
-                  onChange={(e) => setAssignTo(e.target.value)}
-                  value={assignTo}
-                  name="assignTo"
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-                >
-                  {userNames.data.map((option: any) => (
-                    <option key={option.value} value={option.label}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Display Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Display Name
-                </label>
-                <select
-                  value={displayName}
-                  onChange={(e) => {
-                    setDisplayName(e.target.value);
-                  }}
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-                >
-                  {Customer.data.map((option: any) => (
-                    <option key={option.displayName} value={option.displayName}>
-                      {option.displayName}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Company Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Company Name"
-                  className="w-full border  border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-
-              {/* Phone Number */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone Number
-                </label>
-                <input
-                  type="text"
-                  name="phoneNumber"
-                  value={phoneNumber}
-                  onChange={(e) => {
-                    const input = e.target.value;
-                    // Allow only digits and restrict length to 3
-                    const numericValue = input.replace(/\D/g, '').slice(0, 10);
-                    setPhoneNumber(numericValue);
-                  }}
-                  placeholder="Phone Number"
-                  className="w-full border  border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email"
-                  className="w-full border  border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-
-              {/* City */}
-              {/* <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-                <input
-                  type="text"
-                  name="city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  placeholder="City"
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div> */}
-
-              {/* Area */}
-              {/* <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Area</label>
-                <input
-                  type="text"
-                  name="area"
-                  value={area}
-                  onChange={(e) => {
-                    setArea(e.target.value)
-                  }}
-                  placeholder="Area"
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div> */}
-
-              {/* Number of Rooms */}
-              {/* <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Number of Rooms</label>
-                <input
-                  type="number"
-                  name="noOfRooms"
-                  value={noOfRooms}
-                  onChange={(e) => setNoOfRooms(e.target.value)}
-                  placeholder="Number of Rooms"
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div> */}
-
-              {/* Enquiry Type */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Enquiry Type
-                </label>
-                <select
-                  name="enquiryType"
-                  value={enquiryType}
-                  onChange={(e) => setEnquiryType(e.target.value)}
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="">Select Enquiry Type</option>
-                  <option value="room">Room</option>
-                  <option value="banquet">Banquet</option>
-                  <option value="both">Both</option>
-                </select>
-              </div>
-
-              {/* Check In */}
-              {/* <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Check In</label>
-                <input
-                  type="date"
-                  name="checkIn"
-                  value={moment(checkIn).format("YYYY-MM-DD")}
-                  onChange={(e) => setCheckIn(e.target.value)}
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div> */}
-
-              {/* Show Check In only after Enquiry Type is selected */}
-              {(enquiryType === "room" || enquiryType === "both") && (
+              {/* Assign To and Display Name */}
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Check In
+                    Assign To
+                  </label>
+                  <select
+                    onChange={(e) => setAssignTo(e.target.value)}
+                    value={assignTo}
+                    name="assignTo"
+                    className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                  >
+                    {userNames.data.map((option: any) => (
+                      <option key={option.value} value={option.label}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Display Name
+                  </label>
+                  <select
+                    value={displayName}
+                    onChange={(e) => {
+                      setDisplayName(e.target.value);
+                    }}
+                    className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
+                  >
+                    {Customer.data.map((option: any) => (
+                      <option key={option.displayName} value={option.displayName}>
+                        {option.displayName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Company Name and Phone Number */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Company Name
                   </label>
                   <input
-                    type="date"
-                    name="checkIn"
-                    value={moment(checkIn).format("YYYY-MM-DD")}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                    onFocus={(e) => (e.target as HTMLInputElement).showPicker()}
-                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
-                    min={moment().format("YYYY-MM-DD")}
-                    className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    type="text"
+                    name="companyName"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    placeholder="Company Name"
+                    className="w-full border border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
-              )}
 
-              {/* Check Out */}
-              {(enquiryType === "room" || enquiryType === "both") &&
-                checkIn && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    name="phoneNumber"
+                    value={phoneNumber}
+                    onChange={(e) => {
+                      const input = e.target.value;
+                      // Allow only digits and restrict length to 10
+                      const numericValue = input.replace(/\D/g, '').slice(0, 10);
+                      setPhoneNumber(numericValue);
+                    }}
+                    placeholder="Phone Number"
+                    className="w-full border border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+
+              {/* Email and Enquiry Type */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
+                    className="w-full border border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Enquiry Type
+                  </label>
+                  <select
+                    name="enquiryType"
+                    value={enquiryType}
+                    onChange={(e) => setEnquiryType(e.target.value)}
+                    className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">Select Enquiry Type</option>
+                    <option value="room">Room</option>
+                    <option value="banquet">Banquet</option>
+                    <option value="both">Both</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Check In and Check Out */}
+              {(enquiryType === "room" || enquiryType === "both") && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Check In
+                    </label>
+                    <input
+                      type="date"
+                      name="checkIn"
+                      value={moment(checkIn).format("YYYY-MM-DD")}
+                      onChange={(e) => setCheckIn(e.target.value)}
+                      onFocus={(e) => (e.target as HTMLInputElement).showPicker()}
+                      onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                      min={moment().format("YYYY-MM-DD")}
+                      className="w-full border border-gray-300 rounded p-2 text-xs focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Check Out
@@ -1674,16 +1689,17 @@ const AddEnquiryForm = () => {
                       name="checkOut"
                       value={moment(checkOut).format("YYYY-MM-DD")}
                       onChange={(e) => setCheckOut(e.target.value)}
-                      onClick={(e) =>
-                        (e.target as HTMLInputElement).showPicker()
-                      }
-                      min={moment(checkIn).format("YYYY-MM-DD")}
-                      className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                      onFocus={(e) => (e.target as HTMLInputElement).showPicker()}
+                      onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                      min={checkIn ? checkIn : moment().format("YYYY-MM-DD")}
+                      className="w-full border border-gray-300 rounded p-2 text-xs focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
-                )}
+                </div>
+              )}
 
               {(enquiryType === "banquet" || enquiryType === "both") && (
+               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Banquet Date
@@ -1698,13 +1714,10 @@ const AddEnquiryForm = () => {
                     onChange={(e) => setBanquetDate(e.target.value)}
                     min={checkIn ? checkIn : moment().format("YYYY-MM-DD")}
                     max={checkOut}
-                    className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border  border-gray-300 rounded p-2 text-xs focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
-              )}
-
-              {(enquiryType === "banquet" || enquiryType === "both") &&
-                banquetDate && (
+           
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Banquet Time
@@ -1714,109 +1727,114 @@ const AddEnquiryForm = () => {
                       name="banquetTime"
                       value={banquetTime}
                       onChange={(e) => setBanquetTime(e.target.value)}
-                      className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                      onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                      className="w-full border  border-gray-300 rounded p-2 text-xs focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
-                )}
+               
 
-              {/* Level of Enquiry */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Level of Enquiry
-                </label>
-                <select
-                  name="levelOfEnquiry"
-                  value={levelOfEnquiry}
-                  onChange={(e) => setLevelOfEnquiry(e.target.value)}
-                  className="w-full  border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="">Select Enquiry Type</option>
-                  <option value="urgent">Urgent</option>
-                  <option value="moderate">Moderate</option>
-                  <option value="not urgent">Not Urgent</option>
-                </select>
-              </div>
-
-              {/* Hotel Preference */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Hotel Preference
-                </label>
-                <input
-                  type="text"
-                  name="othersPreference"
-                  value={othersPreference}
-                  onChange={(e) => setOthersPreference(e.target.value)}
-                  placeholder="Preferences"
-                  className="w-full border  border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-
-              {/* Hotel Category */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Hotel Category
-                </label>
-                <Select
-                  isMulti
-                  options={hotelCategoryOptions}
-                  value={hotelCategoryOptions.filter((option) =>
-                    categoryOfHotel.includes(option.value)
-                  )}
-                  onChange={(selected) => {
-                    const values = selected
-                      ? selected.map((opt) => opt.value)
-                      : [];
-                    setCategoryOfHotel(values);
-                  }}
-                  className="basic-multi-select text-xs text-gray-600"
-                  classNamePrefix="select"
-                  placeholder="Select Categories..."
-                  
-                />
-              </div>
-
-              {/* Rate Required for (Occupancy) */}
-              {enquiryType === "room" && <div>
-                <label className="block text-sm font-medium text-gray-700 mt-1 mb-1">
-                  Rate Required for (Occupancy)
-                </label>
-                <div className="flex space-x-4 mt-5">
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      value="single occupancy"
-                      checked={occupancy.includes("single occupancy")}
-                      onChange={() => handleCheckboxChange("single occupancy")}
-                      className="form-checkbox  h-4 w-4 text-blue-600"
-                    />
-                    <span className="text-sm">Single Occupancy</span>
+          </div>   
+ )}
+              {/* Hotel Preference and Hotel Category */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Hotel Preference
                   </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      value="double occupancy"
-                      checked={occupancy.includes("double occupancy")}
-                      onChange={() => handleCheckboxChange("double occupancy")}
-                      className="form-checkbox  h-4 w-4 text-blue-600"
-                    />
-                    <span className="text-sm">Double Occupancy</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      value="extra bed"
-                      checked={occupancy.includes("extra bed")}
-                      onChange={() => handleCheckboxChange("extra bed")}
-                      className="form-checkbox  h-4 w-4 text-blue-600"
-                    />
-                    <span className="text-sm">Extra Bed</span>
-                  </label>
+                  <input
+                    type="text"
+                    name="othersPreference"
+                    value={othersPreference}
+                    onChange={(e) => setOthersPreference(e.target.value)}
+                    placeholder="Preferences"
+                    className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
                 </div>
-              </div>}
-            </div>
-          </div>
 
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Hotel Category
+                  </label>
+                  <Select
+                    isMulti
+                    options={hotelCategoryOptions}
+                    value={hotelCategoryOptions.filter((option) =>
+                      categoryOfHotel.includes(option.value)
+                    )}
+                    onChange={(selected) => {
+                      const values = selected
+                        ? selected.map((opt) => opt.value)
+                        : [];
+                      setCategoryOfHotel(values);
+                    }}
+                    className="basic-multi-select text-xs text-gray-600"
+                    classNamePrefix="select"
+                    placeholder="Select Categories..."
+                  />
+                </div>
+              </div>
+
+              {/* Level of Enquiry and Rate Required */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Level of Enquiry
+                  </label>
+                  <select
+                    name="levelOfEnquiry"
+                    value={levelOfEnquiry}
+                    onChange={(e) => setLevelOfEnquiry(e.target.value)}
+                    className="w-[100%] border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">Select Enquiry Type</option>
+                    <option value="urgent">Urgent</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="not urgent">Not Urgent</option>
+                  </select>
+                </div>
+
+                {(enquiryType === "room" || enquiryType === "both") && (
+                  <div className="w-[110%]">
+                    <label className="block text-sm font-medium text-gray-700 mt-1 mb-1">
+                      Rate Required for (Occupancy)
+                    </label>
+                    <div className="flex justify-center space-x-4 mt-3 -ml-4">
+                      <label className="flex items-center justify-center space-x-2">
+                        <input
+                          type="checkbox"
+                          value="single occupancy"
+                          checked={occupancy.includes("single occupancy")}
+                          onChange={() => handleCheckboxChange("single occupancy")}
+                          className="form-checkbox h-4 w-4 text-blue-600"
+                        />
+                        <span className="text-xs">Single Occupancy</span>
+                      </label>
+                      <label className="flex items-center justify-center space-x-2">
+                        <input
+                          type="checkbox"
+                          value="double occupancy"
+                          checked={occupancy.includes("double occupancy")}
+                          onChange={() => handleCheckboxChange("double occupancy")}
+                          className="form-checkbox h-4 w-4 text-blue-600"
+                        />
+                        <span className="text-xs">Double Occupancy</span>
+                      </label>
+                      <label className="flex items-center justify-center space-x-2">
+                        <input
+                          type="checkbox"
+                          value="extra bed"
+                          checked={occupancy.includes("extra bed")}
+                          onChange={() => handleCheckboxChange("extra bed")}
+                          className="form-checkbox h-4 w-4 text-blue-600"
+                        />
+                        <span className="text-xs">Extra Bed</span>
+                      </label>
+                    </div>
+                  </div>
+                )}
+              </div>
+</div>
+          </div>
           {/* Room Table */}
           {(enquiryType === "room" || enquiryType === "both") && (
             <div className="bg-white rounded shadow-sm mb-6">
@@ -2290,14 +2308,14 @@ const AddEnquiryForm = () => {
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead className="">
                         <tr>
-                          <th className="px-4 py-2  text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-8">
+                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-8">
                             Select
                           </th>
                           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
                             Particular
                           </th>
                           <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
-                            Size
+                            Size (Ft)
                           </th>
                           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
                             Qty
@@ -2307,6 +2325,9 @@ const AddEnquiryForm = () => {
                           </th>
                           <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
                             Amount (₹)
+                          </th>
+                          <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                            Action
                           </th>
                         </tr>
                       </thead>
@@ -2322,10 +2343,32 @@ const AddEnquiryForm = () => {
                               />
                             </td>
                             <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 border-b border-gray-200">
-                              {item.particular}
+                              <input
+                                type="text"
+                                value={item.particular}
+                                onChange={(e) => handleParticularChange(item.id, e.target.value)}
+                                className="border border-gray-300 p-1 rounded w-full"
+                              />
                             </td>
                             <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-center border-b border-gray-200">
-                              {item.size}
+                              <div className="flex gap-2">
+                                <input
+                                  type="number"
+                                  value={item.height || ''}
+                                  onChange={(e) => handleHeightChange(item.id, Number(e.target.value))}
+                                  className="border border-gray-300 p-1 rounded w-16 text-center"
+                                  placeholder="H"
+                                  min="0"
+                                />
+                                <input
+                                  type="number"
+                                  value={item.width || ''}
+                                  onChange={(e) => handleWidthChange(item.id, Number(e.target.value))}
+                                  className="border border-gray-300 p-1 rounded w-16 text-center"
+                                  placeholder="W"
+                                  min="0"
+                                />
+                              </div>
                             </td>
                             <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 border-b border-gray-200">
                               <input
@@ -2337,7 +2380,7 @@ const AddEnquiryForm = () => {
                                 min="0"
                               />
                             </td>
-                            <td className="px-4 py-2 whitespace-nowrap text-sm  text-gray-700 border-b border-gray-200">
+                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 border-b border-gray-200">
                               <input
                                 type="number"
                                 value={item.rate === 0 ? '' : item.rate}
@@ -2350,14 +2393,26 @@ const AddEnquiryForm = () => {
                             <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-center border-b border-gray-200">
                               ₹{(item.rate * item.qty).toLocaleString('en-IN')}
                             </td>
+                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-center border-b border-gray-200">
+                              <button type="button" onClick={() => handleRemoveRow(item.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                                Remove
+                              </button>
+                            </td>
                           </tr>
                         ))}
                         <tr className=" font-semibold">
                           <td colSpan={5} className="px-4 py-2 text-center text-sm border-b border-gray-200">
                             Selected Total
                           </td>
-                          <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-center border-b border-gray-200">
+                          <td className="px-4  py-2 whitespace-nowrap text-sm text-gray-700 text-center border-b border-gray-200">
                             ₹{calculateSelectedTotal().toLocaleString('en-IN')}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colSpan={7} className="p-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                            <button type="button" onClick={handleAddNewRow} className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">
+                              Add New Row
+                            </button>
                           </td>
                         </tr>
                       </tbody>
@@ -2996,6 +3051,7 @@ const AddEnquiryForm = () => {
             )}
           </div>
         </form>
+      </div>
       </div>
     </div>
   );

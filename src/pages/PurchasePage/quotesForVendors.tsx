@@ -19,6 +19,7 @@ import { Switch } from "@mui/material";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { FiEdit } from "react-icons/fi";
 import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
+import moment from "moment";
 
 function CustomerLedger() {
   const [loading, setLoading] = useState(false);
@@ -90,7 +91,7 @@ function CustomerLedger() {
     {
       name: "Display Name",
       selector: (row: any) => <h6>{row?.displayName}</h6>,
-      width: "10%",
+      width: "110px",
     },
     {
       name: "RPFs Id",
@@ -103,7 +104,7 @@ function CustomerLedger() {
       width: "150px",
     },
     {
-      name: "Service",
+      name: "Services",
       selector: (row: any) => (
         <div className="flex flex-wrap justify-around">
           {row?.serviceType?.map((e: any, index: number) => (
@@ -125,7 +126,7 @@ function CustomerLedger() {
     },
     {
       name: "Date Received",
-      selector: (row: any) => <h6>{row?.receivedDate}</h6>,
+      selector: (row: any) => <h6>{moment(row?.receivedDate).format("DD MMMM, YYYY")}</h6>,
       width: "150px",
     },
     // {
@@ -167,7 +168,7 @@ function CustomerLedger() {
     // },
     {
          name: "Actions",
-         width: "20px",
+         width: "120px",
          selector: (row: any) => (
            <div className="">
              <button
@@ -215,7 +216,7 @@ function CustomerLedger() {
           <button
             type="button"
             onClick={() => handleConvertToCustomerQuote(row._id)}
-            className="text-lg text-black-400 hover:text-black-700 "
+            className="text-sm text-black-400 hover:text-black-700 "
             title="Convert to Customer Quote"
           >
             <SiConvertio />
@@ -237,7 +238,7 @@ function CustomerLedger() {
     "Display Name": true,
     "RPFs Id": true,
     "Status": true,
-    "Service": true,
+    "Services": true,
     "Amount": true,
     "Date Received": true,
     "Actions": canView || canUpdate || canDelete,
@@ -330,7 +331,7 @@ function CustomerLedger() {
       "Display Name": true,
       "RPFs Id": true,
       "Status": true,
-      "Service": true,
+      "Services": true,
       "Amount": true,
       "Date Received": true,
       "Actions": true,

@@ -143,7 +143,8 @@ function Sidebar() {
         },
         {
           dropHead: "Confirmed Quotes To Customer",
-          link: "/confirmedQuotesToCustomer",
+           link: "confirmedQuotesToCustomer",
+          plusLink: "/add-ConfirmedQuotesFromVendor",
 
         },
         {
@@ -157,6 +158,7 @@ function Sidebar() {
         {
           dropHead: "Customer Outstanding",
           link: "confirmedQuotes",
+          plusLink: "/add-ConfirmedQuotesFromVendor",
         },
       ],
     },
@@ -192,22 +194,27 @@ function Sidebar() {
         {
           dropHead: "Add Department",
           link: "departmentMasterView",
+          plusLink: "/departmentMaster",
         },
         {
           dropHead: "Add Category",
           link: "CategoryList",
+          plusLink: "/category2",
         },
         {
           dropHead: "Add Hotel",
           link: "HotelList",
+          plusLink: "/hotel",
         },
         {
           dropHead: "Add Banquet",
           link: "BanquetList",
+          plusLink: "/banquet",
         },
         {
           dropHead: "Add Restaurant",
           link: "ResturantList",
+          plusLink: "/ResturantList",
         },
       ],
     },

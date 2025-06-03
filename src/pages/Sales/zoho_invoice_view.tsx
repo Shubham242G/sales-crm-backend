@@ -273,7 +273,13 @@ function ZohoInvoiceView() {
         },
         {
             name: "Date",
-            selector: (row: any) => new Date(row.date).toLocaleDateString(),
+            selector: (row: any) => {
+                const date = new Date(row.date);
+                const day = date.getDate();
+                const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+                const year = date.getFullYear();
+                return `${day} ${month} , ${year}`;
+            },
             width: "12%",
         },
         {
@@ -470,14 +476,14 @@ function ZohoInvoiceView() {
         //                         <option value="partially_paid">Partially Paid</option>
         //                     </select>
 
-//                     <button
-//                         onClick={handleSyncInvoices}
-//                         className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
-//                         disabled={syncInvoicesMutation.isPending}
-//                     >
-//                         <FaSync />
-//                         <span className="w-[100px]">{syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}</span>
-//                     </button>
+        //                     <button
+        //                         onClick={handleSyncInvoices}
+        //                         className="flex items-center  text-sm gap-1  px-3 py-1.5 rounded-md text-gray-700 border border-gray-300"
+        //                         disabled={syncInvoicesMutation.isPending}
+        //                     >
+        //                         <FaSync />
+        //                         <span className="w-[100px]">{syncInvoicesMutation.isPending ? "Syncing..." : "Sync Invoices"}</span>
+        //                     </button>
 
         //                     <div className="relative flex items-center " id="exportDropdown">
         //                         <button
@@ -592,31 +598,31 @@ function ZohoInvoiceView() {
         //         </div>
 
 
-  <NewTable
-  data={invoiceData} // Use the extracted array data
-  columns={columns}
-  selectableRows={true}
-  loading={isLoading} // Use the actual loading state
-  totalRows={totalRows} // Use the extracted total count
-  onChangeRowsPerPage={setPageSize}
-  onChangePage={setPageIndex}
-  page={pageIndex}
-  rowsPerPageText={pageSize}
-  isServerPropsDisabled={false}
-        
-        onSelectedRowsChange={handleChange}
-        className={"leadtable"}
-        //new fields
-        TableName={"Zoho Invoices"}
-        TableGetAllFunction={useZohoInvoices}
-        ExcelExportFunction={getInvoicesExcel}
-        TableAddExcelFunction={addInvoicesExcel}
-        RouteName={"Invoices"}
-        syncFunction={useSyncZohoInvoices}
-       
-        placeholderSearch={"Search in invoice"}
-      /> 
-   
+        <NewTable
+            data={invoiceData} // Use the extracted array data
+            columns={columns}
+            selectableRows={true}
+            loading={isLoading} // Use the actual loading state
+            totalRows={totalRows} // Use the extracted total count
+            onChangeRowsPerPage={setPageSize}
+            onChangePage={setPageIndex}
+            page={pageIndex}
+            rowsPerPageText={pageSize}
+            isServerPropsDisabled={false}
+
+            onSelectedRowsChange={handleChange}
+            className={"leadtable"}
+            //new fields
+            TableName={"Zoho Invoices"}
+            TableGetAllFunction={useZohoInvoices}
+            ExcelExportFunction={getInvoicesExcel}
+            TableAddExcelFunction={addInvoicesExcel}
+            RouteName={"Invoices"}
+            syncFunction={useSyncZohoInvoices}
+
+            placeholderSearch={"Search in invoice"}
+        />
+
     );
 }
 

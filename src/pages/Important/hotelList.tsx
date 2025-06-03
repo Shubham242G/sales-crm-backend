@@ -109,7 +109,7 @@ function HotelList() {
         <div className="flex gap-1 flex-col">
           <h6>
             {row.createdAt
-              ? format(new Date(row.createdAt), "MMM dd, yyyy")
+              ? format(new Date(row.createdAt), "dd MMMM, yyyy")
               : "-"}
           </h6>
         </div>
@@ -430,7 +430,7 @@ const [tickRows, setTickRows] = useState([]);
         ExcelExportFunction={getHotelExcel}
         TableAddExcelFunction={addHotelExcel}
         RouteName={"Add Hotel"}
-        AddButtonRouteName={"hotel"}
+        AddButtonRouteName={"/hotel"}
         AddButtonName={"New hotel"}
         placeholderSearch={"Search Hotel Name"}
       /> 

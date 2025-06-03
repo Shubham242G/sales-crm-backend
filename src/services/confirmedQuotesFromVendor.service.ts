@@ -132,6 +132,13 @@ export const useConfirmedQuotesApiHook = () => {
     );
   };
 
+
+    const convertConfirmedQuotesToCustomer = async (id: string) => {
+    return axios.post<GeneralApiResponse<any>>(
+      `${BASE_URL}${prefix}/convert-to-quotes-to-customer/${id}`
+    );
+  };
+
   const getAllConfirmedQuotesName = async () => {
    
   
@@ -162,7 +169,8 @@ export const useConfirmedQuotesApiHook = () => {
     convertConfirmedQuotesToSalesContact,
     getAllConfirmedQuotesName,
     getAllQuotesId,
-    getByQuoteIdData
+    getByQuoteIdData,
+    convertConfirmedQuotesToCustomer
 
   };
 };
@@ -238,6 +246,20 @@ export const useConvertConfirmedQuotesToSalesContact = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: api.convertConfirmedQuotesToSalesContact,
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ["Sales Contact"] }); 
+      queryClient.invalidateQueries({ queryKey: ["confirmedQuotes"] }); 
+    },
+  });
+};
+
+
+
+export const useConvertConfirmedQuotesToQuotesToCustomer = () => {
+  const api = useConfirmedQuotesApiHook();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: api.convertConfirmedQuotesToCustomer,
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ["Sales Contact"] }); 
       queryClient.invalidateQueries({ queryKey: ["confirmedQuotes"] }); 

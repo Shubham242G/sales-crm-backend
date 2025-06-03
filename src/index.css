@@ -282,10 +282,16 @@ input::placeholder, select::placeholder,select, textarea::placeholder {
 }
 
 
+
 .rdt_Pagination{
   min-height: 50px !important;
+  
 }
 
+.sc-bMTdWJ svg{
+  margin-top: 6px !important;
+  width: 16px !important;
+}
 input:-webkit-autofill {
   box-shadow: 0 0 0px 1000px white inset !important;
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
@@ -332,4 +338,10 @@ input:in-range , select:in-range, textarea:in-range {
 input[type="checkbox"]:focus {
   outline: none;
   box-shadow: none; /* Optional: removes the ring-style focus in some browsers */
+}
+
+
+
+.rdt_TableRow:last-child .lead-dropdown {
+    top: -4pc;
 }

@@ -182,9 +182,7 @@ function RfpList() {
 
           <h6>
             {row.eventDates?.length > 0
-              ? new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(new Date(row.eventDates[0].startDate))
-              + ', ' +
-              new Date(row.eventDates[0].startDate).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+              ? `${new Date(row.eventDates[0].startDate).getDate()} ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(row.eventDates[0].startDate))}, ${new Date(row.eventDates[0].startDate).getFullYear()}`
               : "No Dates"}
           </h6>
         </div>
@@ -196,10 +194,8 @@ function RfpList() {
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
           <h6> {row.eventDates?.length > 0
-            ? new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(new Date(row.eventDates[0].startDate))
-            + ', ' +
-            new Date(row.eventDates[0].startDate).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
-            : "No Dates"}</h6>
+            ? `${new Date(row.eventDates[0].startDate).getDate()} ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(row.eventDates[0].startDate))}, ${new Date(row.eventDates[0].startDate).getFullYear()}`
+              : "No Dates"}</h6>
         </div>
       ),
       width: "12%",

@@ -116,7 +116,8 @@ const AddResturant = () => {
                 </label>
                 <input
                   onChange={(e) => setFloor(e.target.value)}
-                  type="text"
+                  type="number"
+                  min={1}
                   value={floor}
                   placeholder="Enter floor"
                   className="w-[200px] border border-gray-300 rounded-md p-2"

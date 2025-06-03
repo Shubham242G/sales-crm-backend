@@ -16,6 +16,7 @@ import {
   addConfirmedQuotesFromVendorsExcel,
   getConfirmedQuotesFromVendorsExcel,
   useConfirmedQuotes,
+  useConvertConfirmedQuotesToQuotesToCustomer,
   usedeleteConfirmedQuotesById,
 } from "@/services/confirmedQuotesFromVendor.service";
 import { toastError, toastSuccess } from "@/utils/toast";
@@ -24,6 +25,7 @@ import { Switch } from "@mui/material";
 import { checkPermissionsForButtons } from "@/utils/permission";
 import { FiEdit } from "react-icons/fi";
 import NewTable from "@/_components/ReuseableComponents/DataTable/newTable";
+import { SiConvertio } from "react-icons/si";
 
 function ConfirmedQuotesFromVendor() {
   const navigate = useNavigate();
@@ -54,6 +56,8 @@ function ConfirmedQuotesFromVendor() {
   const handleLedgerDetailsModal = () => {
     setShowLedgerDetailsModal(true);
   };
+
+  const {mutateAsync: handleConvert} = useConvertConfirmedQuotesToQuotesToCustomer()
 
   const handleDelete = async (id: string) => {
     try {
@@ -108,7 +112,7 @@ function ConfirmedQuotesFromVendor() {
         <div className="flex gap-1 flex-col ">
           <h6>
             {row.banquetEventOrders?.receivedDate
-              ? moment(row.banquetEventOrders.receivedDate).format("DD-MM-YYYY")
+              ? moment(row.banquetEventOrders.receivedDate).format("DD MMMM, YYYY")
               : "N/A"}
           </h6>
         </div>
@@ -175,7 +179,7 @@ function ConfirmedQuotesFromVendor() {
                <span className="flex items-center justify-center w-4 h-4 rounded-full bg-orange-500 "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,1)"><path d="M12 15.0006L7.75732 10.758L9.17154 9.34375L12 12.1722L14.8284 9.34375L16.2426 10.758L12 15.0006Z"></path></svg></span>
              </button>
              { selectedRowId === row._id   &&  (isOpenAction) && (
-               <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
+               <div className="absolute lead-dropdown bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
    
                  <Link
                    to={`/add-ConfirmedQuotesFromVendor/${row?._id}`}
@@ -199,6 +203,22 @@ function ConfirmedQuotesFromVendor() {
            </div>
          ),
        },
+
+
+       {
+  name: "Convert",
+  width: "10%",
+  selector: (row: any) => (
+    <button
+      type="button"
+      onClick={() => handleConvert(row._id)}
+      className="text-lg hover:bg-green-100 rounded-full transition duration-200"
+      title="Convert"
+    >
+      <SiConvertio className="hover:text-green-500 text-sm" />
+    </button>
+  ),
+}
 
 
 

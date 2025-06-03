@@ -38,10 +38,11 @@ interface IConfirmedQuotes {
     rfpId: string;
     vendorList: IVendorList;
     serviceType: string[];
-    amount: string;
+    amount: number;
     receivedDate: string;
     status: string;
     attachment: string[];
+    markupAmount: number
   };
 
   banquetEventOrdersSecond: {
@@ -116,10 +117,11 @@ const AddConfirmedQuotesFromVendor = () => {
       rfpId: "",
       vendorList: { label: "", value: "" },
       serviceType: [],
-      amount: "",
+      amount: 0,
       receivedDate: "",
       status: "",
       attachment: [],
+      markupAmount: 0
     },
     banquetEventOrdersSecond: {
       eventStartTime: "",
@@ -195,6 +197,7 @@ const AddConfirmedQuotesFromVendor = () => {
           },
           serviceType: data.banquetEventOrders?.serviceType || [],
           amount: data.banquetEventOrders?.amount || "",
+           markupAmount: data.banquetEventOrders?.amount || "",
           receivedDate: data.banquetEventOrders?.receivedDate
             ? moment(data.banquetEventOrders.receivedDate).format("YYYY-MM-DD")
             : "",
@@ -500,14 +503,36 @@ const AddConfirmedQuotesFromVendor = () => {
                 Amount
               </label>
               <input
-                type="text"
+                type="number"
                 value={formData.banquetEventOrders.amount}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
                     banquetEventOrders: {
                       ...formData.banquetEventOrders,
-                      amount: e.target.value,
+                      amount: e.target.valueAsNumber,
+                    },
+                  })
+                }
+                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
+                placeholder="Enter amount"
+                disabled
+              />
+            </div>
+
+            <div className="mb-4 ">
+              <label className="block text-sm  font-semibold text-black mb-2">
+                Markup Amount
+              </label>
+              <input
+                type="number"
+                value={formData.banquetEventOrders.markupAmount}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    banquetEventOrders: {
+                      ...formData.banquetEventOrders,
+                      markupAmount: e.target.valueAsNumber,
                     },
                   })
                 }
@@ -533,7 +558,8 @@ const AddConfirmedQuotesFromVendor = () => {
                     },
                   })
                 }
-                onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                
+               
                 className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
                 disabled
               />
@@ -1420,11 +1446,11 @@ const AddConfirmedQuotesFromVendor = () => {
                   <th className=" px-3 py-1.5 text-left text-sm font-semibold text-stone-800 border-b">
                     Checks
                   </th>
-                  <th className=" px-3 py-1.5 text-left text-sm font-semibold text-stone-800 border-b">
+                  <th className=" px-3 py-1.5 text-center text-sm font-semibold text-stone-800 border-b">
                     Checkbox
                   </th>
                   {formData.checklist.length > 1 && (
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-white border-b">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-stone-800 border-b">
                         Actions
                       </th>
                     )}

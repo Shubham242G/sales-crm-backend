@@ -89,7 +89,7 @@ const AddQuotesToCustomerForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const obj = { ...formData };
+      const obj = { ...formData, leadId: formData.leadId };
 
       if (id) {
         const { data: res } = await updateQuotesToCustomer({ id, obj });
@@ -213,8 +213,8 @@ const AddQuotesToCustomerForm = () => {
   };
 
   return (
-    <div className="h-[90vh]  mt-16 p-6 overflow-y-auto ">
-      <div className="max-w-6xl ">
+    <div className="h-[90vh]  mt-16 ml-10 p-6 overflow-y-auto ">
+      <div className="max-w-6xl rounded-md shadow-md p-6 ">
         <h1 className="text-2xl font-bold mb-6">Add Quotes To Customer</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -226,7 +226,7 @@ const AddQuotesToCustomerForm = () => {
               value={formData.quotesId}
               onChange={handleInputChange}
               type="text"
-              className="w-[30%]  border border-gray-300 rounded-md p-1.5"
+              className="w-[30%]  border border-gray-300 rounded-md h-8 p-1.5"
               placeholder="Enter Quotes ID"
             />
           </div>
@@ -240,7 +240,7 @@ const AddQuotesToCustomerForm = () => {
               value={formData.customerName}
               onChange={handleInputChange}
               type="text"
-              className="w-[30%] border  border-gray-300 rounded-md p-1.5"
+              className="w-[30%] border  border-gray-300 rounded-md h-8 p-1.5"
               placeholder="Enter Customer Name"
             />
           </div>
@@ -256,7 +256,7 @@ const AddQuotesToCustomerForm = () => {
                 formData.serviceType.includes(option.value)
               )}
               onChange={handleServiceTypeChange}
-              className="w-[30%]  text-xs rounded-mg"
+              className="w-[30%] h-8 text-xs rounded-md"
               classNamePrefix="select"
               placeholder="Select service types"
 
@@ -345,7 +345,8 @@ const AddQuotesToCustomerForm = () => {
                         </td>
                         <td className="px-6 py-4 border-b">
                           <input
-                            type="text"
+                            type="number"
+                            min={0}
                             value={item.markupAmount}
                             onChange={(e) =>
                               handleMarkupChange(
