@@ -854,8 +854,8 @@ const AddCustomer = () => {
   ];
 
   return (
-    <div className=" h-[84vh]  mt-16 p-4 overflow-y-auto ">
-      <div className="max-w-6xl ml-2 bg-white   ">
+    <div className=" h-[84vh]  mt-16 p-4 overflow-y-auto ml-12 ">
+      <div className="max-w-6xl ml-2 bg-white shadow-lg rounded-lg p-6  ">
         <h1 className="text-2xl font-bold mb-6  ">Add Customer</h1>
         <form onSubmit={handleSubmit}>
           {/* Customer Type Section */}

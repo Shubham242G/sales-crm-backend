@@ -297,13 +297,13 @@ const AddNewLead = () => {
     //   </div>
     // </div>
 
-    <div className=" h-[90vh] p-6 mt-14">
-     <div className="max-w-4xl -mt-10 bg-white rounded-lg p-4">
+    <div className=" h-[90vh] p-6 mt-24">
+     <div className="max-w-4xl -mt-10 bg-white shadow-lg  rounded-lg p-4">
   <h1 className="text-lg font-semibold mb-6 mt-2 text-[#101828] ">Add New Lead</h1>
   <form onSubmit={handleSubmit}>
     {/* Primary Contact */}
      <div className="mb-6 ">
-      <div className="flex items-center gap-6 mb-4">
+      <div className="flex items-center gap-10 mb-4">
      <label className=" text-sm font-medium text-[#344054] mb-2 flex items-center gap-1">
         Primary Contact
        
@@ -314,7 +314,7 @@ const AddNewLead = () => {
         <select
           onChange={(val) => handleSelectChange("salutation", val.target.value)}
           value={formData.salutation}
-          className={`w-32 border border-[#D0D5DD] bg-white rounded-md px-2 pt-1 text-sm placeholder:text-sm focus:outline-none text-[#344054] focus:ring-2 focus:ring-blue-400 h-[30px]`}
+          className={`w-[90px] border border-[#D0D5DD] bg-white rounded-md px-2 pt-1 text-sm placeholder:text-sm focus:outline-none text-[#344054] focus:ring-2 focus:ring-blue-400 h-[30px]`}
         >
           <option value="" disabled hidden className="text-sm text-gray-400">Salutation</option>
           <option value="Mr." className="text-xs text-[#344054]">Mr.</option>

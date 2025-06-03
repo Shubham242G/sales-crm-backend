@@ -19,7 +19,7 @@ import { checkPermissionsForButtons } from "@/utils/permission";
 import { Navigate, useNavigate } from "react-router-dom";
 import AdvancedSearch from "@/utils/advancedSearch";
 import { l } from "vite/dist/node/types.d-aGj9QkWt";
-import { camelCase } from "lodash";
+import { camelCase, set } from "lodash";
 import { AiFillCloseSquare } from "react-icons/ai";
 import { useAddLeadManagement } from "@/services/leadManagement.service";
 import { useUser } from "@/services/user.service";
@@ -184,69 +184,73 @@ const NewTable = (props: any) => {
     const columnsWithDynamicWidth: TableColumnWithWidth[] = visibleColumnsArray.map((column: TableColumn): TableColumnWithWidth => {
       console.log(column, "column");
       const width =
-      column.name === "Contact Name" ? "180px"
-        : column.name === "Email" || column.name === "Company Name"
-        ? "280px"
-        : column.name === "Vendor Name"
-          ? "180px"
-          : column.name === "Mobile Number"
-          ? "180px"
-          : column.name === "Services"
+        column.name === "Contact Name" ? "180px"
+          : column.name === "Email" || column.name === "Company Name"
             ? "280px"
-            : column.name === "Actions"
-            ? "120px"
-            : column.name === "Status"
-              ? "210px"
-              : column.name === "Service"
-              ? "280px"
-              : column.name === "Display Name"
-                ? "150px"
-                : column.name === "Name"
-                ? "400px"
-                : column.name === "Quotes Id"
-                  ? "120px"
-                  : column.name === "Location"
-                  ? "180px"
-                   : column.name === "Customer Name"
-                  ? "200px"
-                  : column.name === "Check-In"
-                  ? "140px"
-                  : column.name === "Check-Out"
-                  ? "145px"
-                    : column.name === "Role"
-                  ? "350px"
-                  : column.name === "Amount"
-                  ? "120px"
-                  : column.name === "Date Received"
-                  ? "160px"
-                  : column.name === "Convert to Contact"
-                  ? "130px"
-                  : column.name === "Generate Enquiry"
-                  ? "130px"
-                  
-                    : column.name === "Assigned To"
-                  ? "130px"
-                    : column.name === "Level of Enquiry"
-                  ? "130px"
-                  : column.name === "Purpose Of Visit"
-                  ? "350px"
-                   : column.name === "Department Name"
-                  ? "350px"
-                  : column.name === "Sub Department Name"
-                  ? "350px"
+            : column.name === "Vendor Name"
+              ? "180px"
+              : column.name === "Mobile Number"
+                ? "180px"
+                : column.name === "Services"
+                  ? "280px"
+                  : column.name === "Actions"
+                    ? "120px"
+                    : column.name === "Status"
+                      ? "210px"
+                      : column.name === "Service"
+                        ? "280px"
+                        : column.name === "Display Name"
+                          ? "150px"
+                          : column.name === "Name"
+                            ? "400px"
+                            : column.name === "Quotes Id"
+                              ? "120px"
+                              : column.name === "Location"
+                                ? "180px"
+                                : column.name === "Customer Name"
+                                  ? "200px"
+                                  : column.name === "Customer"
+                                    ? "180px"
+                                  : column.name === "Check-In"
+                                    ? "140px"
+                                    : column.name === "Check-Out"
+                                      ? "145px"
+                                      : column.name === "Role"
+                                        ? "350px"
+                                        : column.name === "Amount"
+                                          ? "140px"
+                                          : column.name === "Balance"
+                                            ? "180px"
+                                          : column.name === "Date Received"
+                                            ? "160px"
+                                            : column.name === "Convert to Contact"
+                                              ? "130px"
+                                              : column.name === "Generate Enquiry"
+                                                ? "130px"
 
-                   : column.name === "Category Name"
-                  ? "500px"
-                  : column.name === "Hotel Name"
-                  ? "450px"
+                                                : column.name === "Assigned To"
+                                                  ? "130px"
+                                                  : column.name === "Level of Enquiry"
+                                                    ? "130px"
+                                                    : column.name === "Purpose Of Visit"
+                                                      ? "350px"
+                                                      : column.name === "Department Name"
+                                                        ? "350px"
+                                                        : column.name === "Sub Department Name"
+                                                          ? "350px"
 
-                  // : visibleColumnsArray.length < 10
-                  //   ? `${1800 / visibleColumnsArray.length}px`
-                  //   : visibleColumnsArray.length >= 7
-                  //   ? `${1200 / visibleColumnsArray.length}px`
-                  //   : visibleColumnsArray.length < 7 || visibleColumnsArray.length <= 10
-                  //     ? `${2000 / visibleColumnsArray.length}px`
-                      : `${1200 / visibleColumnsArray.length}px`;
+                                                          : column.name === "Category Name"
+                                                            ? "500px"
+                                                            : column.name === "Hotel Name"
+                                                              ? "450px"
+
+                                                              // : visibleColumnsArray.length < 10
+                                                              //   ? `${1800 / visibleColumnsArray.length}px`
+                                                              //   : visibleColumnsArray.length >= 7
+                                                              //   ? `${1200 / visibleColumnsArray.length}px`
+                                                              //   : visibleColumnsArray.length < 7 || visibleColumnsArray.length <= 10
+                                                              //     ? `${2000 / visibleColumnsArray.length}px`
+                                                              : `${1200 / visibleColumnsArray.length}px`;
       return { ...column, width };
     });
 
@@ -297,9 +301,11 @@ const NewTable = (props: any) => {
         setIsOpen(false);
         setTickRows([]);
         setSelectedUser("");
+        
+      setIsOpenAssignOps(false)
+      setIsOpenAssignOps(false);
       }
 
-      setIsOpenAssign(true);
     } catch (error) {
       toastError("An error occurred while assigning task. Please try again.");
     }
@@ -480,7 +486,13 @@ const NewTable = (props: any) => {
     }
   };
 
+const handleCloseAssign = () => {
 
+  console.log("handleCloseAssign");
+  setIsOpenAssignOps(false);
+   setIsOpen(false);
+  setIsOpenAssignOps(false);
+};
 
 
   return (
@@ -568,7 +580,7 @@ const NewTable = (props: any) => {
                 className="flex items-center gap-1  px-3 rounded-md pt-0 pb-3  border bg-gray-50 text-gray-700 border-gray-300 text-sm"
                 onClick={() => setShowExportOptions(!showExportOptions)}
               >
-               ...
+                ...
               </button>
 
               {showExportOptions && (
@@ -833,9 +845,13 @@ const NewTable = (props: any) => {
               <button
                 type="button"
                 className="text-black-500 text-lg"
-                onClick={() => setIsOpenAssign(false)}
+               onClick={() => {
+                
+                 setIsOpenAssign(false);
+            
+               }}
               >
-                <AiFillCloseSquare />
+                <AiFillCloseSquare   />
               </button>
             </div>
             <form onSubmit={handleAssignTask}>
@@ -909,7 +925,7 @@ const NewTable = (props: any) => {
               <button
                 type="button"
                 className="text-black-500 text-lg"
-                onClick={() => setIsOpenAssign(false)}
+                onClick={() => setIsOpenAssignOps(false)}
               >
                 <AiFillCloseSquare />
               </button>

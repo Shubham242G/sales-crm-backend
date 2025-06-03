@@ -272,6 +272,7 @@ const AddRfpsForm = () => {
               type="text"
               className="w-[20%] border border-gray-300  rounded-md p-1.5"
               placeholder="Enter display name"
+              disabled
             />
           </div>
 

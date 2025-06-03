@@ -282,6 +282,7 @@ input::placeholder, select::placeholder,select, textarea::placeholder {
 }
 
 
+
 .rdt_Pagination{
   min-height: 50px !important;
   
@@ -337,4 +338,10 @@ input:in-range , select:in-range, textarea:in-range {
 input[type="checkbox"]:focus {
   outline: none;
   box-shadow: none; /* Optional: removes the ring-style focus in some browsers */
+}
+
+
+
+.rdt_TableRow:last-child .lead-dropdown {
+    top: -4pc;
 }

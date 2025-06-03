@@ -126,7 +126,7 @@ function CustomerLedger() {
     },
     {
       name: "Date Received",
-      selector: (row: any) => <h6>{moment(row?.receivedDate).format("YYYY, MMMM, DD")}</h6>,
+      selector: (row: any) => <h6>{moment(row?.receivedDate).format("DD MMMM, YYYY")}</h6>,
       width: "150px",
     },
     // {

@@ -244,11 +244,11 @@ export default function EnquiryLIst() {
       name: "Level of Enquiry",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col font-bold p-1.5 rounded-md  ${row.levelOfEnquiry === "moderate"
-            ? "bg-yellow-300 text-white-100  "
+          className={`flex gap-1 flex-col font-bold text-sm p-1.5 rounded-md  ${row.levelOfEnquiry === "moderate"
+            ? "bg-[#F7DC6F] text-[#786C3B]  "
             : row.levelOfEnquiry === "Not Urgent"
-              ? "bg-green-400 text-white-600"
-              : row.levelOfEnquiry === "urgent" && "bg-red-300 text-red-600"
+              ? "bg-[#C6F7D0] text-[#2E865F]"
+              : row.levelOfEnquiry === "urgent" && "bg-[#F7CAC9] text-[#7B2C2C]"
             }`}
         >
           <h5 className="capitalize">{row.levelOfEnquiry}</h5>
@@ -260,7 +260,7 @@ export default function EnquiryLIst() {
       name: "Check-In",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{moment(row.checkIn).format("YYYY, MMMM DD")}</h6>
+          <h6>{moment(row.checkIn).format("DD MMMM, YYYY")}</h6>
         </div>
       ),
       width: "150px",
@@ -269,7 +269,7 @@ export default function EnquiryLIst() {
       name: "Check-Out",
       selector: (row: any) => (
         <div className="flex gap-1 flex-col">
-          <h6>{moment(row.checkOut).format("YYYY, MMMM DD")}</h6>
+          <h6>{moment(row.checkOut).format("DD MMMM, YYYY")}</h6>
         </div>
       ),
       width: "150px",
@@ -361,7 +361,7 @@ export default function EnquiryLIst() {
             </span>
           </button>
           {selectedRowId === row._id && isOpenAction && (
-            <div className="absolute bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
+            <div className="absolute lead-dropdown bg-white z-10 shadow-lg rounded-md overflow-hidden -ml-10 border">
               <Link
                 to={`/addEnquiry/${row?._id}`}
                 className="flex items-center text-gray-600 hover:bg-blue-500 hover:text-white px-4 border-b py-2 gap-2"

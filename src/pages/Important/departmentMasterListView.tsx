@@ -83,7 +83,7 @@ function DepartmentMasterListView() {
         <div className="flex gap-1 flex-col">
           <h6>
             {row.createdAt
-              ? format(new Date(row.createdAt), "MMM dd, yyyy")
+              ? format(new Date(row.createdAt), "dd MMMM, yyyy")
               : "-"}
           </h6>
         </div>
