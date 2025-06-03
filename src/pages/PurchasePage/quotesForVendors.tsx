@@ -9,7 +9,7 @@ import { SiConvertio } from "react-icons/si";
 import {
   addQuotesFromVendorsExcel,
   getQuotesFromVendorsExcel,
-  useConvertQuotesFromVendorToQuotesToCustomer,
+  useConvertQuotesFromVendorToConfimredQuotesForVendor,
   useQuotesFromVendors,
   useQuotesFromVendorsById,
   usedeleteQuotesFromVendorsById,
@@ -41,7 +41,7 @@ function CustomerLedger() {
 
 
   const { mutateAsync: convertQuotesFromVendorToQuotesToCustomer } =
-    useConvertQuotesFromVendorToQuotesToCustomer();
+  useConvertQuotesFromVendorToConfimredQuotesForVendor();
 
   const { mutateAsync: deleteQuotesFromVendors } =
     usedeleteQuotesFromVendorsById();

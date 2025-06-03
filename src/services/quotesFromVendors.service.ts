@@ -101,7 +101,7 @@ export const useQuotesFromVendorsApiHook = () => {
     return axios.get<GeneralApiResponsePagination<any>>(`${BASE_URL}${prefix}?${query}`);
   };
 
-  const convertQuotesFromVendorToQuotesToCustomer = async (id: string) => {
+  const convertQuotesFromVendorToConfirmedQuotesFromVendor = async (id: string) => {
     return axios.post<GeneralApiResponse<any>>(
       `${BASE_URL}${prefix}/convert/${id}`
     );
@@ -114,7 +114,7 @@ export const useQuotesFromVendorsApiHook = () => {
     getQuotesFromVendorsById,
     getAllQuotesFromVendors,
     // convertToQuotesFromVendors,
-    convertQuotesFromVendorToQuotesToCustomer,
+    convertQuotesFromVendorToConfirmedQuotesFromVendor,
   };
 };
 
@@ -186,11 +186,11 @@ export const useUpdateQuotesFromVendorsById = () => {
   });
 };
 
-export const useConvertQuotesFromVendorToQuotesToCustomer = () => {
+export const useConvertQuotesFromVendorToConfimredQuotesForVendor = () => {
   const api = useQuotesFromVendorsApiHook();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: api.convertQuotesFromVendorToQuotesToCustomer,
+    mutationFn: api.convertQuotesFromVendorToConfirmedQuotesFromVendor,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["quotesToCustomer"] });
       queryClient.invalidateQueries({ queryKey: ["quotesFromVendors"] });
