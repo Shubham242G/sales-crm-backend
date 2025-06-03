@@ -431,7 +431,7 @@ const AddConfirmedQuotesFromVendor = () => {
   }
 
   return (
-    <div className="h-[90vh]  mt-16 p-6 overflow-y-auto">
+    <div className="h-[88vh]  mt-16 p-6 overflow-y-auto">
       <div className="max-w-6xl ">
         <h1 className="text-2xl font-bold mb-6">
           {id ? "Edit Confirmed Quotes" : "Add Confirmed Quotes"}
@@ -439,157 +439,155 @@ const AddConfirmedQuotesFromVendor = () => {
         <form onSubmit={handleSubmit}>
           {/* Banquet Event Orders Section */}
           <div className="border bg-gray-50 rounded-lg mt-8 p-6 shadow">
-            <div className="mb-4 ">
-              <label className="font-semibold" >Select Quote Id</label>
-              <select
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-2"
-                value={formData.banquetEventOrders.quotesId}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    banquetEventOrders: {
-                      ...formData.banquetEventOrders,
-                      quotesId: e.target.value,
-                    },
-                  })
-                }
-              >
-                <option value=""> Select Quote Id</option>
-                {confirmedQuotesId.data.map((value, index) => (
-                  <option key={index} value={value.quotesId}>
-                    {value.quotesId}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="-mt-1">
+                <label className="font-semibold " >Select Quote Id</label>
+                <select
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md mt-2 p-3.5"
+                  value={formData.banquetEventOrders.quotesId}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      banquetEventOrders: {
+                        ...formData.banquetEventOrders,
+                        quotesId: e.target.value,
+                      },
+                    })
+                  }
+                >
+                  <option value="" > Select Quote Id</option>
+                  {confirmedQuotesId.data.map((value, index) => (
+                    <option key={index} value={value.quotesId}>
+                      {value.quotesId}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm  font-semibold text-black mb-2">
+                  RFP Id
+                </label>
+                <input
+                  type="text"
+                  value={formData.banquetEventOrders.rfpId}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      banquetEventOrders: {
+                        ...formData.banquetEventOrders,
+                        rfpId: e.target.value,
+                      },
+                    })
+                  }
+                  className="w-full bg-gray-50 border border-gray-300 rounded-md p-2.5 text-gray-600  focus:border-blue-500 transition duration-200"
+                  placeholder="Enter RFP Id"
+                  disabled
+                />
+              </div>
 
-            <div className="mb-4">
-              <label className="block text-sm  font-semibold text-black mb-2">
-                RFP Id
-              </label>
-              <input
-                type="text"
-                value={formData.banquetEventOrders.rfpId}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    banquetEventOrders: {
-                      ...formData.banquetEventOrders,
-                      rfpId: e.target.value,
-                    },
-                  })
-                }
-                className="w-full bg-gray-50 border border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
-                placeholder="Enter RFP Id"
-                disabled
-              />
-            </div>
+              <div>
+                <label className="block mb-2  text-sm font-semibold text-black">
+                  Vendor
+                </label>
+                <input
+                  type="text"
+                  value={formData.banquetEventOrders.vendorList.label}
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2.5 text-gray-600  focus:border-blue-500 transition duration-200"
+                  placeholder="Vendor Name"
+                  disabled
+                />
+              </div>
 
-            <div className="mb-4 ">
-              <label className="block mb-2  text-sm font-semibold text-black">
-                Vendor
-              </label>
-              <input
-                type="text"
-                value={formData.banquetEventOrders.vendorList.label}
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
-                placeholder="Vendor Name"
-                disabled
-              />
-            </div>
+              <div>
+                <label className="block text-sm  font-semibold text-black mb-2">
+                  Amount
+                </label>
+                <input
+                  type="number"
+                  value={formData.banquetEventOrders.amount}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      banquetEventOrders: {
+                        ...formData.banquetEventOrders,
+                        amount: e.target.valueAsNumber,
+                      },
+                    })
+                  }
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2.5 text-gray-600  focus:border-blue-500 transition duration-200"
+                  placeholder="Enter amount"
+                  disabled
+                />
+              </div>
 
-            <div className="mb-4 ">
-              <label className="block text-sm  font-semibold text-black mb-2">
-                Amount
-              </label>
-              <input
-                type="number"
-                value={formData.banquetEventOrders.amount}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    banquetEventOrders: {
-                      ...formData.banquetEventOrders,
-                      amount: e.target.valueAsNumber,
-                    },
-                  })
-                }
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
-                placeholder="Enter amount"
-                disabled
-              />
-            </div>
+              <div>
+                <label className="block text-sm  font-semibold text-black mb-2">
+                  Markup Amount
+                </label>
+                <input
+                  type="number"
+                  value={formData.banquetEventOrders.markupAmount}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      banquetEventOrders: {
+                        ...formData.banquetEventOrders,
+                        markupAmount: e.target.valueAsNumber,
+                      },
+                    })
+                  }
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2.5 text-gray-600  focus:border-blue-500 transition duration-200"
+                  placeholder="Enter amount"
+                  disabled
+                />
+              </div>
 
-            <div className="mb-4 ">
-              <label className="block text-sm  font-semibold text-black mb-2">
-                Markup Amount
-              </label>
-              <input
-                type="number"
-                value={formData.banquetEventOrders.markupAmount}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    banquetEventOrders: {
-                      ...formData.banquetEventOrders,
-                      markupAmount: e.target.valueAsNumber,
-                    },
-                  })
-                }
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
-                placeholder="Enter amount"
-                disabled
-              />
-            </div>
+              <div>
+                <label className="block text-sm font-semibold text-black mb-2">
+                  Received Date
+                </label>
+                <input
+                  type="date"
+                  value={formData.banquetEventOrders.receivedDate}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      banquetEventOrders: {
+                        ...formData.banquetEventOrders,
+                        receivedDate: e.target.value,
+                      },
+                    })
+                  }
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-2.5 text-gray-600  focus:border-blue-500 transition duration-200"
+                  disabled
+                />
+              </div>
 
-            <div className="mb-4 ">
-              <label className="block text-sm font-semibold text-black mb-2">
-                Received Date
-              </label>
-              <input
-                type="date"
-                value={formData.banquetEventOrders.receivedDate}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    banquetEventOrders: {
-                      ...formData.banquetEventOrders,
-                      receivedDate: e.target.value,
-                    },
-                  })
-                }
-                
-               
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
-                disabled
-              />
-            </div>
-
-            <div className="mb-4 ">
-              <label className="block text-sm font-semibold text-black mb-2">
-                Status
-              </label>
-              <select
-                value={formData.banquetEventOrders.status}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    banquetEventOrders: {
-                      ...formData.banquetEventOrders,
-                      status: e.target.value,
-                    },
-                  })
-                }
-                className="w-full border bg-gray-50 border-gray-300 rounded-md p-3 text-gray-600  focus:border-blue-500 transition duration-200"
-                disabled
-              >
-                <option value="">Select Status</option>
-                <option value="Pending">Pending</option>
-                <option value="Completed">Completed</option>
-                <option value="Rejected">Rejected</option>
-              </select>
-            </div>
-
+              <div>
+                <label className="block text-sm font-semibold text-black mb-2">
+                  Status
+                </label>
+                <select
+                  value={formData.banquetEventOrders.status}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      banquetEventOrders: {
+                        ...formData.banquetEventOrders,
+                        status: e.target.value,
+                      },
+                    })
+                  }
+                  className="w-full border bg-gray-50 border-gray-300 rounded-md p-3.5 text-gray-600  focus:border-blue-500 transition duration-200"
+                  disabled
+                >
+                  <option value="">Select Status</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+ </div>
             <div className="col-span-2 mb-[20px]">
               <label className="block text-sm font-semibold text-black mb-2">
                 Attachment
@@ -1437,7 +1435,7 @@ const AddConfirmedQuotesFromVendor = () => {
                 Add New Item
               </button>
             </div>
-            <table className="min-w-full ">
+            <table className="w-[100%] ">
               <thead className="bg-stone-200  ">
                 <tr>
                   <th className=" px-3 py-1.5 text-left text-sm font-semibold text-stone-800 border-b">

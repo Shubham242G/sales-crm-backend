@@ -477,34 +477,34 @@ function AddRoles() {
   };
 
   return (
-    <div className="  w-[100%]  mt-16 relative mb-24 p-6 pt-0  ">
+    <div className="  w-[100%]  mt-16 relative mb-24 p-6 pt-0 ">
       <div className="container h-[80vh] overflow-scroll   ">
-        <h1 className="text-2xl font-bold mb-4">
+        <h1 className="text-2xl font-bold mb-4 ml-3">
           {id ? "Edit Role" : "Add New Role"}
         </h1>
 
       <form onSubmit={handleSubmit} >
-          <div className="  bg-white  rounded-md text-sm space-y-4">
+          <div className=" shadow-md  p-2 w-1/2 ml-2  rounded-md text-sm space-y-4 ">
 
             {/* Name */}
             <div className="flex items-center space-x-4">
-              <label className="font-medium w-32">Name</label>
+              <label className="font-medium w-32  ml-4">Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter Name"
-                className="border rounded px-3 py-2 text-sm w-[20%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+                className="border rounded px-3 py-2 text-sm w-[60%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
               />
             </div>
 
             {/* Parent Role */}
             <div className="flex items-center space-x-4">
-              <label className="font-medium w-32">Parent Role</label>
+              <label className="font-medium w-32 ml-4">Parent Role</label>
               <select
                 value={parentRoleName}
                 onChange={(e) => setParentRoleName(e.target.value || "")}
-                className="border rounded px-3 py-2 text-sm w-[20%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+                className="border rounded px-3 py-2 text-sm w-[60%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
               >
                 <option value="">--Select Parent Role--</option>
                 {allRoles
@@ -520,25 +520,25 @@ function AddRoles() {
 
             {/* Role Name */}
             <div className="flex items-center space-x-4">
-              <label className="font-medium w-32">Role Name</label>
+              <label className="font-medium w-32 ml-4">Role Name</label>
               <input
                 type="text"
                 value={roleName}
                 onChange={(e) => setRoleName(e.target.value.toUpperCase())}
                 placeholder="Enter Role Name"
-                className="border rounded px-3 py-2 text-sm w-[20%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+                className="border rounded px-3 py-2 text-sm w-[60%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
               />
             </div>
 
             {/* Description */}
             <div className="flex items-start space-x-4">
-              <label className="font-medium w-32 pt-2">Description</label>
+              <label className="font-medium w-32 ml-4 pt-2">Description</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Enter Role Description"
                 rows={4}
-                className="border rounded px-3 py-2 text-sm w-[20%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
+                className="border rounded px-3 py-2 mb-4 text-sm w-[60%] placeholder-gray-400 hover:border-blue-500 focus-within:ring-1 focus-within:ring-light-blue-500"
               />
             </div>
 

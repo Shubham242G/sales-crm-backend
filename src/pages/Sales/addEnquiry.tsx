@@ -88,6 +88,8 @@ interface FabricationItem {
   days?: number | string;
   rate?: string;
   amount: string;
+  height?: number;
+  width?: number;
 }
 
 const fabricationData: FabricationItem[] = [
@@ -676,7 +678,7 @@ const AddEnquiryForm = () => {
   const calculateSelectedTotal = () => {
     return productsArray
       .filter(item => selectedItems.includes(item.id))
-      .reduce((sum, item) => sum + ( item.rate * item.qty ), 0);
+      .reduce((sum, item) => sum + (item.height * item.width * item.rate * item.qty ), 0);
   };
 
   const handleAddNewRow = () => {
@@ -2351,13 +2353,13 @@ const AddEnquiryForm = () => {
                               />
                             </td>
                             <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-center border-b border-gray-200">
-                              <div className="flex gap-2">
+                              <div className="flex gap-2  justify-center">
                                 <input
                                   type="number"
                                   value={item.height || ''}
                                   onChange={(e) => handleHeightChange(item.id, Number(e.target.value))}
                                   className="border border-gray-300 p-1 rounded w-16 text-center"
-                                  placeholder="H"
+                                  placeholder="Height"
                                   min="0"
                                 />
                                 <input
@@ -2365,7 +2367,7 @@ const AddEnquiryForm = () => {
                                   value={item.width || ''}
                                   onChange={(e) => handleWidthChange(item.id, Number(e.target.value))}
                                   className="border border-gray-300 p-1 rounded w-16 text-center"
-                                  placeholder="W"
+                                  placeholder="Width"
                                   min="0"
                                 />
                               </div>
@@ -2391,7 +2393,7 @@ const AddEnquiryForm = () => {
                               />
                             </td>
                             <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-center border-b border-gray-200">
-                              ₹{(item.rate * item.qty).toLocaleString('en-IN')}
+                              ₹{(item.height * item.width * item.rate * item.qty).toLocaleString('en-IN')}
                             </td>
                             <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 text-center border-b border-gray-200">
                               <button type="button" onClick={() => handleRemoveRow(item.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
