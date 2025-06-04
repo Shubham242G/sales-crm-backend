@@ -308,7 +308,7 @@ function Users() {
         TableAddExcelFunction={addUserExcel}
         RouteName={"User"}
         AddButtonRouteName={"/add-users"}
-         AddButtonName={"add user"}
+         AddButtonName={"Add User"}
         placeholderSearch={"Search in User"}
       /> 
    

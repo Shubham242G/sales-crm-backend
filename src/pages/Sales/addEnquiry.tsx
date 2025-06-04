@@ -1795,11 +1795,11 @@ const AddEnquiryForm = () => {
                 </div>
 
                 {(enquiryType === "room" || enquiryType === "both") && (
-                  <div className="w-[110%]">
+                  <div className="w-[100%] ml-4">
                     <label className="block text-sm font-medium text-gray-700 mt-1 mb-1">
                       Rate Required for (Occupancy)
                     </label>
-                    <div className="flex justify-center space-x-4 mt-3 -ml-4">
+                    <div className="flex justify-center space-x-4  -ml-4 ">
                       <label className="flex items-center justify-center space-x-2">
                         <input
                           type="checkbox"
@@ -1875,7 +1875,7 @@ const AddEnquiryForm = () => {
                             }
                           >
                             <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
-                              {row?.date}
+                              {moment(row?.date).format("MM-DD-YYYY")}
                             </td>
                             <td className=" px-3 py-1.5 text-sm border-b border-gray-200">
                               <input

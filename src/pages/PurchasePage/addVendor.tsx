@@ -1885,7 +1885,7 @@ const AddVendorForm = () => {
                                                       parseInt(e.target.value) || 0;
                                                     setRooms(newRooms);
                                                   }}
-                                                  className="border border-gray-300 p-2 rounded-md w-full"
+                                                  className="border border-gray-300 p-1 rounded-md w-full"
                                                 />
                                               </div>
                                             </div>
@@ -1904,7 +1904,7 @@ const AddVendorForm = () => {
                                                   newRooms[index].roomSize = e.target.value;
                                                   setRooms(newRooms);
                                                 }}
-                                                className="border border-gray-300 p-2 rounded-md w-full"
+                                                className="border border-gray-300 p-1 rounded-md w-full"
                                               />
                                             </div>
 
@@ -1950,9 +1950,9 @@ const AddVendorForm = () => {
                                                           e.target.value;
                                                         setRooms(newRooms);
                                                       }}
-                                                      className="border border-gray-300 p-2 rounded-l-md w-full"
+                                                      className="border border-gray-300 h-9 rounded-l-md w-full"
                                                     />
-                                                    <span className="inline-flex items-center border border-l-0 border-gray-300 bg-gray-100 px-3 rounded-r-md text-sm text-gray-500">
+                                                    <span className="inline-flex items-center border border-l-0 h-9  border-gray-300 bg-gray-100 px-2 rounded-r-md text-xs text-gray-500">
                                                       per night
                                                     </span>
                                                   </div>
@@ -2532,7 +2532,7 @@ const AddVendorForm = () => {
                                     <div className="flex">
                                       <input
                                         type="number"
-                                        placeholder="Enter nonveg price"
+                                        placeholder="Enter non veg price"
                                         min={0}
                                         value={banquet.banquetNonVegPrice}
                                         onChange={(e) => {

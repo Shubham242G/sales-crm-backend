@@ -573,7 +573,7 @@ function AddRoles() {
               <tbody>
                 {permissions.map((rp, index) => (
                   <tr key={index} className="border border-gray-300">
-                    <td className="border border-gray-300 p-2 font-medium">
+                    <td className="border border-gray-300 p-2 text-sm">
                       {rp.isEditing ? (
                         <>
                         <div className="flex justify-around items-center ">
@@ -585,7 +585,7 @@ function AddRoles() {
                               handleRouteNameChange(index, e.target.value)
                             }
                             onBlur={() => handleRouteBlur(index)}
-                            className="w-full p-1 border rounded"
+                            className="w-full p-1 border  rounded"
                             placeholder="Enter route name"
                             autoFocus
                           />
@@ -640,7 +640,7 @@ function AddRoles() {
                         onChange={() => handlePermissionChange(index, "delete")}
                       />
                     </td>
-                    <td className="border border-gray-300 p-2 text-center">
+                    <td className="border border-gray-300 p-2 text-sm text-center">
                       <button
                         type="button"
                         className="text-blue-500 hover:underline"
@@ -649,7 +649,7 @@ function AddRoles() {
                         Edit
                       </button>
                     </td>
-                    <td className="border border-gray-300 p-2 text-center">
+                    <td className="border border-gray-300 p-2 text-sm text-center">
                       <button
                         type="button"
                         className="text-red-500 hover:underline"

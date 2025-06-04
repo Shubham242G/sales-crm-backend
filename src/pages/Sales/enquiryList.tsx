@@ -244,14 +244,14 @@ export default function EnquiryLIst() {
       name: "Level of Enquiry",
       selector: (row: any) => (
         <div
-          className={`flex gap-1 flex-col font-bold text-sm p-1.5 rounded-md  ${row.levelOfEnquiry === "moderate"
+          className={`flex gap-1 flex-col  text-xs p-1.5 rounded-md  ${row.levelOfEnquiry === "moderate"
             ? "bg-[#F7DC6F] text-[#786C3B]  "
             : row.levelOfEnquiry === "Not Urgent"
               ? "bg-[#C6F7D0] text-[#2E865F]"
               : row.levelOfEnquiry === "urgent" && "bg-[#F7CAC9] text-[#7B2C2C]"
             }`}
         >
-          <h5 className="capitalize">{row.levelOfEnquiry}</h5>
+          <h5 className="capitalize ">{row.levelOfEnquiry}</h5>
         </div>
       ),
       width: "150px",
