@@ -1578,7 +1578,8 @@ const AddEnquiryForm = () => {
                     Display Name
                   </label>
 
-                  <input type="text" value={displayName} readOnly />
+                  <input type="text"                      
+ value={displayName} className="w-full border border-gray-300 rounded p-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500" readOnly />
                   {/* <select
                     value={displayName}
                     onChange={(e) => {
