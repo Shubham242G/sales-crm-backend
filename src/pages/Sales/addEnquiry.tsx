@@ -1577,19 +1577,17 @@ const AddEnquiryForm = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Display Name
                   </label>
-                  <select
+
+                  <input type="text" value={displayName} readOnly />
+                  {/* <select
                     value={displayName}
                     onChange={(e) => {
                       setDisplayName(e.target.value);
                     }}
                     className="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                   >
-                    {Customer.data.map((option: any) => (
-                      <option key={option.displayName} value={option.displayName}>
-                        {option.displayName}
-                      </option>
-                    ))}
-                  </select>
+                    
+                  </select> */}
                 </div>
               </div>
 
