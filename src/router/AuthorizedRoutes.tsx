@@ -91,6 +91,8 @@ import VendorPurchaseBillSingle from "@/pages/Sales/vendorPurchaseBillSingle";
 import LeadManagement from "@/pages/Admin/leadManagement";
 import LeadManagementEdit from "@/pages/Admin/leadManagementEdit";
 import TaskManagement from "@/pages/TaskManagement/TaskManagement";
+import AddConfirmedQuotesToCustomerForm from "@/pages/Sales/addQuotesToCustomer";
+import ConfirmedQuotestoCustomerView from "@/pages/Sales/confirmedQuotestoCustomer";
 
 
 // import CalendarView from "@/pages/Calendar/CalendarView";
@@ -103,6 +105,9 @@ export default function AuthorizedRoutes() {
           {/* <Route path="/login" element={<Dashboard />}></Route>
                         <Route path="/home" element={<Dashboard />}></Route> */}
           <Route path="/" element={<Dashboard />}></Route>
+          <Route path="/confirmedQuotesToCustomer" element={<ConfirmedQuotestoCustomerView/>}></Route>
+          <Route path="/addConfirmedQuotesToCustomer/:id" element={<AddConfirmedQuotesToCustomerForm/>}></Route>
+          <Route path="/addConfirmedQuotesToCustomer" element={<AddConfirmedQuotesToCustomerForm/>}></Route>
           <Route path="/admin" element={<Admin />}></Route>
           <Route path="/zohoInvoice" element={<ZohoInvoice />}></Route>
           <Route path="/vendorList" element={<VendorList />}></Route>
